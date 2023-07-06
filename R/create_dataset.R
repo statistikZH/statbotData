@@ -27,15 +27,15 @@ create_dataset <- function(id) {
   googlesheets4::gs4_deauth()
 
   googlesheets4::read_sheet(ss = "https://docs.google.com/spreadsheets/d/11V8Qj4v21MleMk_W9ZnP_mc4kmp0CNvsmd9w4A9sTyo/edit?usp=sharing",
-                            sheet = "tables") %>%
-    dplyr::filter(id = id) %>%
+                            sheet = "tables") -> sheet
+  sheet %>%
+    dplyr::filter(data_indicator == id) %>%
     as.list() -> ds_list
 
-  # create S3 dataset-object with the needed classes
   ds_list <- structure(
-    data,
+    ds_list,
     data = NULL,
-    class = c(ds_list$organization, data$format, data$id)
+    class = c(ds_list$organization, ds_list$format, ds_list$id)
   )
 
 

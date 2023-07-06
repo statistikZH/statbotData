@@ -2,4 +2,5 @@
 
 export("%>%")
 export(create_dataset)
+export(download_data)
 importFrom(magrittr,"%>%")

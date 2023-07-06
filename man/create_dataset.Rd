@@ -4,7 +4,7 @@
 \alias{create_dataset}
 \title{Title}
 \usage{
-create_dataset(dataset_id)
+create_dataset(id)
 }
 \arguments{
 \item{dataset_id}{id of the dataset}
