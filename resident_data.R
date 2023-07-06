@@ -75,7 +75,6 @@ pq011$flag %>%
   levels()
 
 
-100 years or older
 pq011[1:1000, ]
 
 
