@@ -65,7 +65,6 @@ su <- dplyr::select(su, -valid_until)
 
 pq011 <- dplyr::filter(pq011, value != 0)
 
-
 pq011[1:100, ]
 
 library(lubridate)
@@ -78,8 +77,6 @@ pq011$flag %>%
 pq011[1:1000, ]
 
 
-pq011$spatialunit_hist_id
-rm(pqsu)
 
 data.table::fwrite(x = pq011,
                    file = "./pq.csv")
