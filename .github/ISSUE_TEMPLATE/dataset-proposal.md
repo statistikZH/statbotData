@@ -11,12 +11,12 @@ assignees: ''
 
 ## Dataset properties
 
-URL: [Source URL of the dataset]
-format: [Source format of the data: xlsx,px,json,rdf,csv,...]
-size: [XXMB]
-dimensions: [Variables to include in the dataset]
-units: [Units used for values]
-lang: [Language(s) used in the dataset: en,de,fr,it]
+* URL: [Source URL of the dataset]
+* format: [Source format of the data: xlsx,px,json,rdf,csv,...]
+* size: [XXMB]
+* dimensions: [Variables to include in the dataset]
+* units: [Units used for values]
+* lang: [Language(s) used in the dataset: en,de,fr,it]
 
 ## Additional notes
 
