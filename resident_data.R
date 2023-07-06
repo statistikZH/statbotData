@@ -65,8 +65,6 @@ su <- dplyr::select(su, -valid_until)
 
 pq011 <- dplyr::filter(pq011, value != 0)
 
-pq011[1:100, ]
-
 library(lubridate)
 pq011$flag %>%
   as.character() %>%
