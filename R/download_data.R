@@ -14,6 +14,8 @@
 download_data <- function(ds){
 
 
+  ds <- get_read_path(ds)
+
   # streams the data and appends it to the ds in $data
   ds <- read_data(ds)
 
@@ -41,8 +43,8 @@ read_data <- function(ds) UseMethod("read_data")
 read_data.default <- function(ds) {
 
   # Get the file extension from the URL or the given info from the excel sheet
-  if(!is.na(ds$download_format)){
-    file_ext <- ds$download_format
+  if(!is.na(ds$format)){
+    file_ext <- ds$format
   }else{
     file_ext <- tools::file_ext(ds$read_path)
   }
@@ -64,7 +66,7 @@ read_data.default <- function(ds) {
   withr::with_envvar(new = c("no_proxy" = "dam-api.bfs.admin.ch"),
                      code = download.file(url = ds$read_path, destfile = temp_file, method = download_method, mode = "wb"))
   # Import the data
-  ds$data <-  rio::import(temp_file, which = ds$which_data, header = TRUE)
+  ds$data <-  rio::import(temp_file, which = ds$sheet, header = TRUE)
 
   # Remove the temporary file
   file.remove(temp_file)
@@ -91,7 +93,7 @@ read_data.default <- function(ds) {
 #'
 read_data.px <- function(ds){
 
-  ds$data <- BFS::bfs_get_data(number_bfs = ds$sheet)
+  ds$data <- BFS::bfs_get_data(number_bfs = ds$read_path)
 
 
   return(ds)
