@@ -15,4 +15,7 @@ RoxygenNote: 7.2.3
 Imports: 
     dplyr,
     googlesheets4,
-    magrittr
+    janitor,
+    magrittr,
+    stringr,
+    tibble
