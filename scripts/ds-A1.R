@@ -34,7 +34,7 @@ dir.create(processed_dir, showWarnings = FALSE)
 
 # a function to clean the spatial names is defined
 clean_name <- function(name) {
-  str_replace_all(name,"Kanton ", "") %>% make_clean_names()
+  stringr::str_replace_all(name,"Kanton ", "") %>% janitor::make_clean_names()
 }
 
 # the spatial mapping is read from file
@@ -46,9 +46,10 @@ spatial_unit_list <- read.csv(map_path) %>%
   dplyr::rowwise() %>%
   mutate(name_de_cleaned = clean_name(name_de)) %>%
   subset(select = -c(name_de)) %>%
-  relocate(name_de_cleaned) %>%
-  deframe() %>%
+  dplyr::relocate(name_de_cleaned) %>%
+  tibble::deframe() %>%
   as.list
+spatial_unit_list
 
 # Download the px cube
 # ------------------------------------------------
@@ -80,9 +81,11 @@ df_clean
 # with a list: the search_string is mapped to
 # a name in the list and the value for that name is returned
 find_match <- function(list_obj, search_string) {
-  print(search_string)
-  search_terms <- str_split_1(as.character(search_string), "_")
+  search_string <- janitor::make_clean_names(search_string)
+  search_terms <- stringr::str_split_1(as.character(search_string), "_")
+  print(search_terms)
   for (term in search_terms) {
+    term_clean <-
     matching_names <- grep(term, names(list_obj), ignore.case = TRUE, value = TRUE)
     if (length(matching_names) == 1) {
       return(list_obj[[matching_names]])
@@ -90,7 +93,8 @@ find_match <- function(list_obj, search_string) {
   }
   return("")
 }
-find_match(spatial_unit_list, "Schweiz")
+find_match(spatial_unit_list, "- Solothurn ")
+janitor::make_clean_names("- Solothurn ")
 
 # Define a specialized function for the spatial_unit_list
 # It returns the spatial postgres key for the spacialunit table
@@ -101,7 +105,7 @@ map_spatial <- function(search_string) {
 df_spatial <- df_clean %>% distinct(grossregion_kanton)
 df_spatial
 df_mapped <- df_spatial %>% dplyr::rowwise() %>% mutate(name_de = map_spatial(grossregion_kanton))
-
+df_mapped
 
 # apply spatial map
 df_mapped <- df_clean %>% dplyr::rowwise() %>% mutate(name_de = map_spatial(grossregion_kanton))
