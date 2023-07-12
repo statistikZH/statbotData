@@ -4,13 +4,8 @@
 # The SDSC-ORD packages should be made ready to be added on CRAN
 devtools::install_github("SDSC-ORD/fsopxRLoc")
 devtools::install_github("SDSC-ORD/pxRRead")
-install.packages('janitor')
 library(fsopxRLoc)
 library(pxRRead)
-library(tibble)
-library(dplyr)
-library(janitor)
-library(stringr)
 
 # Get the dataset from the pipeline
 # --------------------------------------------------------
@@ -85,6 +80,7 @@ df_clean
 # with a list: the search_string is mapped to
 # a name in the list and the value for that name is returned
 find_match <- function(list_obj, search_string) {
+  print(search_string)
   search_terms <- str_split_1(as.character(search_string), "_")
   for (term in search_terms) {
     matching_names <- grep(term, names(list_obj), ignore.case = TRUE, value = TRUE)
@@ -94,6 +90,7 @@ find_match <- function(list_obj, search_string) {
   }
   return("")
 }
+find_match(spatial_unit_list, "Schweiz")
 
 # Define a specialized function for the spatial_unit_list
 # It returns the spatial postgres key for the spacialunit table
@@ -101,6 +98,10 @@ map_spatial <- function(search_string) {
   result <- find_match(spatial_unit_list, search_string)
   return(result)
 }
+df_spatial <- df_clean %>% distinct(grossregion_kanton)
+df_spatial
+df_mapped <- df_spatial %>% dplyr::rowwise() %>% mutate(name_de = map_spatial(grossregion_kanton))
+
 
 # apply spatial map
 df_mapped <- df_clean %>% dplyr::rowwise() %>% mutate(name_de = map_spatial(grossregion_kanton))
