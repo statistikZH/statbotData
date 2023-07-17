@@ -59,7 +59,8 @@ ds$data <- ds$data %>%
 # join the cleaned data to the postgres spatial units table ---------------
 
 ds$data <- ds$data %>%
-  dplyr::left_join(dplyr::select(spatial_unit_df, spatialunit_uid, name_de), by = c("grossregion_kanton" = "name_de"))
+  dplyr::left_join(dplyr::select(spatial_unit_df, spatialunit_uid, name_de), by = c("grossregion_kanton" = "name_de")) %>%
+  dplyr::select(-grossregion_kanton)
 
 ## check that each spatial unit could be matched -> this has to be TRUE
 
@@ -71,7 +72,6 @@ assertthat::noNA(ds$data$spatialunit_uid)
 
 ds$data %>%
   dplyr::rename(
-    "raeumliche_ebene" = grossregion_kanton,
     "anzahl" = arztpraxen_und_ambulante_zentren_anzahl_arzte
   ) -> ds$data
 
