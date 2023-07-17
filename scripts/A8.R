@@ -41,7 +41,7 @@ assertthat::noNA(ds$data$spatialunit_uid)
 
 ds$data %>%
   dplyr::rename(
-    "stimmen" = nationalratswahlen_parteistimmen_fiktive_wahlende_und_parteistarke_seit_1971_schweiz_und_kantone
+    "anzahl" = nationalratswahlen_parteistimmen_fiktive_wahlende_und_parteistarke_seit_1971_schweiz_und_kantone
   ) %>%
   dplyr::select(-c(kanton)) -> ds$data
 
