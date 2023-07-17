@@ -26,5 +26,5 @@ Imports:
     shiny,
     tibble,
     tidyr
-Remotes: 
+Remotes:
     SDSC-ORD/pxRRead
