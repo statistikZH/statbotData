@@ -17,7 +17,7 @@ spatial_unit_df <- readr::read_csv("data/const/spatial_unit_postgres.csv")
 ds$data %>%
   janitor::clean_names() %>%
   tibble::as_tibble() %>%
-  dplyr::rename("beobachtungseinheit" = rubrik,
+  dplyr::rename("verbrauchsart" = rubrik,
                 "anzahl" = tj) -> ds$data
 
 # join the cleaned data to the postgres spatial units table ---------------
