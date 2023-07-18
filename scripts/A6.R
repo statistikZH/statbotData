@@ -14,7 +14,8 @@ BFS::bfs_get_metadata(number_bfs = ds$sheet, language = ds$lang)
 ds$data %>%
   janitor::clean_names() %>%
   dplyr::filter(startsWith(periode, "Jahr:")) %>%
-  dplyr::rename(jahr = periode) -> ds$data
+  dplyr::rename(jahr = periode) %>% 
+  dplyr::mutate(jahr = as.numeric(stringr::str_extract(jahr, "\\d+"))) -> ds$data
 
 # add a spatial unit ------------------------------------------------------
 ds$data %>%
