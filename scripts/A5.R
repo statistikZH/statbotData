@@ -21,7 +21,8 @@ ds$data %>%
 # join the cleaned data to the postgres spatial units table ---------------
 
 ds$data <- ds$data %>%
-  dplyr::left_join(dplyr::select(spatial_unit_df, spatialunit_uid, name_de), by = c("raeumliche_ebene" = "name_de"))
+  dplyr::left_join(dplyr::select(spatial_unit_df, spatialunit_uid, name_de), by = c("raeumliche_ebene" = "name_de")) %>%
+  dplyr::select(-raeumliche_ebene)
 
 ## check that each spatial unit could be matched -> this has to be TRUE
 

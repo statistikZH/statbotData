@@ -68,7 +68,8 @@ ds$data <- ds$data %>%
 # join the cleaned data to the postgres spatial units table ---------------
 
 ds$data <- ds$data %>%
-  dplyr::left_join(dplyr::select(spatial_unit_df, spatialunit_uid, name_de), by = c("grossregion_kanton" = "name_de"))
+  dplyr::left_join(dplyr::select(spatial_unit_df, spatialunit_uid, name_de), by = c("grossregion_kanton" = "name_de")) %>%
+  dplyr::select(-grossregion_kanton)
 
 ## check that each spatial unit could be matched -> this has to be TRUE
 
@@ -83,7 +84,6 @@ ds$data %>%
   dplyr::rename(
     "genutzte_infrastruktur" = infrastruktur,
     "geraet_oder_untersuchung" = gerate_und_untersuchungen,
-     "raeumliche_ebene" = grossregion_kanton,
      "anzahl" = medizinisch_technische_infrastruktur_anzahl_gerate_und_untersuchungen_in_krankenhausern
   ) -> ds$data
 
