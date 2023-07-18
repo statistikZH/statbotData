@@ -17,4 +17,5 @@ Imports:
     BFS,
     dplyr,
     googlesheets4,
-    magrittr
+    magrittr,
+    tidyr
