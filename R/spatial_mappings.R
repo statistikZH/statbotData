@@ -189,3 +189,24 @@ stattab_country_canton_find_match <- function(spacial_term, spatial_units_list) 
   }
   return("")
 }
+
+#' Get Spatial Unit for Switzerland
+#'
+#' This is a very simple function to provide the spatialunit_uid for Switzerland
+#' The spatial unit has to be added to tables that don't come with a spatial
+#' unit
+#'
+#' @return spatialunit_uid_ch spatialunit_uid for Switzerland
+#'
+#' @export
+#'
+#' @examples spatial_mapping_country()
+#' \dontrun{
+#'   spatialunit_uid_ch <- spatial_mapping_country()
+#' }
+spatial_mapping_country <- function() {
+  readr::read_csv("data/const/spatial_unit_postgres.csv") %>%
+    dplyr::select(country, spatialunit_uid) %>%
+    dplyr::filter(country) -> spatial_unit_df
+  return(spatial_unit_df$spatialunit_uid)
+}
