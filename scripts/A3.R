@@ -18,8 +18,9 @@ spatial_unit_df <- readr::read_csv("data/const/spatial_unit_postgres.csv")
 ds$data %>%
   tidyr::drop_na() %>%
   dplyr::rename(jahr = 1, anzahl = 2) %>%
-  dplyr::mutate(beobachtungseinheit = "Treibhausgasemissionen, die durch den Konsum von Gütern und Dienstleistungen in der Schweiz verursacht werden (in Mio. t CO2-eq)") %>%
-  dplyr::mutate(spatialunit_uid = "0_CH") -> ds$data
+  dplyr::mutate(spatialunit_uid = spatial_mapping_country()) -> ds$data
 
 
 # ingest into postgres ----------------------------------------------------
+
+# Important for this DS: Name the table: "treibhausgasemission_in_mio_tonnen"
