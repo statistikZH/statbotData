@@ -93,7 +93,7 @@ read_data.default <- function(ds) {
 #'
 read_data.px <- function(ds){
 
-  ds$data <- BFS::bfs_get_data(number_bfs = ds$read_path)
+  ds$data <- BFS::bfs_get_data(number_bfs = ds$read_path, language = ds$lang)
 
 
   return(ds)
