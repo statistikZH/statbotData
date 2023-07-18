@@ -18,4 +18,5 @@ Imports:
     dplyr,
     googlesheets4,
     magrittr,
+    tibble,
     tidyr
