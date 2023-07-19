@@ -18,5 +18,6 @@ Imports:
     dplyr,
     googlesheets4,
     magrittr,
+    pxRRead,
     tibble,
     tidyr
