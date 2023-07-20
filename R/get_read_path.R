@@ -59,12 +59,16 @@ get_read_path_bfs.default <- function(ds){
 #'
 #' the asset number (BFS Nr) is required
 get_read_path_bfs.px <- function(ds){
-
-
-  # Create the download url
-  # all required information, like the name of the data cube, are in the dataset (ds)
-  # Example: name of the data cube ("px-x-0103010000_102") is taken from ds$data_id
-  ds$read_path <- ds$sheet
+  print(ds$size)
+  if (ds$size != "large") {
+    # Create the download url
+    # all required information, like the name of the data cube, are in the dataset (ds)
+    # Example: name of the data cube ("px-x-0103010000_102") is taken from ds$data_id
+    ds$read_path <- ds$sheet
+  } else {
+    ds$read_path <- paste0("https://www.pxweb.bfs.admin.ch/DownloadFile.aspx?file=",
+                           ds$sheet)
+  }
 
   return(ds)
 }
