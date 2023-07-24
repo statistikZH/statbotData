@@ -1,0 +1,60 @@
+I have the following task for you:
+
+Step 1: understand the data:
+This here is a csv file with data that will be loaded into a sql table:
+
+jahr|abstimmungsvorlage_thema|anzahl_vorlagen|land
+1992|Landwirtschaft|0|Schweiz
+2001|Staatsordnung|0|Schweiz
+2005|Landwirtschaft|1|Schweiz
+2002|Umwelt und Lebensraum|0|Schweiz
+2005|Sozialpolitik|0|Schweiz
+2020|Landwirtschaft|1|Schweiz
+2010|Wirtschaft|0|Schweiz
+2011|Verkehr und Infrastruktur|0|Schweiz
+1983|Landwirtschaft|0|Schweiz
+1986|Energie|0|Schweiz
+1986|Umwelt und Lebensraum|1|Schweiz
+2002|Verkehr und Infrastruktur|0|Schweiz
+1989|Aussenpolitik|0|Schweiz
+1987|Staatsordnung|1|Schweiz
+2001|Öffentliche Finanzen|2|Schweiz
+2007|Staatsordnung|0|Schweiz
+1986|Verkehr und Infrastruktur|1|Schweiz
+1992|Wirtschaft|0|Schweiz
+2019|Energie|0|Schweiz
+1992|Energie|0|Schweiz
+2006|Sicherheitspolitik|0|Schweiz
+1979|Sozialpolitik|1|Schweiz
+1978|Bildung und Forschung|2|Schweiz
+2002|Aussenpolitik|1|Schweiz
+1992|Aussenpolitik|3|Schweiz
+2009|Bildung und Forschung|0|Schweiz
+2007|Verkehr und Infrastruktur|0|Schweiz
+2019|Landwirtschaft|0|Schweiz
+1979|Staatsordnung|1|Schweiz
+2008|Sozialpolitik|4|Schweiz
+2006|Öffentliche Finanzen|0|Schweiz
+2018|Wirtschaft|1|Schweiz
+1972|Sozialpolitik|1|Schweiz
+1986|Staatsordnung|0|Schweiz
+1979|Umwelt und Lebensraum|0|Schweiz
+1976|Sicherheitspolitik|0|Schweiz
+2003|Aussenpolitik|0|Schweiz
+1995|Verkehr und Infrastruktur|0|Schweiz
+1982|Staatsordnung|1|Schweiz
+2012|Staatsordnung|0|Schweiz
+
+The delimiter in this file is the pipe character: "|"
+The table is in German.
+The tablename will be "abstimmungsvorlagen_nach_themen".
+The field names in the table will be the headers of the csv file.
+
+Step 2: Once you have understood the data, I want you to come up with 10 questions in German that are of interest to the public and can be answered by a query on the sql table.
+
+The result should look like this:
+
+--Wieviele Abstimmungen gab es in Jahr 2000 in der Schweiz?
+SELECT anzahl_vorlagen WHERE jahr = '2005' AND vorlage_thema = 'Landwirtschaft';
+
+Can please you do this?
