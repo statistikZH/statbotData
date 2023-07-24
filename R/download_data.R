@@ -92,7 +92,7 @@ read_data.default <- function(ds) {
 #' d <- pxweb::pxweb_interactive("https://www.pxweb.bfs.admin.ch/api/v1/de/px-x-0103010000_102")
 #'
 read_data.px <- function(ds){
-  if (ds$size != "large") {
+  if (is.na(ds$size) || ds$size != "large") {
     ds$data <- BFS::bfs_get_data(number_bfs = ds$read_path,
                                  language = ds$lang)
   } else {
