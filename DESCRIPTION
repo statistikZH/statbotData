@@ -15,10 +15,12 @@ RoxygenNote: 7.2.3
 Imports: 
     assertthat,
     BFS,
+    DBI,
     dplyr,
     googlesheets4,
     magrittr,
+    RSQLite,
     tibble,
     tidyr
-Remotes:  
+Remotes: 
     SDSC-ORD/pxRRead
