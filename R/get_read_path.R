@@ -59,8 +59,7 @@ get_read_path_bfs.default <- function(ds){
 #'
 #' the asset number (BFS Nr) is required
 get_read_path_bfs.px <- function(ds){
-  print(ds$size)
-  if (ds$size != "large") {
+  if (is.na(ds$size) || ds$size != "large") {
     # Create the download url
     # all required information, like the name of the data cube, are in the dataset (ds)
     # Example: name of the data cube ("px-x-0103010000_102") is taken from ds$data_id
