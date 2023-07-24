@@ -37,7 +37,7 @@ ds <- download_data(ds)
 ds$data %>%
   janitor::clean_names() %>%
   dplyr::rename(
-    mittlerer_preis_chf = total,
+    mittlerer_preis_rappen_pro_kw_hr = total,
     kanton = canton,
     energieprodukt = product,
     verbrauchskategorien = category,
