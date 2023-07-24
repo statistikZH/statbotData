@@ -93,9 +93,11 @@ ds$data %>%
 ds$data %>%
   tidyr::pivot_wider(
     names_from = c("geraet_oder_untersuchung"),
-    values_from = anzahl
+    values_from = anzahl,
+    names_prefix = "anzahl_"
   ) %>%
-  janitor::clean_names() -> ds$data
-
+  janitor::clean_names() %>%
+  dplyr::rename("anzahl_gerate" = anzahl_anzahl_gerate) %>%
+  dplyr::select(-spatialunit_ontology) -> ds$data
 
 # ingest into postgres ----------------------------------------------------
