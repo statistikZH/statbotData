@@ -76,6 +76,15 @@ ds$data %>%
   ) -> ds$data
 
 
+# widen data --------------------------------------------------------------
+
+ds$data %>%
+  tidyr::pivot_wider(
+    names_from = c("beobachtungseinheit", "rechtsform", "geschlecht", "altersklasse"),
+    values_from = anzahl
+  ) %>%
+  janitor::clean_names() %>%
+  dplyr::select(-spatialunit_ontology) -> ds$data
 
 # ingest into postgres ----------------------------------------------------
 
