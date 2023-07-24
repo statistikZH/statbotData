@@ -37,7 +37,7 @@ ds <- download_data(ds)
 ds$data %>%
   janitor::clean_names() %>%
   dplyr::rename(
-    median_preis_chf = total,
+    mittlerer_preis_chf = total,
     kanton = canton,
     energieprodukt = product,
     verbrauchskategorien = category,
