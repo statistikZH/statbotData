@@ -25,7 +25,7 @@ ds$data %>%
       TRUE ~ grossregion_kanton
     )
   ) %>%
-  dplyr::filter(!stringr::str_detect(grossregion_kanton, '<<')) %>%
+  dplyr::filter(!stringr::str_detect(grossregion_kanton, "<<")) %>%
   dplyr::mutate(grossregion_kanton = stringr::str_replace(grossregion_kanton, "^-", "")) %>%
   dplyr::mutate(grossregion_kanton = stringr::str_trim(grossregion_kanton)) -> ds$data
 
@@ -59,7 +59,7 @@ name_mapping <- data.frame(
 # Replace the names in grossregion_kanton using the mapping
 ds$data <- ds$data %>%
   dplyr::left_join(name_mapping, by = "grossregion_kanton") %>%
-  dplyr::mutate(grossregion_kanton = ifelse(spatialunit_ontology == 'Canton' & !is.na(name_de), name_de, grossregion_kanton)) %>%
+  dplyr::mutate(grossregion_kanton = ifelse(spatialunit_ontology == "Canton" & !is.na(name_de), name_de, grossregion_kanton)) %>%
   dplyr::select(-name_de)
 
 
@@ -84,11 +84,20 @@ ds$data %>%
   dplyr::rename(
     "genutzte_infrastruktur" = infrastruktur,
     "geraet_oder_untersuchung" = gerate_und_untersuchungen,
-     "anzahl" = medizinisch_technische_infrastruktur_anzahl_gerate_und_untersuchungen_in_krankenhausern
+    "anzahl" = medizinisch_technische_infrastruktur_anzahl_gerate_und_untersuchungen_in_krankenhausern
   ) -> ds$data
 
 
+# widen table -------------------------------------------------------------
+
+ds$data %>%
+  tidyr::pivot_wider(
+    names_from = c("geraet_oder_untersuchung"),
+    values_from = anzahl,
+    names_prefix = "anzahl_"
+  ) %>%
+  janitor::clean_names() %>%
+  dplyr::rename("anzahl_gerate" = anzahl_anzahl_gerate) %>%
+  dplyr::select(-spatialunit_ontology) -> ds$data
 
 # ingest into postgres ----------------------------------------------------
-
-
