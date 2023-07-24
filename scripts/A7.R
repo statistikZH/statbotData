@@ -80,11 +80,14 @@ ds$data %>%
 
 ds$data %>%
   tidyr::pivot_wider(
-    names_from = c("beobachtungseinheit", "rechtsform", "geschlecht", "altersklasse"),
+    names_from = c("beobachtungseinheit"),
     values_from = anzahl
   ) %>%
   janitor::clean_names() %>%
-  dplyr::select(-spatialunit_ontology) -> ds$data
+  dplyr::select(-spatialunit_ontology) %>%
+  dplyr::rename("anzahl_personen" = "anzahl_personen_am_31_12") -> ds$data
+
+
 
 # ingest into postgres ----------------------------------------------------
 
