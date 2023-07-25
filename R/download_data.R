@@ -11,9 +11,7 @@
 #' @inheritParams download_data
 #'
 #' @export
-download_data <- function(ds){
-
-
+download_data <- function(ds) {
   ds <- get_read_path(ds)
 
   # streams the data and appends it to the ds in $data
@@ -41,32 +39,31 @@ read_data <- function(ds) UseMethod("read_data")
 #' !Attention: package seems to be stable. Nevertheless, keep an eye out for potential issues.
 #'
 read_data.default <- function(ds) {
-
   # Get the file extension from the URL or the given info from the excel sheet
-  if(!is.na(ds$format)){
+  if (!is.na(ds$format)) {
     file_ext <- ds$format
-  }else{
+  } else {
     file_ext <- tools::file_ext(ds$read_path)
   }
 
   temp_file <- paste0("temp.", file_ext)
 
   # check which system is used to set the download method
-  if (Sys.info()["sysname"] == "Windows"){
+  if (Sys.info()["sysname"] == "Windows") {
     download_method <- "wininet"
-
-
-  }else{
+  } else {
     download_method <- "auto"
   }
 
   # Download the file
 
 
-  withr::with_envvar(new = c("no_proxy" = "dam-api.bfs.admin.ch"),
-                     code = download.file(url = ds$read_path, destfile = temp_file, method = download_method, mode = "wb"))
+  withr::with_envvar(
+    new = c("no_proxy" = "dam-api.bfs.admin.ch"),
+    code = download.file(url = ds$read_path, destfile = temp_file, method = download_method, mode = "wb")
+  )
   # Import the data
-  ds$data <-  rio::import(temp_file, which = ds$sheet, header = TRUE)
+  ds$data <- rio::import(temp_file, which = ds$sheet, header = TRUE)
 
   # Remove the temporary file
   file.remove(temp_file)
@@ -105,3 +102,16 @@ read_data.px <- function(ds){
 }
 
 
+#' Method to retrieve an RDF dataset using an input SELECT query
+#' Execute a SPARQL query and return the result as a tibble.
+#'
+read_data.rdf <- function(ds) {
+  response <- httr::POST(
+    ds$base_url,
+    body = list(query = ds$query),
+    encode = "form",
+    httr::add_headers(.headers = c("Accept" = "text/csv"))
+  )
+  ds$data <- readr::read_csv(httr::content(response, "text"))
+  return(ds)
+}
