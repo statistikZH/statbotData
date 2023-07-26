@@ -33,7 +33,7 @@ ds$data %>%
   janitor::clean_names() %>%
   dplyr::rename(
     jahr = period,
-    klassifikation_der_aufgabenbereiche_des_staates = cofog,
+    aufgabenbereich_des_staates = cofog,
     institutioneller_sektor = sector,
     ausgaben_in_mio_chf = mio_chf_expenditure,
     prozent_der_gesamtausgaben = percent_total_expenditure
