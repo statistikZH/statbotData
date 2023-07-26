@@ -9,6 +9,9 @@ ds <- download_data(ds)
 
 # data cleaning -----------------------------------------------------------
 
+### Filter specific products and indicators
+# NOTE: We only look at tourism as a whole, and not sectors of tourism.
+
 global_products <- c(
   "Share of tourism of the regional total (in %)",
   "Total of tourism of the economy"
