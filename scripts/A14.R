@@ -7,13 +7,8 @@ ds <- create_dataset(id = "A14")
 
 ds <- download_data(ds)
 
-# read in the spatial data ------------------------------------------------
-
-spatial_unit_df <- readr::read_csv("data/const/spatial_unit_postgres.csv")
-
 # data cleaning -----------------------------------------------------------
 
-### add spatial unit column "Switzerland"
 global_products <- c(
   "Share of tourism of the regional total (in %)",
   "Total of tourism of the economy"
