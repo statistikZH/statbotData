@@ -41,7 +41,7 @@ ds$data %>%
 # add CH as spatial unit -------------------------------
 
 ds$data %>%
-  dplyr::mutate(spatialunit_uid = "0_CH") -> ds$data
+  dplyr::mutate(spatialunit_uid = statbotData::spatial_mapping_country()) -> ds$data
 
 ## check that each spatial unit could be matched -> this has to be TRUE
 
