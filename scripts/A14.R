@@ -55,7 +55,7 @@ ds$data <- ds$data %>%
   dplyr::rename(
     "mio_chf_gross_value_added_of_tourism" = gross_value_added_total_of_tourism_of_the_economy,
     "total_full_time_employment_of_tourism" = employment_total_of_tourism_of_the_economy,
-    "percent_share_gross_value_added_of tourism" = gross_value_added_share_of_tourism_of_the_regional_total_in_percent,
+    "percent_share_gross_value_added_of_tourism" = gross_value_added_share_of_tourism_of_the_regional_total_in_percent,
     "percent_share_full_time_employment_of_tourism" = employment_share_of_tourism_of_the_regional_total_in_percent
   )
 
