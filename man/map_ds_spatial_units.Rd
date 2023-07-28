@@ -2,24 +2,28 @@
 % Please edit documentation in R/spatial_mappings.R
 \name{map_ds_spatial_units}
 \alias{map_ds_spatial_units}
-\title{Map spatial level of country and cantons}
+\title{Map spatial units in the observations}
 \usage{
 map_ds_spatial_units(
   df_spatial,
-  pattern_function = statab_canton_country_pattern,
-  match_function = stattab_country_canton_find_match
+  spatial_dimensions = c("Canton", "Country"),
+  pattern_function = stattab_make_pattern,
+  match_function = stattab_find_match
 )
 }
 \arguments{
 \item{df_spatial}{tibble that has just one colunm with all the distinct
 spatial values of the dataset}
 
+\item{spatial_dimensions}{a vector of values for spatialunit_ontology
+default: "Canton" and "Country"}
+
 \item{pattern_function}{function to make a pattern for detecting
-the spatial unit, default statab_canton_country_pattern
+the spatial unit, default stattab_make_pattern
 as an example}
 
 \item{match_function}{function to detect the pattern in the spatial units
-of the dataset, default stattab_country_canton_find_match
+of the dataset, default stattab_find_match
 as an example}
 }
 \value{
@@ -36,13 +40,9 @@ this dataframe is then returned with spatial matches and can be joined
 with the dataset in order to transfer the match making to the dataset
 
 In order to keep that function general: the pattern_function and the
-match_function can be provided. For now the defaults are set to
-statab_canton_country_pattern for the pattern_function and
-stattab_country_canton_find_match for the match_function. But you can
-provide your own such functions, in case these do not work for your case.
+match_function can be provided.
 
-So far the function only maps on the level of country and cantons. It should
-be not to hard to adjust this function to other spatial levels
+The spatial_dimensions should given in order to allow for filtering
 }
 \examples{
 map_ds_spatial_units(df_spatial)

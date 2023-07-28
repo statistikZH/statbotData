@@ -4,11 +4,7 @@
 \alias{map_spatial}
 \title{Title}
 \usage{
-map_spatial(
-  term,
-  spatial_units_list,
-  match_function = stattab_country_canton_find_match
-)
+map_spatial(term, spatial_units_list, match_function = stattab_find_match)
 }
 \arguments{
 \item{term}{term that should be matched}
@@ -18,7 +14,7 @@ used for the matching and values are the spatial
 uids that the terms should be matched to}
 
 \item{match_function}{function to detect the pattern in the spatial units
-of the dataset, default stattab_country_canton_find_match
+of the dataset, default stattab_find_match
 as an example}
 }
 \value{
@@ -33,6 +29,6 @@ Title
   # spatial values that are all distinct
   spatialunit_uid <- ("Zug",
                       spatial_units_list
-                      stattab_country_canton_find_match)
+                      stattab_find_match)
 }
 }
