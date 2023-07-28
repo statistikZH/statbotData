@@ -8,17 +8,15 @@
 #' with the dataset in order to transfer the match making to the dataset
 #'
 #' In order to keep that function general: the pattern_function and the
-#' match_function can be provided. For now the defaults are set to
-#' stattab_make_pattern for the pattern_function and
-#' stattab_find_match for the match_function. But you can
-#' provide your own such functions, in case these do not work for your case.
+#' match_function can be provided.
 #'
-#' So far the function only maps on the level of country and cantons. It should
-#' be not to hard to adjust this function to other spatial levels
+#' The spatial_dimensions should given in order to allow for filtering
+#^ of spatialunit_ontologies. The default is Canton and Country.
 #'
 #' @param df_spatial tibble that has just one colunm with all the distinct
 #'                   spatial values of the dataset
 #' @param spatial_dimensions a vector of values for spatialunit_ontology
+#'                           default: "Canton" and "Country"
 #' @param pattern_function function to make a pattern for detecting
 #'                         the spatial unit, default stattab_make_pattern
 #'                         as an example
@@ -38,7 +36,7 @@
 #' }
 map_ds_spatial_units <- function(
     df_spatial,
-    spatial_dimensions,
+    spatial_dimensions = c("Canton", "Country"),
     pattern_function = stattab_make_pattern,
     match_function = stattab_find_match
 ) {
@@ -66,12 +64,8 @@ map_ds_spatial_units <- function(
       spatial_value,
       spatial_units_list = spatial_units_list,
       match_function = match_function)) -> df_spatial
-
   # move stored input column name back to dataframe
   colnames(df_spatial) <- c(colnames_input, "spatialunit_uid")
-  df_spatial %>%
-    dplyr::left_join(map_df, by = "spatialunit_uid") %>%
-    dplyr::select(-c(spatialunit_pattern)) -> df_spatial
   return(df_spatial)
 }
 
