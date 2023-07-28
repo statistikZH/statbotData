@@ -1,0 +1,74 @@
+# create ds object --------------------------------------------------------
+
+ds <- create_dataset(id = "A16")
+
+
+# download the data -------------------------------------------------------
+
+ds <- download_data(ds)
+
+# data cleaning -----------------------------------------------------------
+
+### Filter specific dimensions
+
+# To reduce the dataset size, we will not include sex and citizenship category
+ds$data %>%
+  janitor::clean_names() %>%
+  dplyr::filter(
+    sex == "Sex - total" &
+      citizenship_category == "Citizenship (category) - total"
+  ) %>%
+  dplyr::select(-sex, -citizenship_category) -> ds$data
+
+# Pivot indicators into 1 indicator per column and cleanup names
+ds$data %>%
+  tidyr::pivot_wider(
+    names_from = demographic_component,
+    values_from = demographic_balance_by_canton
+  ) %>%
+  janitor::clean_names() %>%
+  dplyr::rename(
+    "total_population" = population_on_1_january,
+    "births" = live_birth,
+    "deaths" = death
+  ) -> ds$data
+
+# Remove redundant or constant columns
+# + acquisition of swiss citizenship is always 0
+# + The 'change of population type' component is
+#   always included in the demographic components of
+#   'immigration' and 'net migration'.
+ds$data %>%
+  dplyr::select(
+    -change_of_population_type,
+    -population_on_31_december,
+    -natural_change,
+    -acquisition_of_swiss_citizenship
+  ) -> ds$data
+
+# Remove rows with no canton and 0 values
+# Excluding years 1971 - 1980 where there is only
+# information about net migration
+ds$data %>%
+  dplyr::filter(year >= 1981) %>%
+  dplyr::filter(canton != "No indication") -> ds$data
+
+# join the cleaned data to the postgres spatial units table ---------------
+
+spatial_map <- ds$data %>%
+  dplyr::select(canton) %>%
+  dplyr::distinct(canton) %>%
+  map_ds_spatial_units()
+
+ds$data %>%
+  dplyr::left_join(spatial_map, by = "canton") %>%
+  dplyr::select(-canton) -> ds$data
+
+## check that each spatial unit could be matched -> this has to be TRUE
+
+assertthat::noNA(ds$data$spatialunit_uid)
+
+
+# ingest into postgres ----------------------------------------------------
+
+### important: name the table as energiebilanz_schweiz_in_tera_joule
