@@ -7,6 +7,7 @@
 ds <- statbotData::create_dataset("A6")
 ds <- statbotData::download_data(ds)
 ds$dir <- here::here("pipelines", ds$data_indicator, "")
+ds$data
 
 # -------------------------------------------------------------------------
 # Step: Clean the data and add spatial unit
@@ -27,7 +28,8 @@ ds$data %>%
     jahr = periode
   ) %>%
   dplyr::rename(
-    "anzahl_vorlagen" = volksabstimmungen_anzahl_vorlagen_nach_thema_seit_1971
+    "anzahl_abstimmungsvorlagen" = volksabstimmungen_anzahl_vorlagen_nach_thema_seit_1971,
+    "thema" = abstimmungsvorlage_thema
   ) %>%
   dplyr::mutate(
     jahr = as.numeric(stringr::str_extract(jahr, "\\d+"))

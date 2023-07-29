@@ -1,18 +1,231 @@
 
 Query Nr. 1
 -- Wieviele Abstimmungsvorlagen gab es im Jahr 2000?
-SELECT COUNT(*) as anzahl_vorlagen_in_2000 FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.jahr=2000;
+SELECT COUNT(*) as anzahl_abstimmungsvorlagen, T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.jahr=2000;
 =======================================================
-# A tibble: 1 × 1
-  anzahl_vorlagen_in_2000
-                    <int>
-1                      12
+# A tibble: 1 × 2
+  anzahl_abstimmungsvorlagen  jahr
+                       <int> <dbl>
+1                         12  2000
 
 Query Nr. 2
 -- Wieviele Abstimmungsvorlagen gab es seit dem Jahr 1971?
-SELECT COUNT(*) as anzahl_vorlagen_in_2000 FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE;
+SELECT COUNT(*) as anzahl_abstimmungsvorlagen FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE;
 =======================================================
 # A tibble: 1 × 1
-  anzahl_vorlagen_in_2000
-                    <int>
-1                     624
+  anzahl_abstimmungsvorlagen
+                       <int>
+1                        624
+
+Query Nr 3
+-- Wieviele Volksabstimmungen wurden 1995 in der Schweiz durchgeführt?
+SELECT SUM(T.anzahl_abstimmungsvorlagen) AS gesamt_anzahl_abstimmungen, T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND jahr = '1995';
+=======================================================
+# A tibble: 1 × 2
+  gesamt_anzahl_abstimmungen  jahr
+                       <dbl> <dbl>
+1                          7  1995
+
+Query Nr 4
+-- Welches Jahr hatte die meisten Volksabstimmungen in der Schweiz?
+SELECT jahr, SUM(anzahl_abstimmungsvorlagen) FROM abstimmungsvorlagen_seit_1971 GROUP BY anzahl_abstimmungsvorlagen ORDER BY jahr LIMIT 1;
+=======================================================
+# A tibble: 1 × 2
+   jahr `SUM(anzahl_abstimmungsvorlagen)`
+  <dbl>                             <dbl>
+1  1994                                15
+
+Query Nr 5
+-- Was war die 5 dominantesten Themen bei den Volksabstimmungen über die Jahre in der Schweiz?
+SELECT thema, SUM(anzahl_abstimmungsvorlagen) as vorlagen_pro_thema FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE GROUP BY thema ORDER BY vorlagen_pro_thema DESC LIMIT 5;
+=======================================================
+# A tibble: 5 × 2
+  thema                     vorlagen_pro_thema
+  <chr>                                  <dbl>
+1 Sozialpolitik                            105
+2 Staatsordnung                             55
+3 Öffentliche Finanzen                      46
+4 Verkehr und Infrastruktur                 41
+5 Wirtschaft                                34
+
+Query Nr 6
+-- In welchem Jahr gab es die meisten Volksabstimmungen zum Thema Religion in der Schweiz?
+SELECT T.thema, T.jahr, T.anzahl_abstimmungsvorlagen FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.thema LIKE '%Religion%' AND anzahl_abstimmungsvorlagen != 0 ORDER BY anzahl_abstimmungsvorlagen DESC LIMIT 1;
+=======================================================
+# A tibble: 1 × 3
+  thema                     jahr anzahl_abstimmungsvorlagen
+  <chr>                    <dbl>                      <dbl>
+1 Kultur, Religion, Medien  2022                          2
+
+Query Nr 7
+-- Welches 3 Themen hatten die wenigsten Volksabstimmungen in der Schweiz?
+SELECT T.thema, SUM(T.anzahl_abstimmungsvorlagen) as abstimmungsvorlagen_pro_thema FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid GROUP BY T.thema ORDER BY abstimmungsvorlagen_pro_thema ASC LIMIT 3;
+=======================================================
+# A tibble: 3 × 2
+  thema                    abstimmungsvorlagen_pro_thema
+  <chr>                                            <dbl>
+1 Kultur, Religion, Medien                            14
+2 Energie                                             16
+3 Bildung und Forschung                               19
+
+Query Nr 8
+-- In welchem Jahr gab es die grösste Diversität von Themen bei Volksabstimmungen?
+SELECT COUNT(DISTINCT(thema)) as anzahl_themen_pro_jahr, jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE anzahl_abstimmungsvorlagen <> 0 GROUP BY T.jahr ORDER BY anzahl_themen_pro_jahr DESC LIMIT 1;
+=======================================================
+# A tibble: 1 × 2
+  anzahl_themen_pro_jahr  jahr
+                   <int> <dbl>
+1                      8  1992
+
+Query Nr 9
+-- Was war die Anzahl von Volksabstimmungen der Schweiz pro Jahr in den letzten 10 Jahren?
+SELECT SUM(T.anzahl_abstimmungsvorlagen) as durchschnittliche_anzahl_abstimmmungen, T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid GROUP BY T.jahr ORDER BY T.jahr DESC LIMIT 10;
+=======================================================
+# A tibble: 10 × 2
+   durchschnittliche_anzahl_abstimmmungen  jahr
+                                    <dbl> <dbl>
+ 1                                     11  2022
+ 2                                     13  2021
+ 3                                      9  2020
+ 4                                      3  2019
+ 5                                     10  2018
+ 6                                      7  2017
+ 7                                     13  2016
+ 8                                      6  2015
+ 9                                     12  2014
+10                                     11  2013
+
+Query Nr 10
+-- In welchem Jahren gab es die Volksabstimmungen zum Thema Energie in der Schweiz?
+SELECT T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.thema LIKE '%Energie%' AND anzahl_abstimmungsvorlagen != 0 ORDER BY jahr DESC;
+=======================================================
+# A tibble: 10 × 1
+    jahr
+   <dbl>
+ 1  2017
+ 2  2016
+ 3  2003
+ 4  2002
+ 5  2001
+ 6  2000
+ 7  1990
+ 8  1984
+ 9  1983
+10  1979
+
+Query Nr 11
+-- Welches waren die Themen der Volksabstimmungen in 2022?
+SELECT DISTINCT(T.thema) FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.jahr = '2022' AND anzahl_abstimmungsvorlagen != 0;
+=======================================================
+# A tibble: 6 × 1
+  thema                   
+  <chr>                   
+1 Aussenpolitik           
+2 Landwirtschaft          
+3 Öffentliche Finanzen    
+4 Sozialpolitik           
+5 Bildung und Forschung   
+6 Kultur, Religion, Medien
+
+Query Nr 12
+-- In welchem Jahren war die Wirtschaft ein Thema in Volksabstimmungen?
+SELECT T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.thema LIKE '%Wirtschaft%' AND anzahl_abstimmungsvorlagen != 0 ORDER BY jahr DESC;
+=======================================================
+# A tibble: 36 × 1
+    jahr
+   <dbl>
+ 1  2022
+ 2  2020
+ 3  2020
+ 4  2018
+ 5  2018
+ 6  2017
+ 7  2016
+ 8  2014
+ 9  2013
+10  2012
+# ℹ 26 more rows
+# ℹ Use `print(n = ...)` to see more rows
+
+Query Nr 13
+-- Welches Thema hatte die meisten Volksabstimmungen in den Jahren 1990 bis 2000?
+SELECT thema, SUM(anzahl_abstimmungsvorlagen) as vorlagen_pro_thema FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND jahr BETWEEN 1990 AND 2000 GROUP BY thema ORDER BY vorlagen_pro_thema DESC LIMIT 1;
+=======================================================
+# A tibble: 1 × 2
+  thema         vorlagen_pro_thema
+  <chr>                      <dbl>
+1 Sozialpolitik                 28
+
+Query Nr 14
+-- Welches Thema hatte die wenigsten Volksabstimmungen in den Jahren 1990 bis 2000?
+SELECT thema, SUM(anzahl_abstimmungsvorlagen) as vorlagen_pro_thema FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND anzahl_abstimmungsvorlagen != 0 AND jahr BETWEEN 1990 AND 2000 GROUP BY thema ORDER BY vorlagen_pro_thema ASC LIMIT 1;
+=======================================================
+# A tibble: 1 × 2
+  thema                    vorlagen_pro_thema
+  <chr>                                 <dbl>
+1 Kultur, Religion, Medien                  2
+
+Query Nr 15
+-- Wann gab es die erste Volksabstimmungen ueber Sozialpolitik?
+SELECT MIN(jahr) as erstes_jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND anzahl_abstimmungsvorlagen != 0 AND T.thema LIKE '%Sozialpolitik%';
+=======================================================
+# A tibble: 1 × 1
+  erstes_jahr
+        <dbl>
+1        1972
+
+Query Nr 16
+-- Wann gab es die letzte Volksabstimmungen zum Thema Forschung?
+SELECT MAX(jahr) as jahr_letzte_abstimmung FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND anzahl_abstimmungsvorlagen != 0 AND T.thema LIKE '%Forschung%';
+=======================================================
+# A tibble: 1 × 1
+  jahr_letzte_abstimmung
+                   <dbl>
+1                   2022
+
+Query Nr 17
+-- Wieviele Abstimmung gab es insgesamt zu Bildungsthemen?
+SELECT SUM(anzahl_abstimmungsvorlagen) as anzahl_abstimmungen_bildung FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND anzahl_abstimmungsvorlagen != 0 AND T.thema LIKE '%Bildung%';
+=======================================================
+# A tibble: 1 × 1
+  anzahl_abstimmungen_bildung
+                        <dbl>
+1                          19
+
+Query Nr 18
+-- Wieviele Volksabstimmungen gab es vor dem Jahr 2000 zum Thema Energie?
+SELECT SUM(anzahl_abstimmungsvorlagen) as anzahl_abstimmungen_energie FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND anzahl_abstimmungsvorlagen != 0 AND T.thema LIKE '%Energie%' AND jahr < 2000;
+=======================================================
+# A tibble: 1 × 1
+  anzahl_abstimmungen_energie
+                        <dbl>
+1                           8
+
+Query Nr 19
+-- In wievielen Jahren gab es Volksabstimmungen zum Thema Aussenpolitik?
+SELECT COUNT(jahr) as anzahl_jahre_aussenpolitik FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND anzahl_abstimmungsvorlagen != 0 AND T.thema LIKE '%Aussenpolitik%';
+=======================================================
+# A tibble: 1 × 1
+  anzahl_jahre_aussenpolitik
+                       <int>
+1                         18
+
+Query Nr 20
+-- In welchen Jahren war Sicherheit ein Thema bei Volksabstimmungen?
+SELECT jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND anzahl_abstimmungsvorlagen != 0 AND T.thema LIKE '%Sicherheit%' ORDER BY jahr DESC;
+=======================================================
+# A tibble: 22 × 1
+    jahr
+   <dbl>
+ 1  2021
+ 2  2020
+ 3  2019
+ 4  2016
+ 5  2014
+ 6  2013
+ 7  2003
+ 8  2001
+ 9  2000
+10  1998
+# ℹ 12 more rows
+# ℹ Use `print(n = ...)` to see more rows
