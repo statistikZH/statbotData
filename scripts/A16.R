@@ -31,7 +31,8 @@ ds$data %>%
     "total_population" = population_on_1_january,
     "births" = live_birth,
     "deaths" = death,
-    "net_migration" = net_migration_incl_change_of_population_type
+    "net_migration" = net_migration_incl_change_of_population_type,
+    "immigration" = immigration_incl_change_of_population_type
   ) -> ds$data
 
 # Remove redundant or constant columns
