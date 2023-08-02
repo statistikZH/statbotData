@@ -30,7 +30,8 @@ ds$data %>%
   dplyr::rename(
     "total_population" = population_on_1_january,
     "births" = live_birth,
-    "deaths" = death
+    "deaths" = death,
+    "net_migration" = net_migration_incl_change_of_population_type
   ) -> ds$data
 
 # Remove redundant or constant columns
@@ -71,4 +72,4 @@ assertthat::noNA(ds$data$spatialunit_uid)
 
 # ingest into postgres ----------------------------------------------------
 
-### important: name the table as energiebilanz_schweiz_in_tera_joule
+### important: name the table as demographic_balance_by_canton
