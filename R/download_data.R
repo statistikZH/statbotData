@@ -93,6 +93,9 @@ read_data.px <- function(ds){
     ds$data <- BFS::bfs_get_data(number_bfs = ds$read_path,
                                  language = ds$lang)
   } else {
+    print(ds$read_path)
+    print(ds$encoding)
+    print(ds$lang)
     df <- pxRRead::scan_px_file(ds$read_path,
                                 locale = ds$lang,
                                 encoding = ds$encoding)
