@@ -38,18 +38,22 @@ testrun_queries <- function(df, dir, table_name) {
   query <- question <- query_lines <- question_lines <- c()
   append <- FALSE
   divider <- "======================================================="
+  count <- 0
   for (line in lines) {
     if (startsWith(line, "--")) {
       question_lines <- c(question_lines, line)
     } else {
       query_lines <- c(query_lines, line)
       if (stringr::str_detect(line, ";\\s?$")) {
+        count <- count + 1
+        count_line <- paste("Query Nr.", toString(count))
         question <- paste(question_lines, collapse = " ")
         query <- paste(query_lines, collapse = " ")
         result <- DBI::dbGetQuery(conn = statbotdb, statement = query) %>%
           tibble::as_tibble()
         sprintf(
-          fmt = "\n%s\n%s\n%s\n",
+          fmt = "\n%s\n%s\n%s\n%s\n",
+          count_line,
           question,
           query,
           divider
