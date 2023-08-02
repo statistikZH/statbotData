@@ -1,0 +1,8 @@
+name;table_name;data_type;description;example_values
+straftat;straftaten_aufklaerung;categorical;exakte Bezeichung der Straftat mit Strafgesetz-Artikel-Nummer;"Handel mit militärisch beschlagnahmtem Material (Art. 330)"
+ausfuhrungsgrad;straftaten_aufklaerung;categorical;Aufklärungsgrad der Straftaten;"Aufklärungsgrad - Total","Unaufgeklärt","Aufgeklärt"
+aufklarungsgrad;straftaten_aufklaerung;categorical;Ausführungsgrad der Straftaten;"Ausführungsgrad - Total","Vollendet",            "Versucht"
+jahr;straftaten_aufklaerung;categorical;Jahr;2009 bis 2022 jährlich
+anzahl_straftaten;straftaten_aufklaerung;numeric;Anzahl der Straftaten;8160
+titel;straftaten_aufklaerung;categorical;Kategorie der Straftat;"Titel: Bestechung"
+spatialunit_uid;straftaten_aufklaerung;categorical;Schweiz und Kantone;"1_A.ADM1"
