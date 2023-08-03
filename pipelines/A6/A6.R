@@ -6,7 +6,6 @@
 
 ds <- statbotData::create_dataset("A6")
 ds <- statbotData::download_data(ds)
-ds$dir <- here::here("pipelines", ds$data_indicator, "")
 
 # -------------------------------------------------------------------------
 # Step: Clean the data and add spatial unit
@@ -45,4 +44,3 @@ statbotData::testrun_queries(
   ds$dir,
   ds$name
 )
-
