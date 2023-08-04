@@ -31,11 +31,14 @@ create_dataset <- function(id) {
   sheet %>%
     dplyr::filter(data_indicator == id) %>%
     as.list() -> ds_list
+  ds_list$dir <- here::here("pipelines", ds_list$data_indicator, "")
 
   ds_list <- structure(
     ds_list,
     data = NULL,
-    class = c(ds_list$organization, ds_list$format, ds_list$id)
+    class = c(ds_list$organization,
+              ds_list$format,
+              ds_list$id)
   )
 
 
