@@ -11,7 +11,15 @@
 #' match_function can be provided.
 #'
 #' The spatial_dimensions should given in order to allow for filtering
-#^ of spatialunit_ontologies. The default is Canton and Country.
+#' of spatialunit_ontologies. The default is Canton and Country.
+#'
+#' WARNING:
+#' For every new spatial mapping the function has to be run and the output
+#' needs to be checked for a correct mapping. The function works fine for
+#' BFS Stattab Canton and Country level, but has not yet been used for other
+#' levels: for exmaple on the level of municipalities there might be adjustments
+#' needed, as there are municipalities in different cantons that have the same
+#' name.
 #'
 #' @param df_spatial tibble that has just one colunm with all the distinct
 #'                   spatial values of the dataset
