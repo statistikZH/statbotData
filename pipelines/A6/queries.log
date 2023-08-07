@@ -17,7 +17,7 @@ SELECT COUNT(*) as anzahl_abstimmungsvorlagen FROM abstimmungsvorlagen_seit_1971
                        <int>
 1                        624
 
-Query Nr 3
+Query Nr. 3
 -- Wieviele Volksabstimmungen wurden 1995 in der Schweiz durchgeführt?
 SELECT SUM(T.anzahl_abstimmungsvorlagen) AS gesamt_anzahl_abstimmungen, T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND jahr = '1995';
 =======================================================
@@ -26,7 +26,7 @@ SELECT SUM(T.anzahl_abstimmungsvorlagen) AS gesamt_anzahl_abstimmungen, T.jahr F
                        <dbl> <dbl>
 1                          7  1995
 
-Query Nr 4
+Query Nr. 4
 -- Welches Jahr hatte die meisten Volksabstimmungen in der Schweiz?
 SELECT jahr, SUM(anzahl_abstimmungsvorlagen) FROM abstimmungsvorlagen_seit_1971 GROUP BY anzahl_abstimmungsvorlagen ORDER BY jahr LIMIT 1;
 =======================================================
@@ -35,7 +35,7 @@ SELECT jahr, SUM(anzahl_abstimmungsvorlagen) FROM abstimmungsvorlagen_seit_1971 
   <dbl>                             <dbl>
 1  1994                                15
 
-Query Nr 5
+Query Nr. 5
 -- Was war die 5 dominantesten Themen bei den Volksabstimmungen über die Jahre in der Schweiz?
 SELECT thema, SUM(anzahl_abstimmungsvorlagen) as vorlagen_pro_thema FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE GROUP BY thema ORDER BY vorlagen_pro_thema DESC LIMIT 5;
 =======================================================
@@ -48,7 +48,7 @@ SELECT thema, SUM(anzahl_abstimmungsvorlagen) as vorlagen_pro_thema FROM abstimm
 4 Verkehr und Infrastruktur                 41
 5 Wirtschaft                                34
 
-Query Nr 6
+Query Nr. 6
 -- In welchem Jahr gab es die meisten Volksabstimmungen zum Thema Religion in der Schweiz?
 SELECT T.thema, T.jahr, T.anzahl_abstimmungsvorlagen FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.thema LIKE '%Religion%' AND anzahl_abstimmungsvorlagen != 0 ORDER BY anzahl_abstimmungsvorlagen DESC LIMIT 1;
 =======================================================
@@ -57,7 +57,7 @@ SELECT T.thema, T.jahr, T.anzahl_abstimmungsvorlagen FROM abstimmungsvorlagen_se
   <chr>                    <dbl>                      <dbl>
 1 Kultur, Religion, Medien  2022                          2
 
-Query Nr 7
+Query Nr. 7
 -- Welches 3 Themen hatten die wenigsten Volksabstimmungen in der Schweiz?
 SELECT T.thema, SUM(T.anzahl_abstimmungsvorlagen) as abstimmungsvorlagen_pro_thema FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid GROUP BY T.thema ORDER BY abstimmungsvorlagen_pro_thema ASC LIMIT 3;
 =======================================================
@@ -68,7 +68,7 @@ SELECT T.thema, SUM(T.anzahl_abstimmungsvorlagen) as abstimmungsvorlagen_pro_the
 2 Energie                                             16
 3 Bildung und Forschung                               19
 
-Query Nr 8
+Query Nr. 8
 -- In welchem Jahr gab es die grösste Diversität von Themen bei Volksabstimmungen?
 SELECT COUNT(DISTINCT(thema)) as anzahl_themen_pro_jahr, jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE anzahl_abstimmungsvorlagen <> 0 GROUP BY T.jahr ORDER BY anzahl_themen_pro_jahr DESC LIMIT 1;
 =======================================================
@@ -77,7 +77,7 @@ SELECT COUNT(DISTINCT(thema)) as anzahl_themen_pro_jahr, jahr FROM abstimmungsvo
                    <int> <dbl>
 1                      8  1992
 
-Query Nr 9
+Query Nr. 9
 -- Was war die Anzahl von Volksabstimmungen der Schweiz pro Jahr in den letzten 10 Jahren?
 SELECT SUM(T.anzahl_abstimmungsvorlagen) as durchschnittliche_anzahl_abstimmmungen, T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid GROUP BY T.jahr ORDER BY T.jahr DESC LIMIT 10;
 =======================================================
@@ -95,7 +95,7 @@ SELECT SUM(T.anzahl_abstimmungsvorlagen) as durchschnittliche_anzahl_abstimmmung
  9                                     12  2014
 10                                     11  2013
 
-Query Nr 10
+Query Nr. 10
 -- In welchem Jahren gab es die Volksabstimmungen zum Thema Energie in der Schweiz?
 SELECT T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.thema LIKE '%Energie%' AND anzahl_abstimmungsvorlagen != 0 ORDER BY jahr DESC;
 =======================================================
@@ -113,21 +113,21 @@ SELECT T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on 
  9  1983
 10  1979
 
-Query Nr 11
+Query Nr. 11
 -- Welches waren die Themen der Volksabstimmungen in 2022?
 SELECT DISTINCT(T.thema) FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.jahr = '2022' AND anzahl_abstimmungsvorlagen != 0;
 =======================================================
 # A tibble: 6 × 1
-  thema
-  <chr>
-1 Aussenpolitik
-2 Landwirtschaft
-3 Öffentliche Finanzen
-4 Sozialpolitik
-5 Bildung und Forschung
+  thema                   
+  <chr>                   
+1 Aussenpolitik           
+2 Landwirtschaft          
+3 Öffentliche Finanzen    
+4 Sozialpolitik           
+5 Bildung und Forschung   
 6 Kultur, Religion, Medien
 
-Query Nr 12
+Query Nr. 12
 -- In welchem Jahren war die Wirtschaft ein Thema in Volksabstimmungen?
 SELECT T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.thema LIKE '%Wirtschaft%' AND anzahl_abstimmungsvorlagen != 0 ORDER BY jahr DESC;
 =======================================================
@@ -147,7 +147,7 @@ SELECT T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on 
 # ℹ 26 more rows
 # ℹ Use `print(n = ...)` to see more rows
 
-Query Nr 13
+Query Nr. 13
 -- Welches Thema hatte die meisten Volksabstimmungen in den Jahren 1990 bis 2000?
 SELECT thema, SUM(anzahl_abstimmungsvorlagen) as vorlagen_pro_thema FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND jahr BETWEEN 1990 AND 2000 GROUP BY thema ORDER BY vorlagen_pro_thema DESC LIMIT 1;
 =======================================================
@@ -156,7 +156,7 @@ SELECT thema, SUM(anzahl_abstimmungsvorlagen) as vorlagen_pro_thema FROM abstimm
   <chr>                      <dbl>
 1 Sozialpolitik                 28
 
-Query Nr 14
+Query Nr. 14
 -- Welches Thema hatte die wenigsten Volksabstimmungen in den Jahren 1990 bis 2000?
 SELECT thema, SUM(anzahl_abstimmungsvorlagen) as vorlagen_pro_thema FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND anzahl_abstimmungsvorlagen != 0 AND jahr BETWEEN 1990 AND 2000 GROUP BY thema ORDER BY vorlagen_pro_thema ASC LIMIT 1;
 =======================================================
@@ -165,7 +165,7 @@ SELECT thema, SUM(anzahl_abstimmungsvorlagen) as vorlagen_pro_thema FROM abstimm
   <chr>                                 <dbl>
 1 Kultur, Religion, Medien                  2
 
-Query Nr 15
+Query Nr. 15
 -- Wann gab es die erste Volksabstimmungen ueber Sozialpolitik?
 SELECT MIN(jahr) as erstes_jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND anzahl_abstimmungsvorlagen != 0 AND T.thema LIKE '%Sozialpolitik%';
 =======================================================
@@ -174,7 +174,7 @@ SELECT MIN(jahr) as erstes_jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spa
         <dbl>
 1        1972
 
-Query Nr 16
+Query Nr. 16
 -- Wann gab es die letzte Volksabstimmungen zum Thema Forschung?
 SELECT MAX(jahr) as jahr_letzte_abstimmung FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND anzahl_abstimmungsvorlagen != 0 AND T.thema LIKE '%Forschung%';
 =======================================================
@@ -183,7 +183,7 @@ SELECT MAX(jahr) as jahr_letzte_abstimmung FROM abstimmungsvorlagen_seit_1971 as
                    <dbl>
 1                   2022
 
-Query Nr 17
+Query Nr. 17
 -- Wieviele Abstimmung gab es insgesamt zu Bildungsthemen?
 SELECT SUM(anzahl_abstimmungsvorlagen) as anzahl_abstimmungen_bildung FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND anzahl_abstimmungsvorlagen != 0 AND T.thema LIKE '%Bildung%';
 =======================================================
@@ -192,7 +192,7 @@ SELECT SUM(anzahl_abstimmungsvorlagen) as anzahl_abstimmungen_bildung FROM absti
                         <dbl>
 1                          19
 
-Query Nr 18
+Query Nr. 18
 -- Wieviele Volksabstimmungen gab es vor dem Jahr 2000 zum Thema Energie?
 SELECT SUM(anzahl_abstimmungsvorlagen) as anzahl_abstimmungen_energie FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND anzahl_abstimmungsvorlagen != 0 AND T.thema LIKE '%Energie%' AND jahr < 2000;
 =======================================================
@@ -201,7 +201,7 @@ SELECT SUM(anzahl_abstimmungsvorlagen) as anzahl_abstimmungen_energie FROM absti
                         <dbl>
 1                           8
 
-Query Nr 19
+Query Nr. 19
 -- In wievielen Jahren gab es Volksabstimmungen zum Thema Aussenpolitik?
 SELECT COUNT(jahr) as anzahl_jahre_aussenpolitik FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND anzahl_abstimmungsvorlagen != 0 AND T.thema LIKE '%Aussenpolitik%';
 =======================================================
@@ -210,7 +210,7 @@ SELECT COUNT(jahr) as anzahl_jahre_aussenpolitik FROM abstimmungsvorlagen_seit_1
                        <int>
 1                         18
 
-Query Nr 20
+Query Nr. 20
 -- In welchen Jahren war Sicherheit ein Thema bei Volksabstimmungen?
 SELECT jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND anzahl_abstimmungsvorlagen != 0 AND T.thema LIKE '%Sicherheit%' ORDER BY jahr DESC;
 =======================================================
