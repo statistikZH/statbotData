@@ -39,7 +39,7 @@ ds$data %>%
     "anzahl_stimmberechtigte" = stimmberechtigte,
     "anzahl_abgegebene_stimmen" = abgegebene_stimmen,
     "beteiligung_in_prozent" = beteiligung_in_percent,
-    "anzahl_gueltige_stimmen" = gultige_stimmzettel,
+    "anzahl_gueltige_stimmzettel" = gultige_stimmzettel,
     "anzahl_ja_stimmen" = ja,
     "anzahl_nein_stimmen" = nein,
     "ja_in_prozent" = ja_in_percent
