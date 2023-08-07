@@ -39,6 +39,7 @@ rw_metadata_table <- function(ds, overwrite = FALSE) {
 
   # make vectors to prefill the tibble
   types <- c("table", rep("field", times = length(items) - 1))
+  table <- rep(ds$name, times = length(items))
   language <- rep(ds$lang, times = length(items))
   description <-rep("", times = length(items))
 
@@ -46,6 +47,7 @@ rw_metadata_table <- function(ds, overwrite = FALSE) {
   metadata <- tibble::tibble(
     item = items,
     type = types,
+    table = table,
     language = language,
     description = description
   )
