@@ -1,0 +1,4 @@
+item,type,language,description
+abstimmungsvorlagen_seit_1971,table,de,Anzahl Abstimmungsvorlagen nach Themen seit 1971
+abstimmungsvorlage_thema,field,de,Thema der Abstimmungsvorlage (grobe Kategorie)
+anzahl_vorlagen,field,de,Anzahl der Abstimmungsvorlagen
