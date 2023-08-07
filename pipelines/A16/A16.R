@@ -15,13 +15,12 @@ ds <- download_data(ds)
 ds$data %>%
   janitor::clean_names() %>%
   dplyr::filter(
-    sex == "Sex - total" &
-      citizenship_category == "Citizenship (category) - total"
+    sex == "Sex - total"
   ) %>%
-  dplyr::select(-sex, -citizenship_category) -> ds$data
+  dplyr::select(-sex, -citizenship_category) -> ds$postgres_export
 
 # Pivot indicators into 1 indicator per column and cleanup names
-ds$data %>%
+ds$postgres_export %>%
   tidyr::pivot_wider(
     names_from = demographic_component,
     values_from = demographic_balance_by_canton
@@ -33,38 +32,37 @@ ds$data %>%
     "deaths" = death,
     "net_migration" = net_migration_incl_change_of_population_type,
     "immigration" = immigration_incl_change_of_population_type
-  ) -> ds$data
+  ) -> ds$postgres_export
 
 # Remove redundant or constant columns
 # + acquisition of swiss citizenship is always 0
 # + The 'change of population type' component is
 #   always included in the demographic components of
 #   'immigration' and 'net migration'.
-ds$data %>%
+ds$postgres_export %>%
   dplyr::select(
     -change_of_population_type,
     -population_on_31_december,
     -natural_change,
-    -acquisition_of_swiss_citizenship
-  ) -> ds$data
+  ) -> ds$postgres_export
 
 # Remove rows with no canton and 0 values
 # Excluding years 1971 - 1980 where there is only
 # information about net migration
-ds$data %>%
+ds$postgres_export %>%
   dplyr::filter(year >= 1981) %>%
-  dplyr::filter(canton != "No indication") -> ds$data
+  dplyr::filter(canton != "No indication") -> ds$postgres_export
 
 # join the cleaned data to the postgres spatial units table ---------------
 
-spatial_map <- ds$data %>%
+spatial_map <- ds$postgres_export %>%
   dplyr::select(canton) %>%
   dplyr::distinct(canton) %>%
   map_ds_spatial_units()
 
-ds$data %>%
+ds$postgres_export %<>%
   dplyr::left_join(spatial_map, by = "canton") %>%
-  dplyr::select(-canton) -> ds$data
+  dplyr::select(-canton)
 
 ## check that each spatial unit could be matched -> this has to be TRUE
 
