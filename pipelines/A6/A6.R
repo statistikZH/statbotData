@@ -52,4 +52,4 @@ statbotData::testrun_queries(
 #   output: pipelines/A6/metadata.csv
 # -------------------------------------------------------------------------
 
-rw_metadata_table(ds)
+read_write_metadata_tables(ds)
