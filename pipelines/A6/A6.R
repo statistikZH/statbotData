@@ -36,8 +36,8 @@ ds$postgres_export
 
 # -------------------------------------------------------------------------
 # Step: Testrun queries on sqllite
-#   input: ds$postgres_export, A6/queries.sql
-#   output: A6/queries.log
+#   input: ds$postgres_export, pipelines/A6/queries.sql
+#   output: pipelines/A6/queries.log
 # -------------------------------------------------------------------------
 
 statbotData::testrun_queries(
@@ -45,3 +45,11 @@ statbotData::testrun_queries(
   ds$dir,
   ds$name
 )
+
+# -------------------------------------------------------------------------
+# Step: Write metadata tables
+#   input: ds$postgres_export
+#   output: pipelines/A6/metadata.csv
+# -------------------------------------------------------------------------
+
+read_write_metadata_tables(ds)
