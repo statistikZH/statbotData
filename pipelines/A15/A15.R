@@ -19,32 +19,37 @@ ds$postgres_export <- ds$data %>%
     area_of_agricultural_production == "Area - total" &
       farmholding_form == "Farmholding form - total"
   ) %>%
-  dplyr::select(-area_of_agricultural_production, -farmholding_form)
+  dplyr::select(-area_of_agricultural_production, -farmholding_form) %>%
+  dplyr::mutate(year = as.numeric(as.character(year)))
 
-
-# Pivot
-
+# Exclude years before 1996, as they use a different agricultural classification
+# and numbers are not comparable
 ds$postgres_export %<>%
-  tidyr::pivot_wider(names_from = ..., values_from = ...) %>%
-  dplyr::rename(
-    ...
-  )
+  dplyr::filter(year >= 1996)
 
+
+# Pivot on observation type
+ds$postgres_export %<>%
+  tidyr::pivot_wider(
+    names_from = observation_unit,
+    values_from = data_farmholding_employee_ha_animal
+  ) %>%
+  janitor::clean_names()
 
 # Ensure clear column names
 ds$postgres_export %<>%
   dplyr::rename(
-    ...
+    size_class_utilised_agricultural_area_ha = "size_class_uaa"
   )
 
 # join the cleaned data to the postgres spatial units table ---------------
 
-spatial_map <- ds$data %>%
+spatial_map <- ds$postgres %>%
   dplyr::select(canton) %>%
   dplyr::distinct(canton) %>%
   map_ds_spatial_units()
 
-ds$data %>%
+ds$postgres %<>%
   dplyr::left_join(spatial_map, by = "canton") %>%
   dplyr::select(-canton) -> ds$data
 
