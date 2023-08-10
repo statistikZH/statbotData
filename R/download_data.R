@@ -88,14 +88,20 @@ read_data.default <- function(ds) {
 #' To set up a PXWEB query list manually, start with a specific path and walk thorough each step
 #' d <- pxweb::pxweb_interactive("https://www.pxweb.bfs.admin.ch/api/v1/de/px-x-0103010000_102")
 #'
-read_data.px <- function(ds){
+read_data.px <- function(ds) {
   if (is.na(ds$size) || ds$size != "large") {
-    ds$data <- BFS::bfs_get_data(number_bfs = ds$read_path,
-                                 language = ds$lang)
+    ds$data <- BFS::bfs_get_data(
+      number_bfs = ds$read_path,
+      language = ds$lang
+    )
   } else {
-    df <- pxRRead::scan_px_file(ds$read_path,
-                                locale = ds$lang,
-                                encoding = ds$encoding)
+    tmp <- tempfile(fileext = ".px")
+    curl::curl_download(ds$read_path, tmp)
+    df <- pxRRead::scan_px_file(
+      tmp,
+      locale = ds$lang,
+      encoding = ds$encoding
+    )
     ds$data <- df$dataframe
   }
   return(ds)
