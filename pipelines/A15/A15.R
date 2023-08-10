@@ -1,3 +1,4 @@
+library(magrittr)
 # create ds object --------------------------------------------------------
 
 ds <- create_dataset(id = "A15")
@@ -5,26 +6,33 @@ ds <- create_dataset(id = "A15")
 
 # download the data -------------------------------------------------------
 
+# Might take 1 - 5 minutes
 ds <- download_data(ds)
 
 # data cleaning -----------------------------------------------------------
 
 # Filter relevant factors and cleanup
-ds$data <- ds$data %>%
+ds$postgres_export <- ds$data %>%
   janitor::clean_names() %>%
   tibble::as_tibble() %>%
-  dplyr::filter(...) %>%
+  dplyr::filter(
+    area_of_agricultural_production == "Area - total" &
+      farmholding_form == "Farmholding form - total"
+  ) %>%
+  dplyr::select(-area_of_agricultural_production, -farmholding_form)
 
-# Pivot 
-ds$data <- ds$data %>%
+
+# Pivot
+
+ds$postgres_export %<>%
   tidyr::pivot_wider(names_from = ..., values_from = ...) %>%
   dplyr::rename(
-                ...
+    ...
   )
 
 
 # Ensure clear column names
-ds$data <- ds$data %>%
+ds$postgres_export %<>%
   dplyr::rename(
     ...
   )
