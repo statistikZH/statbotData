@@ -13,7 +13,7 @@ ds <- statbotData::download_data(ds)
 #   output: ds$postgres_export: spatial unit uid added
 # -------------------------------------------------------------------------
 
-ds$data %>%
+ds$postgres_export <- ds$data %>%
   dplyr::mutate(
     spatialunit_uid = spatial_mapping_country()
   ) %>%
@@ -31,13 +31,13 @@ ds$data %>%
   ) %>%
   dplyr::mutate(
     jahr = as.numeric(stringr::str_extract(jahr, "\\d+"))
-  ) -> ds$postgres_export
+  )
 ds$postgres_export
 
 # -------------------------------------------------------------------------
 # Step: Testrun queries on sqllite
-#   input: ds$postgres_export, pipelines/A6/queries.sql
-#   output: pipelines/A6/queries.log
+#   input: ds$postgres_export, ds$dir/queries.sql
+#   output: ds$dir/queries.log
 # -------------------------------------------------------------------------
 
 statbotData::testrun_queries(
@@ -49,7 +49,9 @@ statbotData::testrun_queries(
 # -------------------------------------------------------------------------
 # Step: Write metadata tables
 #   input: ds$postgres_export
-#   output: pipelines/A6/metadata.csv
+#   output: ds$dir/metadata_tables.csv
+#           ds$dir/metadata_table_columns.csv
 # -------------------------------------------------------------------------
 
 read_write_metadata_tables(ds)
+
