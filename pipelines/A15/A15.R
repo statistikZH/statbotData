@@ -17,9 +17,14 @@ ds$postgres_export <- ds$data %>%
   tibble::as_tibble() %>%
   dplyr::filter(
     area_of_agricultural_production == "Area - total" &
-      farmholding_form == "Farmholding form - total"
+      farmholding_form == "Farmholding form - total" &
+      size_class_uaa == "Size class - total"
   ) %>%
-  dplyr::select(-area_of_agricultural_production, -farmholding_form) %>%
+  dplyr::select(
+    -area_of_agricultural_production,
+    -farmholding_form,
+    -size_class_uaa
+  ) %>%
   dplyr::mutate(year = as.numeric(as.character(year)))
 
 # Exclude years before 1996, as they use a different agricultural classification
@@ -36,28 +41,37 @@ ds$postgres_export %<>%
   ) %>%
   janitor::clean_names()
 
-# Ensure clear column names
+# Ensure clear names
 ds$postgres_export %<>%
+  dplyr::rename_all(
+    ~ stringr::str_replace(., stringr::regex("uaa_"), "")
+  ) %>%
   dplyr::rename(
-    size_class_utilised_agricultural_area_ha = "size_class_uaa"
+    livestock_pigs = "livestock_pigs_livestock"
   )
 
 # join the cleaned data to the postgres spatial units table ---------------
 
-spatial_map <- ds$postgres %>%
+spatial_map <- ds$postgres_export %>%
   dplyr::select(canton) %>%
   dplyr::distinct(canton) %>%
   map_ds_spatial_units()
 
-ds$postgres %<>%
+ds$postgres_export %<>%
   dplyr::left_join(spatial_map, by = "canton") %>%
-  dplyr::select(-canton) -> ds$data
+  dplyr::select(-canton)
 
 ## check that each spatial unit could be matched -> this has to be TRUE
 
-assertthat::noNA(ds$data$spatialunit_uid)
+assertthat::noNA(ds$postgres_export$spatialunit_uid)
 
 
 # ingest into postgres ----------------------------------------------------
 
-### important: name the table as energiebilanz_schweiz_in_tera_joule
+### important: name the table as employees_farmholdings_agricultural_area_livestock_per_canton
+
+statbotData::testrun_queries(
+  ds$postgres_export,
+  ds$dir,
+  ds$name
+)
