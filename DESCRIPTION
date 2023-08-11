@@ -20,6 +20,7 @@ Imports:
     googlesheets4,
     here,
     magrittr,
+    rio,
     RSQLite,
     tibble,
     tidyr

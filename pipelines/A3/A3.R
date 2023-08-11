@@ -4,8 +4,9 @@
 # output: ds$data, ds$dir
 # -------------------------------------------------------------------------
 
-ds <- statbotData::create_dataset("A6")
-ds <- statbotData::download_data(ds)
+ds <- create_dataset(id = "A3")
+ds <- download_data(ds)
+ds
 
 # -------------------------------------------------------------------------
 # Step: Clean the data and add spatial unit
@@ -13,25 +14,13 @@ ds <- statbotData::download_data(ds)
 #   output: ds$postgres_export: spatial unit uid added
 # -------------------------------------------------------------------------
 
+# clean excel-artifacts and add "beobachtungseinheit" as well as
+# spatialunit_id for switzerland
 ds$postgres_export <- ds$data %>%
-  dplyr::mutate(
-    spatialunit_uid = spatial_mapping_country()
-  ) %>%
-  janitor::clean_names(
-  ) %>%
-  dplyr::filter(
-    startsWith(periode, "Jahr:")
-  ) %>%
-  dplyr::rename(
-    jahr = periode
-  ) %>%
-  dplyr::rename(
-    "anzahl_abstimmungsvorlagen" = volksabstimmungen_anzahl_vorlagen_nach_thema_seit_1971,
-    "thema" = abstimmungsvorlage_thema
-  ) %>%
-  dplyr::mutate(
-    jahr = as.numeric(stringr::str_extract(jahr, "\\d+"))
-  )
+  tidyr::drop_na() %>%
+  dplyr::rename(jahr = 1, anzahl = 2) %>%
+  dplyr::rename(anzahl = "anzahl_millionen_tonnen_co2_equivalent") %>%
+  dplyr::mutate(spatialunit_uid = spatial_mapping_country())
 ds$postgres_export
 
 # -------------------------------------------------------------------------
@@ -54,4 +43,3 @@ statbotData::testrun_queries(
 # -------------------------------------------------------------------------
 
 read_write_metadata_tables(ds)
-
