@@ -75,3 +75,5 @@ statbotData::testrun_queries(
   ds$dir,
   ds$name
 )
+
+read_write_metadata_tables(ds)
