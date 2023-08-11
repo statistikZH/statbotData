@@ -1,0 +1,8 @@
+name;table_name;data_type;description;example_values
+rechtsform;arztpraxen_ambulante_zentren;categorical;Rechtsform der Praxis;"Rechtsform - Total","Einzelunternehmen","Andere Rechtsform"
+geschlecht;arztpraxen_ambulante_zentren;categorical;Geschlecht;"Geschlecht - Total","Mann","Frau"
+altersklasse;arztpraxen_ambulante_zentren;categorical;Alter;"Altersklasse - Total","Unter 45 Jahre"       "45-54 Jahre","55-64 Jahre","65 Jahre und älter"
+jahr;arztpraxen_ambulante_zentren;categorical;Jahre 2017 bis 2020 jährlich;2019
+anzahl_beschaeftigte;arztpraxen_ambulante_zentren;numeric;Anzahl Beschäftigte Personen;2214.72
+anzahl_vollzeitaquivalente;arztpraxen_ambulante_zentren;numeric;Anzahl Vollzeitäquivalente Beschäftigung;1600.21
+spatialunit_uid;arztpraxen_ambulante_zentren;categorical;Schweiz und Kantone;4_A.ADM1
