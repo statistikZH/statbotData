@@ -1,0 +1,41 @@
+"jahr";"energietraeger";"spatialunit_uid";"terajoule_bruttoverbrauch";"terajoule_eigenverbrauch_des_energiesektors_netzverluste_verbrauch_der_speicherungen";"terajoule_endverbrauch_dienstleistungen";"terajoule_endverbrauch_haushalte";"terajoule_endverbrauch_industrie";"terajoule_endverbrauch_statistische_differenz_inkl_landwirtschaft";"terajoule_endverbrauch_total";"terajoule_endverbrauch_verkehr";"terajoule_export";"terajoule_import";"terajoule_inlandproduktion";"terajoule_lagerveranderung";"terajoule_nichtenergetischer_verbrauch"
+"2014";"Uebrige erneuerbare Energien";"0_CH";"23390";NA;"2970";"11950";"1440";"210";"17440";"870";"0";"670";"22720";NA;NA
+"1995";"Müll und Industrieabfälle";"0_CH";"32820";NA;"0";"0";"10440";"0";"10440";NA;NA;NA;"32820";NA;NA
+"1998";"Uebrige erneuerbare Energien";"0_CH";"7080";NA;"1810";"3700";"440";"40";"6050";"60";"0";"0";"7080";NA;NA
+"2009";"Kernbrennstoffe";"0_CH";"284930";NA;NA;NA;NA;NA;"0";NA;NA;"284930";NA;NA;NA
+"1990";"Kohle";"0_CH";"14890";NA;"30";"630";"13700";"0";"14360";NA;"-360";"14380";"0";"870";NA
+"2007";"Wasserkraft";"0_CH";"130940";NA;NA;NA;NA;NA;"0";NA;NA;NA;"130940";NA;NA
+"1980";"Gas";"0_CH";"36280";"-2270";"4660";"11370";"12380";"1600";"30370";"360";"-580";"36860";"0";NA;NA
+"1995";"Gas";"0_CH";"91920";"-190";"18950";"34470";"28700";"4170";"86600";"310";NA;"91920";"0";NA;NA
+"2004";"Kohle";"0_CH";"5420";NA;"0";"400";"5020";"0";"5420";NA;"-10";"5400";"0";"30";NA
+"2002";"Holzenergie";"0_CH";"29090";NA;"4190";"17980";"5970";"600";"28740";NA;"-300";"390";"29000";NA;NA
+"2017";"Müll und Industrieabfälle";"0_CH";"59500";NA;"140";"0";"11220";"0";"11360";NA;NA;NA;"59500";NA;NA
+"2005";"Holzenergie";"0_CH";"32460";NA;"5190";"19450";"6640";"640";"31920";NA;"-410";"380";"32490";NA;NA
+"1990";"Müll und Industrieabfälle";"0_CH";"23200";NA;"0";"0";"8680";"0";"8680";NA;NA;NA;"23200";NA;NA
+"1984";"Rohöl";"0_CH";"170820";NA;NA;NA;NA;NA;"0";NA;NA;"170530";"0";"290";NA
+"1994";"Elektrizität";"0_CH";"-42640";"-17710";"48490";"51090";"57230";"3240";"168830";"8780";"-124440";"81800";NA;NA;NA
+"2008";"Erdölprodukte";"0_CH";"307650";"-14920";"45930";"108870";"29720";"3710";"486650";"298420";"-27190";"329100";NA;"5740";"-22910"
+"2016";"Müll und Industrieabfälle";"0_CH";"59290";NA;"140";"0";"11210";"0";"11350";NA;NA;NA;"59290";NA;NA
+"1997";"Erdölprodukte";"0_CH";"319890";"-10750";"58730";"127800";"41370";"200";"496990";"268890";"-22560";"350310";NA;"-7860";"-21310"
+"2021";"Wasserkraft";"0_CH";"142200";NA;NA;NA;NA;NA;NA;NA;NA;NA;"142200";NA;NA
+"1991";"Holzenergie";"0_CH";"31610";NA;"3140";"22920";"5020";"500";"31580";NA;"-320";"360";"31570";NA;NA
+"2009";"Fernwärme";"0_CH";NA;"-1670";"3540";"5650";"5930";"0";"15120";NA;NA;NA;NA;NA;NA
+"2017";"Erdölprodukte";"0_CH";"321880";"-6100";"34060";"76210";"14670";"2980";"418020";"290100";"-15890";"329760";NA;"8010";"-20460"
+"1980";"Wasserkraft";"0_CH";"120750";NA;NA;NA;NA;NA;"0";NA;NA;NA;"120750";NA;NA
+"1992";"Gas";"0_CH";"80600";"-170";"18080";"31310";"23690";"2370";"75960";"510";NA;"80510";"90";NA;NA
+"2007";"Müll und Industrieabfälle";"0_CH";"55260";NA;"0";"0";"10600";"0";"10600";NA;NA;NA;"55260";NA;NA
+"1994";"Fernwärme";"0_CH";NA;"-1160";"4070";"4510";"2700";"0";"11280";NA;NA;NA;NA;NA;NA
+"1988";"Rohöl";"0_CH";"167730";NA;NA;NA;NA;NA;"0";NA;NA;"165850";"0";"1880";NA
+"1999";"Fernwärme";"0_CH";NA;"-1370";"2450";"5080";"5680";"0";"13210";NA;NA;NA;NA;NA;NA
+"2021";"Kernbrennstoffe";"0_CH";"202150";NA;NA;NA;NA;NA;NA;NA;NA;"202150";NA;NA;NA
+"2019";"Gas";"0_CH";"122610";"-150";"25860";"47840";"39560";"1000";"115440";"1180";NA;"122610";NA;NA;NA
+"2013";"Kernbrennstoffe";"0_CH";"271320";NA;NA;NA;NA;NA;"0";NA;NA;"271320";NA;NA;NA
+"1997";"Wasserkraft";"0_CH";"125260";NA;NA;NA;NA;NA;"0";NA;NA;NA;"125260";NA;NA
+"2002";"Gas";"0_CH";"104080";"-190";"21100";"37930";"31170";"3830";"95240";"1210";NA;"104080";"0";NA;NA
+"2008";"Elektrizität";"0_CH";"-4090";"-25570";"62020";"64430";"69220";"3640";"211420";"12110";"-117850";"113760";NA;NA;NA
+"1997";"Holzenergie";"0_CH";"29660";NA;"3880";"19410";"5740";"580";"29610";NA;"-180";"330";"29510";NA;NA
+"2011";"Kohle";"0_CH";"5740";NA;"0";"300";"5440";"0";"5740";NA;"0";"4750";"0";"990";NA
+"1993";"Elektrizität";"0_CH";"-25920";"-17550";"48530";"51020";"58320";"3340";"170060";"8850";"-111790";"85870";NA;NA;NA
+"1989";"Rohöl";"0_CH";"128580";NA;NA;NA;NA;NA;"0";NA;NA;"128330";"0";"250";NA
+"1983";"Müll und Industrieabfälle";"0_CH";"16040";NA;"0";"0";"5160";"0";"5160";NA;NA;NA;"16040";NA;NA
+"2001";"Rohöl";"0_CH";"209840";NA;NA;NA;NA;NA;"0";NA;NA;"209970";"0";"-130";NA
