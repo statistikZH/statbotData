@@ -96,7 +96,7 @@ read_data.px <- function(ds) {
     )
   } else {
     tmp <- tempfile(fileext = ".px")
-    download.file(ds$read_path, tmp)
+    download.file(ds$read_path, tmp, timeout=300)
     df <- pxRRead::scan_px_file(
       tmp,
       locale = ds$lang,
