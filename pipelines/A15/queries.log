@@ -1,0 +1,25 @@
+
+Query Nr. 1
+-- What farm animals were bred in the canton of Bern in 2020?
+SELECT livestock_beef_cattle_and_cows, livestock_sheep, livestock_goats, livestock_pigs, livestock_poultry, livestock_other_animals FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name="Canton of Bern"     AND S.canton=TRUE     AND T.year=2020     AND T.farmholding_system == "Farmholding system - total";
+=======================================================
+# A tibble: 1 × 6
+  livestock_beef_cattle_and_cows livestock_sheep livestock_goats livestock_pigs
+                           <dbl>           <dbl>           <dbl>          <dbl>
+1                              0            1530             747              0
+# ℹ 2 more variables: livestock_poultry <dbl>, livestock_other_animals <dbl>
+
+Query Nr. 2
+-- How many farms were there in all of Switzerland between 2012 and 2018?
+SELECT year, farmholding_system, farmholdings FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name="Switzerland"     AND S.country=TRUE     AND year BETWEEN 2012 AND 2018     AND T.farmholding_system == "Farmholding system - total";
+=======================================================
+# A tibble: 7 × 3
+   year farmholding_system         farmholdings
+  <dbl> <chr>                             <dbl>
+1  2018 Farmholding system - total        50852
+2  2017 Farmholding system - total        51620
+3  2016 Farmholding system - total        52263
+4  2015 Farmholding system - total        53253
+5  2014 Farmholding system - total        54057
+6  2013 Farmholding system - total        55207
+7  2012 Farmholding system - total        56575
