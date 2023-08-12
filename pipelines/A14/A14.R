@@ -1,13 +1,17 @@
-# create ds object --------------------------------------------------------
+# -------------------------------------------------------------------------
+# Step: Get the data
+# input: google sheet
+# output: ds$data, ds$dir
+# -------------------------------------------------------------------------
 
 ds <- create_dataset(id = "A14")
-
-
-# download the data -------------------------------------------------------
-
 ds <- download_data(ds)
 
-# data cleaning -----------------------------------------------------------
+# -------------------------------------------------------------------------
+# Step: Clean the data and add spatial unit
+#   input: ds$data
+#   output: dscleaned_data
+# -------------------------------------------------------------------------
 
 ### Filter specific products and indicators
 # NOTE: We only look at tourism as a whole, and not sectors of tourism.
@@ -23,7 +27,7 @@ indicators <- c(
 )
 
 # Filter relevant factors and cleanup
-ds$data <- ds$data %>%
+ds$cleaned_data <- ds$data %>%
   janitor::clean_names() %>%
   tibble::as_tibble() %>%
   dplyr::filter(product %in% global_products) %>%
@@ -33,7 +37,7 @@ ds$data <- ds$data %>%
   )
 
 # Pivot to separate employment from CHF values
-ds$data <- ds$data %>%
+ds$cleaned_data <- ds$cleaned_data %>%
   tidyr::pivot_wider(names_from = indicator, values_from = value) %>%
   dplyr::rename(
     gross_value_added = "Tourism-connected gross value added (at current prices, in million CHF)",
@@ -41,7 +45,7 @@ ds$data <- ds$data %>%
   )
 
 # Pivot again to separate total from percentage
-ds$data <- ds$data %>%
+ds$cleaned_data <- ds$cleaned_data %>%
   tidyr::pivot_wider(
     values_from = c(gross_value_added, employment),
     names_from = product,
@@ -49,7 +53,7 @@ ds$data <- ds$data %>%
   janitor::clean_names()
 
 # Ensure clear column names
-ds$data <- ds$data %>%
+ds$cleaned_data <- ds$cleaned_data %>%
   dplyr::rename(
     "mio_chf_gross_value_added_of_tourism" = gross_value_added_total_of_tourism_of_the_economy,
     "total_full_time_employment_of_tourism" = employment_total_of_tourism_of_the_economy,
@@ -57,22 +61,43 @@ ds$data <- ds$data %>%
     "percent_share_full_time_employment_of_tourism" = employment_share_of_tourism_of_the_regional_total_in_percent
   )
 
-# join the cleaned data to the postgres spatial units table ---------------
+# -------------------------------------------------------------------------
+# Step: Derive the spatial units mapping
+#   input: ds$cleaned_data
+#.  output: ds$postgres_export
+# --------------------------------------------------------------------------
 
-spatial_map <- ds$data %>%
+spatial_map <- ds$cleaned_data %>%
   dplyr::select(canton) %>%
   dplyr::distinct(canton) %>%
   map_ds_spatial_units()
 
-ds$data %>%
+ds$postgres_export <- ds$cleaned_data %>%
   dplyr::left_join(spatial_map, by = "canton") %>%
-  dplyr::select(-canton) -> ds$data
+  dplyr::select(-canton)
+ds$postgres_export
+unique(ds$postgres$year)
+ds$lang
 
-## check that each spatial unit could be matched -> this has to be TRUE
+# -------------------------------------------------------------------------
+# Step: Testrun queries on sqllite
+#   input:  ds$postgres_export, ds$dir/queries.sql
+#   output: ds$dir/queries.log
+# -------------------------------------------------------------------------
 
-assertthat::noNA(ds$data$spatialunit_uid)
+statbotData::testrun_queries(
+  ds$postgres_export,
+  ds$dir,
+  ds$name
+)
 
+# -------------------------------------------------------------------------
+# Step: Write metadata tables
+#   input:  ds$postgres_export
+#   output: ds$dir/metadata_tables.csv
+#           ds$dir/metadata_table_columns.csv
+#           ds$dir/sample.csv
+# -------------------------------------------------------------------------
 
-# ingest into postgres ----------------------------------------------------
-
-### important: name the table as energiebilanz_schweiz_in_tera_joule
+read_write_metadata_tables(ds)
+dataset_sample(ds)
