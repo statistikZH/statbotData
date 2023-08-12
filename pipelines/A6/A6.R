@@ -6,6 +6,7 @@
 
 ds <- statbotData::create_dataset("A6")
 ds <- statbotData::download_data(ds)
+ds$data
 
 # -------------------------------------------------------------------------
 # Step: Clean the data and add spatial unit
@@ -54,4 +55,4 @@ statbotData::testrun_queries(
 # -------------------------------------------------------------------------
 
 read_write_metadata_tables(ds)
-
+dataset_sample(ds)
