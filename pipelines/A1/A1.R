@@ -6,7 +6,6 @@
 
 ds <- create_dataset(id = "A1")
 ds <- download_data(ds)
-ds$data
 
 # -------------------------------------------------------------------------
 # Step: Clean the data
@@ -38,42 +37,24 @@ ds$cleaned_data <- ds$data %>%
 ds$cleaned_data
 
 # -------------------------------------------------------------------------
-# Step: Derive the spatial units mapping
-#   input: ds$cleaned_data
-#.  output: ds$spatial_mapping
-# --------------------------------------------------------------------------
-
-ds$spatial_mapping <- ds$cleaned_data %>%
-  dplyr::select(
-    grossregion_kanton
-  ) %>%
-  dplyr::distinct(
-    grossregion_kanton
-  ) %>%
-  statbotData::map_ds_spatial_units(
-    c("Country", "Canton")
-  )
-ds$spatial_mapping %>% print(n = Inf)
-
-# -------------------------------------------------------------------------
-# Step: Apply spatial mapping
-#   input: ds$cleaned_data, ds$spatial_mapping
+# Step: Derive the spatial units mapping and map the spatial units
+#   input:  ds$cleaned_data
 #.  output: ds$postgres_export
-# --------------------------------------------------------------------------
+# -------------------------------------------------------------------------
+
+spatial_map <- ds$cleaned_data %>%
+  dplyr::select(grossregion_kanton) %>%
+  dplyr::distinct(grossregion_kanton) %>%
+  map_ds_spatial_units()
 
 ds$postgres_export <- ds$cleaned_data %>%
-  dplyr::left_join(
-    ds$spatial_mapping,
-    by = "grossregion_kanton"
-  ) %>%
-  dplyr::select(
-    -c(grossregion_kanton)
-  )
+  dplyr::left_join(spatial_map, by = "grossregion_kanton") %>%
+  dplyr::select(-grossregion_kanton)
 ds$postgres_export
 
 # -------------------------------------------------------------------------
 # Step: Testrun queries on sqllite
-#   input: ds$postgres_export, ds$dir/queries.sql
+#   input:  ds$postgres_export, ds$dir/queries.sql
 #   output: ds$dir/queries.log
 # -------------------------------------------------------------------------
 
@@ -85,9 +66,11 @@ statbotData::testrun_queries(
 
 # -------------------------------------------------------------------------
 # Step: Write metadata tables
-#   input: ds$postgres_export
-#   output: pipelines/A6/metadata.csv
+#   input:  ds$postgres_export
+#   output: ds$dir/metadata_tables.csv
+#           ds$dir/metadata_table_columns.csv
+#           ds$dir/sample.csv
 # -------------------------------------------------------------------------
 
 read_write_metadata_tables(ds)
-
+dataset_sample(ds)
