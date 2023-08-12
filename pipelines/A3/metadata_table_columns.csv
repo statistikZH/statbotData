@@ -1,2 +1,2 @@
-name,table_name,data_type,description
-anzahl_millionen_tonnen_co2_equivalent,treibhausgasemission_in_mio_tonnen,numeric,Treibhausgasemissionen in Millionen Tonnen CO2 Äquivalent
+name;table_name;data_type;description
+anzahl_millionen_tonnen_co2_equivalent;treibhausgasemission_in_mio_tonnen;numeric;Treibhausgasemissionen in Millionen Tonnen CO2 Äquivalent
