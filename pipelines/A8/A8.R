@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------
 # Steps: Get the data
-# input: google sheet
+# input:  google sheet
 # output: ds$data, ds$dir
 # -------------------------------------------------------------------------
 
@@ -10,10 +10,10 @@ ds <- statbotData::download_data(ds)
 # -------------------------------------------------------------------------
 # Step: Clean the data
 #   input: ds$data
-#.  output: dscleaned_data: spatial unit uid added
+#.  output: ds$cleaned_data: separate data by units
 # -------------------------------------------------------------------------
 
-ds$data %>%
+ds$cleaned_data <- ds$data %>%
   janitor::clean_names(
   ) %>%
   dplyr::rename(
@@ -29,48 +29,28 @@ ds$data %>%
     "parteistarke_in_prozent" = parteistarke_in_percent,
     "anzahl_parteistimmen" = parteistimmen,
     "anzahl_fiktive_wahlende" = fiktive_wahlende,
-  ) -> ds$cleaned_data
+  )
 ds$cleaned_data
 
 # -------------------------------------------------------------------------
-# Step: Derive the spatial units mapping
-#   input: ds$cleaned_data
-#.  output: ds$spatial_mapping
-# --------------------------------------------------------------------------
-
-ds$cleaned_data %>%
-  dplyr::select(
-    kanton
-  ) %>%
-  dplyr::distinct(
-    kanton
-  ) %>%
-  statbotData::map_ds_spatial_units(
-    c("Country", "Canton")
-  ) -> ds$spatial_mapping
-ds$spatial_mapping %>% print(n = Inf)
-colnames(ds$spatial_mapping)
-
-# -------------------------------------------------------------------------
-# Step: Apply spatial mapping
-#   input: ds$cleaned_data, ds$spatial_mapping
+# Step: Spatial unit mapping
+#   input:  ds$cleaned_data
 #.  output: ds$postgres_export
 # --------------------------------------------------------------------------
 
-ds$cleaned_data %>%
-  dplyr::left_join(
-    ds$spatial_mapping,
-    by = "kanton"
-  ) %>%
-  dplyr::select(
-    -c(kanton)
-  ) -> ds$postgres_export
-ds$postgres_export
+spatial_mapping <- ds$cleaned_data %>%
+  dplyr::select(kanton) %>%
+  dplyr::distinct(kanton) %>%
+  statbotData::map_ds_spatial_units(c("Country", "Canton"))
+
+ds$postgres_export <- ds$cleaned_data %>%
+  dplyr::left_join(spatial_mapping, by = "kanton") %>%
+  dplyr::select(-c(kanton))
 
 # -------------------------------------------------------------------------
 # Step: Testrun queries on sqllite
-#   input: ds$postgres_export, A8/queries.sql
-#   output: A8/queries.log
+#   input:  ds$postgres_export, ds$dir/queries.sql
+#   output: ds$dir/queries.log
 # -------------------------------------------------------------------------
 
 statbotData::testrun_queries(
@@ -78,3 +58,14 @@ statbotData::testrun_queries(
   ds$dir,
   ds$name
 )
+
+# -------------------------------------------------------------------------
+# Step: Write metadata tables
+#   input:  ds$postgres_export
+#   output: ds$dir/metadata_tables.csv
+#           ds$dir/metadata_table_columns.csv
+#           ds$dir/sample.csv
+# -------------------------------------------------------------------------
+
+read_write_metadata_tables(ds)
+dataset_sample(ds)

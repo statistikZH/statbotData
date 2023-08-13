@@ -1,0 +1,7 @@
+name;table_name;data_type;description;example_values
+jahr;nationalratswahlen;categorical;Jahr der Wahl;1971 bis 2019 alle vier Jahre
+partei;nationalratswahlen;categorical;Parteikürzel;"FDP","CVP","SP","SVP","LPS","LdU","EVP","CSP","GLP","BDP","PdA","PSA","POCH","GPS","FGA","Sol.","Rep.","EDU","FPS","Lega","MCR","Sep.","Übrige"
+anzahl_parteistimmen;nationalratswahlen;numeric;Anzahl Parteistimmen;3201703
+anzahl_fiktive_wahlende;nationalratswahlen;numeric;Anzahl fiktive Waehlende (Anzahl Wahlende multipliziert mit Anzahl der Nationalratssitze des Kantons);104286
+parteistarke_in_prozent;nationalratswahlen;numeric;Parteistärke in Prozent;31
+spatialunit_uid;nationalratswahlen;categorical;Schweiz und Kantone;2_A.ADM1
