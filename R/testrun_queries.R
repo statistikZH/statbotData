@@ -65,8 +65,7 @@ testrun_queries <- function(df, dir, table_name) {
       count <- count + 1
       question <- paste(question_lines, collapse = " ")
       query <- paste(query_lines, collapse = " ")
-      result <- DBI::dbGetQuery(conn = db_con, statement = query) %>%
-        tibble::as_tibble()
+      result <- DBI::dbGetQuery(conn = db_con, statement = query)
       log_question_and_query(count, question, query, output_path)
       log_result(result, output_path)
       question_lines <- query_lines <- c()

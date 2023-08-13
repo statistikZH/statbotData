@@ -31,7 +31,10 @@ ds$postgres_export <- ds$data %>%
     "thema" = abstimmungsvorlage_thema
   ) %>%
   dplyr::mutate(
-    jahr = as.numeric(stringr::str_extract(jahr, "\\d+"))
+    jahr = as.integer(stringr::str_extract(jahr, "\\d+"))
+  ) %>%
+  dplyr::mutate(
+    anzahl_abstimmungsvorlagen = as.integer(anzahl_abstimmungsvorlagen)
   )
 ds$postgres_export
 
@@ -56,3 +59,4 @@ statbotData::testrun_queries(
 
 read_write_metadata_tables(ds)
 dataset_sample(ds)
+
