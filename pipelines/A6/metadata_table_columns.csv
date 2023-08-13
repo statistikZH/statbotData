@@ -1,3 +1,5 @@
-name,table_name,data_type,description
-thema,abstimmungsvorlagen_seit_1971,categorical,Themen für Abstimmungsvorlagen
-anzahl_abstimmungsvorlagen,abstimmungsvorlagen_seit_1971,numeric,Anzahl Abstimmungsvorlagen
+name;table_name;data_type;description;example_values
+jahr;abstimmungsvorlagen_seit_1971;categorical;jahre 1971 bis 2022 jährlich;2020
+thema;abstimmungsvorlagen_seit_1971;categorical;Themen für Abstimmungsvorlagen;Aussenpolitik
+anzahl_abstimmungsvorlagen;abstimmungsvorlagen_seit_1971;numeric;Anzahl Abstimmungsvorlagen;3
+spatialunit_uid;abstimmungsvorlagen_seit_1971;categorical;nur Schweiz;0_CH
