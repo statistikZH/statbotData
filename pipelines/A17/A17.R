@@ -15,7 +15,7 @@ ds <- statbotData::download_data(ds)
 #.  - `datum_und_vorlage` split into `jahr` and `vorlage_title`
 # -------------------------------------------------------------------------
 
-ds$data %>%
+ds$cleaned_data <- ds$data %>%
   janitor::clean_names(
   ) %>%
   dplyr::mutate(
@@ -43,47 +43,27 @@ ds$data %>%
     "anzahl_ja_stimmen" = ja,
     "anzahl_nein_stimmen" = nein,
     "ja_in_prozent" = ja_in_percent
-   ) -> ds$cleaned_data
-print(ds$cleaned_data)
+   )
 
 # -------------------------------------------------------------------------
-# Step: Derive the spatial units mapping
-#   input: ds$cleaned_data
-#.  output: ds$spatial_mapping
-# --------------------------------------------------------------------------
-
-ds$cleaned_data %>%
-  dplyr::select(
-    kanton
-  ) %>%
-  dplyr::distinct(
-    kanton
-  ) %>%
-  statbotData::map_ds_spatial_units(
-    c("Country", "Canton")
-  ) -> ds$spatial_mapping
-ds$spatial_mapping %>% print(n = Inf)
-
-# -------------------------------------------------------------------------
-# Step: Apply spatial mapping
-#   input: ds$cleaned_data, ds$spatial_mapping
+# Step: Derive the spatial units mapping and map the spatial units
+#   input:  ds$cleaned_data
 #.  output: ds$postgres_export
-# --------------------------------------------------------------------------
+# -------------------------------------------------------------------------
 
-ds$cleaned_data %>%
-  dplyr::left_join(
-    ds$spatial_mapping,
-    by = "kanton"
-  ) %>%
-  dplyr::select(
-    -c(kanton)
-  ) -> ds$postgres_export
-ds$postgres_export
+spatial_map <- ds$cleaned_data %>%
+  dplyr::select(kanton) %>%
+  dplyr::distinct(kanton) %>%
+  map_ds_spatial_units()
+
+ds$postgres_export <- ds$cleaned_data %>%
+  dplyr::left_join(spatial_map, by = "kanton") %>%
+  dplyr::select(-kanton)
 
 # -------------------------------------------------------------------------
 # Step: Testrun queries on sqllite
-#   input: ds$postgres_export, A8/queries.sql
-#   output: A8/queries.log
+#   input:  ds$postgres_export, ds$dir/queries.sql
+#   output: ds$dir/queries.log
 # -------------------------------------------------------------------------
 
 statbotData::testrun_queries(
@@ -91,3 +71,14 @@ statbotData::testrun_queries(
   ds$dir,
   ds$name
 )
+
+# -------------------------------------------------------------------------
+# Step: Write metadata tables
+#   input:  ds$postgres_export
+#   output: ds$dir/metadata_tables.csv
+#           ds$dir/metadata_table_columns.csv
+#           ds$dir/sample.csv
+# -------------------------------------------------------------------------
+
+read_write_metadata_tables(ds)
+dataset_sample(ds)
