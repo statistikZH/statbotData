@@ -65,8 +65,7 @@ testrun_queries <- function(df, dir, table_name) {
       count <- count + 1
       question <- paste(question_lines, collapse = " ")
       query <- paste(query_lines, collapse = " ")
-      result <- DBI::dbGetQuery(conn = db_con, statement = query) %>%
-        tibble::as_tibble()
+      result <- DBI::dbGetQuery(conn = db_con, statement = query)
       log_question_and_query(count, question, query, output_path)
       log_result(result, output_path)
       question_lines <- query_lines <- c()
@@ -101,14 +100,12 @@ testrun_queries <- function(df, dir, table_name) {
 #'   )
 #' }
 log_question_and_query <- function(count, question, query, output_path) {
-  divider <- "======================================================="
   count_line <- paste("Query Nr.", toString(count))
   sprintf(
-    fmt = "\n%s\n%s\n%s\n%s\n",
+    fmt = "\n%s\n%s\n%s\n",
     count_line,
     question,
-    query,
-    divider
+    query
   ) %>% cat(file = output_path, append = TRUE)
 }
 
@@ -156,4 +153,3 @@ prepare_db <- function(db_con, df, table_name) {
   DBI::dbWriteTable(db_con, "spatial_unit", spatial_df, overwrite = TRUE)
   DBI::dbWriteTable(db_con, table_name, df, overwrite = TRUE)
 }
-
