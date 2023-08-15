@@ -34,8 +34,8 @@ read_write_metadata_tables <- function(ds, overwrite = FALSE) {
   path_table_columns <- paste0(ds$dir, "metadata_table_columns.csv")
 
   if (file.exists(path_table) && file.exists(path_table_columns) &&!overwrite) {
-    metadata_tables = readr::read_csv(path_table)
-    metadata_table_columns = readr::read_csv(path_table_columns)
+    metadata_tables = readr::read_delim(path_table, delim = ";")
+    metadata_table_columns = readr::read_delim(path_table_columns, delim = ";")
     return(list(metadata_tables=metadata_tables,
                 metadata_table_columns=metadata_table_columns))
   }
@@ -56,18 +56,20 @@ read_write_metadata_tables <- function(ds, overwrite = FALSE) {
 
   # columns are received from the columns of the postgres export
   columns <- colnames(ds$postgres_export)
-  columns <- columns[!(columns %in% c("jahr", "spatialunit_uid"))]
   columns_count <- length(columns)
   metadata_table_columns <- tibble::tibble(
     name = columns,
     table_name = rep(ds$name, times = columns_count),
     data_type = rep("", times = columns_count),
-    description = rep("", times = columns_count)
+    description = rep("", times = columns_count),
+    example_values = rep("", times = columns_count)
   )
 
   # write the tibble to a file
-  write.csv(metadata_tables, path_table, row.names = FALSE, quote = FALSE)
-  write.csv(metadata_table_columns, path_table_columns, row.names = FALSE, quote = FALSE)
+  write.table(metadata_tables, path_table,
+              row.names = FALSE, quote = FALSE, sep = ";")
+  write.table(metadata_table_columns, path_table_columns,
+              row.names = FALSE, quote = FALSE, sep = ";")
   print(
     paste(
       "metadata templates written to\n",

@@ -1,0 +1,7 @@
+name;table_name;data_type;description;example_values
+aufgabenbereich_des_staates;staatsausgaben_nach_aufgabenbereichen_cofog;categorical;grobe Kategorisierung staatlicher Aufbgabenbereiche;categorical;"Wirtschaftliche Angelegenheiten n.a.g." "Umweltschutz"
+institutioneller_sektor;staatsausgaben_nach_aufgabenbereichen_cofog;categorical;politische Kategorie;"Staat"            "Kantone" "Bund" "Gemeinden" "Öffentliche Sozialversicherungen"
+ausgaben_in_mio_chf;staatsausgaben_nach_aufgabenbereichen_cofog;numeric;Ausgaben in Millionen CHF;6092
+prozent_der_gesamtausgaben;staatsausgaben_nach_aufgabenbereichen_cofog;numeric;Staatsausgaben in Prozent der Gesamtaugaben pro Jahr;14.7
+jahr;staatsausgaben_nach_aufgabenbereichen_cofog;categorical;Jahre von 1995 bis 2019 jährlich;2019
+spatialunit_uid;staatsausgaben_nach_aufgabenbereichen_cofog;categorical;nur Schweiz;0_CH

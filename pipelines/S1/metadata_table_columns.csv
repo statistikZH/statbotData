@@ -1,0 +1,6 @@
+name;table_name;data_type;description;example_values
+jahr;median_strompreis_per_kanton;categorical;jahre 2016 bis 2022 jährlich;2022
+verbrauchskategorien;median_strompreis_per_kanton;categorical;sehr detailierte Verbrauchskategorien mit kWh pro Jahr Angaben;"C5: (500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 150 kW' Mittelspannung' eigene Transformatorenstation)"
+energieprodukt;median_strompreis_per_kanton;categorical;Unterscheidung zwischen günstigem Produkt und Standardprodukt;"Günstigstes Produkt" "Standardprodukt"
+mittlerer_preis_rappen_pro_kw_hr;median_strompreis_per_kanton;numeric;mittlerer Strompreis per Kanton: Preis in Rappen pro Kilowatt Stunde;19.03000
+spatialunit_uid;median_strompreis_per_kanton;categorical;nur Kantone, keine Daten zur Schweiz;8_A.ADM1

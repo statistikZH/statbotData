@@ -1,0 +1,11 @@
+name;table_name;data_type;description;example_values
+jahr;volksabstimmung_nach_kanton_seit_1861;categorical;Jahr der Abstimmung: von 1866 bis 2022;1919
+vorlage_title;volksabstimmung_nach_kanton_seit_1861;categorical;Titel der Abstimmungsvorlage;"Bundesgesetz über die Errichtung der schweizerischen Bundesbank"
+anzahl_stimmberechtigte;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl Stimmberechtigte;173734
+anzahl_abgegebene_stimmen;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl abgegebene Stimmenen;173734
+beteiligung_in_prozent;volksabstimmung_nach_kanton_seit_1861;numeric;Wahlbeteiligung in Prozent;85.15
+anzahl_gueltige_stimmzettel;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl gültige Stimmenzettel;173734
+anzahl_ja_stimmen;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl ja Stimmen;173734
+anzahl_nein_stimmen;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl nein Stimmen;173734
+ja_in_prozent;volksabstimmung_nach_kanton_seit_1861;numeric;ja Stimmen in Prozent der Gesamtstimmen;85.15
+spatialunit_uid;volksabstimmung_nach_kanton_seit_1861;categorical;Schweiz und Kantone;0_CH

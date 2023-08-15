@@ -1,0 +1,7 @@
+name;table_name;data_type;description;example_values
+jahr;pflanzungen_schweiz;categorical;Jahr 1975 bis 2022 jährlich;2019
+forstzone;pflanzungen_schweiz;categorical;Forstzone (geographische Zone);"Schweiz","Jura","Mittelland","Voralpen","Alpen","Alpen-Südseite"
+eigentumertyp;pflanzungen_schweiz;categorical;Eigentümertyp: privat oder öffentlich;"Eigentümertyp - Total","Öffentliche Wälder","Privatwälder"
+holzartengruppe;pflanzungen_schweiz;categorical;Holzart: Laubholz oder Nadelholz;"Holzartengruppe - Total","Nadelholz","Laubholz"
+anzahl_pflanzungen;pflanzungen_schweiz;numeric;Anzahl der Pflanzungen;10
+spatialunit_uid;pflanzungen_schweiz;categorical;Schweiz und Kantone;26_A.ADM1
