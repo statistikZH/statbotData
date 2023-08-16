@@ -17,6 +17,7 @@ Imports:
     BFS,
     DBI,
     dplyr,
+    DT,
     googlesheets4,
     here,
     magrittr,

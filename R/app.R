@@ -1,5 +1,6 @@
 # load all the possible data sets
 library(shiny)
+library(DT)
 pipelines <- list.files("../pipelines/")
 choices <- pipelines
 
@@ -12,7 +13,7 @@ ui <- basicPage(
   tabsetPanel(
     tabPanel("Table", tableOutput("metadata_table")),
     tabPanel("Columns", tableOutput("metadata_columns")),
-    tabPanel("Sample", tableOutput("sample")),
+    tabPanel("Sample", dataTableOutput("sample")),
     tabPanel("Queries", htmlOutput("query"))
   )
 )
@@ -70,7 +71,7 @@ server <- function(input, output) {
   })
 
   # Show sample ----
-  output$sample <- renderTable({
+  output$sample <- renderDataTable({
     sampleOutput()
   })
 
