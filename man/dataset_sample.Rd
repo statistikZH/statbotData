@@ -4,11 +4,13 @@
 \alias{dataset_sample}
 \title{Write sample for the dataset}
 \usage{
-dataset_sample(ds)
+dataset_sample(ds, sample_size = 40)
 }
 \arguments{
-\item{ds}{}
+\item{sample_size}{default 40}
 }
 \description{
-The sample contains random 40 rows.
+The sample contains random rows
+The number of the rows defaults to 40
+but can be specified
 }

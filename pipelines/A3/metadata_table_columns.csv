@@ -1,2 +1,4 @@
-name;table_name;data_type;description
-anzahl_millionen_tonnen_co2_equivalent;treibhausgasemission_in_mio_tonnen;numeric;Treibhausgasemissionen in Millionen Tonnen CO2 Äquivalent
+name;table_name;data_type;description;example_values
+anzahl_millionen_tonnen_co2_equivalent;treibhausgasemission_in_mio_tonnen;numeric;Treibhausgasemissionen in Millionen Tonnen CO2 Äquivalent;119.751984379872
+jahr;treibhausgasemission_in_mio_tonnen;categorical;Jahre 2000 bis 2020;2019
+spatialunit_uid;treibhausgasemission_in_mio_tonnen;categorical;nur Schweiz;0_CH
