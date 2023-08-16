@@ -53,7 +53,15 @@ server <- function(input, output) {
       stringr::str_replace_all(";", ";</span><br><pre>") %>%
       stringr::str_replace_all("--", "</pre><hr><strong>") %>%
       stringr::str_replace_all("\\?", "?</strong><br>") %>%
-      stringr::str_remove_all("Query Nr\\. \\d+")
+      stringr::str_remove_all("Query Nr\\. \\d+") %>%
+      stringr::str_replace_all("FROM", "<br>FROM") %>%
+      stringr::str_replace_all("JOIN", "<br>JOIN") %>%
+      stringr::str_replace_all("WHERE", "<br>WHERE") %>%
+      stringr::str_replace_all("GROUP BY", "<br>GROUP BY") %>%
+      stringr::str_replace_all("ORDER BY", "<br>ORDER BY") %>%
+      stringr::str_replace_all("HAVING", "<br>HAVING") %>%
+      stringr::str_replace_all("LIMIT", "<br>LIMIT")
+
 
     if (file.exists(query_log_path)) {
       paste("Number of queries:", query_count, "\n", queries)
