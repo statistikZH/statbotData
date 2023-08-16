@@ -6,7 +6,6 @@
 
 ds <- create_dataset(id = "A3")
 ds <- download_data(ds)
-ds
 
 # -------------------------------------------------------------------------
 # Step: Clean the data and add spatial unit
@@ -19,7 +18,7 @@ ds
 ds$postgres_export <- ds$data %>%
   tidyr::drop_na() %>%
   dplyr::rename(jahr = 1, anzahl = 2) %>%
-  dplyr::rename(anzahl = "anzahl_millionen_tonnen_co2_equivalent") %>%
+  dplyr::rename("anzahl_millionen_tonnen_co2_equivalent" = anzahl) %>%
   dplyr::mutate(spatialunit_uid = spatial_mapping_country())
 ds$postgres_export
 
@@ -37,9 +36,13 @@ statbotData::testrun_queries(
 
 # -------------------------------------------------------------------------
 # Step: Write metadata tables
-#   input: ds$postgres_export
+#   input:  ds$postgres_export
 #   output: ds$dir/metadata_tables.csv
 #           ds$dir/metadata_table_columns.csv
+#           ds$dir/sample.csv
 # -------------------------------------------------------------------------
 
 read_write_metadata_tables(ds)
+dataset_sample(ds)
+dim(ds$postgres_export)
+length(ds$postgres_export)
