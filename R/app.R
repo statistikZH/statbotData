@@ -50,7 +50,8 @@ server <- function(input, output) {
     queries <- readr::read_file(query_log_path)
     query_count <- stringr::str_count(queries, "--")
     queries <- queries %>%
-      stringr::str_replace_all("\\s*(?i)select\\s+", "<span style='font-family:monospace;<strong>SELECT</strong> ") %>%
+      # stringr::str_replace_all("\\s*(?i)select\\s+", "<span style=font-family:monospace;</span><strong>SELECT</strong> ") %>%
+      stringr::str_replace_all("\\s*(?i)select\\s+", "<strong>SELECT</strong> ") %>%
       stringr::str_replace_all(";", ";</span><br><pre>") %>%
       stringr::str_replace_all("--", "</pre><hr><strong>") %>%
       stringr::str_replace_all("\\?", "?</strong><br>") %>%
@@ -78,7 +79,7 @@ server <- function(input, output) {
       stringr::str_replace_all("\\s+(?i)like\\s+",                  " <strong>LIKE</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)ilike\\s+",                 " <strong>ILIKE</strong> ") %>%
       stringr::str_replace_all("\\s*(?i)=\\s*",                     " <strong>=</strong> ") %>%
-      stringr::str_replace_all("\\s*(?i)!=\\s*",                    " <strong>!=</strong> ") %>%
+      stringr::str_replace_all("\\s*(?i)!\\s*=\\s*",                    " <strong>!=</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)desc\\s*",                  " <strong>DESC</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)asc\\s*",                   " <strong>ASC</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)count\\s*",                 " <strong>COUNT</strong> ") %>%
