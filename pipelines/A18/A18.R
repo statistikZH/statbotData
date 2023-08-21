@@ -20,29 +20,12 @@ dff <- ds$data %>%
   dplyr::select(-stadt_agglomeration) %>%
   na.omit()
 
-
-dim(ds$data)
-dim(dff)
-
-
 dff_split <- split(dff, dff$resultat)
 
 dff_wert <- dff_split[1]$Wert
 dff_vi <- dff_split[2]$`Vertrauensintervall ± (in %, bzw. %-Punkten)`
 
-levels_dff_var <- levels(dff$variable)
-levels_dff_wert_var <- levels(dff_wert$variable)
-levels_dff_vi_var <- levels(dff_vi$variable)
-
 dff_wer_vi_joined <- dplyr::left_join(x = dff_wert, y = dff_vi, by = c("name", "jahr", "variable"))
-dff_wer_vi_joined$variable
-
-
-summary(dff_wer_vi_joined)
-
-dff_wer_vi_joined$resultat.y
-
-names(dff_wer_vi_joined)
 
 dff_cln <- dff_wer_vi_joined %>%
   dplyr::select(-resultat.x,
@@ -52,19 +35,32 @@ dff_cln <- dff_wer_vi_joined %>%
          ci = "data_gemass_variable.y")
 
 
-summary(dff_cln)
+dff_cln$spatialunit_ontology = "Municipality"
 
-dim(dff_wert)
-dim(dff_vi)
+map_df <- readr::read_csv("data/const/spatial_unit_postgres.csv")
 
 
-levels(dff$resultat)
 
-dll <- dff$variable %>%
-  levels() %>%
-  unique()
+ds$cleaned_data <- dff_cln
 
-statbotData::map_ds_spatial_units
+######
+
+
+spatial_map <- ds$cleaned_data %>%
+  dplyr::select(name) %>%
+  dplyr::distinct(name) %>%
+  map_ds_spatial_units(., spatial_dimensions = c("Country", "Municipality"))
+
+ds$postgres_export <- ds$cleaned_data %>%
+  dplyr::left_join(spatial_map, by = "Municipality") %>%
+  dplyr::select(-Municipality)
+
+dff_psql <- ds$postgres_export
+
+
+map_df <- readr::read_csv("data/const/spatial_unit_postgres.csv")
+
+statbotData::map_ds_spatial_units()
 
 dff$stadt_agglomeration
   dplyr::select(
