@@ -39,34 +39,9 @@ dff_cln$spatialunit_ontology = "Municipality"
 
 map_df <- readr::read_csv("data/const/spatial_unit_postgres.csv")
 
-
-# dff_cln_n <- dff_cln$name %>%
-#   unique() %>%
-#   sort()
-#
-# unique(dff_cln$name)
-# mpdfn <- map_df$name %>%
-#   unique() %>%
-#   sort()
-#
-# dff_cln_n[2] == mpdfn[268]
-#
-# dff_cln$name[1]
-
-
-######
-
-
-# dff_cln$stadt_name %<>% as.factor()
-# map_df$name %<>% as.factor()
 ds$cleaned_data <- dff_cln
 
-spatial_map <- ds$cleaned_data %>%
-  dplyr::select(stadt_name) %>%
-  dplyr::distinct(stadt_name) %>%
-  map_ds_spatial_units(., spatial_dimensions = c("Municipality"))
-
-# there is a bug in the pattern/match function
+# there is a bug in the pattern/match_function
 # the UID's for Zurich, Bern, Lugano, Lausanne have not been retrieved
 # therefore, using a more straghtway approach
 
@@ -87,5 +62,4 @@ statbotData::testrun_queries(ds$postgres_export,
                              ds$dir,
                              ds$name)
 
-dff_psql <- ds$postgres_export
-names(dff_psql)
+
