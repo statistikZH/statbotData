@@ -87,10 +87,10 @@ server <- function(input, output) {
       stringr::str_replace_all("\\s+(?i)as\\s+",                    " <strong>AS</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)on\\s+",                    " <strong>ON</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)and\\s+",                  " <strong>AND</strong> ") %>%
-      stringr::str_replace_all("\\s+(?i)sum\\s+",                  " <strong>SUM</strong> ") %>%
-      stringr::str_replace_all("\\s+(?i)avg\\s+",                  " <strong>AVG</strong> ") %>%
-      stringr::str_replace_all("\\s+(?i)min\\s+",                  " <strong>MIN</strong> ") %>%
-      stringr::str_replace_all("\\s+(?i)max\\s+",                  " <strong>MAX</strong> ") %>%
+      stringr::str_replace_all("\\s+(?i)sum\\s*",                  " <strong>SUM</strong> ") %>%
+      stringr::str_replace_all("\\s+(?i)avg\\s*",                  " <strong>AVG</strong> ") %>%
+      stringr::str_replace_all("\\s+(?i)min\\s*",                  " <strong>MIN</strong> ") %>%
+      stringr::str_replace_all("\\s+(?i)max\\s*",                  " <strong>MAX</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)row_number\\s+",           " <strong>ROW_NUMBER</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)rank\\s+",                 " <strong>RANK</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)dense_rank\\s+",           " <strong>DENSE_RANK</strong> ") %>%
