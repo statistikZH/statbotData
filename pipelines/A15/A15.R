@@ -7,6 +7,7 @@ ds <- create_dataset(id = "A15")
 # download the data -------------------------------------------------------
 
 # Might take 1 - 5 minutes
+ds$reversed <- TRUE
 ds <- download_data(ds)
 
 # data cleaning -----------------------------------------------------------
