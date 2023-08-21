@@ -8,7 +8,7 @@ WHERE S.name="Canton of Bern"
     AND T.farmholding_system == "Farmholding system - total";
 
 -- How many farms were there in all of Switzerland between 2012 and 2018?
-SELECT year, farmholding_system, farmholdings
+SELECT year, farmholdings
 FROM employees_farmholdings_agricultural_area_livestock_per_canton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
 WHERE S.name="Switzerland"
@@ -36,7 +36,7 @@ ORDER BY livestock_pigs DESC
 LIMIT 5;
 
 -- What was the average number of cows per farm in the canton of Vaud since 2017?
-SELECT livestock_beef_cattle_and_cows / farmholdings AS average_cows_per_farmholding_vaud
+SELECT year, livestock_beef_cattle_and_cows / farmholdings AS average_cows_per_farmholding_vaud
 FROM employees_farmholdings_agricultural_area_livestock_per_canton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
 WHERE S.name="Canton Vaud"
