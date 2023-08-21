@@ -101,7 +101,8 @@ read_data.px <- function(ds) {
     df <- pxRRead::scan_px_file(
       tmp,
       locale = ds$lang,
-      encoding = ds$encoding
+      encoding = ds$encoding,
+      reverse_stub = !is.null(ds$reversed)
     )
     ds$data <- df$dataframe
   }
