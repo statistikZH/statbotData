@@ -1,0 +1,6 @@
+name,table_name,data_type,description
+jahr,ausgewaehlte_variablen_nach_staedten_und_agglomerationen,character,Jahr
+var_name,ausgewaehlte_variablen_nach_staedten_und_agglomerationen,character,The Variable Name - the variable value or its confidence interval
+value,ausgewaehlte_variablen_nach_staedten_und_agglomerationen,numeric,The actual variable value
+ci,ausgewaehlte_variablen_nach_staedten_und_agglomerationen,numeric,The confidence interval of the variable value
+spatialunit_uid,ausgewaehlte_variablen_nach_staedten_und_agglomerationen,character,The Spatial Unit UID

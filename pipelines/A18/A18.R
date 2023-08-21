@@ -16,7 +16,7 @@ ds$data
 # -------------------------------------------------------------------------
 dff <- ds$data %>%
   janitor::clean_names() %>%
-  dplyr::mutate(name = stringr::str_replace(.$stadt_agglomeration, ":.*", "")) %>%
+  dplyr::mutate(stadt_name = stringr::str_replace(.$stadt_agglomeration, ":.*", "")) %>%
   dplyr::select(-stadt_agglomeration) %>%
   na.omit()
 
@@ -25,7 +25,7 @@ dff_split <- split(dff, dff$resultat)
 dff_wert <- dff_split[1]$Wert
 dff_vi <- dff_split[2]$`Vertrauensintervall ± (in %, bzw. %-Punkten)`
 
-dff_wer_vi_joined <- dplyr::left_join(x = dff_wert, y = dff_vi, by = c("name", "jahr", "variable"))
+dff_wer_vi_joined <- dplyr::left_join(x = dff_wert, y = dff_vi, by = c("stadt_name", "jahr", "variable"))
 
 dff_cln <- dff_wer_vi_joined %>%
   dplyr::select(-resultat.x,
@@ -40,94 +40,52 @@ dff_cln$spatialunit_ontology = "Municipality"
 map_df <- readr::read_csv("data/const/spatial_unit_postgres.csv")
 
 
+# dff_cln_n <- dff_cln$name %>%
+#   unique() %>%
+#   sort()
+#
+# unique(dff_cln$name)
+# mpdfn <- map_df$name %>%
+#   unique() %>%
+#   sort()
+#
+# dff_cln_n[2] == mpdfn[268]
+#
+# dff_cln$name[1]
 
-ds$cleaned_data <- dff_cln
 
 ######
 
 
+# dff_cln$stadt_name %<>% as.factor()
+# map_df$name %<>% as.factor()
+ds$cleaned_data <- dff_cln
+
 spatial_map <- ds$cleaned_data %>%
-  dplyr::select(name) %>%
-  dplyr::distinct(name) %>%
-  map_ds_spatial_units(., spatial_dimensions = c("Country", "Municipality"))
+  dplyr::select(stadt_name) %>%
+  dplyr::distinct(stadt_name) %>%
+  map_ds_spatial_units(., spatial_dimensions = c("Municipality"))
+
+# there is a bug in the pattern/match function
+# the UID's for Zurich, Bern, Lugano, Lausanne have not been retrieved
+# therefore, using a more straghtway approach
+
+spatial_map <- ds$cleaned_data %>%
+  dplyr::select(stadt_name) %>%
+  dplyr::distinct(stadt_name) %>%
+  left_join(map_df, by = c("stadt_name" = "name")) %>%
+  select(stadt_name, spatialunit_uid)
+
 
 ds$postgres_export <- ds$cleaned_data %>%
-  dplyr::left_join(spatial_map, by = "Municipality") %>%
-  dplyr::select(-Municipality)
+  dplyr::left_join(spatial_map) %>%
+  dplyr::select(-stadt_name, -spatialunit_ontology)
+
+assertthat::noNA(ds$postgres_export$spatialunit_uid)
+
+statbotData::testrun_queries(ds$postgres_export,
+                             ds$dir,
+                             ds$name)
 
 dff_psql <- ds$postgres_export
-
-
-map_df <- readr::read_csv("data/const/spatial_unit_postgres.csv")
-
-statbotData::map_ds_spatial_units()
-
-dff$stadt_agglomeration
-  dplyr::select(
-    -c(datum_und_vorlage)
-  ) %>%
-  dplyr::rename(
-    "anzahl" = volksabstimmungen_ergebnisse_ebene_kanton_seit_1866
-  ) %>%
-  tidyr::pivot_wider(
-    names_from = c("ergebnis"),
-    values_from = anzahl
-  ) %>%
-  janitor::clean_names(
-  ) %>%
-  dplyr::rename(
-    "anzahl_stimmberechtigte" = stimmberechtigte,
-    "anzahl_abgegebene_stimmen" = abgegebene_stimmen,
-    "beteiligung_in_prozent" = beteiligung_in_percent,
-    "anzahl_gueltige_stimmzettel" = gultige_stimmzettel,
-    "anzahl_ja_stimmen" = ja,
-    "anzahl_nein_stimmen" = nein,
-    "ja_in_prozent" = ja_in_percent
-  ) -> ds$cleaned_data
-print(ds$cleaned_data)
-
-# -------------------------------------------------------------------------
-# Step: Derive the spatial units mapping
-#   input: ds$cleaned_data
-#.  output: ds$spatial_mapping
-# --------------------------------------------------------------------------
-
-ds$cleaned_data %>%
-  dplyr::select(
-    kanton
-  ) %>%
-  dplyr::distinct(
-    kanton
-  ) %>%
-  statbotData::map_ds_spatial_units(
-    c("Country", "Canton")
-  ) -> ds$spatial_mapping
-ds$spatial_mapping %>% print(n = Inf)
-
-# -------------------------------------------------------------------------
-# Step: Apply spatial mapping
-#   input: ds$cleaned_data, ds$spatial_mapping
-#.  output: ds$postgres_export
-# --------------------------------------------------------------------------
-
-ds$cleaned_data %>%
-  dplyr::left_join(
-    ds$spatial_mapping,
-    by = "kanton"
-  ) %>%
-  dplyr::select(
-    -c(kanton)
-  ) -> ds$postgres_export
-ds$postgres_export
-
-# -------------------------------------------------------------------------
-# Step: Testrun queries on sqllite
-#   input: ds$postgres_export, A8/queries.sql
-#   output: A8/queries.log
-# -------------------------------------------------------------------------
-
-statbotData::testrun_queries(
-  ds$postgres_export,
-  ds$dir,
-  ds$name
-)
+names(dff_psql)
