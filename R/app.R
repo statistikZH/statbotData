@@ -79,7 +79,7 @@ server <- function(input, output) {
       stringr::str_replace_all("\\s+(?i)like\\s+",                  " <strong>LIKE</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)ilike\\s+",                 " <strong>ILIKE</strong> ") %>%
       stringr::str_replace_all("\\s*(?i)=\\s*",                     " <strong>=</strong> ") %>%
-      stringr::str_replace_all("\\s*(?i)!\\s*=\\s*",                    " <strong>!=</strong> ") %>%
+      stringr::str_replace_all("\\s*(?i)!\\s*=\\s*",                " <strong>!=</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)desc\\s*",                  " <strong>DESC</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)asc\\s*",                   " <strong>ASC</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)count\\s*",                 " <strong>COUNT</strong> ") %>%
@@ -99,8 +99,6 @@ server <- function(input, output) {
       stringr::str_replace_all("\\s+(?i)last_value\\s+",           " <strong>LAST_VALUE</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)lead\\s+",                 " <strong>LEAD</strong> ") %>%
       stringr::str_replace_all("\\s+(?i)lag\\s+",                  " <strong>LAG</strong> ")
-
-
 
     if (file.exists(query_log_path)) {
       paste("Number of queries:", query_count, "\n", queries)
