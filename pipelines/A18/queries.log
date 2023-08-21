@@ -7,3 +7,12 @@ SELECT COUNT(*) FROM ausgewaehlte_variablen_nach_staedten_und_agglomerationen;
   `COUNT(*)`
        <int>
 1     109533
+
+Query Nr. 2
+-- What is the average of the value variable
+SELECT AVG(value) FROM ausgewaehlte_variablen_nach_staedten_und_agglomerationen;
+=======================================================
+# A tibble: 1 × 1
+  `AVG(value)`
+         <dbl>
+1       70673.
