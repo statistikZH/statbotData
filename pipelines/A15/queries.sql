@@ -68,7 +68,7 @@ WHERE year = (
     FROM employees_farmholdings_agricultural_area_livestock_per_canton
 )
 GROUP BY year, S.name
-ORDER BY percentage_organic_farms
+ORDER BY percentage_organic_farms DESC
 LIMIT 1;
 
 -- Does the average organic farm have less employees than the average non-organic farm in 2022?
