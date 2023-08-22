@@ -15,7 +15,6 @@ dataset_sample <- function(ds, sample_size=40) {
   file_path <- paste0(ds$dir, "sample.csv")
   ds$sample <- ds$postgres_export
   row_count <- dim(ds$postgres_export)[1]
-  print(row_count)
   if (row_count > sample_size) {
     sample_rows <- sample(1:row_count, sample_size)
     ds$sample <- ds$sample[sample_rows,]
