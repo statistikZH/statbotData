@@ -63,9 +63,26 @@ ds$cleaned_data <- ds$data %>%
     !stringr::str_starts(straftat, "Total")
   ) %>%
   dplyr::rename(
-    "anzahl_straftaten" = polizeilich_registrierte_straftaten_gemass_strafgesetzbuch
+    "anzahl" = polizeilich_registrierte_straftaten_gemass_strafgesetzbuch
   ) %>%
-  dplyr::left_join(df_offence_mapping, by = "straftat")
+  dplyr::left_join(df_offence_mapping, by = "straftat") %>%
+  tidyr::pivot_wider(
+    names_from = c("ausfuhrungsgrad", "aufklarungsgrad"),
+    values_from = anzahl,
+    names_prefix = "anzahl_straftaten"
+  ) %>%
+  janitor::clean_names() %>%
+  dplyr::rename(
+    anzahl_straftaten = anzahl_straftaten_ausfuhrungsgrad_total_aufklarungsgrad_total,
+    anzahl_straftaten_unaufgeklaert = anzahl_straftaten_ausfuhrungsgrad_total_unaufgeklart,
+    anzahl_straftaten_aufgeklaert = anzahl_straftaten_ausfuhrungsgrad_total_aufgeklart,
+    anzahl_straftaten_vollendet = anzahl_straftaten_vollendet_aufklarungsgrad_total,
+    anzahl_straftaten_vollendet_unaufgeklart = anzahl_straftaten_vollendet_unaufgeklart,
+    anzahl_straftaten_vollendet_aufgeklart = anzahl_straftaten_vollendet_aufgeklart,
+    anzahl_straftaten_versucht = anzahl_straftaten_versucht_aufklarungsgrad_total,
+    anzahl_straftaten_versucht_unaufgeklart = anzahl_straftaten_versucht_unaufgeklart,
+    anzahl_straftaten_versucht_aufgeklart = anzahl_straftaten_versucht_aufgeklart
+  )
 ds$cleaned_data
 
 # -------------------------------------------------------------------------
@@ -82,7 +99,7 @@ spatial_mapping <- ds$cleaned_data %>%
 ds$postgres_export <- ds$cleaned_data %>%
   dplyr::left_join(spatial_mapping, by = "kanton") %>%
   dplyr::select(-c(kanton))
-ds$postgres_export
+colnames(ds$postgres_export)
 
 # -------------------------------------------------------------------------
 # Step: Testrun queries on sqllite
