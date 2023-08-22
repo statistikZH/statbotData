@@ -33,7 +33,7 @@ df_offence_mapping <- df_offences_and_categories %>%
 # Iterate through the crime vector to create the mapping
 offence_mapping <- list()
 categorie <- NULL
-for (offence in rev(ds_offences_and_categories$straftat)) {
+for (offence in rev(df_offences_and_categories$straftat)) {
   if (grepl("^Total", offence)) {
     category <- offence %>% stringr::str_remove("^Total [:digit:]*\\.[:blank:]Titel:[:blank:]")
   } else if (grepl(pattern_offence, offence)) {
