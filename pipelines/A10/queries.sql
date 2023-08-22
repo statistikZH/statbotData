@@ -32,3 +32,13 @@ AND T.ausfuhrungsgrad = 'Vollendet'
 AND T.aufklarungsgrad  = 'Aufklärungsgrad - Total'
 GROUP BY straftat
 ORDER BY anzahl_straftaten LIMIT 1;
+
+-- Welches ist die Kategorie der hauefigst begangenen Verbrechen in der Schweiz?
+SELECT T.kategorie as haufigste_straftaten__kategorie_schweiz
+FROM straftaten_aufklaerung as T
+JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
+WHERE S.name_de = 'Schweiz' AND S.country = TRUE
+AND T.ausfuhrungsgrad != 'Ausführungsgrad - Total'
+AND T.aufklarungsgrad != 'Aufklärungsgrad - Total'
+GROUP BY T.kategorie
+ORDER BY anzahl_straftaten LIMIT 1;
