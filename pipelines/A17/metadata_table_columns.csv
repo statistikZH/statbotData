@@ -1,11 +1,9 @@
-name;table_name;data_type;description;example_values
-jahr;volksabstimmung_nach_kanton_seit_1861;categorical;Jahr der Abstimmung: von 1866 bis 2022;1919
-vorlage_title;volksabstimmung_nach_kanton_seit_1861;categorical;Titel der Abstimmungsvorlage;"Bundesgesetz über die Errichtung der schweizerischen Bundesbank"
-anzahl_stimmberechtigte;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl Stimmberechtigte;173734
-anzahl_abgegebene_stimmen;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl abgegebene Stimmenen;173734
-beteiligung_in_prozent;volksabstimmung_nach_kanton_seit_1861;numeric;Wahlbeteiligung in Prozent;85.15
-anzahl_gueltige_stimmzettel;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl gültige Stimmenzettel;173734
-anzahl_ja_stimmen;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl ja Stimmen;173734
-anzahl_nein_stimmen;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl nein Stimmen;173734
-ja_in_prozent;volksabstimmung_nach_kanton_seit_1861;numeric;ja Stimmen in Prozent der Gesamtstimmen;85.15
-spatialunit_uid;volksabstimmung_nach_kanton_seit_1861;categorical;Schweiz und Kantone;0_CH
+name;table_name;data_type;titel;title_en;example_values
+vorlage_title;volksabstimmung_nach_kanton_seit_1861;categorical;Titel der Abstimmungsvorlage;Title of the referendum;"Bundesgesetz über die Errichtung der schweizerischen Bundesbank","Bundesbeschluss betreffend Revision von Art. 103 der Bundesverfassung und Aufnahme eines Artikels 114bis in die Bundesverfassung","Volksinitiative «für die vermehrte Mitbestimmung der Bundesversammlung und des Schweizervolkes im Nationalstrassenbau»"
+anzahl_stimmberechtigte;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl Stimmberechtigte;number of voters;
+anzahl_abgegebene_stimmen;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl abgegebene Stimmenen;number of votes cast;
+beteiligung_in_prozent;volksabstimmung_nach_kanton_seit_1861;numeric;Wahlbeteiligung in Prozent;Voter turnout in percent;
+anzahl_gueltige_stimmzettel;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl gültige Stimmenzettel;Number of valid ballot papers;
+anzahl_ja_stimmen;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl ja Stimmen;number yes votes;
+anzahl_nein_stimmen;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl nein Stimmen;Number of no votes;
+ja_in_prozent;volksabstimmung_nach_kanton_seit_1861;numeric;ja Stimmen in Prozent der Gesamtstimmen;Yes Votes as a percentage of the total votes;
