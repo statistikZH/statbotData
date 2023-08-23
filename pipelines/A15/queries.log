@@ -1,0 +1,80 @@
+
+Query Nr. 1
+-- What farm animals were bred in the canton of Bern in 2020?
+SELECT livestock_beef_cattle_and_cows, livestock_sheep, livestock_goats, livestock_pigs, livestock_poultry, livestock_other_animals FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name="Canton of Bern"     AND S.canton=TRUE     AND T.year=2020     AND T.farmholding_system == "Farmholding system - total";
+=======================================================
+# A tibble: 1 × 6
+  livestock_beef_cattle_and_cows livestock_sheep livestock_goats livestock_pigs
+                           <dbl>           <dbl>           <dbl>          <dbl>
+1                         296805           46174           13781         209465
+# ℹ 2 more variables: livestock_poultry <dbl>, livestock_other_animals <dbl>
+
+Query Nr. 2
+-- How many farms were there in all of Switzerland between 2012 and 2018?
+SELECT year, farmholdings FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name="Switzerland"     AND S.country=TRUE     AND year BETWEEN 2012 AND 2018     AND T.farmholding_system == "Farmholding system - total";
+=======================================================
+# A tibble: 7 × 2
+   year farmholdings
+  <dbl>        <dbl>
+1  2018        50852
+2  2017        51620
+3  2016        52263
+4  2015        53253
+5  2014        54057
+6  2013        55207
+7  2012        56575
+
+Query Nr. 3
+-- What was the total agricultural surface area in the canton of Geneva in 2000?
+SELECT utilised_agricultural_area_in_hectares as utilised_agricultural_area_in_hectares_canton_geneva FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name="Canton Geneva"     AND S.canton=TRUE     AND year=2000     AND T.farmholding_system == "Farmholding system - total";
+=======================================================
+# A tibble: 1 × 1
+  utilised_agricultural_area_in_hectares_canton_geneva
+                                                 <dbl>
+1                                               11832.
+
+Query Nr. 4
+-- What were the 5 cantons farming the most pigs in 2012?
+SELECT S.name as canton_name, livestock_pigs as total_pigs FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND year=2012     AND T.farmholding_system == "Farmholding system - total" ORDER BY livestock_pigs DESC LIMIT 5;
+=======================================================
+# A tibble: 5 × 2
+  canton_name          total_pigs
+  <chr>                     <dbl>
+1 Canton of Lucerne        415612
+2 Canton of Bern           271558
+3 Canton Thurgau           194685
+4 Canton of St. Gallen     183013
+5 Canton Aargau            102111
+
+Query Nr. 5
+-- What was the average number of cows per farm in the canton of Vaud since 2017?
+SELECT year, livestock_beef_cattle_and_cows / farmholdings AS average_cows_per_farmholding_vaud FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name="Canton Vaud"     AND S.canton=TRUE     AND year >= 2017     AND T.farmholding_system == "Farmholding system - total";
+=======================================================
+# A tibble: 6 × 2
+   year average_cows_per_farmholding_vaud
+  <dbl>                             <dbl>
+1  2022                              31.4
+2  2021                              30.3
+3  2020                              30.3
+4  2019                              30.3
+5  2018                              30.3
+6  2017                              30.6
+
+Query Nr. 6
+-- What canton has the highest percentage of organic farms most recently?
+SELECT     year,     S.name AS canton_name,     (         SUM(             CASE WHEN farmholding_system = 'Organic farming'             THEN farmholdings             ELSE 0 END         ) * 100.0 /         SUM(             CASE WHEN farmholding_system = 'Farmholding system - total'             THEN farmholdings             ELSE 0 END         )     ) AS percentage_organic_farms FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE year = (     SELECT MAX(year)     FROM employees_farmholdings_agricultural_area_livestock_per_canton ) GROUP BY year, S.name ORDER BY percentage_organic_farms DESC LIMIT 1;
+=======================================================
+# A tibble: 1 × 3
+   year canton_name       percentage_organic_farms
+  <dbl> <chr>                                <dbl>
+1  2022 Canton Graubünden                     58.9
+
+Query Nr. 7
+-- Does the average organic farm have less employees than the average non-organic farm in 2022?
+SELECT farmholding_system, employees_total / farmholdings AS average_employees_per_farm FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE T.year=2022     AND S.name="Switzerland"     AND S.country=TRUE     AND T.farmholding_system IN ("Organic farming", "Conventional farming");
+=======================================================
+# A tibble: 2 × 2
+  farmholding_system   average_employees_per_farm
+  <chr>                                     <dbl>
+1 Organic farming                            3.47
+2 Conventional farming                       3.02
