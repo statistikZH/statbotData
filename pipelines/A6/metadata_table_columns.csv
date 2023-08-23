@@ -1,5 +1,3 @@
-name;table_name;data_type;description;example_values
-jahr;abstimmungsvorlagen_seit_1971;categorical;jahre 1971 bis 2022 jährlich;2020
-thema;abstimmungsvorlagen_seit_1971;categorical;Themen für Abstimmungsvorlagen;Aussenpolitik
-anzahl_abstimmungsvorlagen;abstimmungsvorlagen_seit_1971;numeric;Anzahl Abstimmungsvorlagen;3
-spatialunit_uid;abstimmungsvorlagen_seit_1971;categorical;nur Schweiz;0_CH
+name;table_name;data_type;titel;title_en;example_values
+thema;abstimmungsvorlagen_seit_1971;categorical;Thema;Topic;"Aussenpolitik","Öffentliche Finanzen","Umwelt und Lebensraum"
+anzahl_abstimmungsvorlagen;abstimmungsvorlagen_seit_1971;numeric;Anzahl Abstimmungsvorlagen;Number of voting bills;

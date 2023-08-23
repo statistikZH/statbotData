@@ -1,2 +1,2 @@
-name;language;description
-abstimmungsvorlagen_seit_1971;de;Volksabstimmungen (Anzahl Vorlagen nach Thema seit 1971)
+name;language;data_source_url;title;title_en;description;description_en;temporal_coverage;update_frequency;spatial_coverage
+abstimmungsvorlagen_seit_1971;de;https://www.bfs.admin.ch/asset/de/px-x-1703010000_103;Volksabstimmungen (Anzahl Vorlagen nach Thema seit 1971);Referendums (number of referendums by topic since 1971);"Dieser Dataset präsentiert die Anzahl Abstimmungsvorlagen nach Periode (Jahrzehnte oder Jahre) und Thema der Vorlage, ab 1971.";"This dataset presents the number of voting bills by period (decades or years) and topic of the bill, starting in 1971.";1971-2022;ANNUAL;Country
