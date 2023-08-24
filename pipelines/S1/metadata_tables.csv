@@ -1,2 +1,2 @@
-name;language;description
-median_strompreis_per_kanton;de;mittlerer Energiepreis pro Verbrauchsprofil über Jahre und Kantone: das Energieprodukt wird nur nach der Preisklasse differenziert aber nicht nach dem Ursprung der Energiequelle
+name;language;data_source_url;title;title_en;description;description_en;temporal_coverage;update_frequency;spatial_coverage
+median_strompreis_per_kanton;de;https://energy.ld.admin.ch/elcom/electricityprice-canton;Median Strompreis per Kanton;Median electricity tariff per canton;mittlerer Energiepreis pro Verbrauchsprofil über Jahre und Kantone: das Energieprodukt wird nur nach der Preisklasse differenziert aber nicht nach dem Ursprung der Energiequelle;average energy price per consumption profile over years and cantons: the energy product is only differentiated by price class but not by the origin of the energy source;2011-2023;ANNUAL;Canton
