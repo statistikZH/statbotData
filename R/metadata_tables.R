@@ -51,17 +51,26 @@ read_write_metadata_tables <- function(ds, overwrite = FALSE) {
   metadata_tables <- tibble::tibble(
     name = ds$name,
     language = ds$lang,
-    description = table_description
+    data_source_url = "",
+    title = table_description,
+    title_en = "",
+    description = "",
+    description_en = "",
+    temporal_coverage = "",
+    update_frequency = "",
+    spatial_coverage = ""
   )
 
   # columns are received from the columns of the postgres export
   columns <- colnames(ds$postgres_export)
+  columns <- columns[!(columns %in% c("jahr", "spatialunit_uid"))]
   columns_count <- length(columns)
   metadata_table_columns <- tibble::tibble(
     name = columns,
     table_name = rep(ds$name, times = columns_count),
     data_type = rep("", times = columns_count),
-    description = rep("", times = columns_count),
+    title = rep("", times = columns_count),
+    title_en = rep("", times = columns_count),
     example_values = rep("", times = columns_count)
   )
 
