@@ -1,4 +1,4 @@
-name;table_name;data_type;titel;title_en;example_values
+name;table_name;data_type;title;title_en;example_values
 partei;nationalratswahlen;categorical;Partei;Political party;"FDP","CVP","SP","Sep.","Übrige"
 anzahl_parteistimmen;nationalratswahlen;numeric;Anzahl Parteistimmen;number of party votes;
 anzahl_fiktive_wahlende;nationalratswahlen;numeric;Anzahl fiktive Wählende;Number of fictitious voters;

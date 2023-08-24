@@ -1,4 +1,4 @@
-name;table_name;data_type;titel;title_en;example_values
+name;table_name;data_type;title;title_en;example_values
 energietraeger;energiebilanz_schweiz_in_tera_joule;categorical;Energieträger;Energy source;"Elektrizität","Müll und Industrieabfälle","Wasserkraft"
 terajoule_bruttoverbrauch;energiebilanz_schweiz_in_tera_joule;numerical;Bruttoverbrauch in Terajoule;Gross consumption in terajoules;
 terajoule_eigenverbrauch_des_energiesektors_netzverluste_verbrauch_der_speicherungen;energiebilanz_schweiz_in_tera_joule;numerical;Eigenverbrauch des Energiesektors netzverluste verbrauch der Speicherungen;own consumption of the energy sector grid losses consumption of the storages;
