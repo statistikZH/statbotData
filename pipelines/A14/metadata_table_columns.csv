@@ -1,7 +1,5 @@
-name;table_name;data_type;description;example_values
-year;tourism_economy_by_canton;categorical;Year 2016 until 2019 anually;2017
-mio_chf_gross_value_added_of_tourism;tourism_economy_by_canton;numeric;Amount in million CHF of Gross Value that was added by tourism;1228.84
-percent_share_gross_value_added_of_tourism;tourism_economy_by_canton;numeric;Percentage share of Gross Value that was added by tourism;3.33
-total_full_time_employment_of_tourism;tourism_economy_by_canton;numeric;Full time employment in Tourism;12210.46
-percent_share_full_time_employment_of_tourism;tourism_economy_by_canton;numeric;Percentage share of full time employment in tourism;8.17
-spatialunit_uid;tourism_economy_by_canton;categorical;Swiss and Cantons;12_A.ADM1
+name;table_name;data_type;titel;title_en;example_values
+mio_chf_gross_value_added_of_tourism;tourism_economy_by_canton;numeric;Amount in million CHF of Gross Value that was added by tourism;Amount in million CHF of Gross Value that was added by tourism;
+percent_share_gross_value_added_of_tourism;tourism_economy_by_canton;numeric;Percentage share of Gross Value that was added by tourism;Percentage share of Gross Value that was added by tourism;
+total_full_time_employment_of_tourism;tourism_economy_by_canton;numeric;Full time employment in Tourism;Full time employment in Tourism;
+percent_share_full_time_employment_of_tourism;tourism_economy_by_canton;numeric;Percentage share of full time employment in tourism;Percentage share of full time employment in tourism;

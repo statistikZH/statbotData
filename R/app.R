@@ -19,8 +19,8 @@ ui <- basicPage(
               width = 500,
               choices = choices$selector),
   tabsetPanel(
-    tabPanel("Table", tableOutput("metadata_table")),
-    tabPanel("Columns", tableOutput("metadata_columns")),
+    tabPanel("Table", dataTableOutput("metadata_table")),
+    tabPanel("Columns", dataTableOutput("metadata_columns")),
     tabPanel("Sample", dataTableOutput("sample")),
     tabPanel("Queries", htmlOutput("query")),
     tabPanel("Spatials", dataTableOutput("spatial"))
@@ -33,7 +33,10 @@ server <- function(input, output) {
     pipeline_indicator <- input$dataset %>% stringr::str_extract(pattern_pipeline_indicator)
     metadata_table_path <- paste0("../pipelines/", pipeline_indicator, "/metadata_tables.csv")
     if (file.exists(metadata_table_path)) {
-      readr::read_delim(metadata_table_path, delim = ";")
+      df <- readr::read_delim(metadata_table_path, delim = ";")
+      df_flipped <- tibble::as_tibble(cbind(key = names(df), t(df))) %>%
+        dplyr::rename(value = V2)
+      return(df_flipped)
     }
   })
 
@@ -125,14 +128,13 @@ server <- function(input, output) {
     }
   })
 
-
   # Show metadata for table
-  output$metadata_table <- renderTable({
+  output$metadata_table <- renderDataTable({
     metadataTableOutput()
   })
 
   # Show metadata for columns
-  output$metadata_columns <- renderTable({
+  output$metadata_columns <- renderDataTable({
     metadataColumnsOutput()
   })
 

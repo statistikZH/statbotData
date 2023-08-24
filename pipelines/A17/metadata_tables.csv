@@ -1,2 +1,2 @@
-name;language;description
-volksabstimmung_nach_kanton_seit_1861;de;Volksabstimmungen (Ergebnisse Ebene Kanton seit 1866)
+name;language;data_source_url;title;title_en;description;description_en;temporal_coverage;update_frequency;spatial_coverage
+volksabstimmung_nach_kanton_seit_1861;de;https://www.bfs.admin.ch/asset/de/px-x-1703030000_100;Volksabstimmungen (Ergebnisse Ebene Kanton seit 1866);Referendums (results at canton level since 1866);Dieser Dataset präsentiert die Daten der Volksabstimmungen (Stimmberechtigte, Beteiligung, Stimmzettel, Ergebnisse) nach Kanton und Abstimmungsvorlage, ab 1866.;This dataset presents referendum data (voters, turnout, ballots, results) by canton and voting template, starting in 1866.;1866-2022;irregular;Canton;

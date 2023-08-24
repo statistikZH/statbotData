@@ -1,2 +1,2 @@
-name;language;description
-tourism_economy_by_canton;en;Regional indicators of the Tourism Satellite Accounts by Indicator, Canton, Product and Year
+name;language;data_source_url;title;title_en;description;description_en;temporal_coverage;update_frequency;spatial_coverage
+tourism_economy_by_canton;en;https://www.bfs.admin.ch/asset/en/px-x-1002020000_101;Regional indicators of the Tourism Satellite Accounts by canton and product;Regional indicators of the Tourism Satellite Accounts by canton and product;This dataset presents the yearly data on tourism expenditure, tourism-related employment and tourism-connected gross value added (Tourism Satellite Accounts) by canton and product, since 2016.;This dataset presents the yearly data on tourism expenditure, tourism-related employment and tourism-connected gross value added (Tourism Satellite Accounts) by canton and product, since 2016.;2016-2019;ANNUAL;Canton
