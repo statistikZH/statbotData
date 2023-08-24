@@ -1,4 +1,4 @@
-name;table_name;data_type;titel;title_en;example_values
+name;table_name;data_type;title;title_en;example_values
 forstzone;pflanzungen_schweiz;categorical;Forstzone;forest zone;"Schweiz","Jura","Mittelland","Voralpen","Alpen","Alpen-Südseite"
 eigentumertyp;pflanzungen_schweiz;categorical;Eigentümertyp;owner type;"Eigentümertyp - Total","Öffentliche Wälder","Privatwälder"
 holzartengruppe;pflanzungen_schweiz;categorical;Holzartengruppe;wood species group;"Holzartengruppe - Total","Nadelholz","Laubholz"

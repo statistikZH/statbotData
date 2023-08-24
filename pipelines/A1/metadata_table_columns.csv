@@ -1,4 +1,4 @@
-name;table_name;data_type;titel;title_en;example_values
+name;table_name;data_type;title;title_en;example_values
 genutzte_infrastruktur;medizinisch_technische_infrastruktur;categorical;genutzte Infrastruktur;infrastructure used;"Gamma Camera (inklusive Szintigraphie und SPECT-Scanner)","Linearbeschleuniger (Radiotherapie)","MRI"
 anzahl_gerate;medizinisch_technische_infrastruktur;numeric;Anzahl der Geräte;number of devices;
 anzahl_untersuchungen_total;medizinisch_technische_infrastruktur;numeric;Anzahl aller Untersuchungen;Number of all examinations;

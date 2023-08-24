@@ -1,4 +1,4 @@
-name;table_name;data_type;titel;title_en;example_values
+name;table_name;data_type;title;title_en;example_values
 aufgabenbereich_des_staates;staatsausgaben_nach_aufgabenbereichen_cofog;categorical;Aufgabenbereich des Staates;Scope of functions of the state;"Wirtschaftliche Angelegenheiten n.a.g.","Umweltschutz"
 institutioneller_sektor;staatsausgaben_nach_aufgabenbereichen_cofog;categorical;institutioneller Sektor;institutional sector;"Staat","Kantone","Bund","Gemeinden","Öffentliche Sozialversicherungen"
 ausgaben_in_mio_chf;staatsausgaben_nach_aufgabenbereichen_cofog;numeric;Ausgaben in Millionen CHF;Expenditures in millions of CHF;

@@ -1,4 +1,4 @@
-name;table_name;data_type;titel;title_en;example_values
+name;table_name;data_type;title;title_en;example_values
 rententyp;ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit;categorical;Rentenart;Pension type;"Zusatzrente für Kinder (Mutter)","Zusatzrente für Ehepartner","Altersrente"
 wohnsitzstaat_kategorie;ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit;categorical;Wohnsitz Kategorie;Residence category;"Ausland","Schweiz","Wohnsitzstaat - Total"
 staatsangehorigkeit_kategorie;ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit;categorical;Staatsangehörigkeit Kategorie;nationality category;"Ausland","Schweiz","Staatsangehörigkeit - Total"

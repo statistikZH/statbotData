@@ -1,4 +1,4 @@
-name;table_name;data_type;titel;title_en;example_values
+name;table_name;data_type;title;title_en;example_values
 verbrauchskategorien;median_strompreis_per_kanton;categorical;Verbrauchskategorien;Consumption categories;"C5: (500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 150 kW' Mittelspannung' eigene Transformatorenstation)","H4: (4'500 kWh/Jahr: 5-Zimmerwohnung mit Elektroherd und Tumbler (ohne Elektroboiler))","H2: (2'500 kWh/Jahr: 4-Zimmerwohnung mit Elektroherd)"
 energieprodukt;median_strompreis_per_kanton;categorical;Energieprodukt;Energy product;"Günstigstes Produkt" "Standardprodukt"
 mittlerer_preis_rappen_pro_kw_hr;median_strompreis_per_kanton;numeric;mittlerer Preis in Rappen pro Kilowatt Stunde;average price in rappen per kilowatt hour
