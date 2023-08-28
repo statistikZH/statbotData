@@ -67,3 +67,11 @@ SELECT S.name, T.mio_chf_gross_value_added_of_tourism as mio_chf_gross_value_add
               Canton of Nidwalden                                     89.39
  Canton of Appenzell Ausserrhoden                                     83.46
   Canton of Appenzell Innerrhoden                                     56.62
+
+Query Nr. 8
+-- What was the percent of gross value added for tourism in the cantons of Zurich, Bern and Geneva in 2017?
+SELECT S.name, T.percent_share_gross_value_added_of_tourism FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND T.year = 2017     AND (         S.name LIKE "%Zurich%"         OR S.name LIKE "%Geneva%"         OR S.name LIKE "%Bern%"     );
+             name percent_share_gross_value_added_of_tourism
+ Canton of Zurich                                       2.62
+   Canton of Bern                                       2.61
+    Canton Geneva                                       3.27

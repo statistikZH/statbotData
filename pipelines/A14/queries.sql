@@ -75,3 +75,15 @@ JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
 WHERE S.canton = TRUE
     AND T.year = 2019
 ORDER BY mio_chf_gross_value_added_of_tourism_2019 DESC;
+
+-- What was the percent of gross value added for tourism in the cantons of Zurich, Bern and Geneva in 2017?
+SELECT S.name, T.percent_share_gross_value_added_of_tourism
+FROM tourism_economy_by_canton as T
+JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
+WHERE S.canton = TRUE
+    AND T.year = 2017
+    AND (
+        S.name LIKE "%Zurich%"
+        OR S.name LIKE "%Geneva%"
+        OR S.name LIKE "%Bern%"
+    );
