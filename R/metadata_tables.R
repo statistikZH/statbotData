@@ -68,7 +68,7 @@ read_write_metadata_tables <- function(ds, overwrite = FALSE) {
   metadata_table_columns <- tibble::tibble(
     name = columns,
     table_name = rep(ds$name, times = columns_count),
-    data_type = get_data_type(ds, columns),
+    data_type = rep("", times = columns_count),
     title = rep("", times = columns_count),
     title_en = rep("", times = columns_count),
     example_values = get_examples(ds, columns)
