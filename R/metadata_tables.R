@@ -71,7 +71,7 @@ read_write_metadata_tables <- function(ds, overwrite = FALSE) {
     data_type = rep("", times = columns_count),
     title = rep("", times = columns_count),
     title_en = rep("", times = columns_count),
-    example_values = rep("", times = columns_count)
+    example_values = get_examples(ds, columns)
   )
 
   # write the tibble to a file
@@ -88,4 +88,30 @@ read_write_metadata_tables <- function(ds, overwrite = FALSE) {
   )
   return(list(metadata_tables=metadata_tables,
               metadata_table_columns=metadata_table_columns))
+}
+
+#' get example values for the columns
+#'
+#' @param ds the dataset: it is expected to have
+#'           ds$postgres_export
+#' @param columns columns of the dataset: colnames(ds$postgres)
+#'
+#' @return example_values array of example values
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   get_examples(ds, columns)
+#'   # returns 3 values for each column from the samples
+#' }
+get_examples <- function(ds, columns) {
+  # For each column, we get 3 example values and paste them into a single string.
+  example_values <- columns %>%
+    purrr::map_chr(
+      \(x) unique(ds$postgres_export[, x]) %>%
+        head(3) %>%
+        dplyr::pull(x) %>%
+        paste(sep=" ", collapse="; ")
+    )
+  return(example_values)
 }
