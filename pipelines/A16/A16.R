@@ -18,7 +18,9 @@ ds$postgres_export <- ds$data %>%
   dplyr::filter(
     sex == "Sex - total"
   ) %>%
-  dplyr::select(-sex)
+  dplyr::select(
+    -sex,
+  )
 
 # Pivot indicators into 1 indicator per column and cleanup names
 ds$postgres_export %<>%
@@ -44,6 +46,8 @@ ds$postgres_export %<>%
     -change_of_population_type,
     -population_on_31_december,
     -natural_change,
+    -gender_change_in_the_civil_register_entry,
+    -gender_change_in_the_civil_register_exit
   )
 
 # Remove rows with no canton and 0 values
@@ -51,7 +55,9 @@ ds$postgres_export %<>%
 # information about net migration
 ds$postgres_export %<>%
   dplyr::filter(year >= 1981) %>%
-  dplyr::filter(canton != "No indication")
+  dplyr::filter(canton != "No indication") %>%
+  dplyr::filter(citizenship_category == "Citizenship (category) - total") %>%
+  dplyr::select(-citizenship_category)
 
 # join the cleaned data to the postgres spatial units table ---------------
 
@@ -71,4 +77,13 @@ assertthat::noNA(ds$postgres_export$spatialunit_uid)
 
 # ingest into postgres ----------------------------------------------------
 
-### important: name the table as demographic_balance_by_canton
+
+statbotData::testrun_queries(
+  ds$postgres_export,
+  ds$dir,
+  ds$name
+)
+
+read_write_metadata_tables(ds)
+
+dataset_sample(ds)
