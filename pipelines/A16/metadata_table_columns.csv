@@ -10,3 +10,4 @@ net_migration;demographic_balance_by_canton;numeric;"Difference between the numb
 acquisition_of_swiss_citizenship;demographic_balance_by_canton;numeric;"Number of people acquiring swiss nationality";"Number of people acquiring swiss nationality";"0; 14299; -14299"
 statistical_adjustment;demographic_balance_by_canton;numeric;"Changes to the population size that cannot be clearly attributed to demographic movements";"Changes to the population size that cannot be clearly attributed to demographic movements";"0; 574; -34"
 population_change;demographic_balance_by_canton;numeric;"Difference in the number of people compared to the previous year";"Difference in the number of people compared to the previous year";"37661; 20565; 17096"
+citizenship_category;demographic_balance_by_canton;categorical;"Citizenship category";"Citizenship category";"Citizenship (category) - total; Foreign country; Switzerland"
