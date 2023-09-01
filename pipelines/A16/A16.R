@@ -55,9 +55,7 @@ ds$postgres_export %<>%
 # information about net migration
 ds$postgres_export %<>%
   dplyr::filter(year >= 1981) %>%
-  dplyr::filter(canton != "No indication") %>%
-  dplyr::filter(citizenship_category == "Citizenship (category) - total") %>%
-  dplyr::select(-citizenship_category)
+  dplyr::filter(canton != "No indication")
 
 # join the cleaned data to the postgres spatial units table ---------------
 
@@ -76,7 +74,6 @@ assertthat::noNA(ds$postgres_export$spatialunit_uid)
 
 
 # ingest into postgres ----------------------------------------------------
-
 
 statbotData::testrun_queries(
   ds$postgres_export,
