@@ -243,7 +243,9 @@ spatial_mapping_country <- function() {
   return(spatial_unit_df$spatialunit_uid)
 }
 
-#' Get spatialunits of municipalities. This function uses temporal and cantonal information to
+#' Get spatialunits of municipalities.
+#'
+#' This function uses temporal and cantonal information to
 #' unambiguously assign a uid to each municipality. It handles duplicate names in different cantons,
 #' merged, renamed or split municipalities.
 #'
@@ -251,23 +253,28 @@ spatial_mapping_country <- function() {
 #' @param year column containing the year of observation.
 #' @param canton_abbr column containing the 2 letter abbreviation corresponding to the municipality's canton.
 #' @param municipality_name column containing the names of municipalities.
+#'
+#' @return spatial mapping with input columns, plus valid_until, valid_from, spatialunit and name.
+#' @import rlang dplyr
+#' @export
+#'
 map_ds_municipalities <- function(.data, year, canton_abbr, municipality_name) {
   spatial_map <- load_spatial_map() %>%
-    dplyr::filter(municipal, !canton) %>%
-    dplyr::select(spatialunit_uid, name, valid_from, valid_until)
+    filter(municipal, !canton) %>%
+    select(spatialunit_uid, name, valid_from, valid_until)
     # Fuzzy merge on date ranges
     # Municipalities with the same name in different cantons
     # are stored with (XX) where XX is the canton abbreviation
     matches <- .data %>%
-      dplyr::mutate(exp_name = paste0(
-        {{municipality_name}},
-        paste0(" (", {{canton_abbr}}, ")"))
+      mutate(exp_name = paste0(
+        {{ municipality_name }},
+        paste0(" (", {{ canton_abbr }}, ")"))
       ) %>%
-      dplyr::cross_join(spatial_map) %>%
-      dplyr::filter(
-        {{year}} >= valid_from,
-        {{year}} <= valid_until,
-        {{municipality_name}} == name | exp_name == name
+      cross_join(spatial_map) %>%
+      filter(
+        {{ year }} >= valid_from,
+        {{ year }} <= valid_until,
+        {{ municipality_name }} == name | exp_name == name
       )
   return(matches)
 }
