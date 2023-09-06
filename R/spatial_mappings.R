@@ -49,7 +49,7 @@ map_ds_spatial_units <- function(
     match_function = stattab_find_match
 ) {
   # read file with spatial units and prepare tibble
-  map_df <- readr::read_csv("data/const/spatial_unit_postgres.csv")
+  map_df <- load_spatial_map()
   map_df <- filter_and_add_pattern(
     map_df,
     spatial_dimensions = spatial_dimensions,
@@ -217,6 +217,11 @@ stattab_find_match <- function(spacial_term, spatial_units_list) {
   return("")
 }
 
+load_spatial_map <- function() {
+  spatial_map <- readr::read_csv("data/const/spatial_unit_postgres.csv")
+  return(spatial_map)
+}
+
 #' Get Spatial Unit for Switzerland
 #'
 #' This is a very simple function to provide the spatialunit_uid for Switzerland
@@ -232,8 +237,37 @@ stattab_find_match <- function(spacial_term, spatial_units_list) {
 #'   spatialunit_uid_ch <- spatial_mapping_country()
 #' }
 spatial_mapping_country <- function() {
-  readr::read_csv("data/const/spatial_unit_postgres.csv") %>%
+  load_spatial_map() %>%
     dplyr::select(country, spatialunit_uid) %>%
     dplyr::filter(country) -> spatial_unit_df
   return(spatial_unit_df$spatialunit_uid)
+}
+
+#' Get spatialunits of municipalities. This function uses temporal and cantonal information to
+#' unambiguously assign a uid to each municipality. It handles duplicate names in different cantons,
+#' merged, renamed or split municipalities.
+#'
+#' @param .data A tibble containing at least columns with the year of observation, 2 letter canton abbreviations and names of municipalities.
+#' @param year column containing the year of observation.
+#' @param canton_abbr column containing the 2 letter abbreviation corresponding to the municipality's canton.
+#' @param municipality_name column containing the names of municipalities.
+map_ds_municipalities <- function(.data, year, canton_abbr, municipality_name) {
+  spatial_map <- load_spatial_map() %>%
+    dplyr::filter(municipal, !canton) %>%
+    dplyr::select(spatialunit_uid, name, valid_from, valid_until)
+    # Fuzzy merge on date ranges
+    # Municipalities with the same name in different cantons
+    # are stored with (XX) where XX is the canton abbreviation
+    matches <- .data %>%
+      dplyr::mutate(exp_name = paste0(
+        {{municipality_name}},
+        paste0(" (", {{canton_abbr}}, ")"))
+      ) %>%
+      dplyr::cross_join(spatial_map) %>%
+      dplyr::filter(
+        {{year}} >= valid_from,
+        {{year}} <= valid_until,
+        {{municipality_name}} == name | exp_name == name
+      )
+  return(matches)
 }
