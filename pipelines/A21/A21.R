@@ -33,11 +33,11 @@ spatial_mapping <- ds$postgres_export %>%
     canton_abbr = canton,
     municipality_name = gemeinde
   ) %>%
-  dplyr::select(gemeinde, jahr, spatialunit_uid)
+  dplyr::select(gemeinde, jahr, spatialunit_uid) %>%
+  dplyr::mutate(jahr = lubridate::year(jahr))
 
 
-
-ds$postgres_export %<>%
+ds$postgres_export <- ds$postgres_export %>%
   dplyr::left_join(spatial_mapping, by = c("gemeinde", "jahr"))
 colnames(ds$postgres_export)
 

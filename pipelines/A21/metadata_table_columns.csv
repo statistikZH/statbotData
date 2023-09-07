@@ -1,0 +1,2 @@
+name;table_name;data_type;title;title_en;example_values
+Endverbrauch_Elektrizitaet_MWh;basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990;numeric;"Endverbrauch Elektrizitaet Mwh";"Final consumption of electricity Mwh";"53693; 72585; 29674"
