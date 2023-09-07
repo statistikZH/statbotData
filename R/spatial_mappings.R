@@ -270,6 +270,7 @@ map_ds_municipalities <- function(.data, year, canton_abbr, municipality_name) {
         {{ municipality_name }},
         paste0(" (", {{ canton_abbr }}, ")"))
       ) %>%
+      mutate({{ year }} := lubridate::ymd({{ year }}, truncated=2L)) %>%
       cross_join(spatial_map) %>%
       filter(
         {{ year }} >= valid_from,
