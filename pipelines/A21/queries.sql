@@ -1,4 +1,4 @@
--- What was the municipality consuming the most electricity in 1995 in Basel-Landschaft ?
+-- Welche Gemeinde verbrauchte 1995 in Basel-Landschaft am meisten Strom?
 SELECT S.name, T.endverbrauch_elektrizitaet_mwh
 FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -7,7 +7,7 @@ WHERE S.municipal=TRUE
 ORDER BY endverbrauch_elektrizitaet_mwh DESC
 LIMIT 1;
 
--- What was the total electricity consumption of municipalities in Basel-landschaft in 2000 vs 2020?
+-- Wie hoch war der Gesamtstromverbrauch der Gemeinden im Kanton Basel-Landschaft im Jahr 2000 im Vergleich zu 2020?
 SELECT T.jahr , SUM(T.endverbrauch_elektrizitaet_mwh) as gesamt_endverbrauch_elektrizitaet_mwh_2020
 FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -16,7 +16,7 @@ WHERE S.municipal=TRUE
 GROUP BY T.jahr
 ORDER BY gesamt_endverbrauch_elektrizitaet_mwh_2020 DESC;
 
--- What were the top 3 municipalities consuming the least electricity in Basel-Landschaft in 2012
+-- Welches waren die Top 3 Gemeinden mit dem geringsten Stromverbrauch in Basel-Landschaft im Jahr 2012?
 SELECT S.name, T.endverbrauch_elektrizitaet_mwh
 FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -25,7 +25,7 @@ WHERE S.municipal=TRUE
 ORDER BY endverbrauch_elektrizitaet_mwh ASC
 LIMIT 3;
 
--- What was the average yearly electricity consumption across Basel-landschaft municipalities over the years 2000 to 2020?
+-- Wie hoch war der durchschnittliche jährliche Stromverbrauch der Gemeinden im Kanton Basel-Landschaft in den Jahren 2000 bis 2020?
 SELECT T.jahr , AVG(T.endverbrauch_elektrizitaet_mwh) as mittlerer_endverbrauch_elektrizitaet_mwh
 FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -35,7 +35,7 @@ WHERE S.municipal=TRUE
 GROUP BY T.jahr
 ORDER BY T.jahr DESC;
 
--- What was the yearly electricity consumption of Blauen, in canton Basel-Landschaft before 2000?
+-- Wie hoch war der jährliche Stromverbrauch von Blauen im Kanton Basel-Landschaft vor dem Jahr 2000?
 SELECT T.jahr , T.endverbrauch_elektrizitaet_mwh as endverbrauch_elektrizitaet_mwh_blauen
 FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -44,7 +44,7 @@ WHERE S.municipal=TRUE
     AND S.name="Blauen"
 ORDER BY T.jahr DESC;
 
--- Which municipality consumed the most electricity in 2018 between Bottmingen and Birsfelden (Basel Landschaft)?
+-- Welche Gemeinde verbrauchte 2018 zwischen Bottmingen und Birsfelden (Basel Landschaft) am meisten Strom?
 SELECT S.name, T.endverbrauch_elektrizitaet_mwh as endverbrauch_elektrizitaet_mwh_2018
 FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -53,7 +53,7 @@ WHERE S.municipal=TRUE
     AND S.name IN ("Blauen", "Birsfelden")
 ORDER BY T.endverbrauch_elektrizitaet_mwh DESC;
 
--- In what year did Muttenz (Basel Landschaft) consume the most electricity?
+-- In welchem Jahr hat Muttenz (Basel Landschaft) am meisten Strom verbraucht?
 SELECT T.jahr, T.endverbrauch_elektrizitaet_mwh
 FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -62,7 +62,7 @@ WHERE S.municipal=TRUE
 ORDER BY T.endverbrauch_elektrizitaet_mwh DESC
 LIMIT 1;
 
--- What was the highest ever recorded annual electricity consumption for a municipality in Basel Landschaft?
+-- Wie hoch war der höchste jemals registrierte jährliche Stromverbrauch einer Gemeinde in Basel-Landschaft?
 SELECT T.jahr, S.name, T.endverbrauch_elektrizitaet_mwh
 FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
