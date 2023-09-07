@@ -37,8 +37,23 @@ spatial_mapping <- ds$postgres_export %>%
   dplyr::mutate(jahr = lubridate::year(jahr))
 
 
+# -------------------------------------------------------------------------
+# Step 3 clean names and remove columns
+# -------------------------------------------------------------------------
+
+# Note: we drop records without spatialunit_uid this happens for record
+# with an invalid municipality - date combination (according to spatialunits)
+# It only happens for ~40 records in 1990 in municipalities whose name were valid later
+# in spatialunits.
 ds$postgres_export <- ds$postgres_export %>%
-  dplyr::left_join(spatial_mapping, by = c("gemeinde", "jahr"))
+  dplyr::left_join(spatial_mapping, by = c("gemeinde", "jahr")) %>%
+  dplyr::filter(!is.na(spatialunit_uid)) %>%
+  dplyr::select(-gemeinde) %>%
+  janitor::clean_names() %>%
+  dplyr::rename(
+    endverbrauch_elektrizitaet_mwh = endverbrauch_elektrizitaet_m_wh
+  )
+
 colnames(ds$postgres_export)
 
 # -------------------------------------------------------------------------
