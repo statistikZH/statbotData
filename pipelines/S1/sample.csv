@@ -1,4 +1,4 @@
-"jahr";"verbrauchskategorie";"verbrauchskategorie_grosse_kwh_pro_jahr";"verbrauchskategorie_beschreibung";"energieprodukt";"mittlerer_preis_rappen_pro_kw_hr";"spatialunit_uid"
+"jahr";"verbrauchskategorie";"verbrauchskategorie_grosse_kwh_pro_jahr";"verbrauchskategorie_beschreibung";"energieprodukt";"mittlerer_preis_rappen_pro_kwh";"spatialunit_uid"
 "2023";"H3";"4500";"4'500 kWh/Jahr: 4-Zimmerwohnung mit Elektroherd und Elektroboiler";"Günstigstes Produkt";"30.701904";"8_A.ADM1"
 "2014";"H7";"13000";"13'000 kWh/Jahr: 5-Zimmer-Einfamilienhaus mit Elektroherd' Elektroboiler' Tumbler' Wärmepumpe 5 kW zur Beheizung";"Standardprodukt";"18.654373";"22_A.ADM1"
 "2015";"C6";"1500000";"1'500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 400 kW' Mittelspannung' eigene Transformatorenstation";"Standardprodukt";"10.79942";"15_A.ADM1"
