@@ -18,17 +18,20 @@ PREFIX schema: <http://schema.org/>
 
 # Median elecricity price per canton
 
-SELECT ?canton ?period ?category ?product ?total
+SELECT ?canton ?period ?cat_name ?cat_size ?cat_desc ?product ?total
 WHERE {
   <https://energy.ld.admin.ch/elcom/electricityprice-canton> cube:observationSet ?obsSet .
   ?obsSet cube:observation ?obs .
   ?obs dim:canton [ schema:name ?canton ] ;
-       dim:period ?period ;
-       dim:product [ schema:name ?product ] ;
-       dim:category [ schema:description ?cat_desc ; schema:name ?cat_name ] ;
-       dim:total ?total  .
+    dim:period ?period ;
+    dim:product [ schema:name ?product ] ;
+    dim:category [
+      schema:description ?cat_desc ;
+      schema:name ?cat_name ;
+      schema:size ?cat_size
+    ] ;
+    dim:total ?total  .
 
-  BIND(CONCAT(?cat_name, ": (", ?cat_desc, ")") AS ?category)
   FILTER(LANG(?canton) = "de")
   FILTER(LANG(?product) = "de")
   FILTER(LANG(?cat_desc) = "de")
@@ -39,9 +42,9 @@ ds <- download_data(ds)
 # -------------------------------------------------------------------------
 # Step: Clean the data
 #   input:  ds$data
-#.  output: ds$cleaned_data:
+# .  output: ds$cleaned_data:
 #           - clean columns names
-#.          - rename data columns
+# .          - rename data columns
 # -------------------------------------------------------------------------
 
 ds$cleaned_data <- ds$data %>%
@@ -50,14 +53,16 @@ ds$cleaned_data <- ds$data %>%
     mittlerer_preis_rappen_pro_kw_hr = total,
     kanton = canton,
     energieprodukt = product,
-    verbrauchskategorien = category,
+    verbrauchskategorie = cat_name,
+    verbrauchskategorie_grosse_kwh_pro_jahr = cat_size,
+    verbrauchskategorie_beschreibung = cat_desc,
     jahr = period,
   )
 
 # -------------------------------------------------------------------------
 # Step: Derive the spatial units mapping and map the spatial units
 #   input:  ds$cleaned_data
-#.  output: ds$postgres_export
+# .  output: ds$postgres_export
 # -------------------------------------------------------------------------
 
 spatial_map <- ds$cleaned_data %>%
