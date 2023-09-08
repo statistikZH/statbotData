@@ -10,7 +10,7 @@ SELECT DISTINCT verbrauchskategorie, verbrauchskategorie_beschreibung
 FROM median_strompreis_per_kanton
 ORDER BY verbrauchskategorie;
 
--- How much would I pay in CHF for 1000 kWh with a 2-room appartment in the canton of Bern in 2017?
+-- Wie viel zahle ich in CHF für 1000 kWh bei einer 2-Zimmer-Wohnung im Kanton Bern im Jahr 2017?
 SELECT T.verbrauchskategorie, T.verbrauchskategorie_beschreibung, T.energieprodukt, T.mittlerer_preis_rappen_pro_kwh * 1000 / 100 as preis_franken_fur_1000_kwh_bern_2017_2_zimmerwohnung
 FROM median_strompreis_per_kanton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
@@ -20,7 +20,7 @@ WHERE S.name_de LIKE '%Bern%'
     AND T.verbrauchskategorie_beschreibung LIKE '%2-zimmerwohnung%'
     AND T.verbrauchskategorie_grosse_kwh_pro_jahr >= 1000;
 
--- What is the canton with the highest price for 1000 kWh in 2021 for the standard electricity product in the C3 category?
+-- Welches ist der Kanton mit dem höchsten Preis für 1000 kWh im Jahr 2021 für das Standardstromprodukt der Kategorie C3?
 SELECT S.name
 FROM median_strompreis_per_kanton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
@@ -40,7 +40,7 @@ WHERE S.name_de LIKE '%Waadt%'
     AND T.verbrauchskategorie LIKE 'H_'
 GROUP BY T.verbrauchskategorie;
 
--- Which cantons had electricity prices below 13 cents per kwh in 2022 for the category of largest consumers?
+-- In welchen Kantonen liegen die Strompreise für die Kategorie der Grossverbraucher im Jahr 2022 unter 13 Rappen pro Kilowattstunde?
 SELECT DISTINCT(S.name)
 FROM median_strompreis_per_kanton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
@@ -49,7 +49,7 @@ WHERE S.canton=TRUE
     AND T.verbrauchskategorie_grosse_kwh_pro_jahr = (SELECT MAX(verbrauchskategorie_grosse_kwh_pro_jahr) FROM median_strompreis_per_kanton)
     AND T.mittlerer_preis_rappen_pro_kwh < 13;
 
--- How did standard electricity prices for small companies evolve in canton Neuchatel between 2017 and 2023?
+-- Wie haben sich die Standardstrompreise für kleine Unternehmen im Kanton Neuenburg zwischen 2017 und 2023 entwickelt?
 SELECT T.jahr, T.energieprodukt, T.verbrauchskategorie, T.mittlerer_preis_rappen_pro_kwh
 FROM median_strompreis_per_kanton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
@@ -61,7 +61,7 @@ WHERE S.name_de LIKE '%Neuenburg%'
     AND T.verbrauchskategorie_beschreibung LIKE '%Kleinbetrieb%'
 ORDER BY T.jahr;
 
--- Based on the latest information, what canton can provide the cheapest electicity for the H3 category?
+-- Welcher Kanton kann nach den neuesten Informationen den günstigsten Strom für die Kategorie H3 anbieten?
 SELECT S.name
 FROM median_strompreis_per_kanton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
@@ -70,7 +70,7 @@ WHERE S.canton=TRUE
     AND T.verbrauchskategorie="H3"
 ORDER BY T.mittlerer_preis_rappen_pro_kwh ASC LIMIT 1;
 
--- What were the prices for the cheapest electricity product available for all company categories in canton Geneva in 2012?
+-- Wie hoch waren die Preise für das günstigste verfügbare Stromprodukt für alle Unternehmenskategorien im Kanton Genf im Jahr 2012?
 SELECT T.verbrauchskategorie, MIN(T.mittlerer_preis_rappen_pro_kwh)
 FROM median_strompreis_per_kanton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
@@ -81,7 +81,7 @@ WHERE S.name_de LIKE '%Genf%'
 GROUP BY T.verbrauchskategorie
 ORDER BY T.mittlerer_preis_rappen_pro_kwh ASC;
 
--- When did electricity prices reach the highest point for household categories consuming under 7500 kWh per year in canton Zurich?
+-- Wann haben die Strompreise für Haushalte mit einem Verbrauch von weniger als 7500 kWh pro Jahr im Kanton Zürich ihren Höchststand erreicht?
 SELECT T.jahr, T.verbrauchskategorie, MAX(T.mittlerer_preis_rappen_pro_kwh)
 FROM median_strompreis_per_kanton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
