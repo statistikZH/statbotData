@@ -1,6 +1,117 @@
 
 Query Nr. 1
 -- Welche Verbrauchkategorie hatte den höchsten mittleren Strompreis im Kanton Bern in 2017?
-SELECT T.verbrauchskategorien as verbrauchskategorie_mit_maximalem_mittleren_strompreis_bern_2017 FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Bern%' AND S.canton=TRUE AND T.jahr=2017 ORDER BY mittlerer_preis_rappen_pro_kw_hr DESC LIMIT 1;
+SELECT T.verbrauchskategorie as verbrauchskategorie_mit_maximalem_mittleren_strompreis_bern_2017 FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Bern%' AND S.canton=TRUE AND T.jahr=2017 ORDER BY mittlerer_preis_rappen_pro_kwh DESC LIMIT 1;
  verbrauchskategorie_mit_maximalem_mittleren_strompreis_bern_2017
-            H1: (1'600 kWh/Jahr: 2-Zimmerwohnung mit Elektroherd)
+                                                               H1
+
+Query Nr. 2
+-- Welches sind die verschiedenen Stromverbrauchskategorien in der Schweiz?
+SELECT DISTINCT verbrauchskategorie, verbrauchskategorie_beschreibung FROM median_strompreis_per_kanton ORDER BY verbrauchskategorie;
+ verbrauchskategorie
+                  C1
+                  C2
+                  C3
+                  C4
+                  C5
+                  C6
+                  C7
+                  H1
+                  H2
+                  H3
+                  H4
+                  H5
+                  H6
+                  H7
+                  H8
+                                                                                          verbrauchskategorie_beschreibung
+                                                          8'000 kWh/Jahr: Kleinstbetrieb' max. beanspruchte Leistung: 8 kW
+                                                          30'000 kWh/Jahr: Kleinbetrieb' max. beanspruchte Leistung: 15 kW
+                                                    150'000 kWh/Jahr: Mittlerer Betrieb' max. beanspruchte Leistung: 50 kW
+                                    500'000 kWh/Jahr: Grosser Betrieb ' max. beanspruchte Leistung: 150 kW' Niederspannung
+      500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 150 kW' Mittelspannung' eigene Transformatorenstation
+    1'500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 400 kW' Mittelspannung' eigene Transformatorenstation
+  7'500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 1'630 kW' Mittelspannung' eigene Transformatorenstation
+                                                                           1'600 kWh/Jahr: 2-Zimmerwohnung mit Elektroherd
+                                                                           2'500 kWh/Jahr: 4-Zimmerwohnung mit Elektroherd
+                                                         4'500 kWh/Jahr: 4-Zimmerwohnung mit Elektroherd und Elektroboiler
+                                          4'500 kWh/Jahr: 5-Zimmerwohnung mit Elektroherd und Tumbler (ohne Elektroboiler)
+                                       7'500 kWh/Jahr: 5-Zimmer-Einfamilienhaus mit Elektroherd' Elektroboiler und Tumbler
+ 25'000 kWh/Jahr: 5-Zimmer-Einfamilienhaus mit Elektroherd' Elektroboiler' Tumbler und mit elektrischer Widerstandsheizung
+          13'000 kWh/Jahr: 5-Zimmer-Einfamilienhaus mit Elektroherd' Elektroboiler' Tumbler' Wärmepumpe 5 kW zur Beheizung
+                                                             7'500 kWh/Jahr: Grosse' hoch elektrifizierte Eigentumswohnung
+
+Query Nr. 3
+-- How much would I pay in CHF for 1000 kWh with a 2-room appartment in the canton of Bern in 2017?
+SELECT T.verbrauchskategorie, T.verbrauchskategorie_beschreibung, T.energieprodukt, T.mittlerer_preis_rappen_pro_kwh * 1000 / 100 as preis_franken_fur_1000_kwh_bern_2017_2_zimmerwohnung FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Bern%'     AND S.canton=TRUE     AND T.jahr=2017     AND T.verbrauchskategorie_beschreibung LIKE '%2-zimmerwohnung%'     AND T.verbrauchskategorie_grosse_kwh_pro_jahr >= 1000;
+ verbrauchskategorie                verbrauchskategorie_beschreibung
+                  H1 1'600 kWh/Jahr: 2-Zimmerwohnung mit Elektroherd
+  energieprodukt preis_franken_fur_1000_kwh_bern_2017_2_zimmerwohnung
+ Standardprodukt                                                  278
+
+Query Nr. 4
+-- What is the canton with the highest price for 1000 kWh in 2021 for the standard electricity product in the C3 category?
+SELECT S.name FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.jahr=2021     AND T.energieprodukt="Standardprodukt"     AND T.verbrauchskategorie="C3" ORDER BY T.mittlerer_preis_rappen_pro_kwh DESC LIMIT 1;
+                  name
+ Canton of Basel-Stadt
+
+Query Nr. 5
+-- In what year did electricity have the highest median price in canton Vaud for standard household products?
+SELECT T.jahr, T.verbrauchskategorie, MAX(T.mittlerer_preis_rappen_pro_kwh) FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Waadt%'     AND S.canton=TRUE     AND T.energieprodukt="Standardprodukt"     AND T.verbrauchskategorie LIKE 'H_' GROUP BY T.verbrauchskategorie;
+ jahr verbrauchskategorie MAX(T.mittlerer_preis_rappen_pro_kwh)
+ 2024                  H1                              37.78000
+ 2024                  H2                              35.61583
+ 2024                  H3                              30.68278
+ 2024                  H4                              33.49479
+ 2024                  H5                              29.46551
+ 2024                  H6                              25.50494
+ 2024                  H7                              29.58998
+ 2024                  H8                              32.65728
+
+Query Nr. 6
+-- Which cantons had electricity prices below 13 cents per kwh in 2022 for the category of largest consumers?
+SELECT DISTINCT(S.name) FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.jahr=2022     AND T.verbrauchskategorie_grosse_kwh_pro_jahr = (SELECT MAX(verbrauchskategorie_grosse_kwh_pro_jahr) FROM median_strompreis_per_kanton)     AND T.mittlerer_preis_rappen_pro_kwh < 13;
+                   name
+       Canton of Zurich
+          Canton Aargau
+          Canton of Uri
+ Canton of Schaffhausen
+    Canton of Nidwalden
+
+Query Nr. 7
+-- How did standard electricity prices for small companies evolve in canton Neuchatel between 2017 and 2023?
+SELECT T.jahr, T.energieprodukt, T.verbrauchskategorie, T.mittlerer_preis_rappen_pro_kwh FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Neuenburg%'     AND S.canton=TRUE     AND T.jahr >= 2017     AND T.jahr <= 2023     AND T.energieprodukt="Standardprodukt"     AND T.verbrauchskategorie_beschreibung LIKE '%Kleinbetrieb%' ORDER BY T.jahr;
+ jahr  energieprodukt verbrauchskategorie mittlerer_preis_rappen_pro_kwh
+ 2017 Standardprodukt                  C2                       21.30873
+ 2018 Standardprodukt                  C2                       21.51997
+ 2019 Standardprodukt                  C2                       21.81019
+ 2020 Standardprodukt                  C2                       22.37671
+ 2021 Standardprodukt                  C2                       20.56341
+ 2022 Standardprodukt                  C2                       20.95262
+ 2023 Standardprodukt                  C2                       31.47110
+
+Query Nr. 8
+-- Based on the latest information, what canton can provide the cheapest electicity for the H3 category?
+SELECT S.name FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.jahr=(SELECT MAX(jahr) FROM median_strompreis_per_kanton)     AND T.verbrauchskategorie="H3" ORDER BY T.mittlerer_preis_rappen_pro_kwh ASC LIMIT 1;
+                name
+ Canton of Nidwalden
+
+Query Nr. 9
+-- What were the prices for the cheapest electricity product available for all company categories in canton Geneva in 2012?
+SELECT T.verbrauchskategorie, MIN(T.mittlerer_preis_rappen_pro_kwh) FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Genf%'     AND S.canton=TRUE     AND T.jahr=2012     AND T.verbrauchskategorie LIKE '%C_%' GROUP BY T.verbrauchskategorie ORDER BY T.mittlerer_preis_rappen_pro_kwh ASC;
+ verbrauchskategorie MIN(T.mittlerer_preis_rappen_pro_kwh)
+                  C7                              14.10156
+                  C6                              15.00263
+                  C4                              17.42939
+                  C3                              18.31980
+                  C1                              19.95666
+                  C2                              20.06664
+
+Query Nr. 10
+-- When did electricity prices reach the highest point for household categories consuming under 7500 kWh per year in canton Zurich?
+SELECT T.jahr, T.verbrauchskategorie, MAX(T.mittlerer_preis_rappen_pro_kwh) FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Zürich%'     AND S.canton=TRUE     AND T.verbrauchskategorie LIKE 'H_%'     AND T.verbrauchskategorie_grosse_kwh_pro_jahr < 7500 GROUP BY T.verbrauchskategorie ORDER BY T.mittlerer_preis_rappen_pro_kwh DESC;
+ jahr verbrauchskategorie MAX(T.mittlerer_preis_rappen_pro_kwh)
+ 2024                  H1                              40.04015
+ 2024                  H2                              37.25029
+ 2024                  H4                              35.15730
+ 2024                  H3                              33.91238
