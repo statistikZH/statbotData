@@ -1,0 +1,13 @@
+name;table_name;data_type;title;title_en;example_values
+total_population;demographic_balance_by_canton;numeric;"Total population recorded this year";"Total population recorded this year";"6335243; 5421746; 913497"
+births;demographic_balance_by_canton;numeric;"Number of live births recorded";"Number of live births recorded";"73747; 61611; 12136"
+deaths;demographic_balance_by_canton;numeric;"Number of deaths recorded";"Number of deaths recorded";"59763; 56032; 3731"
+immigration;demographic_balance_by_canton;numeric;"Number of people becoming Swiss residents";"Number of people becoming Swiss residents";"121420; 28483; 92937"
+emigration;demographic_balance_by_canton;numeric;"Number of Swiss residents leaving";"Number of Swiss residents leaving";"97743; 27796; 69947"
+in_migration_from_another_canton;demographic_balance_by_canton;numeric;"Number of people moving in from another canton";"Number of people moving in from another canton";"134359; 119608; 14751"
+out_migration_to_another_canton;demographic_balance_by_canton;numeric;"Number of people moving to a different canton";"Number of people moving to a different canton";"134359; 119608; 14751"
+net_migration;demographic_balance_by_canton;numeric;"Difference between the number of arrivals and departures";"Difference between the number of arrivals and departures";"23677; 687; 22990"
+acquisition_of_swiss_citizenship;demographic_balance_by_canton;numeric;"Number of people acquiring swiss nationality";"Number of people acquiring swiss nationality";"0; 14299; -14299"
+statistical_adjustment;demographic_balance_by_canton;numeric;"Changes to the population size that cannot be clearly attributed to demographic movements";"Changes to the population size that cannot be clearly attributed to demographic movements";"0; 574; -34"
+population_change;demographic_balance_by_canton;numeric;"Difference in the number of people compared to the previous year";"Difference in the number of people compared to the previous year";"37661; 20565; 17096"
+citizenship_category;demographic_balance_by_canton;categorical;"Citizenship category";"Citizenship category";"Citizenship (category) - total; Foreign country; Switzerland"

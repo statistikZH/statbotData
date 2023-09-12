@@ -1,0 +1,121 @@
+
+Query Nr. 1
+-- How many residents were in Switzerland in 2018?
+SELECT total_population as total_population_of_switzerland_in_2018 FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name="Switzerland"     AND S.country=TRUE     AND T.year=2018     AND T.citizenship_category="Citizenship (category) - total";
+ total_population_of_switzerland_in_2018
+                                 8484130
+
+Query Nr. 2
+-- What was the net migration of Switzerland from 2012 to 2022?
+SELECT year, net_migration as net_migration_of_switzerland FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name="Switzerland"     AND S.country=TRUE     AND T.year>=2012     AND T.year<=2022     AND T.citizenship_category="Citizenship (category) - total";
+ year net_migration_of_switzerland
+ 2012                        71127
+ 2013                        87106
+ 2014                        76223
+ 2015                        71884
+ 2016                        71030
+ 2017                        45948
+ 2018                        39860
+ 2019                        43352
+ 2020                        53804
+ 2021                        48871
+ 2022                        68760
+
+Query Nr. 3
+-- Which cantons experienced a population decline in 2017, and by how much?
+SELECT S.name, population_change FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.population_change<0     AND T.year=2017     AND T.citizenship_category="Citizenship (category) - total";
+             name population_change
+    Canton Ticino              -666
+ Canton Neuchâtel              -603
+
+Query Nr. 4
+-- Which five cantons had the highest number of Swiss citizenship acquisitions in 2017 relative to their population?
+SELECT S.name, acquisition_of_swiss_citizenship / total_population as relative_acquisition FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year=2017     AND T.citizenship_category="Switzerland" ORDER BY relative_acquisition DESC LIMIT 5;
+                  name relative_acquisition
+         Canton Geneva          0.020591783
+           Canton Vaud          0.013843753
+      Canton Neuchâtel          0.010054336
+ Canton of Basel-Stadt          0.009933401
+         Canton Valais          0.008719725
+
+Query Nr. 5
+-- Which canton has the highest number of residents who have moved from other cantons in 2016?
+SELECT S.name, T.in_migration_from_another_canton FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year=2016     AND T.citizenship_category="Citizenship (category) - total" ORDER BY T.in_migration_from_another_canton DESC LIMIT 1;
+             name in_migration_from_another_canton
+ Canton of Zurich                            24629
+
+Query Nr. 6
+-- Which five cantons experienced the most significant population growth relative to their size between 2000 and 2022?
+SELECT     S.name, (         (             SUM(CASE WHEN T.year = 2022 THEN total_population ELSE 0 END) -             SUM(CASE WHEN T.year = 2000 THEN total_population ELSE 0 END)         ) / SUM(CASE WHEN T.year = 2000 THEN total_population ELSE 0 END)     ) as relative_population_growth FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year>=2000     AND T.year<=2022     AND T.citizenship_category="Citizenship (category) - total" GROUP BY S.name ORDER BY relative_population_growth DESC LIMIT 5;
+               name relative_population_growth
+ Canton of Fribourg                  0.4078111
+        Canton Vaud                  0.3353909
+      Canton of Zug                  0.3276356
+   Canton of Zurich                  0.3054417
+      Canton Aargau                  0.3004722
+
+Query Nr. 7
+-- What was the population change due to natural factors among the residents of Canton Vaud between 2015 and 2020?
+SELECT year, births - deaths FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name="Canton Vaud"     AND T.year>=2015     AND T.year>=2020     AND T.citizenship_category="Citizenship (category) - total";
+ year births - deaths
+ 2020            1755
+ 2021            3171
+ 2022            2146
+
+Query Nr. 8
+-- Give me the total population of each canton in 2019.
+SELECT S.name as canton, total_population as total_population_2019 FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year=2019     AND T.citizenship_category="Citizenship (category) - total" ORDER BY total_population DESC;
+                           canton total_population_2019
+                 Canton of Zurich               1520968
+                   Canton of Bern               1034931
+                      Canton Vaud                799145
+                    Canton Aargau                678207
+             Canton of St. Gallen                507697
+                    Canton Geneva                499480
+                Canton of Lucerne                409557
+                    Canton Ticino                353343
+                    Canton Valais                343955
+               Canton of Fribourg                318760
+       Canton of Basel-Landschaft                288132
+                   Canton Thurgau                276472
+              Canton of Solothurn                273194
+                Canton Graubünden                198379
+            Canton of Basel-Stadt                194766
+                 Canton Neuchâtel                176850
+                 Canton of Schwyz                159165
+                    Canton of Zug                126837
+           Canton of Schaffhausen                 81991
+                      Canton Jura                 73419
+ Canton of Appenzell Ausserrhoden                 55234
+              Canton of Nidwalden                 43223
+                 Canton of Glarus                 40403
+               Canton of Obwalden                 37841
+                    Canton of Uri                 36433
+  Canton of Appenzell Innerrhoden                 16145
+
+Query Nr. 9
+-- Show me the cantons with the highest birth rates every year between 1995 and 2010.
+SELECT year, S.name as most_populout_canton, MAX(births / total_population) as birthrate FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year>=1995     AND T.year<=2010     AND T.citizenship_category="Citizenship (category) - total" GROUP BY T.year ORDER BY year ASC;
+ year            most_populout_canton  birthrate
+ 1995 Canton of Appenzell Innerrhoden 0.01451635
+ 1996 Canton of Appenzell Innerrhoden 0.01491525
+ 1997 Canton of Appenzell Innerrhoden 0.01543855
+ 1998 Canton of Appenzell Innerrhoden 0.01350171
+ 1999 Canton of Appenzell Innerrhoden 0.01277483
+ 2000              Canton of Fribourg 0.01245375
+ 2001              Canton of Fribourg 0.01202308
+ 2002 Canton of Appenzell Innerrhoden 0.01235227
+ 2003              Canton of Fribourg 0.01155300
+ 2004              Canton of Fribourg 0.01127887
+ 2005                   Canton Geneva 0.01124484
+ 2006                     Canton Vaud 0.01125528
+ 2007                     Canton Vaud 0.01145519
+ 2008                     Canton Vaud 0.01118983
+ 2009                     Canton Vaud 0.01167026
+ 2010                     Canton Vaud 0.01158760
+
+Query Nr. 10
+-- In which year did Switzerland experience its highest birth rate?
+SELECT year, births / total_population as birthrate FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country=TRUE     AND S.name="Switzerland"     AND T.citizenship_category="Citizenship (category) - total" GROUP BY T.year ORDER BY birthrate DESC LIMIT 1;
+ year  birthrate
+ 1991 0.01275679
