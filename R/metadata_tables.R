@@ -20,24 +20,25 @@
 #'
 #' @examples
 #' \dontrun{
-#'   # command to call when the metadata should be read or
-#'   # created: it will be created if it does not exist yet
-#'   read_write_metadata_tables(ds)
+#' # command to call when the metadata should be read or
+#' # created: it will be created if it does not exist yet
+#' read_write_metadata_tables(ds)
 #'
-#'   # command to call when the metadata should be overwritten
-#'   read_write_metadata_tables(ds, overwrite = TRUE)
+#' # command to call when the metadata should be overwritten
+#' read_write_metadata_tables(ds, overwrite = TRUE)
 #' }
 read_write_metadata_tables <- function(ds, overwrite = FALSE) {
-
   # set path for metadata storage
   path_table <- paste0(ds$dir, "metadata_tables.csv")
   path_table_columns <- paste0(ds$dir, "metadata_table_columns.csv")
 
-  if (file.exists(path_table) && file.exists(path_table_columns) &&!overwrite) {
-    metadata_tables = readr::read_delim(path_table, delim = ";")
-    metadata_table_columns = readr::read_delim(path_table_columns, delim = ";")
-    return(list(metadata_tables=metadata_tables,
-                metadata_table_columns=metadata_table_columns))
+  if (file.exists(path_table) && file.exists(path_table_columns) && !overwrite) {
+    metadata_tables <- readr::read_delim(path_table, delim = ";")
+    metadata_table_columns <- readr::read_delim(path_table_columns, delim = ";")
+    return(list(
+      metadata_tables = metadata_tables,
+      metadata_table_columns = metadata_table_columns
+    ))
   }
 
   # make template for metadata files
@@ -76,9 +77,11 @@ read_write_metadata_tables <- function(ds, overwrite = FALSE) {
 
   # write the tibble to a file
   write.table(metadata_tables, path_table,
-              row.names = FALSE, quote = FALSE, sep = ";")
+    row.names = FALSE, quote = FALSE, sep = ";"
+  )
   write.table(metadata_table_columns, path_table_columns,
-              row.names = FALSE, quote = FALSE, sep = ";")
+    row.names = FALSE, quote = FALSE, sep = ";"
+  )
   print(
     paste(
       "metadata templates written to\n",
@@ -86,8 +89,10 @@ read_write_metadata_tables <- function(ds, overwrite = FALSE) {
       "\nPlease complete metadata for pipeline."
     )
   )
-  return(list(metadata_tables=metadata_tables,
-              metadata_table_columns=metadata_table_columns))
+  return(list(
+    metadata_tables = metadata_tables,
+    metadata_table_columns = metadata_table_columns
+  ))
 }
 
 #' get example values for the columns
@@ -101,17 +106,17 @@ read_write_metadata_tables <- function(ds, overwrite = FALSE) {
 #'
 #' @examples
 #' \dontrun{
-#'   get_examples(ds, columns)
-#'   # returns 3 values for each column from the samples
+#' get_examples(ds, columns)
+#' # returns 3 values for each column from the samples
 #' }
 get_examples <- function(ds, columns) {
   # For each column, we get 3 example values and paste them into a single string.
   example_values <- columns %>%
     purrr::map_chr(
-      \(x) unique(ds$postgres_export[, x]) %>%
+      \(x) unique(ds$postgres_export[, x, drop = F]) %>%
         head(3) %>%
         dplyr::pull(x) %>%
-        paste(sep=" ", collapse="; ")
+        paste(sep = " ", collapse = "; ")
     )
   return(example_values)
 }
