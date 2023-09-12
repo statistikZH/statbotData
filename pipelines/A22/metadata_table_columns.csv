@@ -1,0 +1,4 @@
+name;table_name;data_type;title;title_en;example_values
+nationalitat;bevolkerungsbestand_nach_nationalitat_konfession_gemeinde_und_quartal_seit_2003;categorical;"Nationalität";"Nationality";"Schweiz; Ausland"
+konfession;bevolkerungsbestand_nach_nationalitat_konfession_gemeinde_und_quartal_seit_2003;categorical;"Konfession";"Religion";"Evangelisch-reformiert; Römisch-katholisch; Unbekannt"
+anzahl_personen;bevolkerungsbestand_nach_nationalitat_konfession_gemeinde_und_quartal_seit_2003;numeric;"Anzahl Personen";"Number of people";"364; 42; 77"
