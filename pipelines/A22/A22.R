@@ -8,12 +8,26 @@ ds <- statbotData::create_dataset("A22")
 ds <- statbotData::download_data(ds)
 
 # -------------------------------------------------------------------------
-# Step 1 rename columns
+# Step 1 rename columns + wide format
 # -------------------------------------------------------------------------
 
 ds$postgres_export <- ds$data %>%
   janitor::clean_names() %>%
-  dplyr::select(jahr, gemeinde, nationalitaet, konfession, anzahl_personen)
+  dplyr::select(jahr, quartal, gemeinde, nationalitaet, konfession, anzahl_personen) %>%
+  dplyr::rename(nationalitat = nationalitaet) %>%
+  tidyr::pivot_wider(
+    names_from = konfession,
+    values_from = anzahl_personen,
+    names_prefix = "anzahl_"
+  ) %>%
+  janitor::clean_names() %>%
+  dplyr::rename(anzahl_unbekannt_konfession = anzahl_unbekannt) %>%
+  dplyr::mutate(gesamt_anzahl_personen = (
+    anzahl_romisch_katholisch +
+      anzahl_evangelisch_reformiert +
+      anzahl_christkatholisch +
+      anzahl_unbekannt_konfession
+  ))
 # -------------------------------------------------------------------------
 # Step 2 map to spatial units
 # -------------------------------------------------------------------------
