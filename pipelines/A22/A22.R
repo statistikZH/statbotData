@@ -18,7 +18,8 @@ ds$postgres_export <- ds$data %>%
   tidyr::pivot_wider(
     names_from = konfession,
     values_from = anzahl_personen,
-    names_prefix = "anzahl_"
+    names_prefix = "anzahl_",
+    values_fill = 0
   ) %>%
   janitor::clean_names() %>%
   dplyr::rename(anzahl_unbekannt_konfession = anzahl_unbekannt) %>%
