@@ -15,7 +15,8 @@ ds <- statbotData::download_data(ds)
 ds$postgres_export <- ds$data %>%
   janitor::clean_names() %>%
   dplyr::filter(!falle %in% c("", "( )")) %>%
-  dplyr::select(jahr, gemeinde, falle, flache_in_m2, quadratmeterpreis_chf)
+  dplyr::select(jahr, gemeinde, falle, flache_in_m2, quadratmeterpreis_chf) %>%
+  dplyr::mutate_at(dplyr::vars(flache_in_m2, quadratmeterpreis_chf, falle), as.numeric)
 # -------------------------------------------------------------------------
 # Step 2 map to spatial units
 # -------------------------------------------------------------------------
