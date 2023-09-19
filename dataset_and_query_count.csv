@@ -1,0 +1,17 @@
+publisher,lang,pipeline,name,query_counts
+fso,de,A1,medizinisch_technische_infrastruktur,1
+fso,en,A3,treibhausgasemission_in_mio_tonnen,1
+fso,de,A4,energiebilanz_schweiz_in_tera_joule,1
+fso,de,A5,ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit,1
+fso,de,A6,abstimmungsvorlagen_seit_1971,20
+fso,de,A7,arztpraxen_ambulante_zentren,1
+fso,de,A8,nationalratswahlen,4
+fso,de,A10,straftaten_aufklaerung,5
+fso,de,S1,median_strompreis_per_kanton,1
+fso,de,A13,pflanzungen_schweiz,1
+fso,de,S3,staatsausgaben_nach_aufgabenbereichen_cofog,10
+fso,en,A14,tourism_economy_by_canton,8
+fso,en,A15,employees_farmholdings_agricultural_area_livestock_per_canton,7
+fso,en,A16,demographic_balance_by_canton,10
+fso,de,A17,volksabstimmung_nach_kanton_seit_1861,1
+basel_land,de,A21,basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990,8
