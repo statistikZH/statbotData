@@ -1,110 +1,80 @@
 
 Query Nr. 1
--- How many protestants were there in kanton Basel-Landschaft in early 2022?
-SELECT SUM(T.anzahl_evangelisch_reformiert) FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2022     AND T.quartal=1;
+-- Wie viele Reformierte gab es im Kanton Basel-Landschaft in 2022?
+SELECT SUM(T.anzahl_evangelisch_reformiert) FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2022;
  SUM(T.anzahl_evangelisch_reformiert)
-                                79078
+                                77559
 
 Query Nr. 2
--- What proportion of Basel-Landschaft's population were of a known religion in 2021?
+-- Welcher Anteil der Bevölkerung von Basel-Landschaft gehörte 2021 einer bekannten Religion an?
 SELECT 1 - (     SUM(CAST(T.anzahl_unbekannt_konfession AS FLOAT)) / SUM(T.gesamt_anzahl_personen) ) AS proportion_known_religion_basel_land_2021 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2021 GROUP BY T.jahr;
  proportion_known_religion_basel_land_2021
-                                 0.5078361
+                                 0.5018993
 
 Query Nr. 3
--- In 2021, among the foreign residents of Canton Basel-Landschaft, what was the proportion of Roman catholics?
+-- Wie hoch war der Anteil der römisch-katholischen Personen an der ausländischen Bevölkerung des Kantons Basel-Landschaft im Jahr 2021?
 SELECT SUM(CAST(T.anzahl_romisch_katholisch AS FLOAT)) / SUM(T.gesamt_anzahl_personen) AS proportion_foreign_romisch_katholisch_basel_land_2021 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2021     AND T.nationalitat="Ausland";
  proportion_foreign_romisch_katholisch_basel_land_2021
-                                             0.2271123
+                                             0.2230896
 
 Query Nr. 4
--- What were the 5 municipalities with the highest proportion of protestants in Basel-Landschaft in 2008?
+-- Welche 5 Gemeinden hatten 2008 den höchsten Anteil an Reformierten im Kanton Basel-Landschaft?
 SELECT S.name, CAST(SUM(T.anzahl_evangelisch_reformiert) AS FLOAT) / SUM(T.gesamt_anzahl_personen) as proportion_protestants_2008 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2008 GROUP BY S.name ORDER BY proportion_protestants_2008 DESC LIMIT 5;
            name proportion_protestants_2008
- Kilchberg (BL)                   0.8219697
-      Zeglingen                   0.7673536
-    Wittinsburg                   0.7577938
-     Rothenfluh                   0.7401762
-       Oltingen                   0.7345133
+ Kilchberg (BL)                   0.8244275
+      Zeglingen                   0.7705628
+    Wittinsburg                   0.7440758
+       Oltingen                   0.7422434
+     Rothenfluh                   0.7277556
 
 Query Nr. 5
--- What was the proportion of municipalities in Basel-Landschaft where there were more catholics than protestants among Swiss residents in 2018?
+-- Wie hoch war der Anteil der Gemeinden im Kanton Basel-Landschaft, in denen es 2018 mehr Katholiken als Protestanten unter der Schweizer Bevölkerung gab?
 SELECT SUM(     (anzahl_romisch_katholisch + anzahl_christkatholisch) > anzahl_evangelisch_reformiert ) / CAST(COUNT(anzahl_evangelisch_reformiert) AS FLOAT) AS proprtion_municipalities_more_catholics_than_reformed_2018 FROM (     SELECT         S.name as municipality,         AVG(T.anzahl_christkatholisch) as anzahl_christkatholisch,         AVG(T.anzahl_romisch_katholisch) as anzahl_romisch_katholisch,         AVG(T.anzahl_evangelisch_reformiert) as anzahl_evangelisch_reformiert     FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T     JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid     WHERE S.municipal=TRUE         AND T.jahr=2018         AND T.nationalitat="Schweiz"     GROUP BY S.name );
  proprtion_municipalities_more_catholics_than_reformed_2018
-                                                  0.2093023
+                                                  0.1976744
 
 Query Nr. 6
--- Show me the evolution of the population of Pratteln, in Basel-Landschaft, between 2017 and 2019.
-SELECT T.jahr, T.quartal, SUM(T.gesamt_anzahl_personen) as population FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name="Pratteln"     AND T.jahr>=2017     AND T.jahr<=2019 GROUP BY T.jahr, T.quartal ORDER BY T.jahr, T.quartal ASC;
- jahr quartal population
- 2017       1      16315
- 2017       2      16372
- 2017       3      16432
- 2017       4      16541
- 2018       1      16625
- 2018       2      16668
- 2018       3      16712
- 2018       4      16734
- 2019       1      16724
- 2019       2      16743
- 2019       3      16721
- 2019       4      16735
+-- Zeigen Sie mir die Entwicklung der Bevölkerung von Pratteln, in Basel-Landschaft, zwischen 2017 und 2019.
+SELECT T.jahr, SUM(T.gesamt_anzahl_personen) as population FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name="Pratteln"     AND T.jahr>=2017     AND T.jahr<=2019 GROUP BY T.jahr ORDER BY T.jahr ASC;
+ jahr population
+ 2017      16541
+ 2018      16734
+ 2019      16735
 
 Query Nr. 7
--- What were the 3 municipalities with the highest proportion of foreign residents in canton Basel-Landschaft in late 2022 ?
-SELECT S.name, SUM(CASE WHEN T.nationalitat="Ausland" THEN T.gesamt_anzahl_personen ELSE 0 END) / CAST(SUM(T.gesamt_anzahl_personen) AS FLOAT) AS proportion_foreign_residents FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2022     AND T.quartal=4 GROUP BY S.name ORDER BY proportion_foreign_residents DESC LIMIT 3;
+-- Welches waren im Jahr 2022 die 3 Gemeinden mit dem höchsten Ausländeranteil im Kanton Basel-Landschaft?
+SELECT S.name, SUM(CASE WHEN T.nationalitat="Ausland" THEN T.gesamt_anzahl_personen ELSE 0 END) / CAST(SUM(T.gesamt_anzahl_personen) AS FLOAT) AS proportion_foreign_residents FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2022 GROUP BY S.name ORDER BY proportion_foreign_residents DESC LIMIT 3;
         name proportion_foreign_residents
     Pratteln                    0.4220546
  Frenkendorf                    0.3529768
   Birsfelden                    0.3313780
 
 Query Nr. 8
--- How many swiss residents Binningen, BL were roman catholic during the year 2005?
-SELECT T.jahr, T.quartal, T.anzahl_romisch_katholisch FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name="Binningen"     AND T.jahr=2005     AND T.nationalitat="Schweiz";
- jahr quartal anzahl_romisch_katholisch
- 2005       1                      3071
- 2005       2                      3049
- 2005       3                      3049
- 2005       4                      3040
+-- Wie viele Schweizer Einwohner hatte Binningen, BL im Jahr 2005?
+SELECT T.jahr, T.anzahl_romisch_katholisch FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name="Binningen"     AND T.jahr=2005     AND T.nationalitat="Schweiz";
+ jahr anzahl_romisch_katholisch
+ 2005                      3040
 
 Query Nr. 9
--- Among the foreign residents of Ettingen, in Canton Basel-Landschaft, what proportion were of unknown confession in 2011?
+-- Welcher Anteil der ausländischen Bevölkerung von Ettingen, BL, hatte 2011 eine unbekannte Konfession?
 SELECT SUM(CAST(T.anzahl_unbekannt_konfession AS FLOAT)) / SUM(T.gesamt_anzahl_personen) AS proportion_unknown_religion_ettingen_2011 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name="Ettingen"     AND T.nationalitat="Ausland"     AND T.jahr=2011;
  proportion_unknown_religion_ettingen_2011
-                                 0.5663591
+                                  0.575233
 
 Query Nr. 10
--- Between the municipalities of Arlesheim and Birsfelden in Basel-Landschaft, which one had a higher proportion of protestants in 2003?
+-- Zwischen den Gemeinden Arlesheim und Birsfelden im Kanton Basel-Landschaft, welche hatte 2003 einen höheren Anteil an Protestanten?
 SELECT S.name, CAST(SUM(T.anzahl_evangelisch_reformiert) AS FLOAT) / SUM(T.gesamt_anzahl_personen) as proportion_protestants_2003 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name IN ("Ettingen", "Birsfelden")     AND T.jahr=2003 GROUP BY S.name ORDER BY proportion_protestants_2003 DESC;
        name proportion_protestants_2003
-   Ettingen                   0.3181888
- Birsfelden                   0.2954878
+   Ettingen                   0.3163037
+ Birsfelden                   0.2927625
 
 Query Nr. 11
--- How did the number of reformed evangelics evolve in Allschwil, in Canton Basel-Landschaft, between 2010 and 2015?
-SELECT T.jahr, T.quartal, SUM(T.anzahl_evangelisch_reformiert) as number_reformed_evangelics FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name="Allschwil"     AND T.jahr>=2010     AND T.jahr<=2015 GROUP BY T.jahr, T.quartal;
- jahr quartal number_reformed_evangelics
- 2010       1                       5269
- 2010       2                       5247
- 2010       3                       5248
- 2010       4                       5237
- 2011       1                       5206
- 2011       2                       5190
- 2011       3                       5170
- 2011       4                       5132
- 2012       1                       5082
- 2012       2                       5052
- 2012       3                       5006
- 2012       4                       4991
- 2013       1                       4960
- 2013       2                       4937
- 2013       3                       4925
- 2013       4                       4888
- 2014       1                       4850
- 2014       2                       4855
- 2014       3                       4831
- 2014       4                       4817
- 2015       1                       4779
- 2015       2                       4748
- 2015       3                       4719
- 2015       4                       4652
+-- Wie hat sich die Anzahl der Reformierten in Allschwil, im Kanton Basel-Landschaft, zwischen 2010 und 2015 entwickelt?
+SELECT T.jahr, SUM(T.anzahl_evangelisch_reformiert) as number_reformed_evangelics FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name="Allschwil"     AND T.jahr>=2010     AND T.jahr<=2015 GROUP BY T.jahr;
+ jahr number_reformed_evangelics
+ 2010                       5237
+ 2011                       5132
+ 2012                       4991
+ 2013                       4888
+ 2014                       4817
+ 2015                       4652

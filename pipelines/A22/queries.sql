@@ -1,10 +1,9 @@
--- Wie viele Reformierte gab es im Kanton Basel-Landschaft Anfang 2022?
+-- Wie viele Reformierte gab es im Kanton Basel-Landschaft in 2022?
 SELECT SUM(T.anzahl_evangelisch_reformiert)
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
-    AND T.jahr=2022
-    AND T.quartal=1;
+    AND T.jahr=2022;
 
 -- Welcher Anteil der Bevölkerung von Basel-Landschaft gehörte 2021 einer bekannten Religion an?
 SELECT 1 - (
@@ -53,30 +52,29 @@ FROM (
 );
 
 -- Zeigen Sie mir die Entwicklung der Bevölkerung von Pratteln, in Basel-Landschaft, zwischen 2017 und 2019.
-SELECT T.jahr, T.quartal, SUM(T.gesamt_anzahl_personen) as population
+SELECT T.jahr, SUM(T.gesamt_anzahl_personen) as population
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
     AND S.name="Pratteln"
     AND T.jahr>=2017
     AND T.jahr<=2019
-GROUP BY T.jahr, T.quartal
-ORDER BY T.jahr, T.quartal ASC;
+GROUP BY T.jahr
+ORDER BY T.jahr ASC;
 
 
--- Welches waren Ende 2022 die 3 Gemeinden mit dem höchsten Ausländeranteil im Kanton Basel-Landschaft?
+-- Welches waren im Jahr 2022 die 3 Gemeinden mit dem höchsten Ausländeranteil im Kanton Basel-Landschaft?
 SELECT S.name, SUM(CASE WHEN T.nationalitat="Ausland" THEN T.gesamt_anzahl_personen ELSE 0 END) / CAST(SUM(T.gesamt_anzahl_personen) AS FLOAT) AS proportion_foreign_residents
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
     AND T.jahr=2022
-    AND T.quartal=4
 GROUP BY S.name
 ORDER BY proportion_foreign_residents DESC
 LIMIT 3;
 
 -- Wie viele Schweizer Einwohner hatte Binningen, BL im Jahr 2005?
-SELECT T.jahr, T.quartal, T.anzahl_romisch_katholisch
+SELECT T.jahr, T.anzahl_romisch_katholisch
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
@@ -104,11 +102,11 @@ GROUP BY S.name
 ORDER BY proportion_protestants_2003 DESC;
 
 -- Wie hat sich die Anzahl der Reformierten in Allschwil, im Kanton Basel-Landschaft, zwischen 2010 und 2015 entwickelt?
-SELECT T.jahr, T.quartal, SUM(T.anzahl_evangelisch_reformiert) as number_reformed_evangelics
+SELECT T.jahr, SUM(T.anzahl_evangelisch_reformiert) as number_reformed_evangelics
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
     AND S.name="Allschwil"
     AND T.jahr>=2010
     AND T.jahr<=2015
-GROUP BY T.jahr, T.quartal;
+GROUP BY T.jahr;

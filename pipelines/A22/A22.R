@@ -14,6 +14,8 @@ ds <- statbotData::download_data(ds)
 ds$postgres_export <- ds$data %>%
   janitor::clean_names() %>%
   dplyr::select(jahr, quartal, gemeinde, nationalitaet, konfession, anzahl_personen) %>%
+  dplyr::filter(quartal == 4) %>%
+  dplyr::select(-quartal) %>%
   dplyr::rename(nationalitat = nationalitaet) %>%
   tidyr::pivot_wider(
     names_from = konfession,
