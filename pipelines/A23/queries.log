@@ -71,6 +71,28 @@ SELECT T.jahr FROM basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_ja
 
 Query Nr. 7
 -- Wie viel Wohnbauland wurde zwischen 2010 und 2012 in Pratteln, BL, gekauft?
-SELECT SUM(T.flache_in_m2) as gesamt_flache_in_m2 FROM basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name='Pratteln'     AND T.jahr>=2010     AND T.jahr<=2012;
+SELECT SUM(T.flache_in_m2) as gesamt_flache_in_m2 FROM basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name LIKE 'Pratteln%'     AND T.jahr>=2010     AND T.jahr<=2012;
  gesamt_flache_in_m2
                 9900
+
+Query Nr. 8
+-- Show me the price of residential land in Muttenz, Birsfelden and Schonenbuch, in Basel-Landschaft in 1983.
+SELECT S.name, T.quadratmeterpreis_chf FROM basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE T.jahr=1983     AND (         S.name LIKE 'Muttenz%'         OR S.name LIKE 'Bottmingen%'         OR S.name LIKE 'Binningen%'     );
+       name quadratmeterpreis_chf
+  Binningen                   383
+ Bottmingen                   390
+    Muttenz                   343
+
+Query Nr. 9
+-- Show me the price of residential land in Basel-Landschaft whose name starts with A in 2012.
+SELECT S.name, T.quadratmeterpreis_chf FROM basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE T.jahr=2008     AND S.name LIKE 'A%' LIMIT 10;
+       name quadratmeterpreis_chf
+ Aesch (BL)                   678
+ Arboldswil                   333
+
+Query Nr. 10
+-- What was the price of residential land in Aesch in 1980 and 2020?
+SELECT T.jahr, T.quadratmeterpreis_chf FROM basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name LIKE 'Aesch%'     AND T.jahr IN (1980, 2020) LIMIT 10;
+ jahr quadratmeterpreis_chf
+ 1980                   214
+ 2020                  1541
