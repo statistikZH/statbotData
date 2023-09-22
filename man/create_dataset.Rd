@@ -2,29 +2,28 @@
 % Please edit documentation in R/create_dataset.R
 \name{create_dataset}
 \alias{create_dataset}
-\title{Title}
+\title{Create a pipeline}
 \usage{
 create_dataset(id)
 }
 \arguments{
-\item{dataset_id}{id of the dataset}
+\item{id}{id of the dataset}
 }
 \value{
-list containing dataset-objects
+ds_class class containing dataset with attributes
 }
 \description{
-Title
+Creates a dataset object for the statbot datasets
 }
-\examples{
-creates a dataset object for the statbot datasets
-
+\details{
 A dataset object needs to be created for the download, the computation
 as well as the publishing process
 
 A dataset object inherits the following classes:
-- data_organization -> needed for the download process
-- dataset_id -> needed for the download as well as the publishing process
-- download_format -> needed for the download process
-
+\itemize{
+\item data_organization -> needed for the download process
+\item dataset_id -> needed for the download as well as the publishing process
+\item download_format -> needed for the download process
+}
 }
 \concept{Datensatz erstellen}

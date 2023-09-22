@@ -1,10 +1,6 @@
-#' Title
+#' Create a pipeline
 #'
-#' @return
-#' @export
-#'
-#' @examples
-#' creates a dataset object for the statbot datasets
+#' Creates a dataset object for the statbot datasets
 #'
 #' A dataset object needs to be created for the download, the computation
 #' as well as the publishing process
@@ -14,34 +10,32 @@
 #' - dataset_id -> needed for the download as well as the publishing process
 #' - download_format -> needed for the download process
 #'
-#' @param dataset_id id of the dataset
+#' @param id id of the dataset
 #'
-#'
-#' @return list containing dataset-objects
+#' @return ds_class class containing dataset with attributes
 #'
 #' @family Datensatz erstellen
 #'
 #' @export
 create_dataset <- function(id) {
 
-  googlesheets4::gs4_deauth()
+  # the sheet is expected as a list in order to turn the row of the pipeline into a list
+  datasets <- load_dataset_list()
 
-  googlesheets4::read_sheet(ss = "https://docs.google.com/spreadsheets/d/11V8Qj4v21MleMk_W9ZnP_mc4kmp0CNvsmd9w4A9sTyo/edit?usp=sharing",
-                            sheet = "tables") -> sheet
-  sheet %>%
+  # turn the pipeline row into a list
+  ds_list <- datasets %>%
     dplyr::filter(data_indicator == id) %>%
-    as.list() -> ds_list
+    dplyr::mutate(sheet = as.list(sheet)) %>%
+    as.list()
   ds_list$dir <- here::here("pipelines", ds_list$data_indicator, "")
 
-  ds_list <- structure(
+  # define the ds class
+  ds_class <- structure(
     ds_list,
     data = NULL,
     class = c(ds_list$organization,
               ds_list$format,
               ds_list$id)
   )
-
-
-  return(ds_list)
+  return(ds_class)
 }
-
