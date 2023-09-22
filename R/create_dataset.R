@@ -1,10 +1,6 @@
-#' Title
+#' Create a pipeline
 #'
-#' @return
-#' @export
-#'
-#' @examples
-#' creates a dataset object for the statbot datasets
+#' Creates a dataset object for the statbot datasets
 #'
 #' A dataset object needs to be created for the download, the computation
 #' as well as the publishing process
@@ -14,8 +10,7 @@
 #' - dataset_id -> needed for the download as well as the publishing process
 #' - download_format -> needed for the download process
 #'
-#' @param dataset_id id of the dataset
-#'
+#' @param id id of the dataset
 #'
 #' @return ds_class class containing dataset with attributes
 #'
@@ -25,12 +20,12 @@
 create_dataset <- function(id) {
 
   # the sheet is expected as a list in order to turn the row of the pipeline into a list
-  sheet <- readr::read_csv("data/const/statbot_input_data.csv") %>%
-    dplyr::mutate(sheet = as.list(sheet))
+  datasets <- load_dataset_list()
 
   # turn the pipeline row into a list
-  ds_list <- sheet %>%
+  ds_list <- datasets %>%
     dplyr::filter(data_indicator == id) %>%
+    dplyr::mutate(sheet = as.list(sheet)) %>%
     as.list()
   ds_list$dir <- here::here("pipelines", ds_list$data_indicator, "")
 

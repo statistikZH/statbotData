@@ -1,12 +1,21 @@
 # load all the possible data sets
 library(shiny)
 library(DT)
+library(DT)
+
+# set pipeline id pattern
 pattern_pipeline_indicator <- '[:upper:][:digit:]+'
-pipeline_metadata <- googlesheets4::read_sheet(
-  ss = "https://docs.google.com/spreadsheets/d/11V8Qj4v21MleMk_W9ZnP_mc4kmp0CNvsmd9w4A9sTyo/edit?usp=sharing",
-  sheet = "tables")
-pipelines <- list.files("../pipelines/")
-choices <- pipeline_metadata %>%
+
+# load all datasets
+dataset_list_path <- here::here("data", "const", "statbot_input_data.csv")
+dataset_list <- readr::read_csv(dataset_list_path)
+
+# load all pipelines that are already installed
+pipelines_path <- here::here("pipelines")
+pipelines <- list.files(pipelines_path)
+
+# get choices for pipelines
+choices <- dataset_list %>%
   dplyr::filter(data_indicator %in% pipelines) %>%
   dplyr::select(c(publisher, lang, data_indicator, name)) %>%
   dplyr::mutate(selector = paste(publisher, lang, data_indicator, name))
@@ -31,7 +40,7 @@ server <- function(input, output) {
   # Return metadata for the table
   metadataTableOutput <- reactive({
     pipeline_indicator <- input$dataset %>% stringr::str_extract(pattern_pipeline_indicator)
-    metadata_table_path <- paste0("../pipelines/", pipeline_indicator, "/metadata_tables.csv")
+    metadata_table_path <- here::here("pipelines", pipeline_indicator, "metadata_tables.csv")
     if (file.exists(metadata_table_path)) {
       df <- readr::read_delim(metadata_table_path, delim = ";")
       df_flipped <- tibble::as_tibble(cbind(key = names(df), t(df))) %>%
@@ -43,7 +52,7 @@ server <- function(input, output) {
   # Return metadata for the table columns
   metadataColumnsOutput <- reactive({
     pipeline_indicator <- input$dataset %>% stringr::str_extract(pattern_pipeline_indicator)
-    metadata_columns_path <- paste0("../pipelines/", pipeline_indicator, "/metadata_table_columns.csv")
+    metadata_columns_path <- here::here("pipelines", pipeline_indicator, "metadata_table_columns.csv")
     if (file.exists(metadata_columns_path)) {
       readr::read_delim(metadata_columns_path, delim = ";") %>%
         dplyr::select(-c(table_name))
@@ -53,7 +62,7 @@ server <- function(input, output) {
   # Return dataset sample
   sampleOutput <- reactive({
     pipeline_indicator <- input$dataset %>% stringr::str_extract(pattern_pipeline_indicator)
-    sample_path <- paste0("../pipelines/", pipeline_indicator, "/sample.csv")
+    sample_path <- here::here("pipelines", pipeline_indicator, "sample.csv")
     if (file.exists(sample_path)) {
       readr::read_delim(sample_path, delim = ";")
     }
@@ -62,7 +71,7 @@ server <- function(input, output) {
   # Return query log
   queryOutput <- reactive({
     pipeline_indicator <- input$dataset %>% stringr::str_extract(pattern_pipeline_indicator)
-    query_log_path <- paste0("../pipelines/", pipeline_indicator, "/queries.log")
+    query_log_path <- here::here("pipelines", pipeline_indicator, "queries.log")
     if (file.exists(query_log_path)) {
       queries <- readr::read_file(query_log_path)
       query_count <- stringr::str_count(queries, "--")
@@ -122,7 +131,7 @@ server <- function(input, output) {
 
   # Return spatial unit table
   spatialOutput <- reactive({
-    table_path <- "../data/const/spatial_unit_postgres.csv"
+    table_path <- here::here("data", "const", "spatial_unit_postgres.csv")
     if (file.exists(table_path)) {
       readr::read_delim(table_path, delim = ",")
     }
