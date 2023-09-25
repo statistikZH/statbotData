@@ -9,3 +9,13 @@ load_dataset_list <- function() {
   dataset_list <- readr::read_csv(dataset_list_path)
   return(dataset_list)
 }
+
+#' Load spatial units from file
+#'
+#' @return spatial_map spatial units as a tibble
+#' @export
+load_spatial_map <- function() {
+  spatial_unit_path <- here::here("data", "const", "spatial_unit_postgres.csv")
+  spatial_map <- readr::read_csv(spatial_unit_path)
+  return(spatial_map)
+}

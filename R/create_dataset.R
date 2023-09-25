@@ -28,6 +28,11 @@ create_dataset <- function(id) {
     dplyr::mutate(sheet = as.list(sheet)) %>%
     as.list()
   ds_list$dir <- here::here("pipelines", ds_list$data_indicator, "")
+  if (ds_list$status == "uploaded") {
+    ds_list$db_instance = "postgres"
+  } else {
+    ds_list$db_instance = "test"
+  }
 
   # define the ds class
   ds_class <- structure(

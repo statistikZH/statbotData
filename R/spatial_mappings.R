@@ -217,11 +217,6 @@ stattab_find_match <- function(spacial_term, spatial_units_list) {
   return("")
 }
 
-load_spatial_map <- function() {
-  spatial_map <- readr::read_csv("data/const/spatial_unit_postgres.csv")
-  return(spatial_map)
-}
-
 #' Get Spatial Unit for Switzerland
 #'
 #' This is a very simple function to provide the spatialunit_uid for Switzerland
