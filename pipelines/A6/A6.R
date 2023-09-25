@@ -32,7 +32,19 @@ ds$postgres_export <- ds$data %>%
   dplyr::mutate(
     jahr = as.numeric(stringr::str_extract(jahr, "\\d+"))
   )
-unique(ds$postgres_export$jahr)
+ds$postgres_export
+
+# -------------------------------------------------------------------------
+# Step: Upload to postgres
+#   input:  ds$postgres_export
+#   output: postgres upload
+# -------------------------------------------------------------------------
+
+# check for correct data_types and columns
+statbotData::create_postgres_table(ds, dry_run = TRUE)
+
+# when dry run went well: do the update
+statbotData::create_postgres_table(ds)
 
 # -------------------------------------------------------------------------
 # Step: Testrun queries on sqllite
@@ -40,11 +52,8 @@ unique(ds$postgres_export$jahr)
 #   output: ds$dir/queries.log
 # -------------------------------------------------------------------------
 
-statbotData::testrun_queries(
-  ds$postgres_export,
-  ds$dir,
-  ds$name
-)
+# the queries run on the postgres db if the ds$status is "uploaded"
+statbotData::testrun_queries(ds)
 
 # -------------------------------------------------------------------------
 # Step: Write metadata tables
@@ -54,5 +63,16 @@ statbotData::testrun_queries(
 #           ds$dir/sample.csv
 # -------------------------------------------------------------------------
 
-read_write_metadata_tables(ds)
-dataset_sample(ds)
+# read metadata: check: some data_types are not what postgres expects:
+#`categorical` -> `varchar`
+#`numeric` -> `numeric` or `integer`
+statbotData::read_metadata_tables(ds)
+
+# generate metadata templates if needed
+# (these don't overwrite existing metadata any more)
+statbotData::generate_metadata_templates(ds)
+
+# generate a dataset sample
+# this writes a new sample if ds$status is not uploaded
+# the sample does not include the postgres primary key "uid"
+statbotData::dataset_sample(ds)
