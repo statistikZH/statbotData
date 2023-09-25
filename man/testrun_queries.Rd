@@ -4,9 +4,11 @@
 \alias{testrun_queries}
 \title{Testrun queries}
 \usage{
-testrun_queries(df, dir, table_name)
+testrun_queries(ds)
 }
 \arguments{
+\item{ds}{dataset}
+
 \item{df}{tibble to turn into an sql table}
 
 \item{dir}{directory to write the output to}
@@ -30,9 +32,7 @@ with spatial joins on the \code{spatial_unit} table
 \dontrun{
   # command to call. this function
   testrun_queries(
-    ds$data,
-    ds$dir,
-    ds$name
+    ds
   )
   # example input in file `queries.sql` in the directory ds$dir
   -- Wieviele Abstimmungsvorlagen gab es seit dem Jahr 1971?
