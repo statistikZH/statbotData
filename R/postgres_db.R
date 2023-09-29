@@ -26,9 +26,8 @@ postgres_db_connect <- function() {
 #' Create Postgres table
 #'
 #' @param ds
-#' @param dry_run bool: whether this
+#' @param dry_run bool: whether this is a dry run or the actual DB operation
 #'
-#' @return field_types: vector of field types, in case it was called with dry_run
 #' @export
 #'
 #' @examples
@@ -36,37 +35,45 @@ postgres_db_connect <- function() {
 #' create_postgres_table(ds, dry_run = TRUE)
 #' }
 create_postgres_table <- function(ds, dry_run = FALSE) {
-  # For dry runs, we create a fake DB connection
+  table <- ds$name
   if (dry_run) {
     con <- DBI::ANSI()
   } else {
+    # connect to postgres instance
     con <- statbotData::postgres_db_connect()
+    db <- con$db
   }
-  field_types <- get_postgres_data_types(con, ds$postgres_export) %>%
-    tibble::deframe()
 
-  # add uid as a column
-  df <- ds$postgres_export %>%
-    tibble::rowid_to_column("uid")
+  field_types <- get_postgres_data_types(db, ds$postgres_export)
+  print(paste("Field type for dataset", table, ":"))
+  print(field_types)
 
+  # only if this is not a dry run: create the table:
+  # overwrite if it already exists
   if (dry_run) {
-    return(field_types)
+    print(paste("Dryrun for table:", table, "Table was not created by this run. Please check the field types."))
+  } else {
+    schema <- con$schema
+
+    # turn field types into a list
+    field_type_list <- field_types %>%
+      tibble::deframe()
+
+    # add uid as a column
+    df <- ds$postgres_export %>%
+      tibble::rowid_to_column("uid")
+
+    # create table with the field types
+    RPostgres::dbWriteTable(
+      conn = db,
+      name = RPostgres::Id(schema = schema, table = table),
+      value = df,
+      overwrite = TRUE,
+      field.types = field_type_list
+    )
+    print(paste("Table", table, "was created for schema", schema))
+    RPostgres::dbDisconnect(conn = db)
   }
-
-  # connect to postgres instance
-  db <- con$db
-  schema <- con$schema
-  table <- ds$name
-
-  # get
-  RPostgres::dbWriteTable(
-    conn = db,
-    name = RPostgres::Id(schema = schema, table = table),
-    value = df,
-    overwrite = TRUE,
-    field.types = field_types
-  )
-  RPostgres::dbDisconnect(conn = db)
 }
 
 #' Get data types for postgres table from metadata
@@ -100,6 +107,9 @@ get_postgres_data_types <- function(con, tbl) {
       name = "uid",
       data_type = "serial4 PRIMARY KEY",
       .before = 1
+    ) %>%
+    dplyr::mutate(
+      data_type = stringr::str_replace(data_type, "DOUBLE PRECISION", "NUMERIC")
     )
   return(data_types)
 }
