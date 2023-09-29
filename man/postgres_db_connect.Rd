@@ -14,6 +14,6 @@ Establish db connection
 }
 \examples{
 \dontrun{
-  postgres_db_connect()
+postgres_db_connect()
 }
 }

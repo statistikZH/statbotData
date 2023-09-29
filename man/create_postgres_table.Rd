@@ -7,16 +7,15 @@
 create_postgres_table(ds, dry_run = FALSE)
 }
 \arguments{
-\item{dry_run}{bool: whether this}
-}
-\value{
-field_types: vector of field types, in case it was called with dry_run
+\item{ds}{dataset pipeline class}
+
+\item{dry_run}{bool: whether this is a dry run or the actual DB operation}
 }
 \description{
 Create Postgres table
 }
 \examples{
 \dontrun{
-  create_postgres_table(ds, dry_run = TRUE)
+create_postgres_table(ds, dry_run = TRUE)
 }
 }
