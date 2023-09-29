@@ -123,3 +123,20 @@ read_data.rdf <- function(ds) {
   ds$data <- readr::read_csv(httr::content(response, "text"))
   return(ds)
 }
+
+#' Method to retrieve a JSON dataset and convert it to a tibble
+#'
+read_data.json <- function(ds) {
+  resp <- httr::GET(ds$read_path)
+  parsed <- httr::content(resp, as = "parsed")
+
+  # Extract list of values and replace "..." with NA
+  # This is based on Aargau's API response
+  data <- purrr::map(
+    parsed$results,
+    ~ purrr::modify_depth(.x, 1, ~ ifelse(. == "...", NA, .))
+  )
+
+  ds$data <- dplyr::bind_rows(data)
+  return(ds)
+}
