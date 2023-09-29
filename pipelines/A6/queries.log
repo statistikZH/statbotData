@@ -1,3 +1,4 @@
+[1] "Environment:REMOTE, Time:2023-10-02 07:11:50.011819"
 
 Query Nr. 1
 -- Wieviele Abstimmungsvorlagen gab es im Jahr 2000?
@@ -9,7 +10,7 @@ Query Nr. 2
 -- Wieviele Abstimmungsvorlagen gab es seit dem Jahr 1971?
 SELECT COUNT(*) as anzahl_abstimmungsvorlagen FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE;
  anzahl_abstimmungsvorlagen
-                        624
+                        636
 
 Query Nr. 3
 -- Wieviele Volksabstimmungen wurden 1995 in der Schweiz durchgeführt?
@@ -27,11 +28,11 @@ Query Nr. 5
 -- Was war die 5 dominantesten Themen bei den Volksabstimmungen über die Jahre in der Schweiz?
 SELECT thema, SUM(anzahl_abstimmungsvorlagen) as vorlagen_pro_thema FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE GROUP BY thema ORDER BY vorlagen_pro_thema DESC LIMIT 5;
                      thema vorlagen_pro_thema
-             Sozialpolitik                105
+             Sozialpolitik                106
              Staatsordnung                 55
-      Öffentliche Finanzen                 46
+      Öffentliche Finanzen                 47
  Verkehr und Infrastruktur                 41
-                Wirtschaft                 34
+     Umwelt und Lebensraum                 34
 
 Query Nr. 6
 -- In welchem Jahr gab es die meisten Volksabstimmungen zum Thema Religion in der Schweiz?
@@ -57,6 +58,7 @@ Query Nr. 9
 -- Was war die Anzahl von Volksabstimmungen der Schweiz pro Jahr in den letzten 10 Jahren?
 SELECT SUM(T.anzahl_abstimmungsvorlagen) as durchschnittliche_anzahl_abstimmmungen, T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid GROUP BY T.jahr ORDER BY T.jahr DESC LIMIT 10;
  durchschnittliche_anzahl_abstimmmungen jahr
+                                      3 2023
                                      11 2022
                                      13 2021
                                       9 2020
@@ -66,7 +68,6 @@ SELECT SUM(T.anzahl_abstimmungsvorlagen) as durchschnittliche_anzahl_abstimmmung
                                      13 2016
                                       6 2015
                                      12 2014
-                                     11 2013
 
 Query Nr. 10
 -- In welchem Jahren gab es die Volksabstimmungen zum Thema Energie in der Schweiz?
