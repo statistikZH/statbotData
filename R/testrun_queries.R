@@ -38,9 +38,9 @@ testrun_queries <- function(ds) {
 
   # prepare db connection
   if (ds$db_instance == "postgres") {
-    connection <- statbotData::postgres_db_connect()
-    db <- connection$db
-    schema <- connection$schema
+    con <- statbotData::postgres_db_connect()
+    db <- con$db
+    schema <- con$schema
   } else {
     db <- DBI::dbConnect(RSQLite::SQLite(), "")
     prepare_test_db(db, df, table_name)
@@ -49,7 +49,7 @@ testrun_queries <- function(ds) {
   # set file pathes
   input_path <- here::here(dir, 'queries.sql')
   output_path <- here::here(dir, 'queries.log')
-  cat(file = output_path, append = FALSE)
+  log_time_and_environment(ds$status, output_path)
 
   # read queries
   lines <- readr::read_lines(file = input_path, skip_empty_rows = TRUE)
@@ -149,6 +149,29 @@ log_question_and_query <- function(count, question, query, output_path) {
 log_result <- function(result, output_path) {
   sink(file = output_path, append = TRUE)
   print(result, row.names=FALSE, file = output_path, append = TRUE)
+  sink()
+}
+
+#' Log environment and time to the output file
+#'
+#' @param pipleine_status property status of the dataset class ds
+#' @param output_path the file where the query results are logged
+#'
+#' @examples
+#' \dontrun{
+#' log_question_and_query(ds$status, output_path)
+#' }
+log_time_and_environment <- function(pipeline_status, output_path) {
+  if (pipeline_status == "uploaded") {
+    env <- "REMOTE"
+  } else {
+    env <- "LOCAL"
+  }
+  sink(file = output_path, append = FALSE)
+  print(paste0("Environment:", env, ", Time:", Sys.time()),
+        row.names = FALSE,
+        file = output_path,
+        append = TRUE)
   sink()
 }
 

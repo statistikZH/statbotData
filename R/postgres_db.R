@@ -25,7 +25,7 @@ postgres_db_connect <- function() {
 
 #' Create Postgres table
 #'
-#' @param ds
+#' @param ds dataset pipeline class
 #' @param dry_run bool: whether this is a dry run or the actual DB operation
 #'
 #' @export
@@ -35,9 +35,12 @@ postgres_db_connect <- function() {
 #' create_postgres_table(ds, dry_run = TRUE)
 #' }
 create_postgres_table <- function(ds, dry_run = FALSE) {
+  if (is.null(ds$postgres_export)) {
+    stop("ds$postgres_export is null therefore is can not be imported to postgres")
+  }
   table <- ds$name
   if (dry_run) {
-    con <- DBI::ANSI()
+    db <- DBI::ANSI()
   } else {
     # connect to postgres instance
     con <- statbotData::postgres_db_connect()
@@ -76,6 +79,71 @@ create_postgres_table <- function(ds, dry_run = FALSE) {
   }
 }
 
+#' Run postgres query on table in schema
+#'
+#' Add schema to query
+#'
+#' @param table_name table_name in the query
+#' @param query query on the table
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' run_postgres_query("SELECT count(*) FROM metadata.tables")
+#' }
+run_postgres_query <- function(table_name, query) {
+  tryCatch(
+    {
+      con <- statbotData::postgres_db_connect()
+      query <- query %>% stringr::str_replace(
+        table_name,
+        paste0(con$schema, ".", table_name))
+      RPostgres::dbGetQuery(con$db, query)
+    }, error = function(e) {
+      stop(e)
+    }, finally = {
+      RPostgres::dbDisconnect(con$db)
+    }
+  )
+}
+
+#' Delete metadata for a pipeline in postgres
+#'
+#' The pipeline dataset is supposed to be created when this function
+#' is called. All metadata for the pipeline is deleted in the postgres
+#' instance. This function can be used when the metadata should be updated
+#' to remove the old entries and the readd the updated metadata
+#'
+#' @param ds dataset pipeline class
+#'
+#' @examples
+#' \dontrun{
+#' delete_metadata_from_postgres(ds)
+#' }
+delete_metadata_from_postgres <- function(ds) {
+  tryCatch(
+    {
+      # delete metadata entries in postgres`
+      con <- statbotData::postgres_db_connect()
+      q_md_table <- paste0(
+        "DELETE FROM ", con$schema,
+        ".metadata_tables WHERE name='", ds$name, "'; "
+      )
+      q_md_cols <- paste0(
+        "DELETE FROM ", con$schema,
+        ".metadata_table_columns WHERE table_name='", ds$name, "';"
+      )
+      RPostgres::dbExecute(con$db, q_md_table, silent=)
+      RPostgres::dbExecute(con$db, q_md_cols)
+    }, error = function(e) {
+      stop(e)
+    }, finally = {
+      RPostgres::dbDisconnect(con$db)
+    }
+  )
+}
+
 #' Get data types for postgres table from metadata
 #'
 #' Returns a tibble with 2 columns: the name of the column and the
@@ -95,9 +163,23 @@ create_postgres_table <- function(ds, dry_run = FALSE) {
 #' get_data_types_from_metadata(DBI::ANSI(), ds$postgres_export)
 #' }
 get_postgres_data_types <- function(con, tbl) {
+  # get name of the year column which can differ per language
+  year_names <- c("year", "jahr", "annee")
+  year_col <- intersect(colnames(tbl), year_names)
   data_types <- DBI::dbDataType(con, tbl) %>%
-    tibble::enframe(name = "name", value = "data_type") %>%
-    dplyr::filter(name != "spatialunit_uid") %>%
+    tibble::enframe(
+      name = "name", value = "data_type"
+    ) %>%
+    dplyr::filter(
+      name != "spatialunit_uid"
+    ) %>%
+    dplyr::mutate(
+      data_type = case_when(
+        name == year_col ~ 'INTEGER',
+        data_type == 'TEXT' ~ 'TEXT',
+        .default = 'NUMERIC',
+      )
+    ) %>%
     tibble::add_row(
       name = "spatialunit_uid",
       data_type = "varchar REFERENCES experiment.spatial_unit (spatialunit_uid)",
@@ -107,9 +189,6 @@ get_postgres_data_types <- function(con, tbl) {
       name = "uid",
       data_type = "serial4 PRIMARY KEY",
       .before = 1
-    ) %>%
-    dplyr::mutate(
-      data_type = stringr::str_replace(data_type, "DOUBLE PRECISION", "NUMERIC")
     )
   return(data_types)
 }

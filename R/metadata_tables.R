@@ -70,33 +70,66 @@ generate_metadata_templates <- function(ds) {
   )
 }
 
-#' Read/Write metadata tables as csv
+#' Read metadata for a pipeline from file
 #'
 #' @param ds the dataset
 #'
-#' @return metadata as tibbles
+#' @return metadata as tibbles or NULL
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#'   read_metadata_tables(ds)
+#'   read_metadata_tables_from_file(ds)
 #' }
-read_metadata_tables <- function(ds) {
-
+read_metadata_tables_from_file <- function(ds) {
   # set path for metadata storage
   path_table <- paste0(ds$dir, "metadata_tables.csv")
   path_table_columns <- paste0(ds$dir, "metadata_table_columns.csv")
 
   if (file.exists(path_table) && file.exists(path_table_columns)) {
-    metadata_tables = readr::read_delim(path_table, delim = ";")
-    metadata_table_columns = readr::read_delim(path_table_columns, delim = ";")
+    metadata_tables = readr::read_delim(path_table,
+                                        delim = ";",
+                                        show_col_types = FALSE)
+    metadata_table_columns = readr::read_delim(path_table_columns,
+                                               delim = ";",
+                                               show_col_types = FALSE)
     return(list(metadata_tables=metadata_tables,
                 metadata_table_columns=metadata_table_columns))
+  } else {
+    return(NULL)
+  }
+}
+
+#' Update pipeline last run date in the table metadata on file
+#'
+#' @param ds the dataset
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   update_pipeline_last_run_date(ds)
+#' }
+update_pipeline_last_run_date <- function(ds) {
+  if (is.null(ds$postgres_export)) {
+    stop("ds$postgres_export is null therefore the metadata last run date has not been updated")
   }
 
-  print("Files `metadata_tables.csv` and `metadata_table_columns.csv` have not both been found.
-        Use function `generate_metadata_templates` to generate templates for the metadata.")
+  # set path for metadata storage
+  path_table <- paste0(ds$dir, "metadata_tables.csv")
+  if (!file.exists(path_table)) {
+    stop("Metadata file `metadata_tables.csv` is missing.")
+  }
+  # read metadata_tables from file
+  metadata_tables = readr::read_delim(path_table,
+                                      delim = ";",
+                                      show_col_types = FALSE)
+  # update last run date
+  metadata_tables$last_pipeline_run <- Sys.Date()
+  write.table(metadata_tables, path_table,
+              row.names = FALSE, quote = FALSE, sep = ";")
+  return(metadata_tables)
 }
 
 #' Get column types from metadata
