@@ -1,0 +1,92 @@
+
+Query Nr. 1
+-- What municipality in the canton Aargau had the most cars per inhabitant in 2020?
+SELECT S.name FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2020 ORDER BY T.anzahl_personenwagen_pro_1000_einwohner DESC LIMIT 1;
+    name
+ Böbikon
+
+Query Nr. 2
+-- How many agricultural vehicles were there in the canton Aargau in 2010?
+SELECT anzahl_landwirtschaftliche_motorfahrzeuge FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name = "Canton Aargau"     AND T.jahr=2010;
+ anzahl_landwirtschaftliche_motorfahrzeuge
+                                     13200
+
+Query Nr. 3
+-- What was the number of commercial vehicles in 1960 and 1980 in the canton Aargau?
+SELECT T.jahr, anzahl_nutzfahrzeuge FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name = "Canton Aargau"     AND T.jahr IN (1960, 1980);
+ jahr anzahl_nutzfahrzeuge
+ 1960                 4761
+ 1980                13396
+
+Query Nr. 4
+-- How did the number of motorcycles and personal cars evolve in canton Aargau over the period between 1930 and 1960?
+SELECT T.jahr, anzahl_motorrader, anzahl_klein_motorrader, anzahl_motorfahrrader, anzahl_personenwagen FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name = "Canton Aargau"     AND T.jahr >= 1930     AND T.jahr <= 1960;
+ jahr anzahl_motorrader anzahl_klein_motorrader anzahl_motorfahrrader
+ 1930                NA                      NA                    NA
+ 1940                NA                      NA                    NA
+ 1950              5116                    1300                    NA
+ 1955             11839                    4005                    NA
+ 1960             11797                   11638                    NA
+ anzahl_personenwagen
+                 2927
+                 3501
+                 8138
+                15713
+                28691
+
+Query Nr. 5
+-- What is the proportion of municipalities in canton Aargau where the number of cars per inhabitants increased between 2015 and 2022?
+SELECT CAST(SUM(CASE WHEN T1.diff > 0 THEN 1 ELSE 0 END) AS FLOAT) / COUNT(T1.diff) FROM (     SELECT         SUM(CASE WHEN T.jahr = 2022 THEN T.anzahl_personenwagen_pro_1000_einwohner ELSE 0 END) -         SUM(CASE WHEN T.jahr = 2015 THEN T.anzahl_personenwagen_pro_1000_einwohner ELSE 0 END) as diff     FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T     JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid     WHERE S.municipal=TRUE         AND T.jahr IN (2015, 2022)     GROUP BY S.name ) as T1;
+ CAST(SUM(CASE WHEN T1.diff > 0 THEN 1 ELSE 0 END) AS FLOAT) / COUNT(T1.diff)
+                                                                    0.5934579
+
+Query Nr. 6
+-- What was the number of trailers from 1998 to 2001 in Aarburg, AG?
+SELECT T.jahr, T.anzahl_anhaenger FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name = "Aarburg"     AND T.jahr >= 1998     AND T.jahr <= 2001;
+ jahr anzahl_anhaenger
+ 1998              158
+ 1999              174
+ 2000              188
+ 2001              197
+
+Query Nr. 7
+-- What were the top 3 municipalities in Aargau with the highest proportion of motorcycles vs cars in 2015? Also show the proportions.
+SELECT     S.name,     CAST(T.anzahl_motorrader + T.anzahl_klein_motorrader + T.anzahl_motorfahrrader AS FLOAT) / T.anzahl_personenwagen AS ratio_motorrader_to_personenwagen FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2015 ORDER BY ratio_motorrader_to_personenwagen DESC LIMIT 3;
+     name ratio_motorrader_to_personenwagen
+ Mägenwil                         0.6127517
+  Mandach                         0.5255102
+ Attelwil                         0.4236453
+
+Query Nr. 8
+-- What was the number of commercial vehicles in Abtwil, AG in 2000 ?
+SELECT T.anzahl_nutzfahrzeuge FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name = "Abtwil"     AND T.jahr=2000;
+ anzahl_nutzfahrzeuge
+                   36
+
+Query Nr. 9
+-- How did the number of cars per inhabitant in Aargau evolve over the period between 2010 and 2022?
+SELECT T.jahr, T.anzahl_personenwagen_pro_1000_einwohner FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name = "Canton Aargau"     AND T.jahr >= 2010     AND T.jahr <= 2022;
+ jahr anzahl_personenwagen_pro_1000_einwohner
+ 2010                                   559.9
+ 2011                                   567.0
+ 2012                                   572.8
+ 2013                                   578.5
+ 2014                                   581.3
+ 2015                                   583.7
+ 2016                                   588.0
+ 2017                                   587.9
+ 2018                                   587.9
+ 2019                                   587.4
+ 2020                                   588.5
+ 2021                                   589.9
+ 2022                                   586.3
+
+Query Nr. 10
+-- What were the 5 municipalities in Aargau with the fewest motorcycle per passenger car in 2015?
+SELECT S.name FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE T.jahr=2015     AND S.municipal=TRUE ORDER BY CAST(T.anzahl_motorrader + T.anzahl_klein_motorrader + T.anzahl_motorfahrrader AS FLOAT) / T.anzahl_personenwagen ASC LIMIT 5;
+           name
+    Kaiserstuhl
+ Schinznach-Bad
+   Spreitenbach
+       Neuenhof
+     Laufenburg
