@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 data_indicator,status,name,format,size,encoding,px_id,publisher,dataset_source_url,organization,base_url,data_url,sheet,lang
 A1,approved,medizinisch_technische_infrastruktur,px,,,px-x-1404010100_101,fso,,bfs,,,px-x-1404010100_101,de
 A2,planned,energieeinsatzkonten_haushalte_und_wirtschaft,px,,,px-x-0204000000_106,fso,,bfs,,,px-x-0204000000_106,de
