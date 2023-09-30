@@ -1,4 +1,4 @@
--- What municipality in the canton Aargau had the most cars per inhabitant in 2020?
+-- Welche Gemeinde im Kanton Aargau hatte im Jahr 2020 am meisten Autos pro Einwohner?
 SELECT S.name
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -7,7 +7,7 @@ WHERE S.municipal=TRUE
 ORDER BY T.anzahl_personenwagen_pro_1000_einwohner DESC
 LIMIT 1;
 
--- How many agricultural vehicles were there in the canton Aargau in 2010?
+-- Wie viele landwirtschaftliche Fahrzeuge gab es im Kanton Aargau im Jahr 2010?
 SELECT anzahl_landwirtschaftliche_motorfahrzeuge
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -15,7 +15,7 @@ WHERE S.canton=TRUE
     AND S.name = "Canton Aargau"
     AND T.jahr=2010;
 
--- What was the number of commercial vehicles in 1960 and 1980 in the canton Aargau?
+-- Wie hoch war die Zahl der Nutzfahrzeuge 1960 und 1980 im Kanton Aargau?
 SELECT T.jahr, anzahl_nutzfahrzeuge
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -23,7 +23,7 @@ WHERE S.canton=TRUE
     AND S.name = "Canton Aargau"
     AND T.jahr IN (1960, 1980);
 
--- How did the number of motorcycles and personal cars evolve in canton Aargau over the period between 1930 and 1960?
+-- Wie hat sich der Bestand an Motorrädern und Personenwagen im Kanton Aargau im Zeitraum zwischen 1930 und 1960 entwickelt?
 SELECT T.jahr, anzahl_motorrader, anzahl_klein_motorrader, anzahl_motorfahrrader, anzahl_personenwagen
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -32,7 +32,7 @@ WHERE S.canton=TRUE
     AND T.jahr >= 1930
     AND T.jahr <= 1960;
 
--- What is the proportion of municipalities in canton Aargau where the number of cars per inhabitants increased between 2015 and 2022?
+-- Wie hoch ist der Anteil der Gemeinden im Kanton Aargau, in denen die Zahl der Autos pro Einwohner zwischen 2015 und 2022 zugenommen hat?
 SELECT CAST(SUM(CASE WHEN T1.diff > 0 THEN 1 ELSE 0 END) AS FLOAT) / COUNT(T1.diff)
 FROM (
     SELECT
@@ -45,7 +45,7 @@ FROM (
     GROUP BY S.name
 ) as T1;
 
--- What was the number of trailers from 1998 to 2001 in Aarburg, AG?
+-- Wie hoch war die Zahl der Wohnwagen von 1998 bis 2001 in Aarburg, AG?
 SELECT T.jahr, T.anzahl_anhaenger
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -54,7 +54,7 @@ WHERE S.municipal=TRUE
     AND T.jahr >= 1998
     AND T.jahr <= 2001;
 
--- What were the top 3 municipalities in Aargau with the highest proportion of motorcycles vs cars in 2015? Also show the proportions.
+-- Welches waren 2015 die Top-3-Gemeinden im Aargau mit dem höchsten Anteil an Motorrädern gegenüber Autos? Zeigen Sie auch die Proportionen.
 SELECT
     S.name,
     CAST(T.anzahl_motorrader + T.anzahl_klein_motorrader + T.anzahl_motorfahrrader AS FLOAT) / T.anzahl_personenwagen AS ratio_motorrader_to_personenwagen
@@ -65,7 +65,7 @@ WHERE S.municipal=TRUE
 ORDER BY ratio_motorrader_to_personenwagen DESC
 LIMIT 3;
 
--- What was the number of commercial vehicles in Abtwil, AG in 2000 ?
+-- Wie hoch war die Zahl der Nutzfahrzeuge in Abtwil, AG im Jahr 2000 ?
 SELECT T.anzahl_nutzfahrzeuge
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -73,7 +73,7 @@ WHERE S.municipal=TRUE
     AND S.name = "Abtwil"
     AND T.jahr=2000;
 
--- How did the number of cars per inhabitant in Aargau evolve over the period between 2010 and 2022?
+-- Wie hat sich die Zahl der Autos pro Einwohner im Aargau im Zeitraum 2010 bis 2022 entwickelt?
 SELECT T.jahr, T.anzahl_personenwagen_pro_1000_einwohner
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -82,7 +82,7 @@ WHERE S.canton=TRUE
     AND T.jahr >= 2010
     AND T.jahr <= 2022;
 
--- What were the 5 municipalities in Aargau with the fewest motorcycle per passenger car in 2015?
+-- Welches waren die 5 Aargauer Gemeinden mit den wenigsten Motorrädern pro Personenwagen im Jahr 2015?
 SELECT S.name
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -91,7 +91,7 @@ WHERE T.jahr=2015
 ORDER BY CAST(T.anzahl_motorrader + T.anzahl_klein_motorrader + T.anzahl_motorfahrrader AS FLOAT) / T.anzahl_personenwagen ASC
 LIMIT 5;
 
--- How many of each private vehicle type were there in Ueken, in canton Aargau, in 2010?
+-- Wie viele private Fahrzeuge gab es 2010 in Ueken im Kanton Aargau von jedem Typ?
 SELECT
     T.anzahl_anhaenger,
     T.anzahl_arbeitsmotorfahrzeuge,
@@ -109,7 +109,7 @@ WHERE T.jahr = 2010
     AND S.municipal = TRUE
     AND S.name = "Ueken";
 
--- In what year where there the most motorized work vehicles in Zuzgen, AG?
+-- In welchem Jahr gab es in Zuzgen, AG, die meisten motorisierten Arbeitsfahrzeuge?
 SELECT T.jahr
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -119,7 +119,7 @@ GROUP BY T.jahr
 ORDER BY T.anzahl_arbeitsmotorfahrzeuge DESC
 LIMIT 1;
 
--- Where there more personal cars in 1930 or 1940 in canton Aargau?
+-- Gab es 1930 oder 1940 im Kanton Aargau mehr Personenwagen?
 SELECT T.jahr
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -129,7 +129,7 @@ GROUP BY T.jahr
 ORDER BY T.anzahl_personenwagen DESC
 LIMIT 1;
 
--- Show me 3 municipalities in Aargau where the number of personal cars per inhabitant has decreased the most between 2018 and 2022.
+-- Zeigen Sie mir 3 Aargauer Gemeinden, in denen die Zahl der Personenwagen pro Einwohner zwischen 2018 und 2022 am stärksten abgenommen hat.
 SELECT S.name
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -143,13 +143,13 @@ ORDER BY
     ) DESC
 LIMIT 3;
 
--- How municipalities in Aargau did not count any personal cars in 2020?
+-- Wie viele Aargauer Gemeinden haben im Jahr 2020 keine Personenwagen gezählt?
 SELECT COUNT(*)
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten
 WHERE jahr = 2020
     AND anzahl_personenwagen = 0;
 
--- How many small motorcycles where there in canton Aargau between 2000 and 2016?
+-- Wie viele Kleinmotorräder gab es im Kanton Aargau zwischen 2000 und 2016?
 SELECT T.jahr, T.anzahl_klein_motorrader
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid
@@ -158,7 +158,7 @@ WHERE S.canton = TRUE
     AND T.jahr >= 2000;
 
 
--- In Aargau, which of Zeihen and Zufikon had more personal cars per inhabitant in 2001?
+-- Wo im Aargau hatten Zeihen und Zufikon im Jahr 2001 mehr Personenwagen pro Einwohner?
 SELECT S.name
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid
@@ -169,7 +169,7 @@ ORDER BY T.anzahl_personenwagen_pro_1000_einwohner DESC
 LIMIT 1;
 
 
--- How many agricultural vehicles where there in Rekingen, in Aargau between 1998 and 2000?
+-- Wie viele landwirtschaftliche Fahrzeuge gab es in Rekingen im Aargau zwischen 1998 und 2000?
 SELECT T.jahr, T.anzahl_landwirtschaftliche_motorfahrzeuge
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -179,7 +179,7 @@ WHERE S.name LIKE "Rekingen%"
 ORDER BY T.jahr ASC;
 
 
--- How many collective vehicles where there in Wettingen, AG in 2022?
+-- Wie viele Kollektivfahrzeuge gab es 2022 in Wettingen, AG?
 SELECT T.anzahl_kollektivfahrzeuge
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -187,7 +187,7 @@ WHERE S.municipal = TRUE
     AND S.name = "Wettingen"
     AND T.jahr = 2022;
 
--- How many trailers where there in Suhr, Aargau in 2000?
+-- Wie viele Anhänger gab es im Jahr 2000 in Suhr, Aargau?
 SELECT T.anzahl_anhaenger
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
