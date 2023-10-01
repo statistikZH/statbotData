@@ -1,14 +1,13 @@
 # load all the possible data sets
 library(shiny)
 library(DT)
-library(DT)
+library(statbotData)
 
 # set pipeline id pattern
 pattern_pipeline_indicator <- '[:upper:][:digit:]+'
 
 # load all datasets
-dataset_list_path <- here::here("data", "const", "statbot_input_data.csv")
-dataset_list <- readr::read_csv(dataset_list_path)
+dataset_list <- load_dataset_list()
 
 # load all pipelines that are already installed
 pipelines_path <- here::here("pipelines")
