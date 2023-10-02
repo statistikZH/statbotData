@@ -1,0 +1,83 @@
+[1] "Environment: LOCAL, Time: 2023-10-02 18:13:12"
+
+Query Nr. 1
+-- What area was dedicated to growing red wine in Aargau in 2017?
+SELECT T.flache_rebland_rote_europaische_reben_ha, T.flache_rebland_kreuzung_rote_weisse_ha FROM aargau_obst_rebbau_rebland_wein_ernte AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name LIKE "%Aargau%"     AND T.jahr = 2017;
+ flache_rebland_rote_europaische_reben_ha
+                                      253
+ flache_rebland_kreuzung_rote_weisse_ha
+                                     13
+
+Query Nr. 2
+-- How much wine was harvested in Aargau in 1980 and 2010?
+SELECT T.jahr, T.weinernte_total_hl FROM aargau_obst_rebbau_rebland_wein_ernte AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name LIKE "%Aargau%"     AND T.jahr IN (1980, 2010);
+ jahr weinernte_total_hl
+ 1980              10500
+ 2010              18540
+
+Query Nr. 3
+-- By how much CHF did the total value of wine harvests in Aargau change between 1980 and 2016?
+SELECT (     SUM(CASE WHEN T.jahr = 2016 THEN T.erntewert_rot_1000_chf + T.erntewert_weiss_1000_chf ELSE 0 END) -     SUM(CASE WHEN T.jahr = 1980 THEN T.erntewert_rot_1000_chf + T.erntewert_weiss_1000_chf ELSE 0 END) ) * 1000.0 AS wertanderung_1980_2016_chf FROM aargau_obst_rebbau_rebland_wein_ernte AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name LIKE "%Aargau%"     AND T.jahr IN (1980, 2016);
+ wertanderung_1980_2016_chf
+                    4388000
+
+Query Nr. 4
+-- How much red and white wine was harvested in Aargau in 2019?
+SELECT T.weinernte_rot_europaische_hl, T.weinernte_rot_kreuzung_rot_hl, T.weinernte_europaische_weiss_hl FROM aargau_obst_rebbau_rebland_wein_ernte AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name LIKE "%Aargau%"     AND T.jahr = 2019;
+ weinernte_rot_europaische_hl weinernte_rot_kreuzung_rot_hl
+                        10365                           679
+ weinernte_europaische_weiss_hl
+                           5744
+
+Query Nr. 5
+-- What percentage of red wine harvested in Aargau was from crossings in 2000?
+SELECT 100 * CAST(T.weinernte_rot_kreuzung_rot_hl AS FLOAT) / T.weinernte_total_hl FROM aargau_obst_rebbau_rebland_wein_ernte AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name LIKE "%Aargau%"     AND T.jahr = 2000;
+ 100 * CAST(T.weinernte_rot_kreuzung_rot_hl AS FLOAT) / T.weinernte_total_hl
+                                                                   0.9947455
+
+Query Nr. 6
+-- In what year was the most wine harvested in Aargau?
+SELECT T.jahr FROM aargau_obst_rebbau_rebland_wein_ernte AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name LIKE "%Aargau%" GROUP BY T.jahr ORDER BY T.weinernte_total_hl DESC LIMIT 1;
+ jahr
+ 1999
+
+Query Nr. 7
+-- What was the value of white wine produced in Aargau each year between 2003 and 2008?
+SELECT T.jahr, T.erntewert_weiss_1000_chf FROM aargau_obst_rebbau_rebland_wein_ernte AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name LIKE "%Aargau%"     AND T.jahr >= 2003     AND T.jahr <= 2008;
+ jahr erntewert_weiss_1000_chf
+ 2003                     3654
+ 2004                     4600
+ 2005                     3334
+ 2006                     2978
+ 2007                     3429
+ 2008                     4511
+
+Query Nr. 8
+-- What was the relative change in area for wine production in Aargau between 1980 and 2000?
+SELECT 100 * (T1.flache_ha_2000 - T1.flache_ha_1980) / T1.flache_ha_1980 AS weinrebflache_1980_2000_change_prozent FROM (     SELECT         SUM(CASE WHEN T.jahr = 1980 THEN T.flache_total_ha ELSE 0 END) AS flache_ha_1980,         SUM(CASE WHEN T.jahr = 2000 THEN T.flache_total_ha ELSE 0 END) AS flache_ha_2000     FROM aargau_obst_rebbau_rebland_wein_ernte AS T     JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid     WHERE S.canton = TRUE         AND S.name LIKE "%Aargau%"         AND T.jahr IN (1980, 2000) ) AS T1;
+ weinrebflache_1980_2000_change_prozent
+                                     25
+
+Query Nr. 9
+-- What percentage of the value of wine produced in Aargau that was from red wine in 2017?
+SELECT 100.0 * T.erntewert_rot_1000_chf / (T.erntewert_rot_1000_chf + T.erntewert_weiss_1000_chf) AS prozent_rotwein_wert_2017 FROM aargau_obst_rebbau_rebland_wein_ernte AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name LIKE "%Aargau%"     AND T.jahr = 2017;
+ prozent_rotwein_wert_2017
+                  71.58487
+
+Query Nr. 10
+-- How many square kilometers of vineyards were in Aargau in 2018?
+SELECT CAST(T.flache_total_ha AS FLOAT) / 100 AS flache_total_km2 FROM aargau_obst_rebbau_rebland_wein_ernte AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name LIKE "%Aargau%"     AND T.jahr = 2018;
+ flache_total_km2
+              3.9
+
+Query Nr. 11
+-- How many liters of wine were produced in Aargau in total between 2000 and 2010?
+SELECT 100 * SUM(T.weinernte_total_hl) AS weinernte_2000_2010_total_liter FROM aargau_obst_rebbau_rebland_wein_ernte AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name LIKE "%Aargau%"     AND T.jahr >= 2000     AND T.jahr <= 2010;
+ weinernte_2000_2010_total_liter
+                        23176000
+
+Query Nr. 12
+-- What was the difference in CHF between the value of red wine produced in Aargau in 1999 and 2000?
+SELECT (     SUM(CASE WHEN T.jahr = 2000 THEN T.erntewert_rot_1000_chf ELSE 0 END) -     SUM(CASE WHEN T.jahr = 1999 THEN T.erntewert_rot_1000_chf ELSE 0 END) ) * 1000.0 AS wertanderung_1980_2016_chf FROM aargau_obst_rebbau_rebland_wein_ernte AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name LIKE "%Aargau%"     AND T.jahr IN (1999, 2000);
+ wertanderung_1980_2016_chf
+                      90000
