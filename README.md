@@ -31,7 +31,7 @@ Each pipeline in `data/const/statbot_input_data.csv` has the following fields
 ### Pipeline files
 
 Each pipeline has a directory in `pipelines` by the name of the `data_indicator`. The pipeline script `<data_indicator>.R` downloads the dataset and preprocesses it to produce a tibble: `ds$postgres_export`. This tibble is later uploaded into postgres. 
-The queries in queries.sql` can either run on the this tibble or on the remote postgres instance. Where they run depends on the pipeline status `ds$status`
+The queries in `queries.sql` can either run on the this tibble or on the remote postgres instance. Where they run depends on the pipeline status `ds$status`
 This directory has the following files:
 - `<data_indicator>.R`: script for downloading a dataset, processing it and uploading it and its metadata to postgres
 - `metadata_table_columns.csv`: metadata for the postgres table fields
