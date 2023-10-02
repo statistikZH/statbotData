@@ -12,6 +12,7 @@
 #' @param df tibble to turn into an sql table
 #' @param dir directory to write the output to
 #' @param table_name. name of the table in sql database
+#' @param ds dataset
 #'
 #' @export
 #'
@@ -19,9 +20,7 @@
 #' \dontrun{
 #'   # command to call. this function
 #'   testrun_queries(
-#'     ds$data,
-#'     ds$dir,
-#'     ds$name
+#'     ds
 #'   )
 #'   # example input in file `queries.sql` in the directory ds$dir
 #'   -- Wieviele Abstimmungsvorlagen gab es seit dem Jahr 1971?
@@ -30,15 +29,27 @@
 #'.  JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
 #'.  WHERE S.name_de='Schweiz' AND S.country=TRUE
 #' }
-testrun_queries <- function(df, dir, table_name) {
-  # set the database up
-  db_con <- DBI::dbConnect(RSQLite::SQLite(), "")
-  prepare_db(db_con, df, table_name)
+testrun_queries <- function(ds) {
+
+  # set up variables
+  df <- ds$postgres_export
+  dir <- ds$dir
+  table_name <- ds$name
+
+  # prepare db connection
+  if (ds$db_instance == "postgres") {
+    con <- statbotData::postgres_db_connect()
+    db <- con$db
+    schema <- con$schema
+  } else {
+    db <- DBI::dbConnect(RSQLite::SQLite(), "")
+    prepare_test_db(db, df, table_name)
+  }
 
   # set file pathes
-  input_path <- paste0(dir, 'queries.sql')
-  output_path <- paste0(dir, 'queries.log')
-  cat(file = output_path, append = FALSE)
+  input_path <- here::here(dir, 'queries.sql')
+  output_path <- here::here(dir, 'queries.log')
+  log_time_and_environment(ds$status, output_path)
 
   # read queries
   lines <- readr::read_lines(file = input_path, skip_empty_rows = TRUE)
@@ -65,7 +76,12 @@ testrun_queries <- function(df, dir, table_name) {
       count <- count + 1
       question <- paste(question_lines, collapse = " ")
       query <- paste(query_lines, collapse = " ")
-      result <- DBI::dbGetQuery(conn = db_con, statement = query)
+      if (ds$db_instance == "postgres") {
+        query_with_schema <- adapt_query_to_schema(query, table_name, schema)
+        result <- RPostgres::dbGetQuery(conn = db, query_with_schema)
+      } else {
+        result <- DBI::dbGetQuery(conn = db, statement = query)
+      }
       log_question_and_query(count, question, query, output_path)
       log_result(result, output_path)
       question_lines <- query_lines <- c()
@@ -73,11 +89,15 @@ testrun_queries <- function(df, dir, table_name) {
   }
 
   # close db connection and report result location
-  DBI::dbDisconnect(db_con)
+  if (ds$db_instance == "postgres") {
+    RPostgres::dbDisconnect(conn = db)
+  } else {
+    DBI::dbDisconnect(db)
+  }
 
   # inform the caller to where the log has been written
   print(paste(
-    "Testrun results have been written to",
+    "Results for query run on", ds$db_instance, "db have been written to:",
     output_path
   ))
 }
@@ -89,6 +109,7 @@ testrun_queries <- function(df, dir, table_name) {
 #' @param question the natural language questions that belongs to the query
 #' @param query the sql query
 #' @param output_path the file where the query results are logged
+#'
 #' @examples
 #' \dontrun{
 #'   # command to call. this function
@@ -116,6 +137,7 @@ log_question_and_query <- function(count, question, query, output_path) {
 #'
 #' @param result the result of the query
 #' @param output_path the file where the query results are logged
+#'
 #' @examples
 #' \dontrun{
 #'   # command to call. this function
@@ -130,6 +152,57 @@ log_result <- function(result, output_path) {
   sink()
 }
 
+#' Log environment and time to the output file
+#'
+#' @param pipleine_status property status of the dataset class ds
+#' @param output_path the file where the query results are logged
+#'
+#' @examples
+#' \dontrun{
+#' log_question_and_query(ds$status, output_path)
+#' }
+log_time_and_environment <- function(pipeline_status, output_path) {
+  if (pipeline_status == "uploaded") {
+    env <- "REMOTE"
+  } else {
+    env <- "LOCAL"
+  }
+  sink(file = output_path, append = FALSE)
+  print(paste0("Environment: ", env, ", Time: ", Sys.time()),
+        row.names = FALSE,
+        file = output_path,
+        append = TRUE)
+  sink()
+}
+
+#' Modify Query to mention the schema that is used
+#'
+#' Add schema to the tables if the postgres instance
+#' relates to a schema
+#'
+#' @param query: character sql query
+#' @param table_name character table name
+#' @param schema character schema name
+#'
+#' @return query: character modified query
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   adapt_query_to_schema(
+#'     "SELECT COUNT(*) as anzahl_abstimmungsvorlagen FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid;"
+#'     FALSE,
+#'     "abstimmungsvorlagen_seit_1971",
+#'     "experiment"
+#'   )
+#' }
+adapt_query_to_schema <- function(query, table_name, schema) {
+  query <- query %>%
+    stringr::str_replace(table_name, paste0(schema, ".", table_name)) %>%
+    stringr::str_replace("spatial_unit", paste0(schema, ".spatial_unit"))
+  return(query)
+}
+
 #' Preparing the database table for the query test runs
 #'
 #' The spatial_unit tables is needed for the spatial joins.
@@ -137,6 +210,7 @@ log_result <- function(result, output_path) {
 #' @param db_con sql connection
 #' @param df tibble that gets loaded as a sql table
 #' @param table_name name of the table
+#'
 #' @examples
 #' \dontrun{
 #'   # command to call. this function
@@ -146,10 +220,9 @@ log_result <- function(result, output_path) {
 #'     'abstimmungsvorlagen_seit_1971'
 #'   )
 #' }
-prepare_db <- function(db_con, df, table_name) {
+prepare_test_db <- function(db_con, df, table_name) {
   statbotdb <- DBI::dbConnect(RSQLite::SQLite(), "")
-  spatial_df <- readr::read_csv("data/const/spatial_unit_postgres.csv",
-                                show_col_types = FALSE)
+  spatial_df <- load_spatial_map()
   DBI::dbWriteTable(db_con, "spatial_unit", spatial_df, overwrite = TRUE)
   DBI::dbWriteTable(db_con, table_name, df, overwrite = TRUE)
 }

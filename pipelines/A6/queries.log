@@ -1,3 +1,4 @@
+[1] "Environment:REMOTE, Time:2023-10-02 07:11:50.011819"
 
 Query Nr. 1
 -- Wieviele Abstimmungsvorlagen gab es im Jahr 2000?
@@ -9,29 +10,29 @@ Query Nr. 2
 -- Wieviele Abstimmungsvorlagen gab es seit dem Jahr 1971?
 SELECT COUNT(*) as anzahl_abstimmungsvorlagen FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE;
  anzahl_abstimmungsvorlagen
-                        624
+                        636
 
 Query Nr. 3
 -- Wieviele Volksabstimmungen wurden 1995 in der Schweiz durchgeführt?
-SELECT SUM(T.anzahl_abstimmungsvorlagen) AS gesamt_anzahl_abstimmungen, T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND jahr = '1995';
+SELECT SUM(T.anzahl_abstimmungsvorlagen) AS gesamt_anzahl_abstimmungen, T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND jahr = '1995'  GROUP BY T.jahr;
  gesamt_anzahl_abstimmungen jahr
                           7 1995
 
 Query Nr. 4
 -- Welches Jahr hatte die meisten Volksabstimmungen in der Schweiz?
-SELECT jahr, SUM(anzahl_abstimmungsvorlagen) FROM abstimmungsvorlagen_seit_1971 GROUP BY anzahl_abstimmungsvorlagen ORDER BY jahr LIMIT 1;
- jahr SUM(anzahl_abstimmungsvorlagen)
- 1994                              15
+SELECT T.jahr, SUM(T.anzahl_abstimmungsvorlagen) AS anzahl_abstimmungsvorlagen_pro_jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid GROUP BY T.jahr ORDER BY anzahl_abstimmungsvorlagen_pro_jahr LIMIT 1;
+ jahr anzahl_abstimmungsvorlagen_pro_jahr
+ 2011                                   1
 
 Query Nr. 5
 -- Was war die 5 dominantesten Themen bei den Volksabstimmungen über die Jahre in der Schweiz?
 SELECT thema, SUM(anzahl_abstimmungsvorlagen) as vorlagen_pro_thema FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE GROUP BY thema ORDER BY vorlagen_pro_thema DESC LIMIT 5;
                      thema vorlagen_pro_thema
-             Sozialpolitik                105
+             Sozialpolitik                106
              Staatsordnung                 55
-      Öffentliche Finanzen                 46
+      Öffentliche Finanzen                 47
  Verkehr und Infrastruktur                 41
-                Wirtschaft                 34
+     Umwelt und Lebensraum                 34
 
 Query Nr. 6
 -- In welchem Jahr gab es die meisten Volksabstimmungen zum Thema Religion in der Schweiz?
@@ -57,6 +58,7 @@ Query Nr. 9
 -- Was war die Anzahl von Volksabstimmungen der Schweiz pro Jahr in den letzten 10 Jahren?
 SELECT SUM(T.anzahl_abstimmungsvorlagen) as durchschnittliche_anzahl_abstimmmungen, T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid GROUP BY T.jahr ORDER BY T.jahr DESC LIMIT 10;
  durchschnittliche_anzahl_abstimmmungen jahr
+                                      3 2023
                                      11 2022
                                      13 2021
                                       9 2020
@@ -66,7 +68,6 @@ SELECT SUM(T.anzahl_abstimmungsvorlagen) as durchschnittliche_anzahl_abstimmmung
                                      13 2016
                                       6 2015
                                      12 2014
-                                     11 2013
 
 Query Nr. 10
 -- In welchem Jahren gab es die Volksabstimmungen zum Thema Energie in der Schweiz?
@@ -88,47 +89,32 @@ Query Nr. 11
 SELECT DISTINCT(T.thema) FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.jahr = '2022' AND anzahl_abstimmungsvorlagen != 0;
                     thema
             Aussenpolitik
-           Landwirtschaft
-     Öffentliche Finanzen
-            Sozialpolitik
     Bildung und Forschung
  Kultur, Religion, Medien
+           Landwirtschaft
+            Sozialpolitik
+     Öffentliche Finanzen
 
 Query Nr. 12
 -- In welchem Jahren war die Wirtschaft ein Thema in Volksabstimmungen?
 SELECT T.jahr FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.thema LIKE '%Wirtschaft%' AND anzahl_abstimmungsvorlagen != 0 ORDER BY jahr DESC;
  jahr
- 2022
- 2020
  2020
  2018
- 2018
- 2017
  2016
  2014
  2013
  2012
- 2012
- 2005
  2005
  2002
  1998
- 1998
  1996
- 1996
- 1995
- 1994
  1993
- 1990
- 1989
  1988
- 1986
- 1985
  1985
  1984
  1982
  1981
- 1978
  1978
  1976
  1975

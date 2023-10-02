@@ -15,13 +15,15 @@ SELECT SUM(T.anzahl_abstimmungsvorlagen) AS gesamt_anzahl_abstimmungen, T.jahr
 FROM abstimmungsvorlagen_seit_1971 as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.name_de='Schweiz' AND S.country=TRUE
-AND jahr = '1995';
+AND jahr = '1995' 
+GROUP BY T.jahr;
 
 -- Welches Jahr hatte die meisten Volksabstimmungen in der Schweiz?
-SELECT jahr, SUM(anzahl_abstimmungsvorlagen)
-FROM abstimmungsvorlagen_seit_1971
-GROUP BY anzahl_abstimmungsvorlagen
-ORDER BY jahr LIMIT 1;
+SELECT T.jahr, SUM(T.anzahl_abstimmungsvorlagen) AS anzahl_abstimmungsvorlagen_pro_jahr
+FROM abstimmungsvorlagen_seit_1971 as T
+JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
+GROUP BY T.jahr
+ORDER BY anzahl_abstimmungsvorlagen_pro_jahr LIMIT 1;
 
 -- Was war die 5 dominantesten Themen bei den Volksabstimmungen über die Jahre in der Schweiz?
 SELECT thema, SUM(anzahl_abstimmungsvorlagen) as vorlagen_pro_thema

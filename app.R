@@ -1,77 +1,94 @@
 # load all the possible data sets
 library(shiny)
 library(DT)
-library(DT)
-
-# set pipeline id pattern
-pattern_pipeline_indicator <- '[:upper:][:digit:]+'
+library(statbotData)
 
 # load all datasets
-dataset_list_path <- here::here("data", "const", "statbot_input_data.csv")
-dataset_list <- readr::read_csv(dataset_list_path)
+dataset_list <- load_dataset_list()
 
 # load all pipelines that are already installed
 pipelines_path <- here::here("pipelines")
 pipelines <- list.files(pipelines_path)
+query_counts <- c()
+for (pipeline_id in pipelines) {
+  query_log_path <- paste0("pipelines/", pipeline_id, "/queries.log")
+  if (file.exists(query_log_path)) {
+    queries <- readr::read_file(query_log_path)
+    query_count <- stringr::str_count(queries, "--")
+    query_counts <- c(query_counts, query_count)
+  }
+}
+counts <- tibble::tibble(pipelines, query_counts) %>%
+  dplyr::rename(data_indicator = pipelines)
 
 # get choices for pipelines
-choices <- dataset_list %>%
+choices_ds <- dataset_list %>%
   dplyr::filter(data_indicator %in% pipelines) %>%
-  dplyr::select(c(publisher, lang, data_indicator, name)) %>%
-  dplyr::mutate(selector = paste(publisher, lang, data_indicator, name))
-print(choices)
+  dplyr::left_join(counts, by = "data_indicator") %>%
+  dplyr::mutate(
+    location = dplyr::case_when(
+      status == "uploaded" ~ "REMOTE",
+      .default = "LOCAL"
+    )) %>%
+  dplyr::mutate(
+    selector = paste(location, name, data_indicator, "(", publisher, lang, "): query_count =", query_counts)
+  )
 
 ui <- basicPage(
   h2("Statbot pipelines"),
+  p("The environment is either 'local' from file"),
+  p("or 'remote': from the remote postgres instance"),
   selectInput(inputId = "dataset",
-              label = "Choose a dataset: publisher, language, directory, name",
-              width = 500,
-              choices = choices$selector),
+              label = "Choose a dataset: id, environment, publisher, language, name, query counts",
+              width = 800,
+              choices = choices_ds$selector),
   tabsetPanel(
+    tabPanel("Queries", htmlOutput("query")),
     tabPanel("Table", dataTableOutput("metadata_table")),
     tabPanel("Columns", dataTableOutput("metadata_columns")),
-    tabPanel("Sample", dataTableOutput("sample")),
-    tabPanel("Queries", htmlOutput("query")),
-    tabPanel("Spatials", dataTableOutput("spatial"))
+    tabPanel("Sample", dataTableOutput("sample"))
   )
 )
 
 server <- function(input, output) {
-  # Return metadata for the table
-  metadataTableOutput <- reactive({
-    pipeline_indicator <- input$dataset %>% stringr::str_extract(pattern_pipeline_indicator)
-    metadata_table_path <- here::here("pipelines", pipeline_indicator, "metadata_tables.csv")
-    if (file.exists(metadata_table_path)) {
-      df <- readr::read_delim(metadata_table_path, delim = ";")
-      df_flipped <- tibble::as_tibble(cbind(key = names(df), t(df))) %>%
-        dplyr::rename(value = V2)
-      return(df_flipped)
+  pipelineOutput <- reactive({
+    input_ds <- scan(text = input$dataset, what = "")
+    pipeline_id <- input_ds[3]
+    location <- input_ds[1]
+    ds <- statbotData::create_dataset(pipeline_id)
+    if (location == "LOCAL") {
+      metadata <- statbotData::read_metadata_tables_from_file(ds)
+      sample_path <- here::here("pipelines", pipeline_id, "sample.csv")
+      if (file.exists(sample_path)) {
+        sample <- readr::read_delim(sample_path, delim = ";", show_col_types = FALSE)
+      }
     }
-  })
-
-  # Return metadata for the table columns
-  metadataColumnsOutput <- reactive({
-    pipeline_indicator <- input$dataset %>% stringr::str_extract(pattern_pipeline_indicator)
-    metadata_columns_path <- here::here("pipelines", pipeline_indicator, "metadata_table_columns.csv")
-    if (file.exists(metadata_columns_path)) {
-      readr::read_delim(metadata_columns_path, delim = ";") %>%
-        dplyr::select(-c(table_name))
+    if (location == "REMOTE") {
+      metadata <- statbotData::get_metadata_from_postgres(ds)
+      sample <- statbotData::run_postgres_query(
+        table = ds$name,
+        query = paste("SELECT * FROM", ds$name, "LIMIT 40;")
+      )
     }
-  })
-
-  # Return dataset sample
-  sampleOutput <- reactive({
-    pipeline_indicator <- input$dataset %>% stringr::str_extract(pattern_pipeline_indicator)
-    sample_path <- here::here("pipelines", pipeline_indicator, "sample.csv")
-    if (file.exists(sample_path)) {
-      readr::read_delim(sample_path, delim = ";")
-    }
+    metadata$metadata_tables <- tibble::as_tibble(
+      cbind(key = names(metadata$metadata_tables),
+            t(metadata$metadata_tables))
+    ) %>%
+      dplyr::rename(value = V2)
+    list(metadata = metadata, sample = sample)
   })
 
   # Return query log
   queryOutput <- reactive({
-    pipeline_indicator <- input$dataset %>% stringr::str_extract(pattern_pipeline_indicator)
-    query_log_path <- here::here("pipelines", pipeline_indicator, "queries.log")
+    input_ds <- scan(text = input$dataset, what = "")
+    pipeline_id <- input_ds[3]
+    location <- input_ds[1]
+    if (location == "REMOTE") {
+      # run query again if location is remote
+      ds <- statbotData::create_dataset(pipeline_id)
+      statbotData::testrun_queries(ds)
+    }
+    query_log_path <- here::here("pipelines", pipeline_id, "queries.log")
     if (file.exists(query_log_path)) {
       queries <- readr::read_file(query_log_path)
       query_count <- stringr::str_count(queries, "--")
@@ -125,31 +142,23 @@ server <- function(input, output) {
         stringr::str_replace_all("\\s+(?i)last_value\\s+",           " <strong>LAST_VALUE</strong> ") %>%
         stringr::str_replace_all("\\s+(?i)lead\\s+",                 " <strong>LEAD</strong> ") %>%
         stringr::str_replace_all("\\s+(?i)lag\\s+",                  " <strong>LAG</strong> ")
-      paste("Number of queries:", query_count, "\n", queries)
-    }
-  })
-
-  # Return spatial unit table
-  spatialOutput <- reactive({
-    table_path <- here::here("data", "const", "spatial_unit_postgres.csv")
-    if (file.exists(table_path)) {
-      readr::read_delim(table_path, delim = ",")
+      queries
     }
   })
 
   # Show metadata for table
   output$metadata_table <- renderDataTable({
-    metadataTableOutput()
+    pipelineOutput()$metadata$metadata_tables
   })
 
   # Show metadata for columns
   output$metadata_columns <- renderDataTable({
-    metadataColumnsOutput()
+    pipelineOutput()$metadata$metadata_table_columns
   })
 
   # Show sample
   output$sample <- renderDataTable({
-    sampleOutput()
+    pipelineOutput()$sample
   })
 
   # Show query log
@@ -157,10 +166,6 @@ server <- function(input, output) {
     {queryOutput()}
   )
 
-  # Show spatial units
-  output$spatial <- renderDataTable({
-    spatialOutput()
-  })
 }
 
 shinyApp(ui, server)

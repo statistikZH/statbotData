@@ -4,14 +4,19 @@
 #' The number of the rows defaults to 40
 #' but can be specified
 #'
-#' @param ds
+#' @param ds dataset pipeline class
 #' @param sample_size default 40
 #'
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' dataset_sample(ds)
+#' }
 dataset_sample <- function(ds, sample_size=40) {
-  print(ds$postgres_export)
+  if (is.null(ds$postgres_export)) {
+    stop("ds$postgres_export is null therefore no sample has been generated")
+  }
   file_path <- paste0(ds$dir, "sample.csv")
   ds$sample <- ds$postgres_export
   row_count <- dim(ds$postgres_export)[1]
@@ -22,4 +27,5 @@ dataset_sample <- function(ds, sample_size=40) {
   ds$sample <- ds$sample %>% dplyr::mutate_all(as.character)
   write.table(ds$sample, file_path,
               row.names = FALSE, sep = ";")
+  print(paste("A sample has been generated at", file_path))
 }

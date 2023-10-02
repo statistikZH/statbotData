@@ -20,7 +20,7 @@ get example values for the columns
 }
 \examples{
 \dontrun{
-  get_examples(ds, columns)
-  # returns 3 values for each column from the samples
+get_examples(ds, columns)
+# returns 3 values for each column from the samples
 }
 }
