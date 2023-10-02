@@ -42,7 +42,7 @@ generate_metadata_templates <- function(ds) {
 
   # columns are received from the columns of the postgres export
   columns <- colnames(ds$postgres_export)
-  columns <- columns[!(columns %in% c("jahr", "year", "spatialunit_uid"))]
+  columns <- columns[!(columns %in% c("jahr", "year", "annee", "spatialunit_uid"))]
   columns_count <- length(columns)
   metadata_table_columns <- tibble::tibble(
     name = columns,
