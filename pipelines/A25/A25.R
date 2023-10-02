@@ -18,7 +18,8 @@ ds$postgres_export <- ds$data %>%
     jahr = year,
     flache_rebland_rote_europaische_reben_ha = flaeche_rot_euro,
     flache_rebland_kreuzung_rote_weisse_ha = flaeche_rot_kreuz,
-    flache_total = flaeche_weiss,
+    flache_rebland_weisse_reben_ha = flaeche_weiss,
+    flache_total_ha = flaeche_tot,
     weinernte_total_hl = ernte_tot,
     weinernte_rot_europaische_hl = ernte_rot_euro,
     weinernte_rot_kreuzung_rot_hl = ernte_rot_kreuz,
@@ -36,7 +37,6 @@ ds$postgres_export <- ds$postgres_export %>%
     spatialunit_uid = "19_A.ADM1"
   )
 
-colnames(ds$postgres_export)
 
 # -------------------------------------------------------------------------
 # Step: Testrun queries on sqllite
@@ -44,19 +44,11 @@ colnames(ds$postgres_export)
 #   output: ds$dir/queries.log
 # -------------------------------------------------------------------------
 
-statbotData::testrun_queries(
-  ds$postgres_export,
-  ds$dir,
-  ds$name
-)
-
-# -------------------------------------------------------------------------
-# Step: Write metadata tables
-#   input:  ds$postgres_export
-#   output: ds$dir/metadata_tables.csv
-#           ds$dir/metadata_table_columns.csv
-#           ds$dir/sample.csv
-# -------------------------------------------------------------------------
-
-read_write_metadata_tables(ds)
-dataset_sample(ds)
+# create the table in postgres
+statbotData::create_postgres_table(ds)
+# copy the metadata templates to the metadata files and then complete them
+statbotData::update_pipeline_last_run_date(ds)
+statbotData::update_metadata_in_postgres(ds)
+# generate sample data for the dataset from the local tibble
+statbotData::dataset_sample(ds)
+statbotData::testrun_queries(ds)
