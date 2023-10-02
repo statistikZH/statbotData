@@ -15,7 +15,7 @@ The repo consists of the following parts:
 - **input data**: in `data/const/statbot_input_data.csv`: imported datasets and spatial units as csv files
 - **package `statbotData`**: the function in the directory `R` make up a package of reusable functions, that are used in the pipeline to import the datasets into postgres 
 - **app**: `app.R` that gives an overview about the repo and the pipelines
-- **pipelines**: in `pipelines`: they contain the dataset processing as it is preapared for the postgres import and the test data for the ML per dataset
+- **pipelines**: in `pipelines`: they contain the dataset processing as it is preapared for the postgres import and the test data (question / SQL query pairs) for the ML model per dataset
 
 ## Pipelines
 
