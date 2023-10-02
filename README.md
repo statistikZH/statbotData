@@ -19,7 +19,7 @@ The repo consists of the following parts:
 
 ## Pipelines
 
-The pipelines are intended to process datasets and the upload them to a remote postgres instance.
+The pipelines are intended to process datasets and the upload them to a remote postgres instance, for which the credentials can be configured using the `.env` file (`sample.env` is provided as template).
 
 ### Pipeline properties
 
