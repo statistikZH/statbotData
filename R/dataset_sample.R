@@ -13,7 +13,7 @@
 #' \dontrun{
 #' dataset_sample(ds)
 #' }
-dataset_sample <- function(dsL, sample_size=40) {
+dataset_sample <- function(ds, sample_size=40) {
   if (is.null(ds$postgres_export)) {
     stop("ds$postgres_export is null therefore no sample has been generated")
   }
