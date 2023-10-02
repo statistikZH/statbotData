@@ -43,10 +43,10 @@ ui <- basicPage(
               width = 800,
               choices = choices_ds$selector),
   tabsetPanel(
+    tabPanel("Queries", htmlOutput("query")),
     tabPanel("Table", dataTableOutput("metadata_table")),
     tabPanel("Columns", dataTableOutput("metadata_columns")),
-    tabPanel("Sample", dataTableOutput("sample")),
-    tabPanel("Queries", htmlOutput("query"))
+    tabPanel("Sample", dataTableOutput("sample"))
   )
 )
 
