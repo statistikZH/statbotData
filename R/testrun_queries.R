@@ -168,7 +168,7 @@ log_time_and_environment <- function(pipeline_status, output_path) {
     env <- "LOCAL"
   }
   sink(file = output_path, append = FALSE)
-  print(paste0("Environment:", env, ", Time:", Sys.time()),
+  print(paste0("Environment: ", env, ", Time: ", Sys.time()),
         row.names = FALSE,
         file = output_path,
         append = TRUE)
