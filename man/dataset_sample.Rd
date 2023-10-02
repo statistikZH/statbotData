@@ -4,12 +4,12 @@
 \alias{dataset_sample}
 \title{Write sample for the dataset}
 \usage{
-dataset_sample(dsL, sample_size = 40)
+dataset_sample(ds, sample_size = 40)
 }
 \arguments{
-\item{sample_size}{default 40}
-
 \item{ds}{dataset pipeline class}
+
+\item{sample_size}{default 40}
 }
 \description{
 The sample contains random rows

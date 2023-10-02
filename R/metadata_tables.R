@@ -132,21 +132,6 @@ update_pipeline_last_run_date <- function(ds) {
   return(metadata_tables)
 }
 
-#' Get column types from metadata
-#'
-#' @param ds the dataset
-#'
-#' @examples
-#' \dontrun{
-#'   get_column_types(ds)
-#' }
-get_column_types <- function(ds) {
-
-  # set path for metadata storage
-  path_table_columns <- here::here(ds$dir, "metadata_table_columns.csv")
-  return(colnames(ds$postgres_export))
-}
-
 #' get example values for the columns
 #'
 #' @param ds the dataset: it is expected to have

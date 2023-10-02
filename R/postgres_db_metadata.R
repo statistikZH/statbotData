@@ -53,6 +53,8 @@ get_metadata_from_postgres <- function(ds = NULL) {
 #'
 #' @param ds dataset pipeline class
 #'
+#' @export
+#'
 #' @examples
 #' \dontrun{
 #' write_metadata_to_postgres(ds)
@@ -128,6 +130,8 @@ update_metadata_in_postgres <- function(ds) {
 #' to remove the old entries and the readd the updated metadata
 #'
 #' @param ds dataset pipeline class
+#'
+#' @export
 #'
 #' @examples
 #' \dontrun{
