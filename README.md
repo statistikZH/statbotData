@@ -4,7 +4,7 @@
 This repo is part of the [Statbot Swiss Project](https://www.bfs.admin.ch/bfs/de/home/dscc/blog/2023-02-statbot.html)
 
 The project has to parts: 
-1. Generate Training and Test data for the ML Model from Statistical tables belonging to Swiss Fedearal office of Statistics and selected cantonal statistics offices
+1. Generate Training and Test data for the ML Model from Statistical tables belonging to Swiss Federal office of Statistics and selected cantonal statistics offices
 2. ML Model to turn Natural Language Queries into SQL queries
 
 This repo relates to the first part 1. above:
