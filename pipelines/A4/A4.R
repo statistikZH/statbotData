@@ -1,13 +1,12 @@
 # -------------------------------------------------------------------------
 # Step: Get the data
-# input:  google sheet
+# input: data/const/statbot_input_data.csv
 # output: ds$data, ds$dir
 # -------------------------------------------------------------------------
 
 ds <- create_dataset(id = "A4")
 ds <- download_data(ds)
 ds$data
-ds
 
 # -------------------------------------------------------------------------
 # Step: Clean the data and add spatial unit
@@ -35,29 +34,24 @@ ds$postgres_export <- ds$data %>%
     values_from = anzahl,
     names_prefix = "terajoule_"
   ) %>%
-  janitor::clean_names()
-colnames(ds$postgres_export)
+  janitor::clean_names() %>%
+  dplyr::rename(
+    terajoule_verbrauch_energiesektor_netzverluste_speicherungen = terajoule_eigenverbrauch_des_energiesektors_netzverluste_verbrauch_der_speicherungen,
+    terajoule_endverbrauch_statistische_differenz_landwirtschaft = terajoule_endverbrauch_statistische_differenz_inkl_landwirtschaft
+  )
+ds$postgres_export
 
 # -------------------------------------------------------------------------
-# Step: Testrun queries on sqllite
-#   input:  ds$postgres_export, ds$dir/queries.sql
-#   output: ds$dir/queries.log
+# Step: After the dataset has been build use functions of package
+# stabotData to upload the dataset to postgres, testrun the queries,
+# generate a sample upload the metadata, etc
 # -------------------------------------------------------------------------
 
-statbotData::testrun_queries(
-  ds$postgres_export,
-  ds$dir,
-  ds$name
-)
-
-# -------------------------------------------------------------------------
-# Step: Write metadata tables
-#   input:  ds$postgres_export
-#   output: ds$dir/metadata_tables.csv
-#           ds$dir/metadata_table_columns.csv
-#           ds$dir/sample.csv
-# -------------------------------------------------------------------------
-
-read_write_metadata_tables(ds)
-dataset_sample(ds)
-
+# create the table in postgres
+statbotData::create_postgres_table(ds)
+# add metadata to postgres
+statbotData::update_metadata_in_postgres(ds)
+# generate sample data for the dataset from the local tibble
+statbotData::dataset_sample(ds)
+# testrun queries
+statbotData::testrun_queries(ds)
