@@ -4,9 +4,9 @@ anzahl_straftaten;straftaten_aufklaerung;numeric;Anzahl Straftaten;number of cri
 anzahl_straftaten_unaufgeklart;straftaten_aufklaerung;numeric;Anzahl der unaufgeklärten Straftaten;number of unsolved crimes;
 anzahl_straftaten_aufgeklaert;straftaten_aufklaerung;numeric;Anzahl der aufgeklärten Straftaten;number of resolved crimes;
 anzahl_straftaten_vollendet;straftaten_aufklaerung;numeric;Anzahl der vollendeten Straftaten;number of completed crimes;
-anzahl_straftaten_vollendet_unaufgeklart;straftaten_aufklaerung;numeric;Anzahl der vollendeten und unaufgeklärten Straftaten;Number of completed and unsolved crimes
-anzahl_straftaten_vollendet_aufgeklart;straftaten_aufklaerung;numeric;Anzahl der vollendeten und aufgeklärten Straftaten;Number of completed and resolved crimes
+anzahl_straftaten_vollendet_unaufgeklart;straftaten_aufklaerung;numeric;Anzahl der vollendeten und unaufgeklärten Straftaten;Number of completed and unsolved crimes;
+anzahl_straftaten_vollendet_aufgeklart;straftaten_aufklaerung;numeric;Anzahl der vollendeten und aufgeklärten Straftaten;Number of completed and resolved crimes;
 anzahl_straftaten_versucht;straftaten_aufklaerung;numeric;Anzahl der versuchten Straftaten;number of attempted crimes;
-anzahl_straftaten_versucht_unaufgeklart;straftaten_aufklaerung;numeric;Anzahl der versuchten und unaufgeklärten Straftaten;number of attempted und unsolved crimes
-anzahl_straftaten_versucht_aufgeklart;straftaten_aufklaerung;numeric;Anzahl der versuchten und aufgeklärten Straftaten;number of attempted and resolved crimes
+anzahl_straftaten_versucht_unaufgeklart;straftaten_aufklaerung;numeric;Anzahl der versuchten und unaufgeklärten Straftaten;number of attempted und unsolved crimes;
+anzahl_straftaten_versucht_aufgeklart;straftaten_aufklaerung;numeric;Anzahl der versuchten und aufgeklärten Straftaten;number of attempted and resolved crimes;
 kategorie;straftaten_aufklaerung;categorical;Kategorie;Category;"Bestechung","Öffentliche Gewalt","Amts- und Berufspflicht";
