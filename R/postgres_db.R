@@ -96,9 +96,8 @@ run_postgres_query <- function(table_name, query) {
   tryCatch(
     {
       con <- statbotData::postgres_db_connect()
-      query <- query %>% stringr::str_replace(
-        table_name,
-        paste0(con$schema, ".", table_name))
+      sql_set_path <-  paste0("SET SEARCH_PATH TO ", con$schema, ";")
+      RPostgres::dbExecute(con$db, sql_set_path)
       RPostgres::dbGetQuery(con$db, query)
     }, error = function(e) {
       stop(e)

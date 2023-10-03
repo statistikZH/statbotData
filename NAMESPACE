@@ -3,7 +3,6 @@
 S3method(get_read_path,bfs)
 S3method(get_read_path,default)
 export("%>%")
-export(adapt_query_to_schema)
 export(create_dataset)
 export(create_postgres_table)
 export(dataset_sample)

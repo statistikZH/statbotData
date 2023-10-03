@@ -41,6 +41,9 @@ testrun_queries <- function(ds) {
     con <- statbotData::postgres_db_connect()
     db <- con$db
     schema <- con$schema
+    # Set path for sql queries
+    sql_set_path <-  paste0("SET SEARCH_PATH TO ", con$schema, ";")
+    RPostgres::dbExecute(con$db, sql_set_path)
   } else {
     db <- DBI::dbConnect(RSQLite::SQLite(), "")
     prepare_test_db(db, df, table_name)
@@ -77,8 +80,7 @@ testrun_queries <- function(ds) {
       question <- paste(question_lines, collapse = " ")
       query <- paste(query_lines, collapse = " ")
       if (ds$db_instance == "postgres") {
-        query_with_schema <- adapt_query_to_schema(query, table_name, schema)
-        result <- RPostgres::dbGetQuery(conn = db, query_with_schema)
+        result <- RPostgres::dbGetQuery(conn = db, query)
       } else {
         result <- DBI::dbGetQuery(conn = db, statement = query)
       }
@@ -173,34 +175,6 @@ log_time_and_environment <- function(pipeline_status, output_path) {
         file = output_path,
         append = TRUE)
   sink()
-}
-
-#' Modify Query to mention the schema that is used
-#'
-#' Add schema to the tables if the postgres instance
-#' relates to a schema
-#'
-#' @param query: character sql query
-#' @param table_name character table name
-#' @param schema character schema name
-#'
-#' @return query: character modified query
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#'   adapt_query_to_schema(
-#'     "SELECT COUNT(*) as anzahl_abstimmungsvorlagen FROM abstimmungsvorlagen_seit_1971 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid;"
-#'     FALSE,
-#'     "abstimmungsvorlagen_seit_1971",
-#'     "experiment"
-#'   )
-#' }
-adapt_query_to_schema <- function(query, table_name, schema) {
-  query <- query %>%
-    stringr::str_replace(table_name, paste0(schema, ".", table_name)) %>%
-    stringr::str_replace("spatial_unit", paste0(schema, ".spatial_unit"))
-  return(query)
 }
 
 #' Preparing the database table for the query test runs
