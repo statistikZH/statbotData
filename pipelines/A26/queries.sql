@@ -1,0 +1,12 @@
+-- How much insurance money was claimed in total for fire-related incidents in Aargau in 2017?
+-- How many fire-related incidents were there in Aargau in 2017?
+-- Were explosions more frequent than arsons in Aargau in 2000?
+-- In what year were the most arsons reported in Aargau?
+-- What was the most common cause of fire-related incidents in Aargau in 1985?
+-- What cause of fire-related incidents cost the most money to insurances in Aargau in 1985?
+-- In percent, how did the number of electrical fires change from 1970 to 2020 in canton Aargau?
+-- How much did fire incidents caused by explosions cost to insurances in canton Aargau in years 1980, 1990, 2000 and 2010?
+-- What was the cost of fire-damage caused by electricity and explosions in canton Aargau every year between 2001 and 2007?
+-- What source of fire-related incidents was caused the most damage in Aargau in 2020, in CHF?
+-- What propotion of the number of fire-related incidents came from unknown causes in Aargau in 2018?
+-- How many arsons were reported in total from 1980 to 2020 in canton Aargau?
