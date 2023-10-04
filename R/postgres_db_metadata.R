@@ -77,7 +77,7 @@ list_tables_with_metadata_in_statbot_db <- function() {
 #' update_metadata_in_postgres(ds)
 #' }
 update_metadata_in_postgres <- function(ds) {
-  metadata <- read_metadata_tables_from_file(ds)
+  metadata_from_file <- read_metadata_tables_from_file(ds)
   if (is.null(metadata_from_file)) {
     msg <- paste("Generate metadata files with function",
                  "statbotData::generate_metadata_templates",
@@ -85,7 +85,7 @@ update_metadata_in_postgres <- function(ds) {
     stop(msg)
   }
   delete_metadata_from_postgres(ds$name)
-  write_metadata_to_postgres(metadata, ds$name)
+  write_metadata_to_postgres(metadata_from_file, ds$name)
   metadata_db <- get_metadata_from_postgres(ds$name)
   return(metadata_db)
 }
@@ -135,7 +135,6 @@ delete_metadata_from_postgres <- function(table_name) {
 #' and `metadata_table_columns.csv`
 #' The metadata is appended to the existing metadata tables in postgres
 #'
-#' @param db connection to postgres db
 #' @param metadata metadata as list of tibbles
 #' @param table_name name of the table
 #'
@@ -143,7 +142,7 @@ delete_metadata_from_postgres <- function(table_name) {
 #' \dontrun{
 #' write_metadata_to_postgres(metadata, table_name)
 #' }
-write_metadata_to_postgres <- function(db, metadata, table_name) {
+write_metadata_to_postgres <- function(metadata, table_name) {
   tryCatch(
     {
       # append `metadata_tables`

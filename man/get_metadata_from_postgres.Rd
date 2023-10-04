@@ -4,10 +4,10 @@
 \alias{get_metadata_from_postgres}
 \title{Get metadata from postgres}
 \usage{
-get_metadata_from_postgres(table_name = NULL)
+get_metadata_from_postgres(ds_table_name = NULL)
 }
 \arguments{
-\item{table_name}{name of the table to get metadata for: optional}
+\item{ds_table_name}{name of the table to get metadata for: optional}
 }
 \value{
 list of metadata tables from postgres as tibbles

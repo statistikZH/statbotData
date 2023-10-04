@@ -82,7 +82,7 @@ create_postgres_table <- function(ds, dry_run = FALSE) {
     # create table with the field types
     RPostgres::dbWriteTable(
       conn = db,
-      name = name,
+      name = table,
       value = df,
       overwrite = TRUE,
       field.types = field_type_list
