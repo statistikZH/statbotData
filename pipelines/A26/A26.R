@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------
 # Steps: Get the data
-# input: google sheet
+# input: data/const/statbot_input_data.csv
 # output: ds$data, ds$dir
 # -------------------------------------------------------------------------
 
