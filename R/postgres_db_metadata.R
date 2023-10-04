@@ -3,7 +3,7 @@
 #' Read metadata from the postgres instance and return the metadata
 #' of all or a selected table
 #'
-#' @param table_name name of the table to get metadata for: optional
+#' @param ds_table_name name of the table to get metadata for: optional
 #'
 #' @return list of metadata tables from postgres as tibbles
 #' @export
@@ -12,7 +12,7 @@
 #' \dontrun{
 #' get_metadata_from_postgres()
 #' }
-get_metadata_from_postgres <- function(table_name = NULL) {
+get_metadata_from_postgres <- function(ds_table_name = NULL) {
   tryCatch(
     {
       db <- statbotData::postgres_db_connect()
@@ -26,12 +26,12 @@ get_metadata_from_postgres <- function(table_name = NULL) {
         name = "metadata_table_columns",
       ) %>%
         tibble::as_tibble()
-      if (!is.null(table_name)) {
+      if (!is.null(ds_table_name)) {
         metadata_tables <- metadata_tables %>% dplyr::filter(
-          name == table_name
+          name == ds_table_name
         )
         metadata_table_columns <- metadata_table_columns %>% dplyr::filter(
-          table_name == table_name
+          table_name == ds_table_name
         )
       }
     }, error = function(e) {
