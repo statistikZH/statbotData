@@ -1,10 +1,12 @@
-[1] "Environment: REMOTE, Time: 2023-10-04 13:57:06.302443"
+[1] "Environment: REMOTE, Time: 2023-10-04 15:50:39"
 
 Query Nr. 1
 -- Welche Verbrauchkategorie hatte den höchsten mittleren Strompreis im Kanton Bern in 2017?
 SELECT T.verbrauchskategorie as verbrauchskategorie_max_mittlerer_strompreis, T.verbrauchskategorie_beschreibung, S.name_de as kanton, T.jahr FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Bern%' AND S.canton=TRUE AND T.jahr=2017 ORDER BY mittlerer_preis_rappen_pro_kwh DESC LIMIT 1;
- verbrauchskategorie_max_mittlerer_strompreis                verbrauchskategorie_beschreibung      kanton jahr
-                                           H1 1'600 kWh/Jahr: 2-Zimmerwohnung mit Elektroherd Kanton Bern 2017
+ verbrauchskategorie_max_mittlerer_strompreis
+                                           H1
+                verbrauchskategorie_beschreibung      kanton jahr
+ 1'600 kWh/Jahr: 2-Zimmerwohnung mit Elektroherd Kanton Bern 2017
 
 Query Nr. 2
 -- Welches sind die verschiedenen Stromverbrauchskategorien in der Schweiz?
@@ -44,10 +46,11 @@ SELECT DISTINCT verbrauchskategorie, verbrauchskategorie_beschreibung FROM media
 
 Query Nr. 3
 -- Wie viel zahle ich in CHF für 1000 kWh bei einer 2-Zimmer-Wohnung im Kanton Bern im Jahr 2017?
-SELECT T.verbrauchskategorie, T.verbrauchskategorie_beschreibung, T.energieprodukt, T.mittlerer_preis_rappen_pro_kwh * 1000 / 100 as preis_franken_fur_1000_kwh_bern_2017_2_zimmerwohnung FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Bern%'     AND S.canton=TRUE     AND T.jahr=2017     AND T.verbrauchskategorie_beschreibung LIKE '%2-zimmerwohnung%'     AND T.verbrauchskategorie_grosse_kwh_pro_jahr >= 1000;
-[1] verbrauchskategorie                                  verbrauchskategorie_beschreibung                    
-[3] energieprodukt                                       preis_franken_fur_1000_kwh_bern_2017_2_zimmerwohnung
-<0 rows> (or 0-length row.names)
+SELECT T.verbrauchskategorie, T.verbrauchskategorie_beschreibung, T.energieprodukt, T.mittlerer_preis_rappen_pro_kwh * 1000 / 100 as preis_franken_fur_1000_kwh_bern_2017_2_zimmerwohnung FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Bern%'     AND S.canton=TRUE     AND T.jahr=2017     AND T.verbrauchskategorie_beschreibung LIKE '%2-Zimmerwohnung%'     AND T.verbrauchskategorie_grosse_kwh_pro_jahr >= 1000;
+ verbrauchskategorie                verbrauchskategorie_beschreibung
+                  H1 1'600 kWh/Jahr: 2-Zimmerwohnung mit Elektroherd
+  energieprodukt preis_franken_fur_1000_kwh_bern_2017_2_zimmerwohnung
+ Standardprodukt                                                  278
 
 Query Nr. 4
 -- Welches ist der Kanton mit dem höchsten Preis für 1000 kWh im Jahr 2021 für das Standardstromprodukt der Kategorie C3?
@@ -56,121 +59,17 @@ SELECT S.name_de as kanton, T.jahr, T.verbrauchskategorie, T.energieprodukt FROM
  Kanton Basel-Stadt 2021                  C3 Standardprodukt
 
 Query Nr. 5
--- In what year did electricity have the highest median price in canton Vaud for standard household products?
-SELECT T.jahr, T.verbrauchskategorie, MAX(T.mittlerer_preis_rappen_pro_kwh) FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Waadt%'     AND S.canton=TRUE     AND T.energieprodukt='Standardprodukt'     AND T.verbrauchskategorie LIKE 'H_' GROUP BY T.verbrauchskategorie, T.jahr, T.mittlerer_preis_rappen_pro_kwh;
- jahr verbrauchskategorie      max
- 2011                  H1 26.14500
- 2012                  H1 25.13500
- 2013                  H1 24.56700
- 2014                  H1 24.63500
- 2015                  H1 24.90500
- 2016                  H1 24.64500
- 2017                  H1 24.59500
- 2018                  H1 24.66500
- 2019                  H1 24.74500
- 2020                  H1 25.09500
- 2021                  H1 24.93500
- 2022                  H1 25.32500
- 2023                  H1 36.58000
- 2024                  H1 37.78000
- 2011                  H2 24.78000
- 2012                  H2 23.85000
- 2013                  H2 23.09000
- 2014                  H2 23.23000
- 2015                  H2 23.24726
- 2016                  H2 22.76457
- 2017                  H2 22.75000
- 2018                  H2 23.11486
- 2019                  H2 23.04477
- 2020                  H2 23.27754
- 2021                  H2 22.97594
- 2022                  H2 23.60943
- 2023                  H2 34.11663
- 2024                  H2 35.71583
- 2011                  H3 20.69714
- 2012                  H3 19.84209
- 2013                  H3 19.36476
- 2014                  H3 19.43232
- 2015                  H3 19.52514
- 2016                  H3 19.33476
- 2017                  H3 19.20429
- 2018                  H3 19.60047
- 2019                  H3 19.72010
- 2020                  H3 19.60752
- 2021                  H3 19.42775
- 2022                  H3 19.84258
- 2023                  H3 29.41257
- 2024                  H3 30.68435
- 2011                  H4 22.93381
- 2012                  H4 22.03343
- 2013                  H4 21.28892
- 2014                  H4 21.50521
- 2015                  H4 21.80781
- 2016                  H4 21.47476
- 2017                  H4 21.27095
- 2018                  H4 21.63048
- 2019                  H4 21.50743
- 2020                  H4 21.63019
- 2021                  H4 21.38000
- 2022                  H4 21.91413
- 2023                  H4 32.25724
- 2024                  H4 33.64479
- 2011                  H5 20.22457
- 2012                  H5 19.36012
- 2013                  H5 18.87771
- 2014                  H5 18.94358
- 2015                  H5 19.19975
- 2016                  H5 18.82474
- 2017                  H5 18.64017
- 2018                  H5 18.90570
- 2019                  H5 18.47903
- 2020                  H5 18.64663
- 2021                  H5 18.64663
- 2022                  H5 19.06663
- 2023                  H5 28.18434
- 2024                  H5 29.66550
- 2011                  H6 16.74838
- 2012                  H6 16.10390
- 2013                  H6 15.66666
- 2014                  H6 15.95253
- 2015                  H6 16.01563
- 2016                  H6 15.75842
- 2017                  H6 15.79505
- 2018                  H6 15.99867
- 2019                  H6 16.12185
- 2020                  H6 15.87467
- 2021                  H6 15.70571
- 2022                  H6 16.24222
- 2023                  H6 24.52927
- 2024                  H6 25.70279
- 2011                  H7 19.71712
- 2012                  H7 19.04622
- 2013                  H7 18.55714
- 2014                  H7 18.65437
- 2015                  H7 18.91772
- 2016                  H7 18.53511
- 2017                  H7 19.14418
- 2018                  H7 18.66779
- 2019                  H7 18.76479
- 2020                  H7 18.54721
- 2021                  H7 18.34240
- 2022                  H7 18.99958
- 2023                  H7 28.51336
- 2024                  H7 29.68998
- 2011                  H8 22.19081
- 2012                  H8 21.34149
- 2013                  H8 20.76279
- 2014                  H8 20.86322
- 2015                  H8 21.04000
- 2016                  H8 20.67000
- 2017                  H8 20.57836
- 2018                  H8 20.93843
- 2019                  H8 20.94118
- 2020                  H8 20.83147
- 2021                  H8 20.73320
- 2022                  H8 21.26538
- 2023                  H8 31.65591
- 2024                  H8 32.70502
+-- In welchem Jahr hatte der Strom im Kanton Waadt den höchsten mittleren Preis für Standardhaushaltsprodukte?
+WITH WAADT AS (     SELECT *     FROM median_strompreis_per_kanton as T     JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid     WHERE S.name_de LIKE '%Waadt%'         AND S.canton=TRUE         AND T.energieprodukt='Standardprodukt'         AND T.verbrauchskategorie LIKE 'H_' ) SELECT WAADT.jahr, HOCH.verbrauchskategorie, HOCH.max_mittlerer_preis_rappen_pro_kwh FROM WAADT JOIN (     SELECT         WAADT.verbrauchskategorie,         MAX(WAADT.mittlerer_preis_rappen_pro_kwh) AS max_mittlerer_preis_rappen_pro_kwh     FROM WAADT     GROUP BY WAADT.verbrauchskategorie ) AS HOCH ON HOCH.verbrauchskategorie=WAADT.verbrauchskategorie AND HOCH.max_mittlerer_preis_rappen_pro_kwh=WAADT.mittlerer_preis_rappen_pro_kwh;
+ jahr verbrauchskategorie max_mittlerer_preis_rappen_pro_kwh
+ 2024                  H1                           37.78000
+ 2024                  H8                           32.70502
+ 2024                  H2                           35.71583
+ 2024                  H6                           25.70279
+ 2024                  H5                           29.66550
+ 2024                  H4                           33.64479
+ 2024                  H3                           30.68435
+ 2024                  H7                           29.68998
 
 Query Nr. 6
 -- In welchen Kantonen liegen die Strompreise für die Kategorie der Grossverbraucher im Jahr 2022 unter 13 Rappen pro Kilowattstunde?
@@ -213,89 +112,9 @@ SELECT T.verbrauchskategorie, MIN(T.mittlerer_preis_rappen_pro_kwh) FROM median_
 
 Query Nr. 10
 -- Wann haben die Strompreise für Haushalte mit einem Verbrauch von weniger als 7500 kWh pro Jahr im Kanton Zürich ihren Höchststand erreicht?
-SELECT T.jahr, T.verbrauchskategorie, MAX(T.mittlerer_preis_rappen_pro_kwh) FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Zürich%'     AND S.canton=TRUE     AND T.verbrauchskategorie LIKE 'H_%'     AND T.verbrauchskategorie_grosse_kwh_pro_jahr < 7500 GROUP BY T.verbrauchskategorie, T.mittlerer_preis_rappen_pro_kwh, T.jahr ORDER BY T.mittlerer_preis_rappen_pro_kwh DESC;
- jahr verbrauchskategorie      max
- 2024                  H1 35.48745
- 2024                  H2 33.30571
- 2024                  H4 31.60881
- 2024                  H3 31.30762
- 2023                  H1 25.77655
- 2024                  H1 24.83643
- 2024                  H2 24.45663
- 2024                  H4 24.30391
- 2022                  H1 23.99930
- 2023                  H2 23.55857
- 2021                  H1 23.48921
- 2020                  H1 23.42691
- 2019                  H1 23.02387
- 2018                  H1 22.69272
- 2023                  H1 22.63214
- 2023                  H4 22.38952
- 2023                  H2 22.24514
- 2023                  H4 22.08952
- 2022                  H1 22.02714
- 2022                  H2 21.87886
- 2011                  H1 21.84395
- 2021                  H1 21.73354
- 2020                  H1 21.21286
- 2024                  H3 21.20924
- 2021                  H2 21.17746
- 2023                  H3 21.07476
- 2020                  H2 20.76114
- 2019                  H1 20.74122
- 2018                  H1 20.48198
- 2019                  H2 20.33371
- 2018                  H2 20.06783
- 2015                  H1 19.99417
- 2022                  H2 19.90214
- 2022                  H4 19.79490
- 2020                  H2 19.68777
- 2016                  H1 19.45124
- 2021                  H4 19.43667
- 2021                  H2 19.28794
- 2011                  H2 19.16016
- 2012                  H1 19.06830
- 2023                  H3 18.93619
- 2017                  H1 18.84755
- 2013                  H1 18.80733
- 2020                  H4 18.80259
- 2019                  H4 18.80197
- 2019                  H2 18.57357
- 2014                  H1 18.42438
- 2018                  H2 18.32834
- 2018                  H4 18.14773
- 2022                  H4 18.05465
- 2022                  H3 18.05445
- 2015                  H2 17.99670
- 2020                  H4 17.93630
- 2021                  H4 17.89269
- 2021                  H3 17.80381
- 2012                  H2 17.63287
- 2016                  H2 17.56974
- 2020                  H3 17.45651
- 2013                  H2 17.38591
- 2011                  H4 17.22967
- 2019                  H3 17.22127
- 2022                  H3 17.06564
- 2017                  H2 17.05829
- 2014                  H2 17.01696
- 2018                  H3 16.89102
- 2019                  H4 16.86953
- 2021                  H3 16.74444
- 2015                  H4 16.72939
- 2012                  H4 16.72213
- 2020                  H3 16.71825
- 2018                  H4 16.61047
- 2013                  H4 16.46744
- 2016                  H4 16.42868
- 2014                  H4 16.10669
- 2019                  H3 16.04532
- 2017                  H4 15.85002
- 2018                  H3 15.55244
- 2011                  H3 15.27570
- 2015                  H3 15.10656
- 2016                  H3 14.93877
- 2012                  H3 14.62893
- 2013                  H3 14.55040
- 2017                  H3 14.35287
- 2014                  H3 14.34987
+WITH T1 AS (     SELECT *     FROM median_strompreis_per_kanton as T     JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid     WHERE S.name_de LIKE '%Zürich%'         AND S.canton=TRUE         AND T.verbrauchskategorie LIKE 'H_%'         AND T.verbrauchskategorie_grosse_kwh_pro_jahr < 7500 ) SELECT T1.jahr, HOCH.verbrauchskategorie, HOCH.max_mittlerer_preis_rappen_pro_kwh FROM T1 JOIN (     SELECT         T1.verbrauchskategorie,         MAX(T1.mittlerer_preis_rappen_pro_kwh) AS max_mittlerer_preis_rappen_pro_kwh     FROM T1     GROUP BY T1.verbrauchskategorie ) AS HOCH ON HOCH.verbrauchskategorie=T1.verbrauchskategorie AND HOCH.max_mittlerer_preis_rappen_pro_kwh=T1.mittlerer_preis_rappen_pro_kwh;
+ jahr verbrauchskategorie max_mittlerer_preis_rappen_pro_kwh
+ 2024                  H3                           31.30762
+ 2024                  H4                           31.60881
+ 2024                  H1                           35.48745
+ 2024                  H2                           33.30571
