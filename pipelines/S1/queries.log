@@ -1,46 +1,30 @@
-[1] "Environment: REMOTE, Time: 2023-10-02 21:18:28.612394"
+[1] "Environment: REMOTE, Time: 2023-10-04 10:32:21.041429"
 
 Query Nr. 1
 -- Welche Verbrauchkategorie hatte den höchsten mittleren Strompreis im Kanton Bern in 2017?
-SELECT T.verbrauchskategorie as verbrauchskategorie_mit_maximalem_mittleren_strompreis_bern_2017 FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Bern%' AND S.canton=TRUE AND T.jahr=2017 ORDER BY mittlerer_preis_rappen_pro_kwh DESC LIMIT 1;
- verbrauchskategorie_mit_maximalem_mittleren_strompreis_bern_201
-                                                              H1
+SELECT T.verbrauchskategorie as verbrauchskategorie_max_mittlerer_strompreis_bern_2017 FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Bern%' AND S.canton=TRUE AND T.jahr=2017 ORDER BY mittlerer_preis_rappen_pro_kwh DESC LIMIT 1;
+ verbrauchskategorie_max_mittlerer_strompreis_bern_2017
+                                                     H1
 
 Query Nr. 2
 -- Welches sind die verschiedenen Stromverbrauchskategorien in der Schweiz?
 SELECT DISTINCT verbrauchskategorie, verbrauchskategorie_beschreibung FROM median_strompreis_per_kanton ORDER BY verbrauchskategorie;
- verbrauchskategorie
-                  C1
-                  C2
-                  C3
-                  C4
-                  C5
-                  C6
-                  C7
-                  H1
-                  H2
-                  H3
-                  H4
-                  H5
-                  H6
-                  H7
-                  H8
-                                                                                          verbrauchskategorie_beschreibung
-                                                          8'000 kWh/Jahr: Kleinstbetrieb' max. beanspruchte Leistung: 8 kW
-                                                          30'000 kWh/Jahr: Kleinbetrieb' max. beanspruchte Leistung: 15 kW
-                                                    150'000 kWh/Jahr: Mittlerer Betrieb' max. beanspruchte Leistung: 50 kW
-                                    500'000 kWh/Jahr: Grosser Betrieb ' max. beanspruchte Leistung: 150 kW' Niederspannung
-      500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 150 kW' Mittelspannung' eigene Transformatorenstation
-    1'500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 400 kW' Mittelspannung' eigene Transformatorenstation
-  7'500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 1'630 kW' Mittelspannung' eigene Transformatorenstation
-                                                                           1'600 kWh/Jahr: 2-Zimmerwohnung mit Elektroherd
-                                                                           2'500 kWh/Jahr: 4-Zimmerwohnung mit Elektroherd
-                                                         4'500 kWh/Jahr: 4-Zimmerwohnung mit Elektroherd und Elektroboiler
-                                          4'500 kWh/Jahr: 5-Zimmerwohnung mit Elektroherd und Tumbler (ohne Elektroboiler)
-                                       7'500 kWh/Jahr: 5-Zimmer-Einfamilienhaus mit Elektroherd' Elektroboiler und Tumbler
- 25'000 kWh/Jahr: 5-Zimmer-Einfamilienhaus mit Elektroherd' Elektroboiler' Tumbler und mit elektrischer Widerstandsheizung
-          13'000 kWh/Jahr: 5-Zimmer-Einfamilienhaus mit Elektroherd' Elektroboiler' Tumbler' Wärmepumpe 5 kW zur Beheizung
-                                                             7'500 kWh/Jahr: Grosse' hoch elektrifizierte Eigentumswohnung
+ verbrauchskategorie                                                                                          verbrauchskategorie_beschreibung
+                  C1                                                          8'000 kWh/Jahr: Kleinstbetrieb' max. beanspruchte Leistung: 8 kW
+                  C2                                                          30'000 kWh/Jahr: Kleinbetrieb' max. beanspruchte Leistung: 15 kW
+                  C3                                                    150'000 kWh/Jahr: Mittlerer Betrieb' max. beanspruchte Leistung: 50 kW
+                  C4                                    500'000 kWh/Jahr: Grosser Betrieb ' max. beanspruchte Leistung: 150 kW' Niederspannung
+                  C5      500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 150 kW' Mittelspannung' eigene Transformatorenstation
+                  C6    1'500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 400 kW' Mittelspannung' eigene Transformatorenstation
+                  C7  7'500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 1'630 kW' Mittelspannung' eigene Transformatorenstation
+                  H1                                                                           1'600 kWh/Jahr: 2-Zimmerwohnung mit Elektroherd
+                  H2                                                                           2'500 kWh/Jahr: 4-Zimmerwohnung mit Elektroherd
+                  H3                                                         4'500 kWh/Jahr: 4-Zimmerwohnung mit Elektroherd und Elektroboiler
+                  H4                                          4'500 kWh/Jahr: 5-Zimmerwohnung mit Elektroherd und Tumbler (ohne Elektroboiler)
+                  H5                                       7'500 kWh/Jahr: 5-Zimmer-Einfamilienhaus mit Elektroherd' Elektroboiler und Tumbler
+                  H6 25'000 kWh/Jahr: 5-Zimmer-Einfamilienhaus mit Elektroherd' Elektroboiler' Tumbler und mit elektrischer Widerstandsheizung
+                  H7          13'000 kWh/Jahr: 5-Zimmer-Einfamilienhaus mit Elektroherd' Elektroboiler' Tumbler' Wärmepumpe 5 kW zur Beheizung
+                  H8                                                             7'500 kWh/Jahr: Grosse' hoch elektrifizierte Eigentumswohnung
 
 Query Nr. 3
 -- Wie viel zahle ich in CHF für 1000 kWh bei einer 2-Zimmer-Wohnung im Kanton Bern im Jahr 2017?
@@ -48,3 +32,9 @@ SELECT T.verbrauchskategorie, T.verbrauchskategorie_beschreibung, T.energieprodu
 [1] verbrauchskategorie                                  verbrauchskategorie_beschreibung                    
 [3] energieprodukt                                       preis_franken_fur_1000_kwh_bern_2017_2_zimmerwohnung
 <0 rows> (or 0-length row.names)
+
+Query Nr. 4
+-- Welches ist der Kanton mit dem höchsten Preis für 1000 kWh im Jahr 2021 für das Standardstromprodukt der Kategorie C3?
+SELECT S.name FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.jahr=2021     AND T.energieprodukt='Standardprodukt'     AND T.verbrauchskategorie='C3' ORDER BY T.mittlerer_preis_rappen_pro_kwh DESC LIMIT 1;
+                  name
+ Canton of Basel-Stadt

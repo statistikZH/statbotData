@@ -73,7 +73,7 @@ spatial_map <- ds$cleaned_data %>%
 ds$postgres_export <- ds$cleaned_data %>%
   dplyr::left_join(spatial_map, by = "kanton") %>%
   dplyr::select(-kanton)
-ds$postgres_export
+colnames(ds$postgres_export)
 
 # -------------------------------------------------------------------------
 # Step: After the dataset has been build use functions of package stabotData

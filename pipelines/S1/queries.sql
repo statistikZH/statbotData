@@ -1,5 +1,5 @@
 -- Welche Verbrauchkategorie hatte den höchsten mittleren Strompreis im Kanton Bern in 2017?
-SELECT T.verbrauchskategorie as verbrauchskategorie_mit_maximalem_mittleren_strompreis_bern_2017
+SELECT T.verbrauchskategorie as verbrauchskategorie_max_mittlerer_strompreis_bern_2017
 FROM median_strompreis_per_kanton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
 WHERE S.name_de LIKE '%Bern%' AND S.canton=TRUE AND T.jahr=2017
@@ -11,7 +11,9 @@ FROM median_strompreis_per_kanton
 ORDER BY verbrauchskategorie;
 
 -- Wie viel zahle ich in CHF für 1000 kWh bei einer 2-Zimmer-Wohnung im Kanton Bern im Jahr 2017?
-SELECT T.verbrauchskategorie, T.verbrauchskategorie_beschreibung, T.energieprodukt, T.mittlerer_preis_rappen_pro_kwh * 1000 / 100 as preis_franken_fur_1000_kwh_bern_2017_2_zimmerwohnung
+SELECT T.verbrauchskategorie, T.verbrauchskategorie_beschreibung,
+T.energieprodukt,
+T.mittlerer_preis_rappen_pro_kwh * 1000 / 100 as preis_franken_fur_1000_kwh_bern_2017_2_zimmerwohnung
 FROM median_strompreis_per_kanton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
 WHERE S.name_de LIKE '%Bern%'
@@ -26,8 +28,8 @@ FROM median_strompreis_per_kanton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
 WHERE S.canton=TRUE
     AND T.jahr=2021
-    AND T.energieprodukt="Standardprodukt"
-    AND T.verbrauchskategorie="C3"
+    AND T.energieprodukt='Standardprodukt'
+    AND T.verbrauchskategorie='C3'
 ORDER BY T.mittlerer_preis_rappen_pro_kwh DESC LIMIT 1;
 
 -- In what year did electricity have the highest median price in canton Vaud for standard household products?
@@ -36,7 +38,7 @@ FROM median_strompreis_per_kanton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
 WHERE S.name_de LIKE '%Waadt%'
     AND S.canton=TRUE
-    AND T.energieprodukt="Standardprodukt"
+    AND T.energieprodukt='Standardprodukt'
     AND T.verbrauchskategorie LIKE 'H_'
 GROUP BY T.verbrauchskategorie;
 
@@ -57,7 +59,7 @@ WHERE S.name_de LIKE '%Neuenburg%'
     AND S.canton=TRUE
     AND T.jahr >= 2017
     AND T.jahr <= 2023
-    AND T.energieprodukt="Standardprodukt"
+    AND T.energieprodukt='Standardprodukt'
     AND T.verbrauchskategorie_beschreibung LIKE '%Kleinbetrieb%'
 ORDER BY T.jahr;
 
@@ -67,7 +69,7 @@ FROM median_strompreis_per_kanton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
 WHERE S.canton=TRUE
     AND T.jahr=(SELECT MAX(jahr) FROM median_strompreis_per_kanton)
-    AND T.verbrauchskategorie="H3"
+    AND T.verbrauchskategorie='H3'
 ORDER BY T.mittlerer_preis_rappen_pro_kwh ASC LIMIT 1;
 
 -- Wie hoch waren die Preise für das günstigste verfügbare Stromprodukt für alle Unternehmenskategorien im Kanton Genf im Jahr 2012?
