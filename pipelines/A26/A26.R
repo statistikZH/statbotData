@@ -11,7 +11,8 @@ ds <- statbotData::download_data(ds)
 # Step 1 rename columns + clean values
 # -------------------------------------------------------------------------
 
-# The dataset has missing values represented as "" or "( )"
+# Specific columns are renamed manually to make names clearer
+# Append the unit to all columns names ending in schaden or anzahl
 ds$postgres_export <- ds$data %>%
   janitor::clean_names() %>%
   dplyr::select(
@@ -53,7 +54,8 @@ ds$postgres_export <- ds$postgres_export %>%
 
 
 # -------------------------------------------------------------------------
-# Step: Testrun queries on sqllite
+# Step: Upload dataset to postgres, test run queries, generate a sample and
+# metadata files.
 #   input:  ds$postgres_export, ds$dir/queries.sql
 #   output: ds$dir/queries.log
 # -------------------------------------------------------------------------
