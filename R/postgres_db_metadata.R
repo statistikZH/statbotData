@@ -1,9 +1,9 @@
 #' Get metadata from postgres
 #'
 #' Read metadata from the postgres instance and return the metadata
-#' tables: the full tables are returned.
+#' of all or a selected table
 #'
-#' @param ds dataset pipeline class
+#' @param table_name name of the table to get metadata for: optional
 #'
 #' @return list of metadata tables from postgres as tibbles
 #' @export
@@ -12,82 +12,53 @@
 #' \dontrun{
 #' get_metadata_from_postgres()
 #' }
-get_metadata_from_postgres <- function(ds = NULL) {
+get_metadata_from_postgres <- function(table_name = NULL) {
   tryCatch(
     {
-      con <- statbotData::postgres_db_connect()
+      db <- statbotData::postgres_db_connect()
       metadata_tables <- RPostgres::dbReadTable(
-        con$db,
-        name = RPostgres::Id(schema = con$schema, table = "metadata_tables")
+        db,
+        name = "metadata_tables",
       ) %>%
         tibble::as_tibble()
       metadata_table_columns <- RPostgres::dbReadTable(
-        con$db,
-        name = RPostgres::Id(schema = con$schema, table = "metadata_table_columns")
+        db,
+        name = "metadata_table_columns",
       ) %>%
         tibble::as_tibble()
-      if (!is.null(ds)) {
+      if (!is.null(table_name)) {
         metadata_tables <- metadata_tables %>% dplyr::filter(
-          name == ds$name
+          name == table_name
         )
         metadata_table_columns <- metadata_table_columns %>% dplyr::filter(
-          table_name == ds$name
+          table_name == table_name
         )
       }
     }, error = function(e) {
       stop(e)
     }, finally = {
-      RPostgres::dbDisconnect(con$db)
+      RPostgres::dbDisconnect(db)
     }
   )
   return(list(metadata_tables = metadata_tables,
               metadata_table_columns = metadata_table_columns))
 }
 
-#' Write metadata to postgres
+#' List all tables that have metadata in postgres
 #'
-#' Read metadata from file and write them to postgres: the metadata
-#' is expected in the files `metadata_tables.csv`
-#' and `metadata_table_columns.csv`
-#' The metadata is appended to the existing metadata tables in postgres
-#'
-#' @param ds dataset pipeline class
-#'
+#' @return list of tables with metadata in postgres
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' write_metadata_to_postgres(ds)
+#' list_tables_with_metadata_in_postgres()
 #' }
-write_metadata_to_postgres <- function(ds) {
-  tryCatch(
-    {
-      # read metadata
-      metadata <- read_metadata_tables_from_file(ds)
-
-      # append `metadata_tables`
-      con <- statbotData::postgres_db_connect()
-      RPostgres::dbWriteTable(
-        conn = con$db,
-        name = RPostgres::Id(schema = con$schema, table = "metadata_tables"),
-        value = metadata$metadata_tables,
-        append = TRUE
-      )
-
-      # append `metadata_table_columns`
-      data_types_columns <- DBI::dbDataType(con$db, metadata$metadata_table_columns)
-      RPostgres::dbWriteTable(
-        conn = con$db,
-        name = RPostgres::Id(schema = con$schema, table = "metadata_table_columns"),
-        value =  metadata$metadata_table_columns,
-        append = TRUE
-      )
-    }, error = function(e) {
-      stop(e)
-    }, finally = {
-      RPostgres::dbDisconnect(con$db)
-    }
-  )
+list_tables_with_metadata_in_statbot_db <- function() {
+  metadata <- get_metadata_from_postgres()
+  tables_with_table_metadata <- metadata$metadata_tables$name
+  tables_with_column_metadata <- unique(md$metadata_table_columns$table_name)
+  tables_with_metadata <- c(tables_with_table_metadata, tables_with_column_metadata)
+  return(tables_with_metadata)
 }
 
 #' Update metadata for a pipeline in postgres
@@ -106,19 +77,16 @@ write_metadata_to_postgres <- function(ds) {
 #' update_metadata_in_postgres(ds)
 #' }
 update_metadata_in_postgres <- function(ds) {
-  metadata_from_file <- read_metadata_tables_from_file(ds)
+  metadata <- read_metadata_tables_from_file(ds)
   if (is.null(metadata_from_file)) {
     msg <- paste("Generate metadata files with function",
                  "statbotData::generate_metadata_templates",
                  "then remove .template in the file name and complete the metadata.")
     stop(msg)
   }
-  metadata_db <- get_metadata_from_postgres(ds)
-  print(nrow(metadata_db$metadata_tables))
-  if (!(nrow(metadata_db$metadata_tables) == 0)) {
-    delete_metadata_from_postgres(ds)
-  }
-  write_metadata_to_postgres(ds)
+  delete_metadata_from_postgres(ds$name)
+  write_metadata_to_postgres(metadata, ds$name)
+  metadata_db <- get_metadata_from_postgres(ds$name)
   return(metadata_db)
 }
 
@@ -129,33 +97,76 @@ update_metadata_in_postgres <- function(ds) {
 #' instance. This function can be used when the metadata should be updated
 #' to remove the old entries and the readd the updated metadata
 #'
-#' @param ds dataset pipeline class
+#' @param table_name name of the table to delete metadata for
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' delete_metadata_from_postgres(ds)
+#' delete_metadata_from_postgres(table_name)
 #' }
-delete_metadata_from_postgres <- function(ds) {
+delete_metadata_from_postgres <- function(table_name) {
   tryCatch(
     {
       # delete metadata entries in postgres`
-      con <- statbotData::postgres_db_connect()
+      db <- statbotData::postgres_db_connect()
       q_md_table <- paste0(
-        "DELETE FROM ", con$schema,
-        ".metadata_tables WHERE name='", ds$name, "'; "
+        "DELETE FROM metadata_tables WHERE name='", table_name, "'; "
       )
       q_md_cols <- paste0(
-        "DELETE FROM ", con$schema,
-        ".metadata_table_columns WHERE table_name='", ds$name, "';"
+        "DELETE FROM metadata_table_columns WHERE table_name='",table_name, "';"
       )
-      RPostgres::dbExecute(con$db, q_md_table, silent=)
-      RPostgres::dbExecute(con$db, q_md_cols)
+      print(q_md_table)
+      RPostgres::dbExecute(db, q_md_table)
+      print(q_md_cols)
+      RPostgres::dbExecute(db, q_md_cols)
     }, error = function(e) {
       stop(e)
     }, finally = {
-      RPostgres::dbDisconnect(con$db)
+      RPostgres::dbDisconnect(db)
+    }
+  )
+}
+
+#' Write metadata to postgres
+#'
+#' Read metadata from file and write them to postgres: the metadata
+#' is expected in the files `metadata_tables.csv`
+#' and `metadata_table_columns.csv`
+#' The metadata is appended to the existing metadata tables in postgres
+#'
+#' @param db connection to postgres db
+#' @param metadata metadata as list of tibbles
+#' @param table_name name of the table
+#'
+#' @examples
+#' \dontrun{
+#' write_metadata_to_postgres(metadata, table_name)
+#' }
+write_metadata_to_postgres <- function(db, metadata, table_name) {
+  tryCatch(
+    {
+      # append `metadata_tables`
+      db <- statbotData::postgres_db_connect()
+      RPostgres::dbWriteTable(
+        conn = db,
+        name = "metadata_tables",
+        value = metadata$metadata_tables,
+        append = TRUE
+      )
+
+      # append `metadata_table_columns`
+      data_types_columns <- DBI::dbDataType(db, metadata$metadata_table_columns)
+      RPostgres::dbWriteTable(
+        conn = db,
+        name = "metadata_table_columns",
+        value =  metadata$metadata_table_columns,
+        append = TRUE
+      )
+    }, error = function(e) {
+      stop(e)
+    }, finally = {
+      RPostgres::dbDisconnect(db)
     }
   )
 }
