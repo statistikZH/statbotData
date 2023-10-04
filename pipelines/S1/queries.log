@@ -1,9 +1,12 @@
+[1] "Environment: REMOTE, Time: 2023-10-04 15:50:39"
 
 Query Nr. 1
 -- Welche Verbrauchkategorie hatte den höchsten mittleren Strompreis im Kanton Bern in 2017?
-SELECT T.verbrauchskategorie as verbrauchskategorie_mit_maximalem_mittleren_strompreis_bern_2017 FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Bern%' AND S.canton=TRUE AND T.jahr=2017 ORDER BY mittlerer_preis_rappen_pro_kwh DESC LIMIT 1;
- verbrauchskategorie_mit_maximalem_mittleren_strompreis_bern_2017
-                                                               H1
+SELECT T.verbrauchskategorie as verbrauchskategorie_max_mittlerer_strompreis, T.verbrauchskategorie_beschreibung, S.name_de as kanton, T.jahr FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Bern%' AND S.canton=TRUE AND T.jahr=2017 ORDER BY mittlerer_preis_rappen_pro_kwh DESC LIMIT 1;
+ verbrauchskategorie_max_mittlerer_strompreis
+                                           H1
+                verbrauchskategorie_beschreibung      kanton jahr
+ 1'600 kWh/Jahr: 2-Zimmerwohnung mit Elektroherd Kanton Bern 2017
 
 Query Nr. 2
 -- Welches sind die verschiedenen Stromverbrauchskategorien in der Schweiz?
@@ -43,7 +46,7 @@ SELECT DISTINCT verbrauchskategorie, verbrauchskategorie_beschreibung FROM media
 
 Query Nr. 3
 -- Wie viel zahle ich in CHF für 1000 kWh bei einer 2-Zimmer-Wohnung im Kanton Bern im Jahr 2017?
-SELECT T.verbrauchskategorie, T.verbrauchskategorie_beschreibung, T.energieprodukt, T.mittlerer_preis_rappen_pro_kwh * 1000 / 100 as preis_franken_fur_1000_kwh_bern_2017_2_zimmerwohnung FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Bern%'     AND S.canton=TRUE     AND T.jahr=2017     AND T.verbrauchskategorie_beschreibung LIKE '%2-zimmerwohnung%'     AND T.verbrauchskategorie_grosse_kwh_pro_jahr >= 1000;
+SELECT T.verbrauchskategorie, T.verbrauchskategorie_beschreibung, T.energieprodukt, T.mittlerer_preis_rappen_pro_kwh * 1000 / 100 as preis_franken_fur_1000_kwh_bern_2017_2_zimmerwohnung FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Bern%'     AND S.canton=TRUE     AND T.jahr=2017     AND T.verbrauchskategorie_beschreibung LIKE '%2-Zimmerwohnung%'     AND T.verbrauchskategorie_grosse_kwh_pro_jahr >= 1000;
  verbrauchskategorie                verbrauchskategorie_beschreibung
                   H1 1'600 kWh/Jahr: 2-Zimmerwohnung mit Elektroherd
   energieprodukt preis_franken_fur_1000_kwh_bern_2017_2_zimmerwohnung
@@ -51,36 +54,36 @@ SELECT T.verbrauchskategorie, T.verbrauchskategorie_beschreibung, T.energieprodu
 
 Query Nr. 4
 -- Welches ist der Kanton mit dem höchsten Preis für 1000 kWh im Jahr 2021 für das Standardstromprodukt der Kategorie C3?
-SELECT S.name FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.jahr=2021     AND T.energieprodukt="Standardprodukt"     AND T.verbrauchskategorie="C3" ORDER BY T.mittlerer_preis_rappen_pro_kwh DESC LIMIT 1;
-                  name
- Canton of Basel-Stadt
+SELECT S.name_de as kanton, T.jahr, T.verbrauchskategorie, T.energieprodukt FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.jahr=2021     AND T.energieprodukt='Standardprodukt'     AND T.verbrauchskategorie='C3' GROUP BY S.name_de, T.jahr, T.verbrauchskategorie, T.energieprodukt, T.mittlerer_preis_rappen_pro_kwh ORDER BY T.mittlerer_preis_rappen_pro_kwh DESC LIMIT 1;
+             kanton jahr verbrauchskategorie  energieprodukt
+ Kanton Basel-Stadt 2021                  C3 Standardprodukt
 
 Query Nr. 5
--- In what year did electricity have the highest median price in canton Vaud for standard household products?
-SELECT T.jahr, T.verbrauchskategorie, MAX(T.mittlerer_preis_rappen_pro_kwh) FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Waadt%'     AND S.canton=TRUE     AND T.energieprodukt="Standardprodukt"     AND T.verbrauchskategorie LIKE 'H_' GROUP BY T.verbrauchskategorie;
- jahr verbrauchskategorie MAX(T.mittlerer_preis_rappen_pro_kwh)
- 2024                  H1                              37.78000
- 2024                  H2                              35.61583
- 2024                  H3                              30.68278
- 2024                  H4                              33.49479
- 2024                  H5                              29.46551
- 2024                  H6                              25.50494
- 2024                  H7                              29.58998
- 2024                  H8                              32.65728
+-- In welchem Jahr hatte der Strom im Kanton Waadt den höchsten mittleren Preis für Standardhaushaltsprodukte?
+WITH WAADT AS (     SELECT *     FROM median_strompreis_per_kanton as T     JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid     WHERE S.name_de LIKE '%Waadt%'         AND S.canton=TRUE         AND T.energieprodukt='Standardprodukt'         AND T.verbrauchskategorie LIKE 'H_' ) SELECT WAADT.jahr, HOCH.verbrauchskategorie, HOCH.max_mittlerer_preis_rappen_pro_kwh FROM WAADT JOIN (     SELECT         WAADT.verbrauchskategorie,         MAX(WAADT.mittlerer_preis_rappen_pro_kwh) AS max_mittlerer_preis_rappen_pro_kwh     FROM WAADT     GROUP BY WAADT.verbrauchskategorie ) AS HOCH ON HOCH.verbrauchskategorie=WAADT.verbrauchskategorie AND HOCH.max_mittlerer_preis_rappen_pro_kwh=WAADT.mittlerer_preis_rappen_pro_kwh;
+ jahr verbrauchskategorie max_mittlerer_preis_rappen_pro_kwh
+ 2024                  H1                           37.78000
+ 2024                  H8                           32.70502
+ 2024                  H2                           35.71583
+ 2024                  H6                           25.70279
+ 2024                  H5                           29.66550
+ 2024                  H4                           33.64479
+ 2024                  H3                           30.68435
+ 2024                  H7                           29.68998
 
 Query Nr. 6
 -- In welchen Kantonen liegen die Strompreise für die Kategorie der Grossverbraucher im Jahr 2022 unter 13 Rappen pro Kilowattstunde?
 SELECT DISTINCT(S.name) FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.jahr=2022     AND T.verbrauchskategorie_grosse_kwh_pro_jahr = (SELECT MAX(verbrauchskategorie_grosse_kwh_pro_jahr) FROM median_strompreis_per_kanton)     AND T.mittlerer_preis_rappen_pro_kwh < 13;
                    name
-       Canton of Zurich
           Canton Aargau
-          Canton of Uri
- Canton of Schaffhausen
     Canton of Nidwalden
+ Canton of Schaffhausen
+          Canton of Uri
+       Canton of Zurich
 
 Query Nr. 7
 -- Wie haben sich die Standardstrompreise für kleine Unternehmen im Kanton Neuenburg zwischen 2017 und 2023 entwickelt?
-SELECT T.jahr, T.energieprodukt, T.verbrauchskategorie, T.mittlerer_preis_rappen_pro_kwh FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Neuenburg%'     AND S.canton=TRUE     AND T.jahr >= 2017     AND T.jahr <= 2023     AND T.energieprodukt="Standardprodukt"     AND T.verbrauchskategorie_beschreibung LIKE '%Kleinbetrieb%' ORDER BY T.jahr;
+SELECT T.jahr, T.energieprodukt, T.verbrauchskategorie, T.mittlerer_preis_rappen_pro_kwh FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Neuenburg%'     AND S.canton=TRUE     AND T.jahr >= 2017     AND T.jahr <= 2023     AND T.energieprodukt='Standardprodukt'     AND T.verbrauchskategorie_beschreibung LIKE '%Kleinbetrieb%' ORDER BY T.jahr;
  jahr  energieprodukt verbrauchskategorie mittlerer_preis_rappen_pro_kwh
  2017 Standardprodukt                  C2                       21.30873
  2018 Standardprodukt                  C2                       21.51997
@@ -92,26 +95,26 @@ SELECT T.jahr, T.energieprodukt, T.verbrauchskategorie, T.mittlerer_preis_rappen
 
 Query Nr. 8
 -- Welcher Kanton kann nach den neuesten Informationen den günstigsten Strom für die Kategorie H3 anbieten?
-SELECT S.name FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.jahr=(SELECT MAX(jahr) FROM median_strompreis_per_kanton)     AND T.verbrauchskategorie="H3" ORDER BY T.mittlerer_preis_rappen_pro_kwh ASC LIMIT 1;
-                name
- Canton of Nidwalden
+SELECT S.name FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.jahr=(SELECT MAX(jahr) FROM median_strompreis_per_kanton)     AND T.verbrauchskategorie='H3' GROUP BY T.jahr, S.name, T.mittlerer_preis_rappen_pro_kwh ORDER BY T.mittlerer_preis_rappen_pro_kwh ASC LIMIT 1;
+             name
+ Canton of Zurich
 
 Query Nr. 9
 -- Wie hoch waren die Preise für das günstigste verfügbare Stromprodukt für alle Unternehmenskategorien im Kanton Genf im Jahr 2012?
-SELECT T.verbrauchskategorie, MIN(T.mittlerer_preis_rappen_pro_kwh) FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Genf%'     AND S.canton=TRUE     AND T.jahr=2012     AND T.verbrauchskategorie LIKE '%C_%' GROUP BY T.verbrauchskategorie ORDER BY T.mittlerer_preis_rappen_pro_kwh ASC;
- verbrauchskategorie MIN(T.mittlerer_preis_rappen_pro_kwh)
-                  C7                              14.10156
-                  C6                              15.00263
-                  C4                              17.42939
-                  C3                              18.31980
-                  C1                              19.95666
-                  C2                              20.06664
+SELECT T.verbrauchskategorie, MIN(T.mittlerer_preis_rappen_pro_kwh) FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Genf%'     AND S.canton=TRUE     AND T.jahr=2012     AND T.verbrauchskategorie LIKE '%C_%' GROUP BY T.verbrauchskategorie, T.jahr, T.mittlerer_preis_rappen_pro_kwh ORDER BY T.mittlerer_preis_rappen_pro_kwh ASC;
+ verbrauchskategorie      min
+                  C7 14.10156
+                  C6 15.00263
+                  C4 17.42939
+                  C3 18.31980
+                  C1 19.95666
+                  C2 20.06664
 
 Query Nr. 10
 -- Wann haben die Strompreise für Haushalte mit einem Verbrauch von weniger als 7500 kWh pro Jahr im Kanton Zürich ihren Höchststand erreicht?
-SELECT T.jahr, T.verbrauchskategorie, MAX(T.mittlerer_preis_rappen_pro_kwh) FROM median_strompreis_per_kanton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de LIKE '%Zürich%'     AND S.canton=TRUE     AND T.verbrauchskategorie LIKE 'H_%'     AND T.verbrauchskategorie_grosse_kwh_pro_jahr < 7500 GROUP BY T.verbrauchskategorie ORDER BY T.mittlerer_preis_rappen_pro_kwh DESC;
- jahr verbrauchskategorie MAX(T.mittlerer_preis_rappen_pro_kwh)
- 2024                  H1                              40.04015
- 2024                  H2                              37.25029
- 2024                  H4                              35.15730
- 2024                  H3                              33.91238
+WITH T1 AS (     SELECT *     FROM median_strompreis_per_kanton as T     JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid     WHERE S.name_de LIKE '%Zürich%'         AND S.canton=TRUE         AND T.verbrauchskategorie LIKE 'H_%'         AND T.verbrauchskategorie_grosse_kwh_pro_jahr < 7500 ) SELECT T1.jahr, HOCH.verbrauchskategorie, HOCH.max_mittlerer_preis_rappen_pro_kwh FROM T1 JOIN (     SELECT         T1.verbrauchskategorie,         MAX(T1.mittlerer_preis_rappen_pro_kwh) AS max_mittlerer_preis_rappen_pro_kwh     FROM T1     GROUP BY T1.verbrauchskategorie ) AS HOCH ON HOCH.verbrauchskategorie=T1.verbrauchskategorie AND HOCH.max_mittlerer_preis_rappen_pro_kwh=T1.mittlerer_preis_rappen_pro_kwh;
+ jahr verbrauchskategorie max_mittlerer_preis_rappen_pro_kwh
+ 2024                  H3                           31.30762
+ 2024                  H4                           31.60881
+ 2024                  H1                           35.48745
+ 2024                  H2                           33.30571

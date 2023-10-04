@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------
 # Step: Get the data
-# input: google sheet
+# input: data/const/statbot_input_data.csv
 # output: ds$data, ds$dir
 # -------------------------------------------------------------------------
 
@@ -27,28 +27,20 @@ ds$postgres_export <- ds$data %>%
     values_from = anzahl
   ) %>%
   janitor::clean_names()
-colnames(ds$postgres_export)
-unique(ds$postgres_export$staatsangehorigkeit_kategorie)
-# -------------------------------------------------------------------------
-# Step: Testrun queries on sqllite
-#   input:  ds$postgres_export, ds$dir/queries.sql
-#   output: ds$dir/queries.log
-# -------------------------------------------------------------------------
-
-statbotData::testrun_queries(
-  ds$postgres_export,
-  ds$dir,
-  ds$name
-)
+ds$postgres_export
 
 # -------------------------------------------------------------------------
-# Step: Write metadata tables
-#   input:  ds$postgres_export
-#   output: ds$dir/metadata_tables.csv
-#           ds$dir/metadata_table_columns.csv
-#           ds$dir/sample.csv
+# Step: After the dataset has been build use functions of package
+# stabotData to upload the dataset to postgres, testrun the queries,
+# generate a sample upload the metadata, etc
 # -------------------------------------------------------------------------
 
-read_write_metadata_tables(ds)
-dataset_sample(ds)
+# create the table in postgres
+statbotData::create_postgres_table(ds)
+# add metadata to postgres
+statbotData::update_metadata_in_postgres(ds)
+# generate sample data for the dataset from the local tibble
+statbotData::dataset_sample(ds)
+# testrun queries
+statbotData::testrun_queries(ds)
 

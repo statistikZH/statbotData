@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------
 # Steps: Get the data
-# input:  google sheet
+# input:  data/const/statbot_input_data.csv
 # output: ds$data, ds$dir
 #         - use a sparql query to download the data
 # -------------------------------------------------------------------------
@@ -73,27 +73,23 @@ spatial_map <- ds$cleaned_data %>%
 ds$postgres_export <- ds$cleaned_data %>%
   dplyr::left_join(spatial_map, by = "kanton") %>%
   dplyr::select(-kanton)
-ds$postgres_export
+colnames(ds$postgres_export)
 
 # -------------------------------------------------------------------------
-# Step: Testrun queries on sqllite
-#   input:  ds$postgres_export, ds$dir/queries.sql
-#   output: ds$dir/queries.log
+# Step: After the dataset has been build use functions of package stabotData
+# to upload the dataset to postgres, testrun the queries, generate a sample
+# upload the metadata, etc
 # -------------------------------------------------------------------------
 
-statbotData::testrun_queries(
-  ds$postgres_export,
-  ds$dir,
-  ds$name
-)
+# create the table in postgres
+statbotData::create_postgres_table(ds)
 
-# -------------------------------------------------------------------------
-# Step: Write metadata tables
-#   input:  ds$postgres_export
-#   output: ds$dir/metadata_tables.csv
-#           ds$dir/metadata_table_columns.csv
-#           ds$dir/sample.csv
-# -------------------------------------------------------------------------
+# add the metadata to postgres
+statbotData::update_metadata_in_postgres(ds)
 
-read_write_metadata_tables(ds)
-dataset_sample(ds)
+# generate sample data for the dataset from the local tibble
+statbotData::dataset_sample(ds)
+
+# testrun queries
+statbotData::testrun_queries(ds)
+

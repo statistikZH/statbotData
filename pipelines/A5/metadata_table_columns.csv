@@ -3,6 +3,6 @@ rententyp;ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit;categorical;Rentenar
 wohnsitzstaat_kategorie;ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit;categorical;Wohnsitz Kategorie;Residence category;"Ausland","Schweiz","Wohnsitzstaat - Total"
 staatsangehorigkeit_kategorie;ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit;categorical;Staatsangehörigkeit Kategorie;nationality category;"Ausland","Schweiz","Staatsangehörigkeit - Total"
 geschlecht;ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit;categorical;Geschlecht;Gender;"Frau","Mann","Geschlecht - Total"
-anzahl_renten;ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit;numeric;Anzahl Renten;Number of pensions
-rentensumme_in_tausend_franken;ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit;numeric;Rentensumme in Tausend CHF;Pension amount in thousands of CHF
-renten_mittelwert_in_franken;ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit;numeric;Renten Mittelwert in CHF;Average pensions in CHF
+anzahl_renten;ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit;numeric;Anzahl Renten;Number of pensions;
+rentensumme_in_tausend_franken;ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit;numeric;Rentensumme in Tausend CHF;Pension amount in thousands of CHF;
+renten_mittelwert_in_franken;ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit;numeric;Renten Mittelwert in CHF;Average pensions in CHF;

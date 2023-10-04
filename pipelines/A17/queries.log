@@ -1,6 +1,7 @@
+[1] "Environment: REMOTE, Time: 2023-10-02 20:40:11.811903"
 
 Query Nr. 1
 -- Welches Jahr hatte die meisten Volksabstimmungen?
-SELECT T.jahr as jahr_mit_meisten_volksabstimmungen, T.jahr, Count(*) FROM volksabstimmung_nach_kanton_seit_1861 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE GROUP BY T.jahr ORDER BY COUNT() DESC LIMIT 1;
- jahr_mit_meisten_volksabstimmungen jahr Count(*)
-                               2000 2000       17
+SELECT T.jahr, COUNT(*) as anzahl_volksabstimmungen, S.name_de FROM volksabstimmung_nach_kanton_seit_1861 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE GROUP BY T.jahr, S.name_de ORDER BY anzahl_volksabstimmungen DESC LIMIT 1;
+ jahr anzahl_volksabstimmungen name_de
+ 2000                       17 Schweiz
