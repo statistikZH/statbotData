@@ -4,11 +4,9 @@
 \alias{write_metadata_to_postgres}
 \title{Write metadata to postgres}
 \usage{
-write_metadata_to_postgres(db, metadata, table_name)
+write_metadata_to_postgres(metadata, table_name)
 }
 \arguments{
-\item{db}{connection to postgres db}
-
 \item{metadata}{metadata as list of tibbles}
 
 \item{table_name}{name of the table}
