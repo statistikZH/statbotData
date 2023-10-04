@@ -7,7 +7,7 @@
 postgres_db_connect()
 }
 \value{
-db_connection: list of a running db connection and a schema
+db: connection to postgres schema
 }
 \description{
 Establish db connection

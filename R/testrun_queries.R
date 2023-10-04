@@ -38,12 +38,7 @@ testrun_queries <- function(ds) {
 
   # prepare db connection
   if (ds$db_instance == "postgres") {
-    con <- statbotData::postgres_db_connect()
-    db <- con$db
-    schema <- con$schema
-    # Set path for sql queries
-    sql_set_path <-  paste0("SET SEARCH_PATH TO ", con$schema, ";")
-    RPostgres::dbExecute(con$db, sql_set_path)
+    db <- statbotData::postgres_db_connect()
   } else {
     db <- DBI::dbConnect(RSQLite::SQLite(), "")
     prepare_test_db(db, df, table_name)
@@ -181,7 +176,7 @@ log_time_and_environment <- function(pipeline_status, output_path) {
 #'
 #' The spatial_unit tables is needed for the spatial joins.
 #'
-#' @param db_con sql connection
+#' @param db sql connection
 #' @param df tibble that gets loaded as a sql table
 #' @param table_name name of the table
 #'
@@ -189,14 +184,14 @@ log_time_and_environment <- function(pipeline_status, output_path) {
 #' \dontrun{
 #'   # command to call. this function
 #'   prepare_db(
-#'     db_con,
+#'     db,
 #'     df,
 #'     'abstimmungsvorlagen_seit_1971'
 #'   )
 #' }
-prepare_test_db <- function(db_con, df, table_name) {
+prepare_test_db <- function(db, df, table_name) {
   statbotdb <- DBI::dbConnect(RSQLite::SQLite(), "")
   spatial_df <- load_spatial_map()
-  DBI::dbWriteTable(db_con, "spatial_unit", spatial_df, overwrite = TRUE)
-  DBI::dbWriteTable(db_con, table_name, df, overwrite = TRUE)
+  DBI::dbWriteTable(db, "spatial_unit", spatial_df, overwrite = TRUE)
+  DBI::dbWriteTable(db, table_name, df, overwrite = TRUE)
 }

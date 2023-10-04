@@ -1,6 +1,6 @@
 #' Establish db connection
 #'
-#' @return db_connection: list of a running db connection and a schema
+#' @return db: connection to postgres schema
 #' @export
 #'
 #' @examples
@@ -19,8 +19,24 @@ postgres_db_connect <- function() {
     password = Sys.getenv("DB_PASSWORD")
   )
   schema <- Sys.getenv("DB_SCHEMA")
-  db_connection <- list(db = db, schema = schema)
-  return(db_connection)
+  sql_set_path <-  paste0("SET SEARCH_PATH TO ", schema, ";")
+  RPostgres::dbExecute(db, sql_set_path)
+  return(db)
+}
+
+#' List Postgres table in Statbot DB
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' list_tables_in_statbot_db()
+#' }
+list_tables_in_statbot_db <- function() {
+  db <- statbotData::postgres_db_connect()
+  tables <- RPostgres::dbListTables(db)
+  RPostgres::dbDisconnect(conn = db)
+  return(tables)
 }
 
 #' Create Postgres table
@@ -43,8 +59,7 @@ create_postgres_table <- function(ds, dry_run = FALSE) {
     db <- DBI::ANSI()
   } else {
     # connect to postgres instance
-    con <- statbotData::postgres_db_connect()
-    db <- con$db
+    db <- statbotData::postgres_db_connect()
   }
 
   field_types <- get_postgres_data_types(db, ds$postgres_export)
@@ -56,8 +71,6 @@ create_postgres_table <- function(ds, dry_run = FALSE) {
   if (dry_run) {
     print(paste("Dryrun for table:", table, "Table was not created by this run. Please check the field types."))
   } else {
-    schema <- con$schema
-
     # turn field types into a list
     field_type_list <- field_types %>%
       tibble::deframe()
@@ -69,12 +82,12 @@ create_postgres_table <- function(ds, dry_run = FALSE) {
     # create table with the field types
     RPostgres::dbWriteTable(
       conn = db,
-      name = RPostgres::Id(schema = schema, table = table),
+      name = name,
       value = df,
       overwrite = TRUE,
       field.types = field_type_list
     )
-    print(paste("Table", table, "was created for schema", schema))
+    print(paste("Table", table, "was created."))
     RPostgres::dbDisconnect(conn = db)
   }
 }
@@ -95,50 +108,36 @@ create_postgres_table <- function(ds, dry_run = FALSE) {
 run_postgres_query <- function(table_name, query) {
   tryCatch(
     {
-      con <- statbotData::postgres_db_connect()
-      sql_set_path <-  paste0("SET SEARCH_PATH TO ", con$schema, ";")
-      RPostgres::dbExecute(con$db, sql_set_path)
-      RPostgres::dbGetQuery(con$db, query)
+      db <- statbotData::postgres_db_connect()
+      RPostgres::dbGetQuery(db, query)
     }, error = function(e) {
       stop(e)
     }, finally = {
-      RPostgres::dbDisconnect(con$db)
+      RPostgres::dbDisconnect(db)
     }
   )
 }
 
-#' Delete metadata for a pipeline in postgres
+#' Delete table from postgres
 #'
-#' The pipeline dataset is supposed to be created when this function
-#' is called. All metadata for the pipeline is deleted in the postgres
-#' instance. This function can be used when the metadata should be updated
-#' to remove the old entries and the readd the updated metadata
+#' @param table_name name of the table to delete
 #'
-#' @param ds dataset pipeline class
+#' @export
 #'
 #' @examples
 #' \dontrun{
 #' delete_metadata_from_postgres(ds)
 #' }
-delete_metadata_from_postgres <- function(ds) {
+delete_table_in_postgres <- function(table_name) {
   tryCatch(
     {
       # delete metadata entries in postgres`
-      con <- statbotData::postgres_db_connect()
-      q_md_table <- paste0(
-        "DELETE FROM ", con$schema,
-        ".metadata_tables WHERE name='", ds$name, "'; "
-      )
-      q_md_cols <- paste0(
-        "DELETE FROM ", con$schema,
-        ".metadata_table_columns WHERE table_name='", ds$name, "';"
-      )
-      RPostgres::dbExecute(con$db, q_md_table, silent=)
-      RPostgres::dbExecute(con$db, q_md_cols)
+      db <- statbotData::postgres_db_connect()
+      RPostgres::dbRemoveTable(db, table_name)
     }, error = function(e) {
       stop(e)
     }, finally = {
-      RPostgres::dbDisconnect(con$db)
+      RPostgres::dbDisconnect(db)
     }
   )
 }
@@ -161,11 +160,11 @@ delete_metadata_from_postgres <- function(ds) {
 #' \dontrun{
 #' get_data_types_from_metadata(DBI::ANSI(), ds$postgres_export)
 #' }
-get_postgres_data_types <- function(con, tbl) {
+get_postgres_data_types <- function(db, tbl) {
   # get name of the year column which can differ per language
   year_names <- c("year", "jahr", "annee")
   year_col <- intersect(colnames(tbl), year_names)
-  data_types <- DBI::dbDataType(con, tbl) %>%
+  data_types <- DBI::dbDataType(db, tbl) %>%
     tibble::enframe(
       name = "name", value = "data_type"
     ) %>%

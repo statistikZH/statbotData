@@ -4,10 +4,10 @@
 \alias{prepare_test_db}
 \title{Preparing the database table for the query test runs}
 \usage{
-prepare_test_db(db_con, df, table_name)
+prepare_test_db(db, df, table_name)
 }
 \arguments{
-\item{db_con}{sql connection}
+\item{db}{sql connection}
 
 \item{df}{tibble that gets loaded as a sql table}
 
@@ -20,7 +20,7 @@ The spatial_unit tables is needed for the spatial joins.
 \dontrun{
   # command to call. this function
   prepare_db(
-    db_con,
+    db,
     df,
     'abstimmungsvorlagen_seit_1971'
   )
