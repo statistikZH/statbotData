@@ -64,7 +64,7 @@ server <- function(input, output) {
       }
     }
     if (location == "REMOTE") {
-      metadata <- statbotData::get_metadata_from_postgres(ds)
+      metadata <- statbotData::get_metadata_from_postgres(ds$name)
       sample <- statbotData::run_postgres_query(
         table = ds$name,
         query = paste("SELECT * FROM", ds$name, "LIMIT 40;")
