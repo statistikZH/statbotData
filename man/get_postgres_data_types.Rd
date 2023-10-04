@@ -4,7 +4,7 @@
 \alias{get_postgres_data_types}
 \title{Get data types for postgres table from metadata}
 \usage{
-get_postgres_data_types(con, tbl)
+get_postgres_data_types(db, tbl)
 }
 \arguments{
 \item{con:}{db connection}

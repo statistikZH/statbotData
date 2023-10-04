@@ -4,10 +4,14 @@
 \alias{write_metadata_to_postgres}
 \title{Write metadata to postgres}
 \usage{
-write_metadata_to_postgres(ds)
+write_metadata_to_postgres(db, metadata, table_name)
 }
 \arguments{
-\item{ds}{dataset pipeline class}
+\item{db}{connection to postgres db}
+
+\item{metadata}{metadata as list of tibbles}
+
+\item{table_name}{name of the table}
 }
 \description{
 Read metadata from file and write them to postgres: the metadata
@@ -17,6 +21,6 @@ The metadata is appended to the existing metadata tables in postgres
 }
 \examples{
 \dontrun{
-write_metadata_to_postgres(ds)
+write_metadata_to_postgres(metadata, table_name)
 }
 }

@@ -4,17 +4,17 @@
 \alias{get_metadata_from_postgres}
 \title{Get metadata from postgres}
 \usage{
-get_metadata_from_postgres(ds = NULL)
+get_metadata_from_postgres(table_name = NULL)
 }
 \arguments{
-\item{ds}{dataset pipeline class}
+\item{table_name}{name of the table to get metadata for: optional}
 }
 \value{
 list of metadata tables from postgres as tibbles
 }
 \description{
 Read metadata from the postgres instance and return the metadata
-tables: the full tables are returned.
+of all or a selected table
 }
 \examples{
 \dontrun{
