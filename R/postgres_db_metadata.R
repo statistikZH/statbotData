@@ -84,7 +84,6 @@ update_metadata_in_postgres <- function(ds) {
                  "then remove .template in the file name and complete the metadata.")
     stop(msg)
   }
-  delete_metadata_from_postgres(ds$name)
   write_metadata_to_postgres(metadata_from_file, ds$name)
   metadata_db <- get_metadata_from_postgres(ds$name)
   return(metadata_db)
