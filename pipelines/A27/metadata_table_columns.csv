@@ -1,0 +1,11 @@
+name;table_name;data_type;title;title_en;example_values
+einwohner;thurgau_erneuerbare_elektrizitatsproduktion_gemeinde;numeric;"Einwohner";"Inhabitants";"2683; 2318; 1350"
+wasserkraft_gwh;thurgau_erneuerbare_elektrizitatsproduktion_gemeinde;numeric;"Wasserkraft, GWh";"Hydropower, GWh";"0; 1.234; 6.698"
+biomasse_holz_gwh;thurgau_erneuerbare_elektrizitatsproduktion_gemeinde;numeric;"Biomasse, Holz, GWh";"Biomass, Wood, GWh";"0; 2.266; 0.404"
+biogasanlagen_landwirtschaft_gwh;thurgau_erneuerbare_elektrizitatsproduktion_gemeinde;numeric;"Biogasanlagen, Landwirtschaft, GWh";"Biogas plants, Ariculture, GWh";"0; 4.826; 0.308"
+kehricht_gwh;thurgau_erneuerbare_elektrizitatsproduktion_gemeinde;numeric;"Kehricht, GWh";"Waste, GWh";"0; 49.982734; 57.317"
+biogasanlagen_industrie_gwh;thurgau_erneuerbare_elektrizitatsproduktion_gemeinde;numeric;"Biogasanlagen, Industrie, GWh";"Biogas plants, Industry, GWh";"0; 0.651573; 1.819"
+biogasanlagen_abwasser_gwh;thurgau_erneuerbare_elektrizitatsproduktion_gemeinde;numeric;"Biogasanlagen, Abwasser, GWh";"Biogas plants, Wastewater, GWh";"0; 0.272; 1.219"
+photovoltaik_gwh;thurgau_erneuerbare_elektrizitatsproduktion_gemeinde;numeric;"Photovoltaik, GWh";"Photovoltaics, GWh";"3.814; 1.879; 4.268"
+wind_gwh;thurgau_erneuerbare_elektrizitatsproduktion_gemeinde;numeric;"Wind, GWh";"Wind, GWh";"0; 0.005; 0.006"
+total_gwh;thurgau_erneuerbare_elektrizitatsproduktion_gemeinde;numeric;"Total, GWh";"Total, GWh";"3.814; 1.879; 9.094"
