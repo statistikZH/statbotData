@@ -1,11 +1,11 @@
 library(magrittr)
-# create ds object --------------------------------------------------------
+# -------------------------------------------------------------------------
+# Steps: Get the data
+# input: data/const/statbot_input_data.csv
+# output: ds$data, ds$dir
+# -------------------------------------------------------------------------
 
 ds <- create_dataset(id = "A16")
-
-
-# download the data -------------------------------------------------------
-
 ds <- download_data(ds)
 
 # data cleaning -----------------------------------------------------------
@@ -21,6 +21,7 @@ ds$postgres_export <- ds$data %>%
   dplyr::select(
     -sex,
   )
+colnames(ds$postgres_export)
 
 # Pivot indicators into 1 indicator per column and cleanup names
 ds$postgres_export %<>%
@@ -67,20 +68,23 @@ spatial_map <- ds$postgres_export %>%
 ds$postgres_export %<>%
   dplyr::left_join(spatial_map, by = "canton") %>%
   dplyr::select(-canton)
-
+ds$postgres_export
 ## check that each spatial unit could be matched -> this has to be TRUE
 
-assertthat::noNA(ds$postgres_export$spatialunit_uid)
+# -------------------------------------------------------------------------
+# Step: After the dataset has been build use functions of package stabotData
+# to upload the dataset to postgres, testrun the queries, generate a sample
+# upload the metadata, etc
+# -------------------------------------------------------------------------
 
+# testrun queries
+statbotData::testrun_queries(ds)
 
-# ingest into postgres ----------------------------------------------------
+# create the table in postgres
+statbotData::create_postgres_table(ds)
 
-statbotData::testrun_queries(
-  ds$postgres_export,
-  ds$dir,
-  ds$name
-)
+# add the metadata to postgres
+statbotData::update_metadata_in_postgres(ds)
 
-read_write_metadata_tables(ds)
-
-dataset_sample(ds)
+# generate sample data for the dataset from the local tibble
+statbotData::dataset_sample(ds)

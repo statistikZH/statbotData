@@ -1,13 +1,14 @@
+[1] "Environment: REMOTE, Time: 2023-10-10 10:07:25.925201"
 
 Query Nr. 1
 -- How many residents were in Switzerland in 2018?
-SELECT total_population as total_population_of_switzerland_in_2018 FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name="Switzerland"     AND S.country=TRUE     AND T.year=2018     AND T.citizenship_category="Citizenship (category) - total";
+SELECT total_population as total_population_of_switzerland_in_2018 FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name='Switzerland'     AND S.country=TRUE     AND T.year=2018     AND T.citizenship_category='Citizenship (category) - total';
  total_population_of_switzerland_in_2018
                                  8484130
 
 Query Nr. 2
 -- What was the net migration of Switzerland from 2012 to 2022?
-SELECT year, net_migration as net_migration_of_switzerland FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name="Switzerland"     AND S.country=TRUE     AND T.year>=2012     AND T.year<=2022     AND T.citizenship_category="Citizenship (category) - total";
+SELECT year, net_migration as net_migration_of_switzerland FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name='Switzerland'     AND S.country=TRUE     AND T.year>=2012     AND T.year<=2022     AND T.citizenship_category='Citizenship (category) - total';
  year net_migration_of_switzerland
  2012                        71127
  2013                        87106
@@ -23,14 +24,14 @@ SELECT year, net_migration as net_migration_of_switzerland FROM demographic_bala
 
 Query Nr. 3
 -- Which cantons experienced a population decline in 2017, and by how much?
-SELECT S.name, population_change FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.population_change<0     AND T.year=2017     AND T.citizenship_category="Citizenship (category) - total";
+SELECT S.name, population_change FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.population_change<0     AND T.year=2017     AND T.citizenship_category='Citizenship (category) - total';
              name population_change
     Canton Ticino              -666
  Canton Neuchâtel              -603
 
 Query Nr. 4
 -- Which five cantons had the highest number of Swiss citizenship acquisitions in 2017 relative to their population?
-SELECT S.name, acquisition_of_swiss_citizenship / total_population as relative_acquisition FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year=2017     AND T.citizenship_category="Switzerland" ORDER BY relative_acquisition DESC LIMIT 5;
+SELECT S.name, acquisition_of_swiss_citizenship / total_population as relative_acquisition FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year=2017     AND T.citizenship_category='Switzerland' ORDER BY relative_acquisition DESC LIMIT 5;
                   name relative_acquisition
          Canton Geneva          0.020591783
            Canton Vaud          0.013843753
@@ -40,13 +41,13 @@ SELECT S.name, acquisition_of_swiss_citizenship / total_population as relative_a
 
 Query Nr. 5
 -- Which canton has the highest number of residents who have moved from other cantons in 2016?
-SELECT S.name, T.in_migration_from_another_canton FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year=2016     AND T.citizenship_category="Citizenship (category) - total" ORDER BY T.in_migration_from_another_canton DESC LIMIT 1;
+SELECT S.name, T.in_migration_from_another_canton FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year=2016     AND T.citizenship_category='Citizenship (category) - total' ORDER BY T.in_migration_from_another_canton DESC LIMIT 1;
              name in_migration_from_another_canton
  Canton of Zurich                            24629
 
 Query Nr. 6
 -- Which five cantons experienced the most significant population growth relative to their size between 2000 and 2022?
-SELECT     S.name, (         (             SUM(CASE WHEN T.year = 2022 THEN total_population ELSE 0 END) -             SUM(CASE WHEN T.year = 2000 THEN total_population ELSE 0 END)         ) / SUM(CASE WHEN T.year = 2000 THEN total_population ELSE 0 END)     ) as relative_population_growth FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year>=2000     AND T.year<=2022     AND T.citizenship_category="Citizenship (category) - total" GROUP BY S.name ORDER BY relative_population_growth DESC LIMIT 5;
+SELECT     S.name, (         (             SUM(CASE WHEN T.year = 2022 THEN total_population ELSE 0 END) -             SUM(CASE WHEN T.year = 2000 THEN total_population ELSE 0 END)         ) / SUM(CASE WHEN T.year = 2000 THEN total_population ELSE 0 END)     ) as relative_population_growth FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year>=2000     AND T.year<=2022     AND T.citizenship_category='Citizenship (category) - total' GROUP BY S.name ORDER BY relative_population_growth DESC LIMIT 5;
                name relative_population_growth
  Canton of Fribourg                  0.4078111
         Canton Vaud                  0.3353909
@@ -56,15 +57,15 @@ SELECT     S.name, (         (             SUM(CASE WHEN T.year = 2022 THEN tota
 
 Query Nr. 7
 -- What was the population change due to natural factors among the residents of Canton Vaud between 2015 and 2020?
-SELECT year, births - deaths FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name="Canton Vaud"     AND T.year>=2015     AND T.year>=2020     AND T.citizenship_category="Citizenship (category) - total";
- year births - deaths
- 2020            1755
- 2021            3171
- 2022            2146
+SELECT year, births - deaths FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name='Canton Vaud'     AND T.year>=2015     AND T.year>=2020     AND T.citizenship_category='Citizenship (category) - total';
+ year ?column?
+ 2020     1755
+ 2021     3171
+ 2022     2146
 
 Query Nr. 8
 -- Give me the total population of each canton in 2019.
-SELECT S.name as canton, total_population as total_population_2019 FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year=2019     AND T.citizenship_category="Citizenship (category) - total" ORDER BY total_population DESC;
+SELECT S.name as canton, total_population as total_population_2019 FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year=2019     AND T.citizenship_category='Citizenship (category) - total' ORDER BY total_population DESC;
                            canton total_population_2019
                  Canton of Zurich               1520968
                    Canton of Bern               1034931
@@ -95,27 +96,345 @@ SELECT S.name as canton, total_population as total_population_2019 FROM demograp
 
 Query Nr. 9
 -- Show me the cantons with the highest birth rates every year between 1995 and 2010.
-SELECT year, S.name as most_populout_canton, MAX(births / total_population) as birthrate FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year>=1995     AND T.year<=2010     AND T.citizenship_category="Citizenship (category) - total" GROUP BY T.year ORDER BY year ASC;
- year            most_populout_canton  birthrate
- 1995 Canton of Appenzell Innerrhoden 0.01451635
- 1996 Canton of Appenzell Innerrhoden 0.01491525
- 1997 Canton of Appenzell Innerrhoden 0.01543855
- 1998 Canton of Appenzell Innerrhoden 0.01350171
- 1999 Canton of Appenzell Innerrhoden 0.01277483
- 2000              Canton of Fribourg 0.01245375
- 2001              Canton of Fribourg 0.01202308
- 2002 Canton of Appenzell Innerrhoden 0.01235227
- 2003              Canton of Fribourg 0.01155300
- 2004              Canton of Fribourg 0.01127887
- 2005                   Canton Geneva 0.01124484
- 2006                     Canton Vaud 0.01125528
- 2007                     Canton Vaud 0.01145519
- 2008                     Canton Vaud 0.01118983
- 2009                     Canton Vaud 0.01167026
- 2010                     Canton Vaud 0.01158760
+SELECT year, S.name as most_populout_canton, MAX(births / total_population) as birthrate FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year>=1995     AND T.year<=2010     AND T.citizenship_category='Citizenship (category) - total' GROUP BY T.year, S.name, T.births ORDER BY year ASC;
+ year             most_populout_canton   birthrate
+ 1995                    Canton Aargau 0.011913273
+ 1995                    Canton Geneva 0.011817748
+ 1995                Canton Graubünden 0.011593495
+ 1995                      Canton Jura 0.012264602
+ 1995                 Canton Neuchâtel 0.012041955
+ 1995                   Canton Thurgau 0.013071006
+ 1995                    Canton Ticino 0.010128057
+ 1995                    Canton Valais 0.012634541
+ 1995                      Canton Vaud 0.012727143
+ 1995 Canton of Appenzell Ausserrhoden 0.012779612
+ 1995  Canton of Appenzell Innerrhoden 0.014516348
+ 1995       Canton of Basel-Landschaft 0.010272269
+ 1995            Canton of Basel-Stadt 0.009408589
+ 1995                   Canton of Bern 0.011016759
+ 1995               Canton of Fribourg 0.013747204
+ 1995                 Canton of Glarus 0.011627907
+ 1995                Canton of Lucerne 0.013011147
+ 1995              Canton of Nidwalden 0.012311369
+ 1995               Canton of Obwalden 0.012920731
+ 1995           Canton of Schaffhausen 0.010961648
+ 1995                 Canton of Schwyz 0.014148753
+ 1995              Canton of Solothurn 0.010744171
+ 1995             Canton of St. Gallen 0.012363186
+ 1995                    Canton of Uri 0.012217182
+ 1995                    Canton of Zug 0.012664248
+ 1995                 Canton of Zurich 0.010961288
+ 1996                    Canton Aargau 0.011847521
+ 1996                    Canton Geneva 0.012271599
+ 1996                Canton Graubünden 0.011758158
+ 1996                      Canton Jura 0.012012532
+ 1996                 Canton Neuchâtel 0.011745271
+ 1996                   Canton Thurgau 0.012660495
+ 1996                    Canton Ticino 0.010124542
+ 1996                    Canton Valais 0.012573215
+ 1996                      Canton Vaud 0.012727906
+ 1996 Canton of Appenzell Ausserrhoden 0.012439006
+ 1996  Canton of Appenzell Innerrhoden 0.014915254
+ 1996       Canton of Basel-Landschaft 0.010391113
+ 1996            Canton of Basel-Stadt 0.010007203
+ 1996                   Canton of Bern 0.010958945
+ 1996               Canton of Fribourg 0.014010118
+ 1996                 Canton of Glarus 0.011900533
+ 1996                Canton of Lucerne 0.013176287
+ 1996              Canton of Nidwalden 0.012120880
+ 1996               Canton of Obwalden 0.012168636
+ 1996           Canton of Schaffhausen 0.010724657
+ 1996                 Canton of Schwyz 0.013495740
+ 1996              Canton of Solothurn 0.011092350
+ 1996             Canton of St. Gallen 0.012413247
+ 1996                    Canton of Uri 0.012543204
+ 1996                    Canton of Zug 0.012728375
+ 1996                 Canton of Zurich 0.011028051
+ 1997                    Canton Aargau 0.011642670
+ 1997                    Canton Geneva 0.011688141
+ 1997                Canton Graubünden 0.010822639
+ 1997                      Canton Jura 0.011805999
+ 1997                 Canton Neuchâtel 0.012110245
+ 1997                   Canton Thurgau 0.012227451
+ 1997                    Canton Ticino 0.010008857
+ 1997                    Canton Valais 0.011773130
+ 1997                      Canton Vaud 0.012417741
+ 1997 Canton of Appenzell Ausserrhoden 0.011951382
+ 1997  Canton of Appenzell Innerrhoden 0.015438549
+ 1997       Canton of Basel-Landschaft 0.010141349
+ 1997            Canton of Basel-Stadt 0.009342630
+ 1997                   Canton of Bern 0.010410999
+ 1997               Canton of Fribourg 0.013253403
+ 1997                 Canton of Glarus 0.011056919
+ 1997                Canton of Lucerne 0.012466026
+ 1997              Canton of Nidwalden 0.011550796
+ 1997               Canton of Obwalden 0.012659033
+ 1997           Canton of Schaffhausen 0.011105844
+ 1997                 Canton of Schwyz 0.013353475
+ 1997              Canton of Solothurn 0.010831599
+ 1997             Canton of St. Gallen 0.011837626
+ 1997                    Canton of Uri 0.011377262
+ 1997                    Canton of Zug 0.012556408
+ 1997                 Canton of Zurich 0.010936100
+ 1998                    Canton Aargau 0.011074326
+ 1998                    Canton Geneva 0.011231310
+ 1998                Canton Graubünden 0.010995408
+ 1998                      Canton Jura 0.012426773
+ 1998                 Canton Neuchâtel 0.011480563
+ 1998                   Canton Thurgau 0.011357838
+ 1998                    Canton Ticino 0.009977486
+ 1998                    Canton Valais 0.011530498
+ 1998                      Canton Vaud 0.012184434
+ 1998 Canton of Appenzell Ausserrhoden 0.011942012
+ 1998  Canton of Appenzell Innerrhoden 0.013501713
+ 1998       Canton of Basel-Landschaft 0.010085976
+ 1998            Canton of Basel-Stadt 0.009266885
+ 1998                   Canton of Bern 0.010184872
+ 1998               Canton of Fribourg 0.013189996
+ 1998                 Canton of Glarus 0.011023622
+ 1998                Canton of Lucerne 0.011813389
+ 1998              Canton of Nidwalden 0.011576064
+ 1998               Canton of Obwalden 0.012629198
+ 1998           Canton of Schaffhausen 0.009723220
+ 1998                 Canton of Schwyz 0.012153513
+ 1998              Canton of Solothurn 0.010270783
+ 1998             Canton of St. Gallen 0.011962693
+ 1998                    Canton of Uri 0.011546311
+ 1998                    Canton of Zug 0.012450314
+ 1998                 Canton of Zurich 0.010894421
+ 1999                    Canton Aargau 0.010764975
+ 1999                    Canton Geneva 0.011526409
+ 1999                Canton Graubünden 0.010896313
+ 1999                      Canton Jura 0.012000870
+ 1999                 Canton Neuchâtel 0.011437612
+ 1999                   Canton Thurgau 0.010998812
+ 1999                    Canton Ticino 0.009677346
+ 1999                    Canton Valais 0.011160178
+ 1999                      Canton Vaud 0.012167825
+ 1999 Canton of Appenzell Ausserrhoden 0.010944700
+ 1999  Canton of Appenzell Innerrhoden 0.012774827
+ 1999       Canton of Basel-Landschaft 0.009943099
+ 1999            Canton of Basel-Stadt 0.009075877
+ 1999                   Canton of Bern 0.010167413
+ 1999               Canton of Fribourg 0.012641866
+ 1999                 Canton of Glarus 0.010026358
+ 1999                Canton of Lucerne 0.012139698
+ 1999              Canton of Nidwalden 0.011200429
+ 1999               Canton of Obwalden 0.012254212
+ 1999           Canton of Schaffhausen 0.010023737
+ 1999                 Canton of Schwyz 0.012270812
+ 1999              Canton of Solothurn 0.010338879
+ 1999             Canton of St. Gallen 0.011614081
+ 1999                    Canton of Uri 0.011344491
+ 1999                    Canton of Zug 0.011407317
+ 1999                 Canton of Zurich 0.010876475
+ 2000                    Canton Aargau 0.010646661
+ 2000                    Canton Geneva 0.011978157
+ 2000                Canton Graubünden 0.010810317
+ 2000                      Canton Jura 0.011653928
+ 2000                 Canton Neuchâtel 0.011675289
+ 2000                   Canton Thurgau 0.011236993
+ 2000                    Canton Ticino 0.009909302
+ 2000                    Canton Valais 0.010851425
+ 2000                      Canton Vaud 0.012311062
+ 2000 Canton of Appenzell Ausserrhoden 0.010402516
+ 2000  Canton of Appenzell Innerrhoden 0.012310986
+ 2000       Canton of Basel-Landschaft 0.009609361
+ 2000            Canton of Basel-Stadt 0.008994046
+ 2000                   Canton of Bern 0.009926576
+ 2000               Canton of Fribourg 0.012453747
+ 2000                 Canton of Glarus 0.009817092
+ 2000                Canton of Lucerne 0.011275289
+ 2000              Canton of Nidwalden 0.011153305
+ 2000               Canton of Obwalden 0.011730023
+ 2000           Canton of Schaffhausen 0.009421906
+ 2000                 Canton of Schwyz 0.012296488
+ 2000              Canton of Solothurn 0.009962773
+ 2000             Canton of St. Gallen 0.011436321
+ 2000                    Canton of Uri 0.011638065
+ 2000                    Canton of Zug 0.012449109
+ 2000                 Canton of Zurich 0.011022311
+ 2001                    Canton Aargau 0.009660005
+ 2001                    Canton Geneva 0.011089169
+ 2001                Canton Graubünden 0.009505673
+ 2001                      Canton Jura 0.011157379
+ 2001                 Canton Neuchâtel 0.011048255
+ 2001                   Canton Thurgau 0.009671137
+ 2001                    Canton Ticino 0.008734566
+ 2001                    Canton Valais 0.010404829
+ 2001                      Canton Vaud 0.011385938
+ 2001 Canton of Appenzell Ausserrhoden 0.009405561
+ 2001  Canton of Appenzell Innerrhoden 0.011723954
+ 2001       Canton of Basel-Landschaft 0.008989578
+ 2001            Canton of Basel-Stadt 0.008190074
+ 2001                   Canton of Bern 0.009123709
+ 2001               Canton of Fribourg 0.012023084
+ 2001                 Canton of Glarus 0.009425071
+ 2001                Canton of Lucerne 0.010009438
+ 2001              Canton of Nidwalden 0.009759323
+ 2001               Canton of Obwalden 0.010477191
+ 2001           Canton of Schaffhausen 0.008476549
+ 2001                 Canton of Schwyz 0.010601063
+ 2001              Canton of Solothurn 0.008999951
+ 2001             Canton of St. Gallen 0.010430016
+ 2001                    Canton of Uri 0.009832339
+ 2001                    Canton of Zug 0.011081694
+ 2001                 Canton of Zurich 0.010285433
+ 2002                    Canton Aargau 0.009801962
+ 2002                    Canton Geneva 0.011232587
+ 2002                Canton Graubünden 0.008875692
+ 2002                      Canton Jura 0.010851589
+ 2002                 Canton Neuchâtel 0.010948883
+ 2002                   Canton Thurgau 0.009855131
+ 2002                    Canton Ticino 0.009291967
+ 2002                    Canton Valais 0.009661697
+ 2002                      Canton Vaud 0.010861148
+ 2002 Canton of Appenzell Ausserrhoden 0.008788438
+ 2002  Canton of Appenzell Innerrhoden 0.012352273
+ 2002       Canton of Basel-Landschaft 0.008801799
+ 2002            Canton of Basel-Stadt 0.008521524
+ 2002                   Canton of Bern 0.008980144
+ 2002               Canton of Fribourg 0.011167559
+ 2002                 Canton of Glarus 0.008661294
+ 2002                Canton of Lucerne 0.010099509
+ 2002              Canton of Nidwalden 0.009820522
+ 2002               Canton of Obwalden 0.009884326
+ 2002           Canton of Schaffhausen 0.008630461
+ 2002                 Canton of Schwyz 0.010909313
+ 2002              Canton of Solothurn 0.009120784
+ 2002             Canton of St. Gallen 0.010426051
+ 2002                    Canton of Uri 0.010516690
+ 2002                    Canton of Zug 0.010542258
+ 2002                 Canton of Zurich 0.010388522
+ 2003                    Canton Aargau 0.009829394
+ 2003                    Canton Geneva 0.010431120
+ 2003                Canton Graubünden 0.009091839
+ 2003                      Canton Jura 0.009960332
+ 2003                 Canton Neuchâtel 0.010667578
+ 2003                   Canton Thurgau 0.009373478
+ 2003                    Canton Ticino 0.008672317
+ 2003                    Canton Valais 0.009401269
+ 2003                      Canton Vaud 0.010848775
+ 2003 Canton of Appenzell Ausserrhoden 0.008588056
+ 2003  Canton of Appenzell Innerrhoden 0.010677344
+ 2003       Canton of Basel-Landschaft 0.008689898
+ 2003            Canton of Basel-Stadt 0.008670783
+ 2003                   Canton of Bern 0.008850135
+ 2003               Canton of Fribourg 0.011552999
+ 2003                 Canton of Glarus 0.009655028
+ 2003                Canton of Lucerne 0.009764443
+ 2003              Canton of Nidwalden 0.009680917
+ 2003               Canton of Obwalden 0.009678104
+ 2003           Canton of Schaffhausen 0.009020235
+ 2003                 Canton of Schwyz 0.011446629
+ 2003              Canton of Solothurn 0.008786747
+ 2003             Canton of St. Gallen 0.010187787
+ 2003                    Canton of Uri 0.009543015
+ 2003                    Canton of Zug 0.011298056
+ 2003                 Canton of Zurich 0.010278641
+ 2004                    Canton Aargau 0.009913069
+ 2004                    Canton Geneva 0.011118108
+ 2004                Canton Graubünden 0.008879712
+ 2004                      Canton Jura 0.009932816
+ 2004                 Canton Neuchâtel 0.010272558
+ 2004                   Canton Thurgau 0.009597302
+ 2004                    Canton Ticino 0.008675921
+ 2004                    Canton Valais 0.009305002
+ 2004                      Canton Vaud 0.011052957
+ 2004 Canton of Appenzell Ausserrhoden 0.008645424
+ 2004  Canton of Appenzell Innerrhoden 0.010059960
+ 2004       Canton of Basel-Landschaft 0.008566501
+ 2004            Canton of Basel-Stadt 0.008604201
+ 2004                   Canton of Bern 0.009145371
+ 2004               Canton of Fribourg 0.011278866
+ 2004                 Canton of Glarus 0.008570983
+ 2004                Canton of Lucerne 0.009847809
+ 2004              Canton of Nidwalden 0.009572562
+ 2004               Canton of Obwalden 0.010289059
+ 2004           Canton of Schaffhausen 0.008165693
+ 2004                 Canton of Schwyz 0.011208053
+ 2004              Canton of Solothurn 0.008893589
+ 2004             Canton of St. Gallen 0.009967439
+ 2004                    Canton of Uri 0.009966399
+ 2004                    Canton of Zug 0.010632755
+ 2004                 Canton of Zurich 0.010594507
+ 2005                    Canton Aargau 0.009723564
+ 2005                    Canton Geneva 0.011244841
+ 2005                Canton Graubünden 0.008135795
+ 2005                      Canton Jura 0.009871040
+ 2005                 Canton Neuchâtel 0.010833184
+ 2005                   Canton Thurgau 0.009052357
+ 2005                    Canton Ticino 0.008701876
+ 2005                    Canton Valais 0.009771648
+ 2005                      Canton Vaud 0.011120173
+ 2005 Canton of Appenzell Ausserrhoden 0.008478265
+ 2005  Canton of Appenzell Innerrhoden 0.009980704
+ 2005       Canton of Basel-Landschaft 0.008548652
+ 2005            Canton of Basel-Stadt 0.008722751
+ 2005                   Canton of Bern 0.008996439
+ 2005               Canton of Fribourg 0.010963467
+ 2005                 Canton of Glarus 0.008586267
+ 2005                Canton of Lucerne 0.009686213
+ 2005              Canton of Nidwalden 0.009595665
+ 2005               Canton of Obwalden 0.009167119
+ 2005           Canton of Schaffhausen 0.008483764
+ 2005                 Canton of Schwyz 0.010750870
+ 2005              Canton of Solothurn 0.008941745
+ 2005             Canton of St. Gallen 0.009437232
+ 2005                    Canton of Uri 0.008978708
+ 2005                    Canton of Zug 0.010860477
+ 2005                 Canton of Zurich 0.010537244
+ 2006                    Canton Aargau 0.009714689
+ 2006                    Canton Geneva 0.010995314
+ 2006                Canton Graubünden 0.008162809
+ 2006                      Canton Jura 0.009955144
+ 2006                 Canton Neuchâtel 0.010709791
+ 2006                   Canton Thurgau 0.009384122
+ 2006                    Canton Ticino 0.008663382
+ 2006                    Canton Valais 0.009503558
+ 2006                      Canton Vaud 0.011255280
+ 2006 Canton of Appenzell Ausserrhoden 0.008523430
+ 2006  Canton of Appenzell Innerrhoden 0.010052562
+ 2006       Canton of Basel-Landschaft 0.008433269
+ 2006            Canton of Basel-Stadt 0.008690686
+ 2006                   Canton of Bern 0.008940886
+ 2006               Canton of Fribourg 0.011037432
+ 2006                 Canton of Glarus 0.009273570
+ 2006                Canton of Lucerne 0.010042538
+ 2006              Canton of Nidwalden 0.009346029
+ 2006               Canton of Obwalden 0.010550362
+ 2006           Canton of Schaffhausen 0.008147606
+ 2006                 Canton of Schwyz 0.010340164
+ 2006              Canton of Solothurn 0.008296462
+ 2006             Canton of St. Gallen 0.009502195
+ 2006                    Canton of Uri 0.009804201
+ 2006                    Canton of Zug 0.010836088
+ 2006                 Canton of Zurich 0.010634218
+ 2007                    Canton Aargau 0.009587466
+ 2007                    Canton Geneva 0.011088670
+ 2007                Canton Graubünden 0.008508940
+ 2007                      Canton Jura 0.008760030
+ 2007                 Canton Neuchâtel 0.010212418
+ 2007                   Canton Thurgau 0.009577374
+ 2007                    Canton Ticino 0.008659355
+ 2007                    Canton Valais 0.009242790
+ 2007                      Canton Vaud 0.011455195
+ 2007 Canton of Appenzell Ausserrhoden 0.008398560
+ 2007  Canton of Appenzell Innerrhoden 0.011111111
+ 2007       Canton of Basel-Landschaft 0.008736142
+ 2007            Canton of Basel-Stadt 0.008748958
+ 2007                   Canton of Bern 0.009124025
+ 2007               Canton of Fribourg 0.010811146
+ 2007                 Canton of Glarus 0.009374015
+ 2007                Canton of Lucerne 0.010130601
+ 2007              Canton of Nidwalden 0.009097271
+ 2007               Canton of Obwalden 0.010753962
+ 2007           Canton of Schaffhausen 0.008840332
+ 2007                 Canton of Schwyz 0.010091333
+ [ reached 'max' / getOption("max.print") -- omitted 83 rows ]
 
 Query Nr. 10
 -- In which year did Switzerland experience its highest birth rate?
-SELECT year, births / total_population as birthrate FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country=TRUE     AND S.name="Switzerland"     AND T.citizenship_category="Citizenship (category) - total" GROUP BY T.year ORDER BY birthrate DESC LIMIT 1;
+SELECT T.year, T.births / T.total_population as birthrate FROM demographic_balance_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country=TRUE     AND S.name='Switzerland'     AND T.citizenship_category='Citizenship (category) - total' GROUP BY T.year, T.births, T.total_population ORDER BY birthrate DESC LIMIT 1;
  year  birthrate
  1991 0.01275679
