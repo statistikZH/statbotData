@@ -1,0 +1,20 @@
+-- What renewable energy source was the most important in canton Thurgau each year since 2018?
+-- What sources of renewable energy have been produced in canton Thurgau?
+-- What proportion of the renewable energy in Aaltnau, TG was produced by solar energy in 2021?
+-- How many municipalities in canton Thurgau were producing energy from wind in 2019?
+-- What is the municipality in canton Thurgau that produced the most renewable energy relative to its population in 2020?
+-- What is the proportion of municipalities in Thurgau which did not produce any renewable energy in 2017?
+-- How much of each source of renewable energy is produced by the top 5 largest municipalities in Thurgau in 2021?
+-- What 3 municipalities in Thurgau showed the largest increase in renewable energy production between 2018 and 2021? Also show the percentage increase.
+-- In total, how many MWh of renewable energy did Amriswil, in Kanton Thurgau, produce from 2016 to 2020?
+-- Show me 2 municipalities in Aargau which were the most important producer of energy from wood biomass in 2019.
+-- What is the total amount of renewable energy produced from waste incineration in canton Thurgau in 2020?
+-- How many GWh of energy were produced in each type of biogas plant in canton Thurgau in 2015?
+-- What was the smallest municipality (in inhabitants) to produce renewable energy in canton Thurgau in 2021?
+-- Show me the production of energy from sun and wind in Berg, TG in 2018.
+-- Which 3 municipalities in Thurgau had the highest share of hydroenergy in their total renewable energy production in 2019?
+-- What proportion of municipalities in canton Thurgau had a decrease in renewable energy production between 2015 and 2021?
+-- What source of renewable energy showed the strongest relative production increase between 2018 and 2021 in canton Thurgau?
+-- Show me the production of energy from agricultural biogas in Fischingen, canton Thurgau, in 2018.
+-- How much renewable energy did canton Thurgau produce in total over the period 2017-2021?
+-- What was the production of solar energy from Roggwil and Langrickenbach, TG in 2019 and 2020?
