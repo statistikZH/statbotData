@@ -152,7 +152,7 @@ get_examples <- function(ds, columns) {
       \(x) unique(ds$postgres_export[, x, drop = F]) %>%
         head(3) %>%
         dplyr::pull(x) %>%
-        paste0(sep = " ", collapse = ",")
+        paste0(collapse = ",")
     )
   return(example_values)
 }
