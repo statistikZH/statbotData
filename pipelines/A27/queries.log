@@ -1,4 +1,4 @@
-[1] "Environment: LOCAL, Time: 2023-10-05 23:29:21"
+[1] "Environment: LOCAL, Time: 2023-10-06 13:53:04"
 
 Query Nr. 1
 -- What was the break down of renewable energy production in canton Thurgau each year since 2018?
@@ -100,3 +100,38 @@ Query Nr. 13
 SELECT T.photovoltaik_gwh, T.wind_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name LIKE 'Berg%'     AND T.jahr = 2018;
  photovoltaik_gwh wind_gwh
             1.995    0.004
+
+Query Nr. 14
+-- Which 3 municipalities in Thurgau had the highest share of hydroenergy in their total renewable energy production in 2019, and how high was it?
+SELECT     S.name,     100.0 * T.wasserkraft_gwh / T.total_gwh AS prozent_wasserkraft FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2019 ORDER BY prozent_wasserkraft DESC LIMIT 3;
+                name prozent_wasserkraft
+ Kradolf-Schönenberg            93.36694
+        Bürglen (TG)            90.81354
+                Pfyn            73.88193
+
+Query Nr. 15
+-- What proportion of municipalities in canton Thurgau had a decrease in renewable energy production between 2015 and 2021?
+SELECT 100 * SUM(CASE WHEN T.total_gwh_2015 > T.total_gwh_2021 THEN 1 ELSE 0 END) / CAST(COUNT(*) AS FLOAT) AS prozent_abnahme FROM (     SELECT         S.name,         SUM(CASE WHEN T.jahr = 2015 THEN T.total_gwh ELSE 0 END) AS total_gwh_2015,         SUM(CASE WHEN T.jahr = 2021 THEN T.total_gwh ELSE 0 END) AS total_gwh_2021     FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T     JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid     WHERE S.municipal = TRUE         AND T.jahr IN (2015, 2021)     GROUP BY S.name ) AS T;
+ prozent_abnahme
+            1.25
+
+Query Nr. 16
+-- Show me the production of energy from agricultural biogas in Fischingen, canton Thurgau, in 2018.
+SELECT T.biogasanlagen_landwirtschaft_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE T.jahr = 2018     AND S.name LIKE 'Fischingen%';
+ biogasanlagen_landwirtschaft_gwh
+                             0.29
+
+Query Nr. 17
+-- How much renewable energy did canton Thurgau produce in total over the period 2017-2021?
+SELECT SUM(T.total_gwh) AS total_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T WHERE T.jahr >= 2017     AND T.jahr <= 2021;
+ total_gwh
+  1222.244
+
+Query Nr. 18
+-- What was the production of solar energy from Roggwil and Langrickenbach, TG in 2019 and 2020?
+SELECT S.name, T.jahr, T.photovoltaik_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE (S.name LIKE 'Roggwil%' OR S.name LIKE 'Langrickenbach%')     AND T.jahr IN (2019, 2020) ORDER BY S.name, T.jahr;
+           name jahr photovoltaik_gwh
+ Langrickenbach 2019            0.809
+ Langrickenbach 2020            1.008
+   Roggwil (TG) 2019            2.575
+   Roggwil (TG) 2020            3.042

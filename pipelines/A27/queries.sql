@@ -126,10 +126,48 @@ WHERE S.municipal = TRUE
     AND S.name LIKE 'Berg%'
     AND T.jahr = 2018;
 
--- Which 3 municipalities in Thurgau had the highest share of hydroenergy in their total renewable energy production in 2019?
+-- Which 3 municipalities in Thurgau had the highest share of hydroenergy in their total renewable energy production in 2019, and how high was it?
+SELECT
+    S.name,
+    100.0 * T.wasserkraft_gwh / T.total_gwh AS prozent_wasserkraft
+FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
+JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
+WHERE S.municipal = TRUE
+    AND T.jahr = 2019
+ORDER BY prozent_wasserkraft DESC
+LIMIT 3;
 
 -- What proportion of municipalities in canton Thurgau had a decrease in renewable energy production between 2015 and 2021?
--- What source of renewable energy showed the strongest relative production increase between 2018 and 2021 in canton Thurgau?
+SELECT 100 * SUM(CASE WHEN T.total_gwh_2015 > T.total_gwh_2021 THEN 1 ELSE 0 END) / CAST(COUNT(*) AS FLOAT) AS prozent_abnahme
+FROM (
+    SELECT
+        S.name,
+        SUM(CASE WHEN T.jahr = 2015 THEN T.total_gwh ELSE 0 END) AS total_gwh_2015,
+        SUM(CASE WHEN T.jahr = 2021 THEN T.total_gwh ELSE 0 END) AS total_gwh_2021
+    FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
+    JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
+    WHERE S.municipal = TRUE
+        AND T.jahr IN (2015, 2021)
+    GROUP BY S.name
+) AS T;
+
 -- Show me the production of energy from agricultural biogas in Fischingen, canton Thurgau, in 2018.
+SELECT T.biogasanlagen_landwirtschaft_gwh
+FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
+JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
+WHERE T.jahr = 2018
+    AND S.name LIKE 'Fischingen%';
+
 -- How much renewable energy did canton Thurgau produce in total over the period 2017-2021?
+SELECT SUM(T.total_gwh) AS total_gwh
+FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
+WHERE T.jahr >= 2017
+    AND T.jahr <= 2021;
+
 -- What was the production of solar energy from Roggwil and Langrickenbach, TG in 2019 and 2020?
+SELECT S.name, T.jahr, T.photovoltaik_gwh
+FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
+JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
+WHERE (S.name LIKE 'Roggwil%' OR S.name LIKE 'Langrickenbach%')
+    AND T.jahr IN (2019, 2020)
+ORDER BY S.name, T.jahr;
