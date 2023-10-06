@@ -13,7 +13,8 @@ ds <- statbotData::download_data(ds)
 
 ds$postgres_export <- ds$data %>%
   janitor::clean_names() %>%
-  dplyr::select(-bfs_nr_gemeinde)
+  dplyr::select(-bfs_nr_gemeinde) %>%
+  dplyr::rename(beschaftigte_personen = beschaeftigte_personen)
 
 # -------------------------------------------------------------------------
 # Step 2 map to spatial units

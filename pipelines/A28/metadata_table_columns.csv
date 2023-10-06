@@ -1,3 +1,3 @@
 name;table_name;data_type;title;title_en;example_values
 sektor;thurgau_beschaftigte_nach_sektoren_und_gemeinden;numeric;"Wirtschaftssektor";"Economic sector";"3; 1; 2"
-beschaeftigte_personen;thurgau_beschaftigte_nach_sektoren_und_gemeinden;numeric;"Beschäftigte Personen";"Employed persons";"4871; 363; 1077"
+beschaftigte_personen;thurgau_beschaftigte_nach_sektoren_und_gemeinden;numeric;"Beschäftigte Personen";"Employed persons";"4871; 363; 1077"
