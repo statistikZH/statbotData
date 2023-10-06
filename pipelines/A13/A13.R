@@ -1,12 +1,11 @@
 # -------------------------------------------------------------------------
 # Steps: Get the data
-# input:  google sheet
+# input: data/const/statbot_input_data.csv
 # output: ds$data, ds$dir
 # -------------------------------------------------------------------------
 
 ds <- statbotData::create_dataset("A13")
 ds <- statbotData::download_data(ds)
-ds$data
 
 # -------------------------------------------------------------------------
 # Step: Clean the data
@@ -18,11 +17,10 @@ ds$cleaned_data <- ds$data %>%
   janitor::clean_names(
   ) %>%
   dplyr::select(
-    -c("beobachtungseinheit")
-  )%>%
+    -c("observation_unit")
+  ) %>%
   dplyr::rename(
-    "anzahl_pflanzungen" = anzahl_pflanzungen_in_der_schweiz,
-    "eigentumertyp" = eigentumertyp
+    number_of_plantations = number_of_plantations_in_swiss_forest
   )
 ds$cleaned_data
 
@@ -33,35 +31,29 @@ ds$cleaned_data
 # -------------------------------------------------------------------------
 
 spatial_map <- ds$cleaned_data %>%
-  dplyr::select(kanton) %>%
-  dplyr::distinct(kanton) %>%
+  dplyr::select(canton) %>%
+  dplyr::distinct(canton) %>%
   map_ds_spatial_units()
 
 ds$postgres_export <- ds$cleaned_data %>%
-  dplyr::left_join(spatial_map, by = "kanton") %>%
-  dplyr::select(-kanton)
-colnames(ds$postgres_export)
-unique(ds$postgres_export$holzartengruppe)
+  dplyr::left_join(spatial_map, by = "canton") %>%
+  dplyr::select(-canton)
+ds$postgres_export
 
 # -------------------------------------------------------------------------
-# Step: Testrun queries on sqllite
-#   input:  ds$postgres_export, ds$dir/queries.sql
-#   output: ds$dir/queries.log
+# Step: After the dataset has been build use functions of package
+# stabotData to upload the dataset to postgres, testrun the queries,
+#  generate a sample, upload the metadata, etc
 # -------------------------------------------------------------------------
 
-statbotData::testrun_queries(
-  ds$postgres_export,
-  ds$dir,
-  ds$name
-)
+# generate sample data for the dataset from the local tibble
+statbotData::dataset_sample(ds)
 
-# -------------------------------------------------------------------------
-# Step: Write metadata tables
-#   input:  ds$postgres_export
-#   output: ds$dir/metadata_tables.csv
-#           ds$dir/metadata_table_columns.csv
-#           ds$dir/sample.csv
-# -------------------------------------------------------------------------
+# create the table in postgres
+statbotData::create_postgres_table(ds)
 
-read_write_metadata_tables(ds)
-dataset_sample(ds)
+# add metadata to postgres
+statbotData::update_metadata_in_postgres(ds)
+
+# run test queries
+statbotData::testrun_queries(ds)

@@ -1,6 +1,7 @@
+[1] "Environment: REMOTE, Time: 2023-10-10 07:41:48.359866"
 
 Query Nr. 1
--- Welcher Kanton hatte 2019 die meisten privaten Wälder?
-SELECT S.name_de as kanton_mit_meisten_privaten_waeldern_2019 FROM pflanzungen_schweiz as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE AND T.Jahr=2019 AND T.forstzone='Schweiz' AND T.holzartengruppe='Holzartengruppe - Total' AND T.eigentumertyp='Privatwälder' ORDER BY anzahl_pflanzungen DESC LIMIT 1;
- kanton_mit_meisten_privaten_waeldern_2019
-                             Kanton Luzern
+-- Which canton had the most private forests in 2019?
+SELECT S.name as canton FROM number_of_plantations_in_swiss_forest as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE   AND T.year=2019   AND T.forest_zone='Switzerland'   AND T.wood_species='Species - total'   AND T.type_of_owner='Private forest' ORDER BY number_of_plantations DESC LIMIT 1;
+            canton
+ Canton of Lucerne
