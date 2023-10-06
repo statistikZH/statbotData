@@ -1,4 +1,4 @@
--- What was the break down of renewable energy production in canton Thurgau each year since 2018?
+-- Wie setzt sich die erneuerbare Energieproduktion im Kanton Thurgau seit 2018 jährlich zusammen?
 SELECT
     T.jahr,
     SUM(biogasanlagen_abwasser_gwh),
@@ -16,7 +16,7 @@ WHERE S.municipal = TRUE
     AND T.jahr >= 2018
 GROUP BY T.jahr;
 
--- What percentage of the renewable energy in Frauenfeld, TG was produced by solar energy in 2021?
+-- Wie viel Prozent der erneuerbaren Energie in Frauenfeld TG wurde im Jahr 2021 durch Solarenergie erzeugt?
 SELECT
     100 * photovoltaik_gwh/total_gwh AS photovoltaik_prozent_frauenfeld_2021
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
@@ -25,7 +25,7 @@ WHERE S.municipal = TRUE
     AND T.jahr = 2021
     AND S.name LIKE 'Frauenfeld%';
 
--- How many municipalities in canton Thurgau were producing energy from wind in 2019?
+-- Wie viele Gemeinden im Kanton Thurgau produzierten im Jahr 2019 Energie aus Wind?
 SELECT
     COUNT(*)
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
@@ -34,7 +34,7 @@ WHERE S.municipal = TRUE
     AND T.jahr = 2019
     AND T.wind_gwh > 0;
 
--- What is the municipality in canton Thurgau that produced the most renewable energy relative to its population in 2020?
+-- Welche Gemeinde im Kanton Thurgau produziert im Jahr 2020 im Verhältnis zur Einwohnerzahl am meisten erneuerbare Energie?
 SELECT S.name
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -43,14 +43,14 @@ WHERE S.municipal = TRUE
 ORDER BY T.total_gwh / T.einwohner DESC
 LIMIT 1;
 
--- What is the proportion (in percent) of municipalities in Thurgau which did not produce any renewable energy in 2017?
+-- Wie hoch ist der Anteil (in Prozent) der Thurgauer Gemeinden, die im Jahr 2017 keine erneuerbare Energie produziert haben?
 SELECT 100 * SUM(CASE WHEN T.total_gwh = 0 THEN 1 ELSE 0 END) / CAST(COUNT(*) AS FLOAT) AS prozent_kein_erneurerbare_energie_2017
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
     AND T.jahr = 2017;
 
--- How much renewable energy is produced by the top 5 largest municipalities in Thurgau in 2021?
+-- Wie viel erneuerbare Energie wird in den 5 grössten Thurgauer Gemeinden im Jahr 2021 produziert?
 SELECT S.name, T.total_gwh
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -59,7 +59,7 @@ WHERE S.municipal = TRUE
 ORDER BY T.einwohner DESC
 LIMIT 5;
 
--- What 3 municipalities in Thurgau showed the largest increase in renewable energy production between 2018 and 2021? Also show the percentage increase.
+-- Welche 3 Thurgauer Gemeinden weisen zwischen 2018 und 2021 den grössten Zuwachs an erneuerbarer Energieproduktion auf? Geben Sie auch den prozentualen Anstieg an.
 SELECT
     S.name,
     (
@@ -74,7 +74,7 @@ GROUP BY S.name
 ORDER BY prozent_anstieg DESC
 LIMIT 3;
 
--- In total, how many MWh of renewable energy did Amriswil, in Kanton Thurgau, produce from 2016 to 2020?
+-- Wie viele MWh an erneuerbarer Energie hat Amriswil im Kanton Thurgau von 2016 bis 2020 insgesamt produziert?
 SELECT SUM(T.total_gwh) * 1000 AS total_mwh
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -83,7 +83,7 @@ WHERE S.municipal = TRUE
     AND T.jahr >= 2016
     AND T.jahr <= 2020;
 
--- Show me 2 municipalities in Aargau which were the most important producer of energy from wood biomass in 2019.
+-- Zeigen Sie mir 2 Aargauer Gemeinden, die im Jahr 2019 der wichtigste Produzent von Energie aus Holzbiomasse waren.
 SELECT S.name
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -92,7 +92,7 @@ WHERE S.municipal = TRUE
 ORDER BY T.biomasse_holz_gwh DESC
 LIMIT 2;
 
--- What is the total amount of renewable energy produced from waste incineration in canton Thurgau in 2020?
+-- Wie hoch ist die Gesamtmenge an erneuerbarer Energie aus der Kehrichtverbrennung im Kanton Thurgau im Jahr 2020?
 SELECT S.name
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -101,14 +101,14 @@ WHERE S.municipal = TRUE
 ORDER BY T.biomasse_holz_gwh DESC
 LIMIT 2;
 
--- How many GWh of energy were produced from each type of biogas plant in canton Thurgau in 2015?
+-- Wie viele GWh Energie wurden im Jahr 2015 im Kanton Thurgau aus den einzelnen Biogasanlagentypen produziert?
 SELECT SUM(biogasanlagen_abwasser_gwh), SUM(biogasanlagen_industrie_gwh), SUM(biogasanlagen_landwirtschaft_gwh)
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
     AND T.jahr = 2015;
 
--- What was the smallest municipality (in inhabitants) to produce energy from waste incineration in canton Thurgau in 2021?
+-- Welche war die kleinste Gemeinde (in Einwohnern), die im Jahr 2021 im Kanton Thurgau Energie aus der Kehrichtverbrennung produzierte?
 SELECT S.name
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -118,7 +118,7 @@ WHERE S.municipal = TRUE
 ORDER BY T.einwohner ASC
 LIMIT 1;
 
--- Show me the production of energy from sun and wind in Berg, TG in 2018.
+-- Zeigen Sie mir die Produktion von Energie aus Sonne und Wind in Berg, TG im Jahr 2018.
 SELECT T.photovoltaik_gwh, T.wind_gwh
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -126,7 +126,7 @@ WHERE S.municipal = TRUE
     AND S.name LIKE 'Berg%'
     AND T.jahr = 2018;
 
--- Which 3 municipalities in Thurgau had the highest share of hydroenergy in their total renewable energy production in 2019, and how high was it?
+-- Welche 3 Thurgauer Gemeinden hatten im Jahr 2019 den höchsten Anteil an Wasserkraft an der gesamten erneuerbaren Energieproduktion und wie hoch war dieser?
 SELECT
     S.name,
     100.0 * T.wasserkraft_gwh / T.total_gwh AS prozent_wasserkraft
@@ -137,7 +137,7 @@ WHERE S.municipal = TRUE
 ORDER BY prozent_wasserkraft DESC
 LIMIT 3;
 
--- What proportion of municipalities in canton Thurgau had a decrease in renewable energy production between 2015 and 2021?
+-- Wie hoch ist der Anteil der Gemeinden im Kanton Thurgau, die zwischen 2015 und 2021 einen Rückgang der Produktion von erneuerbaren Energien zu verzeichnen haben?
 SELECT 100 * SUM(CASE WHEN T.total_gwh_2015 > T.total_gwh_2021 THEN 1 ELSE 0 END) / CAST(COUNT(*) AS FLOAT) AS prozent_abnahme
 FROM (
     SELECT
@@ -151,20 +151,20 @@ FROM (
     GROUP BY S.name
 ) AS T;
 
--- Show me the production of energy from agricultural biogas in Fischingen, canton Thurgau, in 2018.
+-- Zeigen Sie mir die Produktion von Energie aus landwirtschaftlichem Biogas in Fischingen, Kanton Thurgau, im Jahr 2018.
 SELECT T.biogasanlagen_landwirtschaft_gwh
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE T.jahr = 2018
     AND S.name LIKE 'Fischingen%';
 
--- How much renewable energy did canton Thurgau produce in total over the period 2017-2021?
+-- Wie viel erneuerbare Energie hat der Kanton Thurgau im Zeitraum 2017-2021 insgesamt produziert?
 SELECT SUM(T.total_gwh) AS total_gwh
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 WHERE T.jahr >= 2017
     AND T.jahr <= 2021;
 
--- What was the production of solar energy from Roggwil and Langrickenbach, TG in 2019 and 2020?
+-- Wie hoch war die Produktion von Solarstrom in Roggwil und Langrickenbach TG in den Jahren 2019 und 2020?
 SELECT S.name, T.jahr, T.photovoltaik_gwh
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
