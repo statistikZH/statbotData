@@ -19,28 +19,25 @@
 #' @export
 create_dataset <- function(id) {
 
-  # the sheet is expected as a list in order to turn the row of the pipeline into a list
   datasets <- load_dataset_list()
-
   # turn the pipeline row into a list
-  ds_list <- datasets %>%
-    dplyr::filter(data_indicator == id) %>%
-    dplyr::mutate(sheet = as.list(sheet)) %>%
-    as.list()
-  ds_list$dir <- here::here("pipelines", ds_list$data_indicator, "")
-  if (ds_list$status == "uploaded") {
-    ds_list$db_instance = "postgres"
+  dataset <- datasets %>%
+    dplyr::filter(data_indicator == id)
+  ds_as_list <- as.list(dataset[1, ])
+  ds_as_list$dir <- here::here("pipelines", ds_as_list$data_indicator, "")
+  if (ds_as_list$status == "uploaded") {
+    ds_as_list$db_instance = "postgres"
   } else {
-    ds_list$db_instance = "test"
+    ds_as_list$db_instance = "test"
   }
 
   # define the ds class
   ds_class <- structure(
-    ds_list,
+    ds_as_list,
     data = NULL,
-    class = c(ds_list$organization,
-              ds_list$format,
-              ds_list$id)
+    class = c(ds_as_list$organization,
+              ds_as_list$format,
+              ds_as_list$id)
   )
   return(ds_class)
 }
