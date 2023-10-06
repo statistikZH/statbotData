@@ -5,6 +5,7 @@ library(statbotData)
 
 # load all datasets
 dataset_list <- load_dataset_list()
+print(colnames(dataset_list))
 
 # load all pipelines that are already installed
 pipelines_path <- here::here("pipelines")
@@ -32,6 +33,9 @@ choices_ds <- dataset_list %>%
     )) %>%
   dplyr::mutate(
     selector = paste(location, name, data_indicator, "(", publisher, lang, "): query_count =", query_counts)
+  ) %>% tibble::add_row(
+    selector = "dataset list",
+    .before = 1
   )
 
 ui <- basicPage(
@@ -53,29 +57,34 @@ ui <- basicPage(
 server <- function(input, output) {
   pipelineOutput <- reactive({
     input_ds <- scan(text = input$dataset, what = "")
-    pipeline_id <- input_ds[3]
-    location <- input_ds[1]
-    ds <- statbotData::create_dataset(pipeline_id)
-    if (location == "LOCAL") {
-      metadata <- statbotData::read_metadata_tables_from_file(ds)
-      sample_path <- here::here("pipelines", pipeline_id, "sample.csv")
-      if (file.exists(sample_path)) {
-        sample <- readr::read_delim(sample_path, delim = ";", show_col_types = FALSE)
+    print(input_ds)
+    if (input_ds[2] == "list") {
+      list(sample = dataset_list)
+    } else {
+      pipeline_id <- input_ds[3]
+      location <- input_ds[1]
+      ds <- statbotData::create_dataset(pipeline_id)
+      if (location == "LOCAL") {
+        metadata <- statbotData::read_metadata_tables_from_file(ds)
+        sample_path <- here::here("pipelines", pipeline_id, "sample.csv")
+        if (file.exists(sample_path)) {
+          sample <- readr::read_delim(sample_path, delim = ";", show_col_types = FALSE)
+        }
       }
+      if (location == "REMOTE") {
+        metadata <- statbotData::get_metadata_from_postgres(ds$name)
+        sample <- statbotData::run_postgres_query(
+          table = ds$name,
+          query = paste("SELECT * FROM", ds$name, "LIMIT 40;")
+        )
+      }
+      metadata$metadata_tables <- tibble::as_tibble(
+        cbind(key = names(metadata$metadata_tables),
+              t(metadata$metadata_tables))
+      ) %>%
+        dplyr::rename(value = V2)
+      list(metadata = metadata, sample = sample)
     }
-    if (location == "REMOTE") {
-      metadata <- statbotData::get_metadata_from_postgres(ds$name)
-      sample <- statbotData::run_postgres_query(
-        table = ds$name,
-        query = paste("SELECT * FROM", ds$name, "LIMIT 40;")
-      )
-    }
-    metadata$metadata_tables <- tibble::as_tibble(
-      cbind(key = names(metadata$metadata_tables),
-            t(metadata$metadata_tables))
-    ) %>%
-      dplyr::rename(value = V2)
-    list(metadata = metadata, sample = sample)
   })
 
   # Return query log
