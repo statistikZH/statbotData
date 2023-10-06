@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------
 # Step: Get the data
-# input: google sheet
+# input: data/const/statbot_input_data.csv
 # output: ds$data, ds$dir
 # -------------------------------------------------------------------------
 
@@ -17,32 +17,25 @@ ds <- download_data(ds)
 # spatialunit_id for switzerland
 ds$postgres_export <- ds$data %>%
   tidyr::drop_na() %>%
-  dplyr::rename(jahr = 1, anzahl = 2) %>%
-  dplyr::rename("anzahl_millionen_tonnen_co2_equivalent" = anzahl) %>%
+  dplyr::rename(year = 1, quantity = 2) %>%
+  dplyr::rename("emissions_in_million_tons_co2_equivalent" = quantity) %>%
   dplyr::mutate(spatialunit_uid = spatial_mapping_country())
 ds$postgres_export
 
 # -------------------------------------------------------------------------
-# Step: Testrun queries on sqllite
-#   input: ds$postgres_export, ds$dir/queries.sql
-#   output: ds$dir/queries.log
+# Step: After the dataset has been build use functions of package
+# stabotData to upload the dataset to postgres, testrun the queries,
+#  generate a sample, upload the metadata, etc
 # -------------------------------------------------------------------------
 
-statbotData::testrun_queries(
-  ds$postgres_export,
-  ds$dir,
-  ds$name
-)
+# generate sample data for the dataset from the local tibble
+statbotData::dataset_sample(ds)
 
-# -------------------------------------------------------------------------
-# Step: Write metadata tables
-#   input:  ds$postgres_export
-#   output: ds$dir/metadata_tables.csv
-#           ds$dir/metadata_table_columns.csv
-#           ds$dir/sample.csv
-# -------------------------------------------------------------------------
+# create the table in postgres
+statbotData::create_postgres_table(ds)
 
-read_write_metadata_tables(ds)
-dataset_sample(ds)
-dim(ds$postgres_export)
-length(ds$postgres_export)
+# add metadata to postgres
+statbotData::update_metadata_in_postgres(ds)
+
+# run test queries
+statbotData::testrun_queries(ds)
