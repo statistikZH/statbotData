@@ -1,5 +1,5 @@
 -- Welche Gemeinde im Kanton Aargau hatte im Jahr 2020 am meisten Autos pro Einwohner?
-SELECT S.name
+SELECT S.name AS gemeinde
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
@@ -33,7 +33,7 @@ WHERE S.canton=TRUE
     AND T.jahr <= 1960;
 
 -- Wie hoch ist der Anteil der Gemeinden im Kanton Aargau, in denen die Zahl der Autos pro Einwohner zwischen 2015 und 2022 zugenommen hat?
-SELECT CAST(SUM(CASE WHEN T1.diff > 0 THEN 1 ELSE 0 END) AS FLOAT) / COUNT(T1.diff)
+SELECT CAST(SUM(CASE WHEN T1.diff > 0 THEN 1 ELSE 0 END) AS FLOAT) / COUNT(T1.diff) AS ratio_gemeinden_mit_zunahme_autos_pro_einwohner
 FROM (
     SELECT
         SUM(CASE WHEN T.jahr = 2022 THEN T.anzahl_personenwagen_pro_1000_einwohner ELSE 0 END) -
@@ -56,7 +56,7 @@ WHERE S.municipal=TRUE
 
 -- Welches waren 2015 die Top-3-Gemeinden im Aargau mit dem höchsten Anteil an Motorrädern gegenüber Autos? Zeigen Sie auch die Proportionen.
 SELECT
-    S.name,
+    S.name as gemeinde,
     CAST(T.anzahl_motorrader + T.anzahl_klein_motorrader + T.anzahl_motorfahrrader AS FLOAT) / T.anzahl_personenwagen AS ratio_motorrader_to_personenwagen
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -83,7 +83,7 @@ WHERE S.canton=TRUE
     AND T.jahr <= 2022;
 
 -- Welches waren die 5 Aargauer Gemeinden mit den wenigsten Motorrädern pro Personenwagen im Jahr 2015?
-SELECT S.name
+SELECT S.name AS gemeinde
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE T.jahr=2015
@@ -130,7 +130,7 @@ ORDER BY T.anzahl_personenwagen DESC
 LIMIT 1;
 
 -- Zeigen Sie mir 3 Aargauer Gemeinden, in denen die Zahl der Personenwagen pro Einwohner zwischen 2018 und 2022 am stärksten abgenommen hat.
-SELECT S.name
+SELECT S.name AS gemeinde
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
@@ -144,7 +144,7 @@ ORDER BY
 LIMIT 3;
 
 -- Wie viele Aargauer Gemeinden haben im Jahr 2020 keine Personenwagen gezählt?
-SELECT COUNT(*)
+SELECT COUNT(*) AS anzahl_gemeinden_ohne_personenwagen
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten
 WHERE jahr = 2020
     AND anzahl_personenwagen = 0;
@@ -159,7 +159,7 @@ WHERE S.canton = TRUE
 
 
 -- Wo im Aargau hatten Zeihen und Zufikon im Jahr 2001 mehr Personenwagen pro Einwohner?
-SELECT S.name
+SELECT S.name AS gemeinde
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
