@@ -27,7 +27,7 @@ WHERE S.municipal = TRUE
 
 -- Wie viele Gemeinden im Kanton Thurgau produzierten im Jahr 2019 Energie aus Wind?
 SELECT
-    COUNT(*)
+    COUNT(*) AS anzahl_gemeinden_wind_2019
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
@@ -35,7 +35,7 @@ WHERE S.municipal = TRUE
     AND T.wind_gwh > 0;
 
 -- Welche Gemeinde im Kanton Thurgau produziert im Jahr 2020 im Verhältnis zur Einwohnerzahl am meisten erneuerbare Energie?
-SELECT S.name
+SELECT S.name AS gemeinde
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
@@ -51,7 +51,7 @@ WHERE S.municipal = TRUE
     AND T.jahr = 2017;
 
 -- Wie viel erneuerbare Energie wird in den 5 grössten Thurgauer Gemeinden im Jahr 2021 produziert?
-SELECT S.name, T.total_gwh
+SELECT S.name AS gemeinde, T.total_gwh
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
@@ -61,7 +61,7 @@ LIMIT 5;
 
 -- Welche 3 Thurgauer Gemeinden weisen zwischen 2018 und 2021 den grössten Zuwachs an erneuerbarer Energieproduktion auf? Geben Sie auch den prozentualen Anstieg an.
 SELECT
-    S.name,
+    S.name AS gemeinde,
     (
         100.0 * SUM( CASE WHEN T.jahr = 2021 THEN T.total_gwh ELSE 0 END) /
         SUM( CASE WHEN T.jahr = 2018 THEN T.total_gwh ELSE 0 END
@@ -79,12 +79,12 @@ SELECT SUM(T.total_gwh) * 1000 AS total_mwh
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
-    AND S.name IN ("Amriswil", "Amriswil (TG)")
+    AND S.name IN ('Amriswil', 'Amriswil (TG)')
     AND T.jahr >= 2016
     AND T.jahr <= 2020;
 
 -- Zeigen Sie mir 2 Aargauer Gemeinden, die im Jahr 2019 der wichtigste Produzent von Energie aus Holzbiomasse waren.
-SELECT S.name
+SELECT S.name AS gemeinde
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
@@ -93,7 +93,7 @@ ORDER BY T.biomasse_holz_gwh DESC
 LIMIT 2;
 
 -- Wie hoch ist die Gesamtmenge an erneuerbarer Energie aus der Kehrichtverbrennung im Kanton Thurgau im Jahr 2020?
-SELECT S.name
+SELECT S.name AS gemeinde
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
@@ -109,7 +109,7 @@ WHERE S.municipal = TRUE
     AND T.jahr = 2015;
 
 -- Welche war die kleinste Gemeinde (in Einwohnern), die im Jahr 2021 im Kanton Thurgau Energie aus der Kehrichtverbrennung produzierte?
-SELECT S.name
+SELECT S.name AS gemeinde
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
@@ -128,7 +128,7 @@ WHERE S.municipal = TRUE
 
 -- Welche 3 Thurgauer Gemeinden hatten im Jahr 2019 den höchsten Anteil an Wasserkraft an der gesamten erneuerbaren Energieproduktion und wie hoch war dieser?
 SELECT
-    S.name,
+    S.name AS gemeinde,
     100.0 * T.wasserkraft_gwh / T.total_gwh AS prozent_wasserkraft
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -159,13 +159,13 @@ WHERE T.jahr = 2018
     AND S.name IN ('Fischingen', 'Fischingen (TG)');
 
 -- Wie viel erneuerbare Energie hat der Kanton Thurgau im Zeitraum 2017-2021 insgesamt produziert?
-SELECT SUM(T.total_gwh) AS total_gwh
+SELECT SUM(T.total_gwh) AS total_gwh_2017_2021
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 WHERE T.jahr >= 2017
     AND T.jahr <= 2021;
 
 -- Wie hoch war die Produktion von Solarstrom in Roggwil und Langrickenbach TG in den Jahren 2019 und 2020?
-SELECT S.name, T.jahr, T.photovoltaik_gwh
+SELECT S.name AS gemeinde, T.jahr, T.photovoltaik_gwh
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.name IN ('Roggwil', 'Roggwil (TG)', 'Langrickenbach', 'Langrickenbach (TG)')

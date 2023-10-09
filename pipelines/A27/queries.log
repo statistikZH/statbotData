@@ -1,23 +1,13 @@
-[1] "Environment: LOCAL, Time: 2023-10-09 11:27:40"
+[1] "Environment: REMOTE, Time: 2023-10-09 17:38:10"
 
 Query Nr. 1
 -- Wie setzt sich die erneuerbare Energieproduktion im Kanton Thurgau seit 2018 jährlich zusammen?
 SELECT     T.jahr,     SUM(biogasanlagen_abwasser_gwh),     SUM(biogasanlagen_industrie_gwh),     SUM(biogasanlagen_landwirtschaft_gwh),     SUM(biomasse_holz_gwh),     SUM(kehricht_gwh),     SUM(photovoltaik_gwh),     SUM(wasserkraft_gwh),     SUM(wind_gwh),     SUM(total_gwh) FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr >= 2018 GROUP BY T.jahr;
- jahr SUM(biogasanlagen_abwasser_gwh) SUM(biogasanlagen_industrie_gwh)
- 2018                           7.045                         1.826000
- 2019                           6.485                         1.326000
- 2020                           7.458                         1.819000
- 2021                           7.440                         0.651573
- SUM(biogasanlagen_landwirtschaft_gwh) SUM(biomasse_holz_gwh) SUM(kehricht_gwh)
-                                 7.983                  3.072          45.76800
-                                 9.791                  2.552          55.34500
-                                12.213                  2.570          57.31700
-                                12.333                  3.270          49.98273
- SUM(photovoltaik_gwh) SUM(wasserkraft_gwh) SUM(wind_gwh) SUM(total_gwh)
-               113.017               32.147         0.004       210.8620
-               126.267               46.327         0.006       248.0990
-               146.075               40.544         0.005       268.0010
-               170.916               48.561         0.005       293.1593
+ jahr   sum   sum..3 sum..4 sum..5   sum..6  sum..7 sum..8 sum..9  sum..10
+ 2018 7.045 1.826000  7.983  3.072 45.76800 113.017 32.147  0.004 210.8620
+ 2019 6.485 1.326000  9.791  2.552 55.34500 126.267 46.327  0.006 248.0990
+ 2020 7.458 1.819000 12.213  2.570 57.31700 146.075 40.544  0.005 268.0010
+ 2021 7.440 0.651573 12.333  3.270 49.98273 170.916 48.561  0.005 293.1593
 
 Query Nr. 2
 -- Wie viel Prozent der erneuerbaren Energie in Frauenfeld TG wurde im Jahr 2021 durch Solarenergie erzeugt?
@@ -27,14 +17,14 @@ SELECT     100 * photovoltaik_gwh/total_gwh AS photovoltaik_prozent_frauenfeld_2
 
 Query Nr. 3
 -- Wie viele Gemeinden im Kanton Thurgau produzierten im Jahr 2019 Energie aus Wind?
-SELECT     COUNT(*) FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2019     AND T.wind_gwh > 0;
- COUNT(*)
-        1
+SELECT     COUNT(*) AS anzahl_gemeinden_wind_2019 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2019     AND T.wind_gwh > 0;
+ anzahl_gemeinden_wind_2019
+                          1
 
 Query Nr. 4
 -- Welche Gemeinde im Kanton Thurgau produziert im Jahr 2020 im Verhältnis zur Einwohnerzahl am meisten erneuerbare Energie?
-SELECT S.name FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2020 ORDER BY T.total_gwh / T.einwohner DESC LIMIT 1;
-       name
+SELECT S.name AS gemeinde FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2020 ORDER BY T.total_gwh / T.einwohner DESC LIMIT 1;
+   gemeinde
  Weinfelden
 
 Query Nr. 5
@@ -45,8 +35,8 @@ SELECT 100 * SUM(CASE WHEN T.total_gwh = 0 THEN 1 ELSE 0 END) / CAST(COUNT(*) AS
 
 Query Nr. 6
 -- Wie viel erneuerbare Energie wird in den 5 grössten Thurgauer Gemeinden im Jahr 2021 produziert?
-SELECT S.name, T.total_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2021 ORDER BY T.einwohner DESC LIMIT 5;
-        name total_gwh
+SELECT S.name AS gemeinde, T.total_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2021 ORDER BY T.einwohner DESC LIMIT 5;
+    gemeinde total_gwh
   Frauenfeld  15.95157
  Kreuzlingen   5.41300
        Arbon   4.16600
@@ -55,44 +45,42 @@ SELECT S.name, T.total_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_geme
 
 Query Nr. 7
 -- Welche 3 Thurgauer Gemeinden weisen zwischen 2018 und 2021 den grössten Zuwachs an erneuerbarer Energieproduktion auf? Geben Sie auch den prozentualen Anstieg an.
-SELECT     S.name,     (         100.0 * SUM( CASE WHEN T.jahr = 2021 THEN T.total_gwh ELSE 0 END) /         SUM( CASE WHEN T.jahr = 2018 THEN T.total_gwh ELSE 0 END     )) AS prozent_anstieg FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr IN (2018, 2021) GROUP BY S.name ORDER BY prozent_anstieg DESC LIMIT 3;
-              name prozent_anstieg
+SELECT     S.name AS gemeinde,     (         100.0 * SUM( CASE WHEN T.jahr = 2021 THEN T.total_gwh ELSE 0 END) /         SUM( CASE WHEN T.jahr = 2018 THEN T.total_gwh ELSE 0 END     )) AS prozent_anstieg FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr IN (2018, 2021) GROUP BY S.name ORDER BY prozent_anstieg DESC LIMIT 3;
+          gemeinde prozent_anstieg
          Stettfurt        425.8278
             Egnach        403.3990
  Felben-Wellhausen        264.3154
 
 Query Nr. 8
 -- Wie viele MWh an erneuerbarer Energie hat Amriswil im Kanton Thurgau von 2016 bis 2020 insgesamt produziert?
-SELECT SUM(T.total_gwh) * 1000 AS total_mwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name IN ("Amriswil", "Amriswil (TG)")     AND T.jahr >= 2016     AND T.jahr <= 2020;
+SELECT SUM(T.total_gwh) * 1000 AS total_mwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name IN ('Amriswil', 'Amriswil (TG)')     AND T.jahr >= 2016     AND T.jahr <= 2020;
  total_mwh
      19962
 
 Query Nr. 9
 -- Zeigen Sie mir 2 Aargauer Gemeinden, die im Jahr 2019 der wichtigste Produzent von Energie aus Holzbiomasse waren.
-SELECT S.name FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2019 ORDER BY T.biomasse_holz_gwh DESC LIMIT 2;
-                 name
+SELECT S.name AS gemeinde FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2019 ORDER BY T.biomasse_holz_gwh DESC LIMIT 2;
+             gemeinde
  Bichelsee-Balterswil
             Eschlikon
 
 Query Nr. 10
 -- Wie hoch ist die Gesamtmenge an erneuerbarer Energie aus der Kehrichtverbrennung im Kanton Thurgau im Jahr 2020?
-SELECT S.name FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2019 ORDER BY T.biomasse_holz_gwh DESC LIMIT 2;
-                 name
+SELECT S.name AS gemeinde FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2019 ORDER BY T.biomasse_holz_gwh DESC LIMIT 2;
+             gemeinde
  Bichelsee-Balterswil
             Eschlikon
 
 Query Nr. 11
 -- Wie viele GWh Energie wurden im Jahr 2015 im Kanton Thurgau aus den einzelnen Biogasanlagentypen produziert?
 SELECT SUM(biogasanlagen_abwasser_gwh), SUM(biogasanlagen_industrie_gwh), SUM(biogasanlagen_landwirtschaft_gwh) FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2015;
- SUM(biogasanlagen_abwasser_gwh) SUM(biogasanlagen_industrie_gwh)
-                           4.816                             2.27
- SUM(biogasanlagen_landwirtschaft_gwh)
-                                 3.656
+   sum sum..2 sum..3
+ 4.816   2.27  3.656
 
 Query Nr. 12
 -- Welche war die kleinste Gemeinde (in Einwohnern), die im Jahr 2021 im Kanton Thurgau Energie aus der Kehrichtverbrennung produzierte?
-SELECT S.name FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2021     AND T.kehricht_gwh > 0 ORDER BY T.einwohner ASC LIMIT 1;
-       name
+SELECT S.name AS gemeinde FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2021     AND T.kehricht_gwh > 0 ORDER BY T.einwohner ASC LIMIT 1;
+   gemeinde
  Weinfelden
 
 Query Nr. 13
@@ -103,8 +91,8 @@ SELECT T.photovoltaik_gwh, T.wind_gwh FROM thurgau_erneuerbare_elektrizitatsprod
 
 Query Nr. 14
 -- Welche 3 Thurgauer Gemeinden hatten im Jahr 2019 den höchsten Anteil an Wasserkraft an der gesamten erneuerbaren Energieproduktion und wie hoch war dieser?
-SELECT     S.name,     100.0 * T.wasserkraft_gwh / T.total_gwh AS prozent_wasserkraft FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2019 ORDER BY prozent_wasserkraft DESC LIMIT 3;
-                name prozent_wasserkraft
+SELECT     S.name AS gemeinde,     100.0 * T.wasserkraft_gwh / T.total_gwh AS prozent_wasserkraft FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2019 ORDER BY prozent_wasserkraft DESC LIMIT 3;
+            gemeinde prozent_wasserkraft
  Kradolf-Schönenberg            93.36694
         Bürglen (TG)            90.81354
                 Pfyn            73.88193
@@ -123,14 +111,14 @@ SELECT T.biogasanlagen_landwirtschaft_gwh FROM thurgau_erneuerbare_elektrizitats
 
 Query Nr. 17
 -- Wie viel erneuerbare Energie hat der Kanton Thurgau im Zeitraum 2017-2021 insgesamt produziert?
-SELECT SUM(T.total_gwh) AS total_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T WHERE T.jahr >= 2017     AND T.jahr <= 2021;
- total_gwh
-  1222.244
+SELECT SUM(T.total_gwh) AS total_gwh_2017_2021 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T WHERE T.jahr >= 2017     AND T.jahr <= 2021;
+ total_gwh_2017_2021
+            1222.244
 
 Query Nr. 18
 -- Wie hoch war die Produktion von Solarstrom in Roggwil und Langrickenbach TG in den Jahren 2019 und 2020?
-SELECT S.name, T.jahr, T.photovoltaik_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name IN ('Roggwil', 'Roggwil (TG)', 'Langrickenbach', 'Langrickenbach (TG)')     AND T.jahr IN (2019, 2020) ORDER BY S.name, T.jahr;
-           name jahr photovoltaik_gwh
+SELECT S.name AS gemeinde, T.jahr, T.photovoltaik_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name IN ('Roggwil', 'Roggwil (TG)', 'Langrickenbach', 'Langrickenbach (TG)')     AND T.jahr IN (2019, 2020) ORDER BY S.name, T.jahr;
+       gemeinde jahr photovoltaik_gwh
  Langrickenbach 2019            0.809
  Langrickenbach 2020            1.008
    Roggwil (TG) 2019            2.575
