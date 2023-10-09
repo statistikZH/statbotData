@@ -1,90 +1,91 @@
+[1] "Environment: REMOTE, Time: 2023-10-09 13:41:45"
 
 Query Nr. 1
 -- Welche Gemeinde im Kanton Aargau hatte im Jahr 2020 am meisten Autos pro Einwohner?
-SELECT S.name FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2020 ORDER BY T.anzahl_personenwagen_pro_1000_einwohner DESC LIMIT 1;
-    name
- Böbikon
+SELECT S.name AS gemeinde FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2020 ORDER BY T.anzahl_personenwagen_pro_1000_einwohner DESC LIMIT 1;
+ gemeinde
+  Böbikon
 
 Query Nr. 2
 -- Wie viele landwirtschaftliche Fahrzeuge gab es im Kanton Aargau im Jahr 2010?
-SELECT anzahl_landwirtschaftliche_motorfahrzeuge FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name = "Canton Aargau"     AND T.jahr=2010;
+SELECT anzahl_landwirtschaftliche_motorfahrzeuge FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name = 'Canton Aargau'     AND T.jahr=2010;
  anzahl_landwirtschaftliche_motorfahrzeuge
                                      13200
 
 Query Nr. 3
 -- Wie hoch war die Zahl der Nutzfahrzeuge 1960 und 1980 im Kanton Aargau?
-SELECT T.jahr, anzahl_nutzfahrzeuge FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name = "Canton Aargau"     AND T.jahr IN (1960, 1980);
+SELECT T.jahr, anzahl_nutzfahrzeuge FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name = 'Canton Aargau'     AND T.jahr IN (1960, 1980);
  jahr anzahl_nutzfahrzeuge
- 1960                 4761
  1980                13396
+ 1960                 4761
 
 Query Nr. 4
 -- Wie hat sich der Bestand an Motorrädern und Personenwagen im Kanton Aargau im Zeitraum zwischen 1930 und 1960 entwickelt?
-SELECT T.jahr, anzahl_motorrader, anzahl_klein_motorrader, anzahl_motorfahrrader, anzahl_personenwagen FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name = "Canton Aargau"     AND T.jahr >= 1930     AND T.jahr <= 1960;
+SELECT T.jahr, anzahl_motorrader, anzahl_klein_motorrader, anzahl_motorfahrrader, anzahl_personenwagen FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name = 'Canton Aargau'     AND T.jahr >= 1930     AND T.jahr <= 1960;
  jahr anzahl_motorrader anzahl_klein_motorrader anzahl_motorfahrrader
- 1930                NA                      NA                    NA
- 1940                NA                      NA                    NA
- 1950              5116                    1300                    NA
- 1955             11839                    4005                    NA
  1960             11797                   11638                    NA
+ 1955             11839                    4005                    NA
+ 1950              5116                    1300                    NA
+ 1940                NA                      NA                    NA
+ 1930                NA                      NA                    NA
  anzahl_personenwagen
-                 2927
-                 3501
-                 8138
-                15713
                 28691
+                15713
+                 8138
+                 3501
+                 2927
 
 Query Nr. 5
 -- Wie hoch ist der Anteil der Gemeinden im Kanton Aargau, in denen die Zahl der Autos pro Einwohner zwischen 2015 und 2022 zugenommen hat?
-SELECT CAST(SUM(CASE WHEN T1.diff > 0 THEN 1 ELSE 0 END) AS FLOAT) / COUNT(T1.diff) FROM (     SELECT         SUM(CASE WHEN T.jahr = 2022 THEN T.anzahl_personenwagen_pro_1000_einwohner ELSE 0 END) -         SUM(CASE WHEN T.jahr = 2015 THEN T.anzahl_personenwagen_pro_1000_einwohner ELSE 0 END) as diff     FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T     JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid     WHERE S.municipal=TRUE         AND T.jahr IN (2015, 2022)     GROUP BY S.name ) as T1;
- CAST(SUM(CASE WHEN T1.diff > 0 THEN 1 ELSE 0 END) AS FLOAT) / COUNT(T1.diff)
-                                                                    0.5934579
+SELECT CAST(SUM(CASE WHEN T1.diff > 0 THEN 1 ELSE 0 END) AS FLOAT) / COUNT(T1.diff) AS ratio_gemeinden_mit_zunahme_autos_pro_einwohner FROM (     SELECT         SUM(CASE WHEN T.jahr = 2022 THEN T.anzahl_personenwagen_pro_1000_einwohner ELSE 0 END) -         SUM(CASE WHEN T.jahr = 2015 THEN T.anzahl_personenwagen_pro_1000_einwohner ELSE 0 END) as diff     FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T     JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid     WHERE S.municipal=TRUE         AND T.jahr IN (2015, 2022)     GROUP BY S.name ) as T1;
+ ratio_gemeinden_mit_zunahme_autos_pro_einwohner
+                                       0.5934579
 
 Query Nr. 6
 -- Wie hoch war die Zahl der Wohnwagen von 1998 bis 2001 in Aarburg, AG?
-SELECT T.jahr, T.anzahl_anhaenger FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name = "Aarburg"     AND T.jahr >= 1998     AND T.jahr <= 2001;
+SELECT T.jahr, T.anzahl_anhaenger FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name IN ('Aarburg', 'Aargbug (AG)')     AND T.jahr >= 1998     AND T.jahr <= 2001;
  jahr anzahl_anhaenger
- 1998              158
- 1999              174
- 2000              188
  2001              197
+ 2000              188
+ 1999              174
+ 1998              158
 
 Query Nr. 7
 -- Welches waren 2015 die Top-3-Gemeinden im Aargau mit dem höchsten Anteil an Motorrädern gegenüber Autos? Zeigen Sie auch die Proportionen.
-SELECT     S.name,     CAST(T.anzahl_motorrader + T.anzahl_klein_motorrader + T.anzahl_motorfahrrader AS FLOAT) / T.anzahl_personenwagen AS ratio_motorrader_to_personenwagen FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2015 ORDER BY ratio_motorrader_to_personenwagen DESC LIMIT 3;
-     name ratio_motorrader_to_personenwagen
+SELECT     S.name as gemeinde,     CAST(T.anzahl_motorrader + T.anzahl_klein_motorrader + T.anzahl_motorfahrrader AS FLOAT) / T.anzahl_personenwagen AS ratio_motorrader_to_personenwagen FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2015 ORDER BY ratio_motorrader_to_personenwagen DESC LIMIT 3;
+ gemeinde ratio_motorrader_to_personenwagen
  Mägenwil                         0.6127517
   Mandach                         0.5255102
  Attelwil                         0.4236453
 
 Query Nr. 8
 -- Wie hoch war die Zahl der Nutzfahrzeuge in Abtwil, AG im Jahr 2000 ?
-SELECT T.anzahl_nutzfahrzeuge FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name = "Abtwil"     AND T.jahr=2000;
+SELECT T.anzahl_nutzfahrzeuge FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name IN ('Abtwil', 'Abtwil (AG)')     AND T.jahr=2000;
  anzahl_nutzfahrzeuge
                    36
 
 Query Nr. 9
 -- Wie hat sich die Zahl der Autos pro Einwohner im Aargau im Zeitraum 2010 bis 2022 entwickelt?
-SELECT T.jahr, T.anzahl_personenwagen_pro_1000_einwohner FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name = "Canton Aargau"     AND T.jahr >= 2010     AND T.jahr <= 2022;
+SELECT T.jahr, T.anzahl_personenwagen_pro_1000_einwohner FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND S.name = 'Canton Aargau'     AND T.jahr >= 2010     AND T.jahr <= 2022;
  jahr anzahl_personenwagen_pro_1000_einwohner
- 2010                                   559.9
- 2011                                   567.0
- 2012                                   572.8
- 2013                                   578.5
- 2014                                   581.3
- 2015                                   583.7
- 2016                                   588.0
- 2017                                   587.9
- 2018                                   587.9
- 2019                                   587.4
- 2020                                   588.5
- 2021                                   589.9
  2022                                   586.3
+ 2021                                   589.9
+ 2020                                   588.5
+ 2019                                   587.4
+ 2018                                   587.9
+ 2017                                   587.9
+ 2016                                   588.0
+ 2015                                   583.7
+ 2014                                   581.3
+ 2013                                   578.5
+ 2012                                   572.8
+ 2011                                   567.0
+ 2010                                   559.9
 
 Query Nr. 10
 -- Welches waren die 5 Aargauer Gemeinden mit den wenigsten Motorrädern pro Personenwagen im Jahr 2015?
-SELECT S.name FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE T.jahr=2015     AND S.municipal=TRUE ORDER BY CAST(T.anzahl_motorrader + T.anzahl_klein_motorrader + T.anzahl_motorfahrrader AS FLOAT) / T.anzahl_personenwagen ASC LIMIT 5;
-           name
+SELECT S.name AS gemeinde FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE T.jahr=2015     AND S.municipal=TRUE ORDER BY CAST(T.anzahl_motorrader + T.anzahl_klein_motorrader + T.anzahl_motorfahrrader AS FLOAT) / T.anzahl_personenwagen ASC LIMIT 5;
+       gemeinde
     Kaiserstuhl
  Schinznach-Bad
    Spreitenbach
@@ -93,7 +94,7 @@ SELECT S.name FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spa
 
 Query Nr. 11
 -- Wie viele private Fahrzeuge gab es 2010 in Ueken im Kanton Aargau von jedem Typ?
-SELECT     T.anzahl_anhaenger,     T.anzahl_arbeitsmotorfahrzeuge,     T.anzahl_klein_motorrader,     T.anzahl_kollektivfahrzeuge,     T.anzahl_landwirtschaftliche_motorfahrzeuge,     T.anzahl_motorfahrrader,     T.anzahl_motorrader,     T.anzahl_nutzfahrzeuge,     T.anzahl_personenwagen,     T.anzahl_ubrige_personen_transportfahrzeuge_kleinbusse_cars FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE T.jahr = 2010     AND S.municipal = TRUE     AND S.name = "Ueken";
+SELECT     T.anzahl_anhaenger,     T.anzahl_arbeitsmotorfahrzeuge,     T.anzahl_klein_motorrader,     T.anzahl_kollektivfahrzeuge,     T.anzahl_landwirtschaftliche_motorfahrzeuge,     T.anzahl_motorfahrrader,     T.anzahl_motorrader,     T.anzahl_nutzfahrzeuge,     T.anzahl_personenwagen,     T.anzahl_ubrige_personen_transportfahrzeuge_kleinbusse_cars FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE T.jahr = 2010     AND S.municipal = TRUE     AND S.name IN ('Ueken', 'Ueken (AG)');
  anzahl_anhaenger anzahl_arbeitsmotorfahrzeuge anzahl_klein_motorrader
                60                            0                       5
  anzahl_kollektivfahrzeuge anzahl_landwirtschaftliche_motorfahrzeuge
@@ -105,61 +106,61 @@ SELECT     T.anzahl_anhaenger,     T.anzahl_arbeitsmotorfahrzeuge,     T.anzahl_
 
 Query Nr. 12
 -- In welchem Jahr gab es in Zuzgen, AG, die meisten motorisierten Arbeitsfahrzeuge?
-SELECT T.jahr FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = "Zuzgen" GROUP BY T.jahr ORDER BY T.anzahl_arbeitsmotorfahrzeuge DESC LIMIT 1;
+SELECT T.jahr FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name IN ('Zuzgen', 'Zuzgen (AG)') GROUP BY T.jahr ORDER BY SUM(T.anzahl_arbeitsmotorfahrzeuge) DESC LIMIT 1;
  jahr
  2022
 
 Query Nr. 13
 -- Gab es 1930 oder 1940 im Kanton Aargau mehr Personenwagen?
-SELECT T.jahr FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND T.jahr IN (1930, 1940) GROUP BY T.jahr ORDER BY T.anzahl_personenwagen DESC LIMIT 1;
+SELECT T.jahr FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND T.jahr IN (1930, 1940) GROUP BY T.jahr ORDER BY SUM(T.anzahl_personenwagen) DESC LIMIT 1;
  jahr
  1940
 
 Query Nr. 14
 -- Zeigen Sie mir 3 Aargauer Gemeinden, in denen die Zahl der Personenwagen pro Einwohner zwischen 2018 und 2022 am stärksten abgenommen hat.
-SELECT S.name FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr IN (2018, 2022) GROUP BY S.name ORDER BY     (         SUM(CASE WHEN T.jahr = 2022 THEN T.anzahl_personenwagen_pro_1000_einwohner ELSE 0 END) -         SUM(CASE WHEN T.jahr = 2018 THEN T.anzahl_personenwagen_pro_1000_einwohner ELSE 0 END)     ) DESC LIMIT 3;
-    name
- Reitnau
-  Böztal
- Zurzach
+SELECT S.name AS gemeinde FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr IN (2018, 2022) GROUP BY S.name ORDER BY     (         SUM(CASE WHEN T.jahr = 2022 THEN T.anzahl_personenwagen_pro_1000_einwohner ELSE 0 END) -         SUM(CASE WHEN T.jahr = 2018 THEN T.anzahl_personenwagen_pro_1000_einwohner ELSE 0 END)     ) DESC LIMIT 3;
+ gemeinde
+  Reitnau
+   Böztal
+  Zurzach
 
 Query Nr. 15
 -- Wie viele Aargauer Gemeinden haben im Jahr 2020 keine Personenwagen gezählt?
-SELECT COUNT(*) FROM aargau_privatverkehr_bestand_nach_fahrzeugarten WHERE jahr = 2020     AND anzahl_personenwagen = 0;
- COUNT(*)
-        0
+SELECT COUNT(*) AS anzahl_gemeinden_ohne_personenwagen FROM aargau_privatverkehr_bestand_nach_fahrzeugarten WHERE jahr = 2020     AND anzahl_personenwagen = 0;
+ anzahl_gemeinden_ohne_personenwagen
+                                   0
 
 Query Nr. 16
 -- Wie viele Kleinmotorräder gab es im Kanton Aargau zwischen 2000 und 2016?
 SELECT T.jahr, T.anzahl_klein_motorrader FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND T.jahr <= 2016     AND T.jahr >= 2000;
  jahr anzahl_klein_motorrader
- 2000                    4283
- 2001                    5346
- 2002                    6257
- 2003                    6740
- 2004                    5489
- 2005                    4803
- 2006                    4317
- 2007                    3892
- 2008                    3733
- 2009                    3703
- 2010                    3627
- 2011                    3540
- 2012                    3369
- 2013                    3207
- 2014                    3039
- 2015                    2468
  2016                    2262
+ 2015                    2468
+ 2014                    3039
+ 2013                    3207
+ 2012                    3369
+ 2011                    3540
+ 2010                    3627
+ 2009                    3703
+ 2008                    3733
+ 2007                    3892
+ 2006                    4317
+ 2005                    4803
+ 2004                    5489
+ 2003                    6740
+ 2002                    6257
+ 2001                    5346
+ 2000                    4283
 
 Query Nr. 17
 -- Wo im Aargau hatten Zeihen und Zufikon im Jahr 2001 mehr Personenwagen pro Einwohner?
-SELECT S.name FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2001     AND S.name IN ("Zeihen", "Zufikon") ORDER BY T.anzahl_personenwagen_pro_1000_einwohner DESC LIMIT 1;
-    name
- Zufikon
+SELECT S.name AS gemeinde FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2001     AND S.name IN ('Zeihen', 'Zeihen (AG)' , 'Zufikon', 'Zufikon (AG)') ORDER BY T.anzahl_personenwagen_pro_1000_einwohner DESC LIMIT 1;
+ gemeinde
+  Zufikon
 
 Query Nr. 18
 -- Wie viele landwirtschaftliche Fahrzeuge gab es in Rekingen im Aargau zwischen 1998 und 2000?
-SELECT T.jahr, T.anzahl_landwirtschaftliche_motorfahrzeuge FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name LIKE "Rekingen%"     AND T.jahr >= 1998     AND T.jahr <= 2000 ORDER BY T.jahr ASC;
+SELECT T.jahr, T.anzahl_landwirtschaftliche_motorfahrzeuge FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name IN ('Rekingen', 'Rekingen (AG)')     AND T.jahr >= 1998     AND T.jahr <= 2000 ORDER BY T.jahr ASC;
  jahr anzahl_landwirtschaftliche_motorfahrzeuge
  1998                                         8
  1999                                         9
@@ -167,12 +168,12 @@ SELECT T.jahr, T.anzahl_landwirtschaftliche_motorfahrzeuge FROM aargau_privatver
 
 Query Nr. 19
 -- Wie viele Kollektivfahrzeuge gab es 2022 in Wettingen, AG?
-SELECT T.anzahl_kollektivfahrzeuge FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = "Wettingen"     AND T.jahr = 2022;
+SELECT T.anzahl_kollektivfahrzeuge FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name IN ('Wettingen', 'Wettingen (AG)')     AND T.jahr = 2022;
  anzahl_kollektivfahrzeuge
                         43
 
 Query Nr. 20
 -- Wie viele Anhänger gab es im Jahr 2000 in Suhr, Aargau?
-SELECT T.anzahl_anhaenger FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = "Suhr"     AND T.jahr = 2000;
+SELECT T.anzahl_anhaenger FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name IN ('Suhr', 'Suhr (AG)')     AND T.jahr = 2000;
  anzahl_anhaenger
               474
