@@ -3,7 +3,7 @@ SELECT T.beschaftigte_personen
 FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
-    AND (S.name = "Uttwil" OR S.name = "Uttwil (TG)")
+    AND (S.name = 'Uttwil' OR S.name = 'Uttwil (TG)')
     AND T.jahr = 2015
     AND T.sektor = 1;
 
@@ -36,7 +36,7 @@ SELECT T.beschaftigte_personen
 FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
-    AND (S.name = "Frauenfeld" OR S.name = "Frauenfeld (TG)")
+    AND (S.name = 'Frauenfeld' OR S.name = 'Frauenfeld (TG)')
     AND T.jahr = 2015
     AND T.sektor = 2;
 

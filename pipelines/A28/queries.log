@@ -1,17 +1,17 @@
-[1] "Environment: LOCAL, Time: 2023-10-09 10:25:55"
+[1] "Environment: REMOTE, Time: 2023-10-09 11:54:35"
 
 Query Nr. 1
 -- How many people were employed in the primary sector in Uttwil, TG in 2015?
-SELECT T.beschaftigte_personen FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND (S.name = "Uttwil" OR S.name = "Uttwil (TG)")     AND T.jahr = 2015     AND T.sektor = 1;
+SELECT T.beschaftigte_personen FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND (S.name = 'Uttwil' OR S.name = 'Uttwil (TG)')     AND T.jahr = 2015     AND T.sektor = 1;
  beschaftigte_personen
                     50
 
 Query Nr. 2
 -- How many employees of the tertiary sector were employed in canton Thurgau in 2011 and 2021?
 SELECT T.jahr, SUM(T.beschaftigte_personen) FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr IN (2011, 2021)     AND T.sektor = 3 GROUP BY T.jahr;
- jahr SUM(T.beschaftigte_personen)
- 2011                        77872
- 2021                        94153
+ jahr   sum
+ 2011 77872
+ 2021 94153
 
 Query Nr. 3
 -- What are the five municipalities in Thurgau with the highest proportion of employees in the secondary sector in 2020? Also report the proportions in percentage.
@@ -25,26 +25,26 @@ SELECT     S.name,     (         100.0 * SUM(CASE WHEN T.sektor = 2 THEN T.besch
 
 Query Nr. 4
 -- How many people were employed in the secondary sector in the municipality of Frauenfeld in Canton Thurgau in 2015?
-SELECT T.beschaftigte_personen FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND (S.name = "Frauenfeld" OR S.name = "Frauenfeld (TG)")     AND T.jahr = 2015     AND T.sektor = 2;
+SELECT T.beschaftigte_personen FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND (S.name = 'Frauenfeld' OR S.name = 'Frauenfeld (TG)')     AND T.jahr = 2015     AND T.sektor = 2;
  beschaftigte_personen
                   4551
 
 Query Nr. 5
 -- What was the number of employees per economic sector each year in Canton Thurgau between 2017 and 2020?
 SELECT T.jahr, T.sektor, SUM(T.beschaftigte_personen) FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr >= 2017     AND T.jahr <= 2020 GROUP BY T.sektor, T.jahr;
- jahr sektor SUM(T.beschaftigte_personen)
- 2017      1                         8666
- 2018      1                         8635
- 2019      1                         8648
- 2020      1                         8640
- 2017      2                        41204
- 2018      2                        41545
- 2019      2                        41731
- 2020      2                        40979
- 2017      3                        86257
- 2018      3                        87516
- 2019      3                        90049
- 2020      3                        91116
+ jahr sektor   sum
+ 2017      1  8666
+ 2018      1  8635
+ 2019      1  8648
+ 2020      1  8640
+ 2017      2 41204
+ 2018      2 41545
+ 2019      2 41731
+ 2020      2 40979
+ 2017      3 86257
+ 2018      3 87516
+ 2019      3 90049
+ 2020      3 91116
 
 Query Nr. 6
 -- In which municipality in Thurgau did the number of employees grow the most between 2015 and 2020?
