@@ -11,11 +11,13 @@ ds <- statbotData::download_data(ds)
 # Step 1 rename columns + clean values
 # -------------------------------------------------------------------------
 
+# Missing values are denoted as ".", here we can discard them
 ds$postgres_export <- ds$data %>%
   janitor::clean_names() %>%
   dplyr::select(-bfs_nr_gemeinde) %>%
-  dplyr::rename(beschaftigte_personen = beschaeftigte_personen)
-
+  dplyr::rename(beschaftigte_personen = beschaeftigte_personen) %>%
+  dplyr::mutate(beschaftigte_personen = as.numeric(beschaftigte_personen)) %>%
+  dplyr::filter(!is.na(beschaftigte_personen))
 # -------------------------------------------------------------------------
 # Step 2 map to spatial units
 # -------------------------------------------------------------------------
