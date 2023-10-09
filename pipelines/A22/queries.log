@@ -1,10 +1,10 @@
-[1] "Environment: LOCAL, Time: 2023-10-09 10:52:46"
+[1] "Environment: REMOTE, Time: 2023-10-09 13:47:04"
 
 Query Nr. 1
 -- Wie viele Reformierte gab es im Kanton Basel-Landschaft in 2022?
 SELECT SUM(T.anzahl_evangelisch_reformiert) FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2022;
- SUM(T.anzahl_evangelisch_reformiert)
-                                77559
+   sum
+ 77559
 
 Query Nr. 2
 -- Welcher Anteil der Bevölkerung von Basel-Landschaft gehörte 2021 einer bekannten Religion an?
@@ -30,7 +30,7 @@ SELECT S.name, CAST(SUM(T.anzahl_evangelisch_reformiert) AS FLOAT) / SUM(T.gesam
 
 Query Nr. 5
 -- Wie hoch war der Anteil der Gemeinden im Kanton Basel-Landschaft, in denen es 2018 mehr Katholiken als Protestanten unter der Schweizer Bevölkerung gab?
-SELECT SUM(     (anzahl_romisch_katholisch + anzahl_christkatholisch) > anzahl_evangelisch_reformiert ) / CAST(COUNT(anzahl_evangelisch_reformiert) AS FLOAT) AS proprtion_municipalities_more_catholics_than_reformed_2018 FROM (     SELECT         S.name as municipality,         AVG(T.anzahl_christkatholisch) as anzahl_christkatholisch,         AVG(T.anzahl_romisch_katholisch) as anzahl_romisch_katholisch,         AVG(T.anzahl_evangelisch_reformiert) as anzahl_evangelisch_reformiert     FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T     JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid     WHERE S.municipal=TRUE         AND T.jahr=2018         AND T.nationalitat='Schweiz'     GROUP BY S.name );
+SELECT SUM(     CASE WHEN (T1.anzahl_romisch_katholisch + T1.anzahl_christkatholisch) > T1.anzahl_evangelisch_reformiert THEN 1 ELSE 0 END ) / CAST(COUNT(T1.anzahl_evangelisch_reformiert) AS FLOAT) AS proprtion_municipalities_more_catholics_than_reformed_2018 FROM (     SELECT         S.name as municipality,         AVG(T.anzahl_christkatholisch) as anzahl_christkatholisch,         AVG(T.anzahl_romisch_katholisch) as anzahl_romisch_katholisch,         AVG(T.anzahl_evangelisch_reformiert) as anzahl_evangelisch_reformiert     FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T     JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid     WHERE S.municipal=TRUE         AND T.jahr=2018         AND T.nationalitat='Schweiz'     GROUP BY S.name ) AS T1;
  proprtion_municipalities_more_catholics_than_reformed_2018
                                                   0.1976744
 
@@ -44,8 +44,8 @@ SELECT T.jahr, SUM(T.gesamt_anzahl_personen) as population FROM basel_land_bevol
 
 Query Nr. 7
 -- Welches waren im Jahr 2022 die 3 Gemeinden mit dem höchsten Ausländeranteil im Kanton Basel-Landschaft?
-SELECT S.name, SUM(CASE WHEN T.nationalitat='Ausland' THEN T.gesamt_anzahl_personen ELSE 0 END) / CAST(SUM(T.gesamt_anzahl_personen) AS FLOAT) AS proportion_foreign_residents FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2022 GROUP BY S.name ORDER BY proportion_foreign_residents DESC LIMIT 3;
-        name proportion_foreign_residents
+SELECT S.name AS gemeinde, SUM(CASE WHEN T.nationalitat='Ausland' THEN T.gesamt_anzahl_personen ELSE 0 END) / CAST(SUM(T.gesamt_anzahl_personen) AS FLOAT) AS proportion_foreign_residents FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2022 GROUP BY S.name ORDER BY proportion_foreign_residents DESC LIMIT 3;
+    gemeinde proportion_foreign_residents
     Pratteln                    0.4220546
  Frenkendorf                    0.3529768
   Birsfelden                    0.3313780
@@ -64,8 +64,8 @@ SELECT SUM(CAST(T.anzahl_unbekannt_konfession AS FLOAT)) / SUM(T.gesamt_anzahl_p
 
 Query Nr. 10
 -- Zwischen den Gemeinden Arlesheim und Birsfelden im Kanton Basel-Landschaft, welche hatte 2003 einen höheren Anteil an Protestanten?
-SELECT S.name, CAST(SUM(T.anzahl_evangelisch_reformiert) AS FLOAT) / SUM(T.gesamt_anzahl_personen) as proportion_protestants_2003 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name IN ('Ettingen', 'Ettingen (BL)', 'Birsfelden', 'Birsfelden (BL)')     AND T.jahr=2003 GROUP BY S.name ORDER BY proportion_protestants_2003 DESC;
-       name proportion_protestants_2003
+SELECT S.name AS gemeinde, CAST(SUM(T.anzahl_evangelisch_reformiert) AS FLOAT) / SUM(T.gesamt_anzahl_personen) as proportion_protestants_2003 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name IN ('Ettingen', 'Ettingen (BL)', 'Birsfelden', 'Birsfelden (BL)')     AND T.jahr=2003 GROUP BY S.name ORDER BY proportion_protestants_2003 DESC;
+   gemeinde proportion_protestants_2003
    Ettingen                   0.3163037
  Birsfelden                   0.2927625
 

@@ -1,4 +1,4 @@
-[1] "Environment: REMOTE, Time: 2023-10-09 11:18:01"
+[1] "Environment: REMOTE, Time: 2023-10-09 13:39:29"
 
 Query Nr. 1
 -- Wie viel Fläche wurde im Jahr 2017 im Aargau für den Rotweinanbau genutzt?
@@ -31,9 +31,9 @@ SELECT T.weinernte_rot_europaische_hl, T.weinernte_rot_kreuzung_rot_hl, T.weiner
 
 Query Nr. 5
 -- Wie viel Prozent des im Aargau geernteten Rotweins stammte im Jahr 2000 aus Kreuzungen?
-SELECT 100 * CAST(T.weinernte_rot_kreuzung_rot_hl AS FLOAT) / T.weinernte_total_hl FROM aargau_obst_rebbau_rebland_wein_ernte AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name LIKE '%Aargau%'     AND T.jahr = 2000;
-  ?column?
- 0.9947455
+SELECT (100 * CAST(T.weinernte_rot_kreuzung_rot_hl AS FLOAT) / T.weinernte_total_hl) AS prozent_rotwein_kreuzung_2000 FROM aargau_obst_rebbau_rebland_wein_ernte AS T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name LIKE '%Aargau%'     AND T.jahr = 2000;
+ prozent_rotwein_kreuzung_2000
+                     0.9947455
 
 Query Nr. 6
 -- In welchem Jahr wurde im Aargau am meisten Wein geerntet?

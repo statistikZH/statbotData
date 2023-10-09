@@ -116,7 +116,7 @@ JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
     AND S.name IN ('Zuzgen', 'Zuzgen (AG)')
 GROUP BY T.jahr
-ORDER BY T.anzahl_arbeitsmotorfahrzeuge DESC
+ORDER BY SUM(T.anzahl_arbeitsmotorfahrzeuge) DESC
 LIMIT 1;
 
 -- Gab es 1930 oder 1940 im Kanton Aargau mehr Personenwagen?
@@ -126,7 +126,7 @@ JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.canton = TRUE
     AND T.jahr IN (1930, 1940)
 GROUP BY T.jahr
-ORDER BY T.anzahl_personenwagen DESC
+ORDER BY SUM(T.anzahl_personenwagen) DESC
 LIMIT 1;
 
 -- Zeigen Sie mir 3 Aargauer Gemeinden, in denen die Zahl der Personenwagen pro Einwohner zwischen 2018 und 2022 am stärksten abgenommen hat.

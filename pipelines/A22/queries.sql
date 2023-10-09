@@ -35,8 +35,8 @@ LIMIT 5;
 
 -- Wie hoch war der Anteil der Gemeinden im Kanton Basel-Landschaft, in denen es 2018 mehr Katholiken als Protestanten unter der Schweizer Bevölkerung gab?
 SELECT SUM(
-    (anzahl_romisch_katholisch + anzahl_christkatholisch) > anzahl_evangelisch_reformiert
-) / CAST(COUNT(anzahl_evangelisch_reformiert) AS FLOAT) AS proprtion_municipalities_more_catholics_than_reformed_2018
+    CASE WHEN (T1.anzahl_romisch_katholisch + T1.anzahl_christkatholisch) > T1.anzahl_evangelisch_reformiert THEN 1 ELSE 0 END
+) / CAST(COUNT(T1.anzahl_evangelisch_reformiert) AS FLOAT) AS proprtion_municipalities_more_catholics_than_reformed_2018
 FROM (
     SELECT
         S.name as municipality,
@@ -49,7 +49,7 @@ FROM (
         AND T.jahr=2018
         AND T.nationalitat='Schweiz'
     GROUP BY S.name
-);
+) AS T1;
 
 -- Zeigen Sie mir die Entwicklung der Bevölkerung von Pratteln, in Basel-Landschaft, zwischen 2017 und 2019.
 SELECT T.jahr, SUM(T.gesamt_anzahl_personen) as population
