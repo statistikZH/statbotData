@@ -34,7 +34,7 @@ WHERE S.canton = TRUE
     AND T.jahr = 2019;
 
 -- Wie viel Prozent des im Aargau geernteten Rotweins stammte im Jahr 2000 aus Kreuzungen?
-SELECT 100 * CAST(T.weinernte_rot_kreuzung_rot_hl AS FLOAT) / T.weinernte_total_hl
+SELECT (100 * CAST(T.weinernte_rot_kreuzung_rot_hl AS FLOAT) / T.weinernte_total_hl) AS prozent_rotwein_kreuzung_2000
 FROM aargau_obst_rebbau_rebland_wein_ernte AS T
 JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.canton = TRUE
