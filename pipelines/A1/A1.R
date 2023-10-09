@@ -35,7 +35,7 @@ ds$cleaned_data <- ds$data %>%
     "anzahl_gerate" = anzahl_anzahl_gerate
   )
 ds$cleaned_data
-
+colnames(ds$cleaned_data)
 # -------------------------------------------------------------------------
 # Step: Derive the spatial units mapping and map the spatial units
 #   input:  ds$cleaned_data
@@ -53,24 +53,21 @@ ds$postgres_export <- ds$cleaned_data %>%
 ds$postgres_export
 
 # -------------------------------------------------------------------------
-# Step: Testrun queries on sqllite
-#   input:  ds$postgres_export, ds$dir/queries.sql
-#   output: ds$dir/queries.log
+# Step: After the dataset has been build use functions of package stabotData
+# to upload the dataset to postgres, testrun the queries, generate a sample
+# upload the metadata, etc
 # -------------------------------------------------------------------------
 
-statbotData::testrun_queries(
-  ds$postgres_export,
-  ds$dir,
-  ds$name
-)
+# testrun queries
+statbotData::testrun_queries(ds)
 
-# -------------------------------------------------------------------------
-# Step: Write metadata tables
-#   input:  ds$postgres_export
-#   output: ds$dir/metadata_tables.csv
-#           ds$dir/metadata_table_columns.csv
-#           ds$dir/sample.csv
-# -------------------------------------------------------------------------
+# create the table in postgres
+statbotData::create_postgres_table(ds)
 
-read_write_metadata_tables(ds)
-dataset_sample(ds)
+# add the metadata to postgres
+statbotData::update_metadata_in_postgres(ds)
+statbotData::list_tables_with_metadata_in_statbot_db()
+statbotData::delete_metadata_from_postgres("medizinisch_technische_infrastruktur")
+
+# generate sample data for the dataset from the local tibble
+statbotData::dataset_sample(ds)
