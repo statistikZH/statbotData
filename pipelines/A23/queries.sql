@@ -66,7 +66,7 @@ LIMIT 1;
 SELECT SUM(T.flache_in_m2) as gesamt_flache_in_m2
 FROM basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
-WHERE S.name LIKE 'Pratteln%'
+WHERE S.name IN ('Pratteln', 'Pratteln (BL)')
     AND T.jahr>=2010
     AND T.jahr<=2012;
 
@@ -75,11 +75,7 @@ SELECT S.name, T.quadratmeterpreis_chf
 FROM basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE T.jahr=1983
-    AND (
-        S.name LIKE 'Muttenz%'
-        OR S.name LIKE 'Bottmingen%'
-        OR S.name LIKE 'Binningen%'
-    );
+    AND S.name IN ('Muttenz', 'Muttens (BL)', 'Bottmingen', 'Bottmingen (BL)', 'Binningen', 'Binningen (BL)');
 
 -- Zeigen Sie mir den Preis für Wohnbauland in Basel-Landschaft, dessen Name mit A beginnt, im Jahr 2012.
 SELECT S.name, T.quadratmeterpreis_chf
@@ -94,6 +90,6 @@ LIMIT 10;
 SELECT T.jahr, T.quadratmeterpreis_chf
 FROM basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
-WHERE S.name LIKE 'Aesch%'
+WHERE S.name IN ('Aesch', 'Aesch (BL)')
     AND T.jahr IN (1980, 2020)
 LIMIT 10;

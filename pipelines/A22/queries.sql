@@ -56,7 +56,7 @@ SELECT T.jahr, SUM(T.gesamt_anzahl_personen) as population
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
-    AND S.name="Pratteln"
+    AND S.name IN ("Pratteln", "Pratteln (BL)")
     AND T.jahr>=2017
     AND T.jahr<=2019
 GROUP BY T.jahr
@@ -78,7 +78,7 @@ SELECT T.jahr, T.anzahl_romisch_katholisch
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
-    AND S.name="Binningen"
+    AND S.name IN ("Binningen", "Binningen (BL)")
     AND T.jahr=2005
     AND T.nationalitat="Schweiz";
 
@@ -87,7 +87,7 @@ SELECT SUM(CAST(T.anzahl_unbekannt_konfession AS FLOAT)) / SUM(T.gesamt_anzahl_p
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
-    AND S.name="Ettingen"
+    AND S.name IN ("Ettingen", "Ettingen (BL)")
     AND T.nationalitat="Ausland"
     AND T.jahr=2011;
 
@@ -96,7 +96,7 @@ SELECT S.name, CAST(SUM(T.anzahl_evangelisch_reformiert) AS FLOAT) / SUM(T.gesam
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
-    AND S.name IN ("Ettingen", "Birsfelden")
+    AND S.name IN ("Ettingen", "Ettingen (BL)", "Birsfelden", "Birsfelden (BL)")
     AND T.jahr=2003
 GROUP BY S.name
 ORDER BY proportion_protestants_2003 DESC;
@@ -106,7 +106,7 @@ SELECT T.jahr, SUM(T.anzahl_evangelisch_reformiert) as number_reformed_evangelic
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
-    AND S.name="Allschwil"
+    AND S.name IN ("Allschwil", "Allschwil (BL)")
     AND T.jahr>=2010
     AND T.jahr<=2015
 GROUP BY T.jahr;
