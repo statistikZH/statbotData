@@ -12,7 +12,7 @@ SELECT anzahl_landwirtschaftliche_motorfahrzeuge
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.canton=TRUE
-    AND S.name = "Canton Aargau"
+    AND S.name = 'Canton Aargau'
     AND T.jahr=2010;
 
 -- Wie hoch war die Zahl der Nutzfahrzeuge 1960 und 1980 im Kanton Aargau?
@@ -20,7 +20,7 @@ SELECT T.jahr, anzahl_nutzfahrzeuge
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.canton=TRUE
-    AND S.name = "Canton Aargau"
+    AND S.name = 'Canton Aargau'
     AND T.jahr IN (1960, 1980);
 
 -- Wie hat sich der Bestand an Motorrädern und Personenwagen im Kanton Aargau im Zeitraum zwischen 1930 und 1960 entwickelt?
@@ -28,7 +28,7 @@ SELECT T.jahr, anzahl_motorrader, anzahl_klein_motorrader, anzahl_motorfahrrader
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.canton=TRUE
-    AND S.name = "Canton Aargau"
+    AND S.name = 'Canton Aargau'
     AND T.jahr >= 1930
     AND T.jahr <= 1960;
 
@@ -50,7 +50,7 @@ SELECT T.jahr, T.anzahl_anhaenger
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
-    AND S.name = "Aarburg"
+    AND S.name IN ('Aarburg', 'Aargbug (AG)')
     AND T.jahr >= 1998
     AND T.jahr <= 2001;
 
@@ -70,7 +70,7 @@ SELECT T.anzahl_nutzfahrzeuge
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
-    AND S.name = "Abtwil"
+    AND S.name IN ('Abtwil', 'Abtwil (AG)')
     AND T.jahr=2000;
 
 -- Wie hat sich die Zahl der Autos pro Einwohner im Aargau im Zeitraum 2010 bis 2022 entwickelt?
@@ -78,7 +78,7 @@ SELECT T.jahr, T.anzahl_personenwagen_pro_1000_einwohner
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.canton=TRUE
-    AND S.name = "Canton Aargau"
+    AND S.name = 'Canton Aargau'
     AND T.jahr >= 2010
     AND T.jahr <= 2022;
 
@@ -107,14 +107,14 @@ FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE T.jahr = 2010
     AND S.municipal = TRUE
-    AND S.name = "Ueken";
+    AND S.name IN ('Ueken', 'Ueken (AG)');
 
 -- In welchem Jahr gab es in Zuzgen, AG, die meisten motorisierten Arbeitsfahrzeuge?
 SELECT T.jahr
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
-    AND S.name = "Zuzgen"
+    AND S.name IN ('Zuzgen', 'Zuzgen (AG)')
 GROUP BY T.jahr
 ORDER BY T.anzahl_arbeitsmotorfahrzeuge DESC
 LIMIT 1;
@@ -164,7 +164,7 @@ FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
     AND T.jahr = 2001
-    AND S.name IN ("Zeihen", "Zufikon")
+    AND S.name IN ('Zeihen', 'Zeihen (AG)' , 'Zufikon', 'Zufikon (AG)')
 ORDER BY T.anzahl_personenwagen_pro_1000_einwohner DESC
 LIMIT 1;
 
@@ -173,7 +173,7 @@ LIMIT 1;
 SELECT T.jahr, T.anzahl_landwirtschaftliche_motorfahrzeuge
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
-WHERE S.name LIKE "Rekingen%"
+WHERE S.name IN ('Rekingen', 'Rekingen (AG)')
     AND T.jahr >= 1998
     AND T.jahr <= 2000
 ORDER BY T.jahr ASC;
@@ -184,7 +184,7 @@ SELECT T.anzahl_kollektivfahrzeuge
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
-    AND S.name = "Wettingen"
+    AND S.name IN ('Wettingen', 'Wettingen (AG)')
     AND T.jahr = 2022;
 
 -- Wie viele Anhänger gab es im Jahr 2000 in Suhr, Aargau?
@@ -192,5 +192,5 @@ SELECT T.anzahl_anhaenger
 FROM aargau_privatverkehr_bestand_nach_fahrzeugarten AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
-    AND S.name = "Suhr"
+    AND S.name IN ('Suhr', 'Suhr (AG)')
     AND T.jahr = 2000;
