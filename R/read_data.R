@@ -12,8 +12,6 @@
 #'
 #' @export
 download_data <- function(ds) {
-  ds <- get_read_path(ds)
-
   # streams the data and appends it to the ds in $data
   ds <- read_data(ds)
 
@@ -40,12 +38,7 @@ read_data <- function(ds) UseMethod("read_data")
 #'
 read_data.default <- function(ds) {
   # Get the file extension from the URL or the given info from the excel sheet
-  if (!is.na(ds$format)) {
-    file_ext <- ds$format
-  } else {
-    file_ext <- tools::file_ext(ds$read_path)
-  }
-
+  file_ext <- ds$format
   temp_file <- paste0("temp.", file_ext)
 
   # check which system is used to set the download method
@@ -56,18 +49,20 @@ read_data.default <- function(ds) {
   }
 
   # Download the file
-
-
   withr::with_envvar(
     new = c("no_proxy" = "dam-api.bfs.admin.ch"),
-    code = download.file(url = ds$read_path, destfile = temp_file, method = download_method, mode = "wb")
+    code = download.file(
+      url = ds$download_url,
+      destfile = temp_file,
+      method = download_method,
+      mode = "wb"
+    )
   )
   # Import the data
-  ds$data <- rio::import(temp_file, which = ds$sheet, header = TRUE)
-
+  ds$data <- rio::import(temp_file)
+  
   # Remove the temporary file
   file.remove(temp_file)
-
   return(ds)
 }
 
@@ -89,15 +84,21 @@ read_data.default <- function(ds) {
 #' d <- pxweb::pxweb_interactive("https://www.pxweb.bfs.admin.ch/api/v1/de/px-x-0103010000_102")
 #'
 read_data.px <- function(ds) {
+  print("in default px read_data ")
   if (is.na(ds$size) || ds$size != "large") {
+    print(ds)
     ds$data <- BFS::bfs_get_data(
-      number_bfs = ds$read_path,
+      number_bfs = ds$px_id,
       language = ds$lang
     )
   } else {
     tmp <- tempfile(fileext = ".px")
     options(timeout = 300)
-    download.file(ds$read_path, tmp)
+    ds$download_url <- paste0(
+      "https://www.pxweb.bfs.admin.ch/DownloadFile.aspx?file=",
+      ds$px_id
+    )
+    download.file(ds$download_url, tmp)
     df <- pxRRead::scan_px_file(
       tmp,
       locale = ds$lang,
@@ -114,7 +115,7 @@ read_data.px <- function(ds) {
 #'
 read_data.rdf <- function(ds) {
   response <- httr::POST(
-    ds$base_url,
+    ds$query_url,
     body = list(query = ds$query),
     encode = "form",
     httr::add_headers(.headers = c("Accept" = "text/csv"))
@@ -126,7 +127,7 @@ read_data.rdf <- function(ds) {
 #' Method to retrieve a JSON dataset and convert it to a tibble
 #'
 read_data.json <- function(ds) {
-  resp <- httr::GET(ds$read_path)
+  resp <- httr::GET(ds$download_url)
   parsed <- httr::content(resp, as = "parsed")
 
   # Extract list of values and replace "..." with NA

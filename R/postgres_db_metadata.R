@@ -57,7 +57,8 @@ list_tables_with_metadata_in_statbot_db <- function() {
   metadata <- get_metadata_from_postgres()
   tables_with_table_metadata <- metadata$metadata_tables$name
   tables_with_column_metadata <- unique(metadata$metadata_table_columns$table_name)
-  tables_with_metadata <- c(tables_with_table_metadata, tables_with_column_metadata)
+  tables_with_metadata <- c(tables_with_table_metadata, tables_with_column_metadata) %>%
+    unique()
   return(tables_with_metadata)
 }
 
