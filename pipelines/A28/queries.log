@@ -1,8 +1,8 @@
-[1] "Environment: LOCAL, Time: 2023-10-06 18:19:33"
+[1] "Environment: LOCAL, Time: 2023-10-09 10:25:55"
 
 Query Nr. 1
 -- How many people were employed in the primary sector in Uttwil, TG in 2015?
-SELECT T.beschaftigte_personen FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = "Uttwil"     AND T.jahr = 2015     AND T.sektor = 1;
+SELECT T.beschaftigte_personen FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND (S.name = "Uttwil" OR S.name = "Uttwil (TG)")     AND T.jahr = 2015     AND T.sektor = 1;
  beschaftigte_personen
                     50
 
@@ -25,7 +25,7 @@ SELECT     S.name,     (         100.0 * SUM(CASE WHEN T.sektor = 2 THEN T.besch
 
 Query Nr. 4
 -- How many people were employed in the secondary sector in the municipality of Frauenfeld in Canton Thurgau in 2015?
-SELECT T.beschaftigte_personen FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = "Frauenfeld"     AND T.jahr = 2015     AND T.sektor = 2;
+SELECT T.beschaftigte_personen FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND (S.name = "Frauenfeld" OR S.name = "Frauenfeld (TG)")     AND T.jahr = 2015     AND T.sektor = 2;
  beschaftigte_personen
                   4551
 
@@ -47,7 +47,7 @@ SELECT T.jahr, T.sektor, SUM(T.beschaftigte_personen) FROM thurgau_beschaftigte_
  2020      3                        91116
 
 Query Nr. 6
--- In which municipality in Thurgau did the proportion of employees grow the most (in percentage) between 2015 and 2020?
+-- In which municipality in Thurgau did the number of employees grow the most between 2015 and 2020?
 SELECT S.name FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr IN (2015, 2020) GROUP BY S.name ORDER BY (     100.0 * SUM(CASE WHEN T.jahr = 2020 THEN T.beschaftigte_personen ELSE 0 END) /     SUM(CASE WHEN T.jahr = 2015 THEN T.beschaftigte_personen ELSE 0 END) ) DESC LIMIT 1;
      name
  Bussnang
