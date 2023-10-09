@@ -59,12 +59,8 @@ read_data.default <- function(ds) {
     )
   )
   # Import the data
-  if (ds$format == "xlsx") {
-    ds$data <- rio::import(temp_file)
-  } else {
-    ds$data <- rio::import(temp_file, which = ds$sheet, header = TRUE)
-  }
-
+  ds$data <- rio::import(temp_file)
+  
   # Remove the temporary file
   file.remove(temp_file)
   return(ds)
