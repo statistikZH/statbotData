@@ -21,7 +21,7 @@ FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
     AND T.jahr=2021
-    AND T.nationalitat="Ausland";
+    AND T.nationalitat='Ausland';
 
 -- Welche 5 Gemeinden hatten 2008 den höchsten Anteil an Reformierten im Kanton Basel-Landschaft?
 SELECT S.name, CAST(SUM(T.anzahl_evangelisch_reformiert) AS FLOAT) / SUM(T.gesamt_anzahl_personen) as proportion_protestants_2008
@@ -47,7 +47,7 @@ FROM (
     JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
     WHERE S.municipal=TRUE
         AND T.jahr=2018
-        AND T.nationalitat="Schweiz"
+        AND T.nationalitat='Schweiz'
     GROUP BY S.name
 );
 
@@ -56,7 +56,7 @@ SELECT T.jahr, SUM(T.gesamt_anzahl_personen) as population
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
-    AND S.name IN ("Pratteln", "Pratteln (BL)")
+    AND S.name IN ('Pratteln', 'Pratteln (BL)')
     AND T.jahr>=2017
     AND T.jahr<=2019
 GROUP BY T.jahr
@@ -64,7 +64,7 @@ ORDER BY T.jahr ASC;
 
 
 -- Welches waren im Jahr 2022 die 3 Gemeinden mit dem höchsten Ausländeranteil im Kanton Basel-Landschaft?
-SELECT S.name, SUM(CASE WHEN T.nationalitat="Ausland" THEN T.gesamt_anzahl_personen ELSE 0 END) / CAST(SUM(T.gesamt_anzahl_personen) AS FLOAT) AS proportion_foreign_residents
+SELECT S.name, SUM(CASE WHEN T.nationalitat='Ausland' THEN T.gesamt_anzahl_personen ELSE 0 END) / CAST(SUM(T.gesamt_anzahl_personen) AS FLOAT) AS proportion_foreign_residents
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
@@ -78,17 +78,17 @@ SELECT T.jahr, T.anzahl_romisch_katholisch
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
-    AND S.name IN ("Binningen", "Binningen (BL)")
+    AND S.name IN ('Binningen', 'Binningen (BL)')
     AND T.jahr=2005
-    AND T.nationalitat="Schweiz";
+    AND T.nationalitat='Schweiz';
 
 -- Welcher Anteil der ausländischen Bevölkerung von Ettingen, BL, hatte 2011 eine unbekannte Konfession?
 SELECT SUM(CAST(T.anzahl_unbekannt_konfession AS FLOAT)) / SUM(T.gesamt_anzahl_personen) AS proportion_unknown_religion_ettingen_2011
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
-    AND S.name IN ("Ettingen", "Ettingen (BL)")
-    AND T.nationalitat="Ausland"
+    AND S.name IN ('Ettingen', 'Ettingen (BL)')
+    AND T.nationalitat='Ausland'
     AND T.jahr=2011;
 
 -- Zwischen den Gemeinden Arlesheim und Birsfelden im Kanton Basel-Landschaft, welche hatte 2003 einen höheren Anteil an Protestanten?
@@ -96,7 +96,7 @@ SELECT S.name, CAST(SUM(T.anzahl_evangelisch_reformiert) AS FLOAT) / SUM(T.gesam
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
-    AND S.name IN ("Ettingen", "Ettingen (BL)", "Birsfelden", "Birsfelden (BL)")
+    AND S.name IN ('Ettingen', 'Ettingen (BL)', 'Birsfelden', 'Birsfelden (BL)')
     AND T.jahr=2003
 GROUP BY S.name
 ORDER BY proportion_protestants_2003 DESC;
@@ -106,7 +106,7 @@ SELECT T.jahr, SUM(T.anzahl_evangelisch_reformiert) as number_reformed_evangelic
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
-    AND S.name IN ("Allschwil", "Allschwil (BL)")
+    AND S.name IN ('Allschwil', 'Allschwil (BL)')
     AND T.jahr>=2010
     AND T.jahr<=2015
 GROUP BY T.jahr;
