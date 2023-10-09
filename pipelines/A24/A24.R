@@ -72,23 +72,10 @@ ds$postgres_export <- ds$postgres_export %>%
 colnames(ds$postgres_export)
 
 # -------------------------------------------------------------------------
-# Step: Testrun queries on sqllite
+# Step: Upload dataset to postgres, test run queries, generate a sample and
+# metadata files.
 #   input:  ds$postgres_export, ds$dir/queries.sql
 #   output: ds$dir/queries.log
-# -------------------------------------------------------------------------
-
-statbotData::testrun_queries(
-  ds$postgres_export,
-  ds$dir,
-  ds$name
-)
-
-# -------------------------------------------------------------------------
-# Step: Write metadata tables
-#   input:  ds$postgres_export
-#   output: ds$dir/metadata_tables.csv
-#           ds$dir/metadata_table_columns.csv
-#           ds$dir/sample.csv
 # -------------------------------------------------------------------------
 
 # create the table in postgres

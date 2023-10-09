@@ -1,28 +1,29 @@
+[1] "Environment: REMOTE, Time: 2023-10-09 13:48:31"
 
 Query Nr. 1
 -- Welche Gemeinde in Basel-Landschaft hatte 1995 den höchsten Stromverbrauch?
-SELECT S.name, T.endverbrauch_elektrizitaet_mwh FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=1995 ORDER BY endverbrauch_elektrizitaet_mwh DESC LIMIT 1;
-     name endverbrauch_elektrizitaet_mwh
+SELECT S.name AS gemeinde, T.endverbrauch_elektrizitaet_mwh FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=1995 ORDER BY endverbrauch_elektrizitaet_mwh DESC LIMIT 1;
+ gemeinde endverbrauch_elektrizitaet_mwh
  Pratteln                         285244
 
 Query Nr. 2
 -- Zeigen Sie mir den Gesamtstromverbrauch der Gemeinden in Basel-Landschaft im Jahr 2000 gegenüber 2020.
-SELECT T.jahr , SUM(T.endverbrauch_elektrizitaet_mwh) as gesamt_endverbrauch_elektrizitaet_mwh_2020 FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr IN (2000, 2020) GROUP BY T.jahr ORDER BY gesamt_endverbrauch_elektrizitaet_mwh_2020 DESC;
+SELECT T.jahr , SUM(T.endverbrauch_elektrizitaet_mwh) as gesamt_endverbrauch_elektrizitaet_mwh_2020 FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr IN (2000, 2020) GROUP BY T.jahr ORDER BY gesamt_endverbrauch_elektrizitaet_mwh_2020 DESC;
  jahr gesamt_endverbrauch_elektrizitaet_mwh_2020
  2020                                    1881166
  2000                                    1874650
 
 Query Nr. 3
 -- Welche drei Gemeinden in Basel-Landschaft hatten im Jahr 2012 den geringsten Stromverbrauch?
-SELECT S.name, T.endverbrauch_elektrizitaet_mwh FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2012 ORDER BY endverbrauch_elektrizitaet_mwh ASC LIMIT 3;
-      name endverbrauch_elektrizitaet_mwh
+SELECT S.name AS gemeinde, T.endverbrauch_elektrizitaet_mwh FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2012 ORDER BY endverbrauch_elektrizitaet_mwh ASC LIMIT 3;
+  gemeinde endverbrauch_elektrizitaet_mwh
  Lupsingen                            844
  Dittingen                           1466
   Tenniken                           1477
 
 Query Nr. 4
 -- Wie hoch war der durchschnittliche jährliche Stromverbrauch der Gemeinden im Kanton Basel-Landschaft in den Jahren 2000 bis 2020?
-SELECT T.jahr , AVG(T.endverbrauch_elektrizitaet_mwh) as mittlerer_endverbrauch_elektrizitaet_mwh FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr >= 2000     AND T.jahr <= 2020 GROUP BY T.jahr ORDER BY T.jahr DESC;
+SELECT T.jahr , AVG(T.endverbrauch_elektrizitaet_mwh) as mittlerer_endverbrauch_elektrizitaet_mwh FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr >= 2000     AND T.jahr <= 2020 GROUP BY T.jahr ORDER BY T.jahr DESC;
  jahr mittlerer_endverbrauch_elektrizitaet_mwh
  2020                                 21874.02
  2018                                 22644.57
@@ -37,26 +38,26 @@ SELECT T.jahr , AVG(T.endverbrauch_elektrizitaet_mwh) as mittlerer_endverbrauch_
 
 Query Nr. 5
 -- Wie hoch war der jährliche Stromverbrauch von Blauen im Kanton Basel-Landschaft vor dem Jahr 2000?
-SELECT T.jahr , T.endverbrauch_elektrizitaet_mwh as endverbrauch_elektrizitaet_mwh_blauen FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr < 2000     AND S.name="Blauen" ORDER BY T.jahr DESC;
+SELECT T.jahr , T.endverbrauch_elektrizitaet_mwh as endverbrauch_elektrizitaet_mwh_blauen FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr < 2000     AND S.name IN ('Blauen', 'Blauen (BL)') ORDER BY T.jahr DESC;
  jahr endverbrauch_elektrizitaet_mwh_blauen
  1995                                  2621
  1990                                  2175
 
 Query Nr. 6
 -- Welche der Gemeinden Bottmingen und Birsfelden in Basel-Landschaft hatte 2018 den höchsten Stromverbrauch?
-SELECT S.name, T.endverbrauch_elektrizitaet_mwh as endverbrauch_elektrizitaet_mwh_2018 FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2018     AND S.name IN ("Blauen", "Birsfelden") ORDER BY T.endverbrauch_elektrizitaet_mwh DESC;
-       name endverbrauch_elektrizitaet_mwh_2018
+SELECT S.name AS gemeinde, T.endverbrauch_elektrizitaet_mwh as endverbrauch_elektrizitaet_mwh_2018 FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND T.jahr=2018     AND S.name IN ('Blauen', 'Blauen (BL)', 'Birsfelden', 'Birsfelden (BL)') ORDER BY T.endverbrauch_elektrizitaet_mwh DESC;
+   gemeinde endverbrauch_elektrizitaet_mwh_2018
  Birsfelden                             53562.8
      Blauen                              2663.6
 
 Query Nr. 7
 -- In welchem Jahr hatte Muttenz in Basel-Landschaft den höchsten Stromverbrauch?
-SELECT T.jahr, T.endverbrauch_elektrizitaet_mwh FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name="Muttenz" ORDER BY T.endverbrauch_elektrizitaet_mwh DESC LIMIT 1;
+SELECT T.jahr, T.endverbrauch_elektrizitaet_mwh FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE     AND S.name IN ('Muttenz', 'Muttenz (BL)') ORDER BY T.endverbrauch_elektrizitaet_mwh DESC LIMIT 1;
  jahr endverbrauch_elektrizitaet_mwh
  2014                       337968.1
 
 Query Nr. 8
 -- Wie hoch war der höchste jemals gemessene jährliche Stromverbrauch in einer Gemeinde in Basel-Landschaft? Geben Sie auch den Namen der Gemeinde an.
-SELECT T.jahr, S.name, T.endverbrauch_elektrizitaet_mwh FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr_seit_1990 as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE ORDER BY T.endverbrauch_elektrizitaet_mwh DESC LIMIT 1;
- jahr     name endverbrauch_elektrizitaet_mwh
+SELECT T.jahr, S.name AS gemeinde, T.endverbrauch_elektrizitaet_mwh FROM basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal=TRUE ORDER BY T.endverbrauch_elektrizitaet_mwh DESC LIMIT 1;
+ jahr gemeinde endverbrauch_elektrizitaet_mwh
  2010 Pratteln                       366493.6
