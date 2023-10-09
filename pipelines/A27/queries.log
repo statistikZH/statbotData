@@ -1,4 +1,4 @@
-[1] "Environment: LOCAL, Time: 2023-10-06 14:13:11"
+[1] "Environment: LOCAL, Time: 2023-10-09 10:33:20"
 
 Query Nr. 1
 -- Wie setzt sich die erneuerbare Energieproduktion im Kanton Thurgau seit 2018 jährlich zusammen?
@@ -21,7 +21,7 @@ SELECT     T.jahr,     SUM(biogasanlagen_abwasser_gwh),     SUM(biogasanlagen_in
 
 Query Nr. 2
 -- Wie viel Prozent der erneuerbaren Energie in Frauenfeld TG wurde im Jahr 2021 durch Solarenergie erzeugt?
-SELECT     100 * photovoltaik_gwh/total_gwh AS photovoltaik_prozent_frauenfeld_2021 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2021     AND S.name LIKE 'Frauenfeld%';
+SELECT     100 * photovoltaik_gwh/total_gwh AS photovoltaik_prozent_frauenfeld_2021 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2021     AND S.name IN ('Frauenfeld', 'Frauenfeld (TG)');
  photovoltaik_prozent_frauenfeld_2021
                              71.48511
 
@@ -63,7 +63,7 @@ SELECT     S.name,     (         100.0 * SUM( CASE WHEN T.jahr = 2021 THEN T.tot
 
 Query Nr. 8
 -- Wie viele MWh an erneuerbarer Energie hat Amriswil im Kanton Thurgau von 2016 bis 2020 insgesamt produziert?
-SELECT SUM(T.total_gwh) * 1000 AS total_mwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name LIKE "Amriswil%"     AND T.jahr >= 2016     AND T.jahr <= 2020;
+SELECT SUM(T.total_gwh) * 1000 AS total_mwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name IN ("Amriswil", "Amriswil (TG)")     AND T.jahr >= 2016     AND T.jahr <= 2020;
  total_mwh
      19962
 
@@ -97,7 +97,7 @@ SELECT S.name FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOI
 
 Query Nr. 13
 -- Zeigen Sie mir die Produktion von Energie aus Sonne und Wind in Berg, TG im Jahr 2018.
-SELECT T.photovoltaik_gwh, T.wind_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name LIKE 'Berg%'     AND T.jahr = 2018;
+SELECT T.photovoltaik_gwh, T.wind_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name IN ('Berg', 'Berg (TG)')     AND T.jahr = 2018;
  photovoltaik_gwh wind_gwh
             1.995    0.004
 
@@ -117,7 +117,7 @@ SELECT 100 * SUM(CASE WHEN T.total_gwh_2015 > T.total_gwh_2021 THEN 1 ELSE 0 END
 
 Query Nr. 16
 -- Zeigen Sie mir die Produktion von Energie aus landwirtschaftlichem Biogas in Fischingen, Kanton Thurgau, im Jahr 2018.
-SELECT T.biogasanlagen_landwirtschaft_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE T.jahr = 2018     AND S.name LIKE 'Fischingen%';
+SELECT T.biogasanlagen_landwirtschaft_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE T.jahr = 2018     AND S.name IN ('Fischingen', 'Fischingen (TG)');
  biogasanlagen_landwirtschaft_gwh
                              0.29
 
@@ -129,7 +129,7 @@ SELECT SUM(T.total_gwh) AS total_gwh FROM thurgau_erneuerbare_elektrizitatsprodu
 
 Query Nr. 18
 -- Wie hoch war die Produktion von Solarstrom in Roggwil und Langrickenbach TG in den Jahren 2019 und 2020?
-SELECT S.name, T.jahr, T.photovoltaik_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE (S.name LIKE 'Roggwil%' OR S.name LIKE 'Langrickenbach%')     AND T.jahr IN (2019, 2020) ORDER BY S.name, T.jahr;
+SELECT S.name, T.jahr, T.photovoltaik_gwh FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name IN ('Roggwil', 'Roggwil (TG)', 'Langrickenbach', 'Langrickenbach (TG)')     AND T.jahr IN (2019, 2020) ORDER BY S.name, T.jahr;
            name jahr photovoltaik_gwh
  Langrickenbach 2019            0.809
  Langrickenbach 2020            1.008

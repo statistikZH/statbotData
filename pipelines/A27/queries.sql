@@ -23,7 +23,7 @@ FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
     AND T.jahr = 2021
-    AND S.name LIKE 'Frauenfeld%';
+    AND S.name IN ('Frauenfeld', 'Frauenfeld (TG)');
 
 -- Wie viele Gemeinden im Kanton Thurgau produzierten im Jahr 2019 Energie aus Wind?
 SELECT
@@ -79,7 +79,7 @@ SELECT SUM(T.total_gwh) * 1000 AS total_mwh
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
-    AND S.name LIKE "Amriswil%"
+    AND S.name IN ("Amriswil", "Amriswil (TG)")
     AND T.jahr >= 2016
     AND T.jahr <= 2020;
 
@@ -123,7 +123,7 @@ SELECT T.photovoltaik_gwh, T.wind_gwh
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
-    AND S.name LIKE 'Berg%'
+    AND S.name IN ('Berg', 'Berg (TG)')
     AND T.jahr = 2018;
 
 -- Welche 3 Thurgauer Gemeinden hatten im Jahr 2019 den höchsten Anteil an Wasserkraft an der gesamten erneuerbaren Energieproduktion und wie hoch war dieser?
@@ -156,7 +156,7 @@ SELECT T.biogasanlagen_landwirtschaft_gwh
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE T.jahr = 2018
-    AND S.name LIKE 'Fischingen%';
+    AND S.name IN ('Fischingen', 'Fischingen (TG)');
 
 -- Wie viel erneuerbare Energie hat der Kanton Thurgau im Zeitraum 2017-2021 insgesamt produziert?
 SELECT SUM(T.total_gwh) AS total_gwh
@@ -168,6 +168,6 @@ WHERE T.jahr >= 2017
 SELECT S.name, T.jahr, T.photovoltaik_gwh
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
-WHERE (S.name LIKE 'Roggwil%' OR S.name LIKE 'Langrickenbach%')
+WHERE S.name IN ('Roggwil', 'Roggwil (TG)', 'Langrickenbach', 'Langrickenbach (TG)')
     AND T.jahr IN (2019, 2020)
 ORDER BY S.name, T.jahr;
