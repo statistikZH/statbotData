@@ -64,7 +64,7 @@ ORDER BY T.jahr ASC;
 
 
 -- Welches waren im Jahr 2022 die 3 Gemeinden mit dem höchsten Ausländeranteil im Kanton Basel-Landschaft?
-SELECT S.name, SUM(CASE WHEN T.nationalitat='Ausland' THEN T.gesamt_anzahl_personen ELSE 0 END) / CAST(SUM(T.gesamt_anzahl_personen) AS FLOAT) AS proportion_foreign_residents
+SELECT S.name AS gemeinde, SUM(CASE WHEN T.nationalitat='Ausland' THEN T.gesamt_anzahl_personen ELSE 0 END) / CAST(SUM(T.gesamt_anzahl_personen) AS FLOAT) AS proportion_foreign_residents
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
@@ -92,7 +92,7 @@ WHERE S.municipal=TRUE
     AND T.jahr=2011;
 
 -- Zwischen den Gemeinden Arlesheim und Birsfelden im Kanton Basel-Landschaft, welche hatte 2003 einen höheren Anteil an Protestanten?
-SELECT S.name, CAST(SUM(T.anzahl_evangelisch_reformiert) AS FLOAT) / SUM(T.gesamt_anzahl_personen) as proportion_protestants_2003
+SELECT S.name AS gemeinde, CAST(SUM(T.anzahl_evangelisch_reformiert) AS FLOAT) / SUM(T.gesamt_anzahl_personen) as proportion_protestants_2003
 FROM basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
