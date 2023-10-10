@@ -1,5 +1,32 @@
 name;table_name;data_type;title;title_en;example_values
-farmholding_system,employees_farmholdings_agricultural_area_livestock_per_canton,categorical,"A farm is organic if part or all of its utilised agricultural area is certified organic","Organic farming, Conventional farming, Not defined, Farmholding system - total"
-farmholdings,employees_farmholdings_agricultural_area_livestock_per_canton,numeric,"Number of farmholdings. A farmholding is an autonomous agricultural business that produces crop and/or livestock throughout the entire year. It must have at least one of the following: 1 ha of utilised agricultural area (UAA), 30 ares of special crops, 10 ares of protected crops or 8 sows, 80 fattening pigs, 80 fattening pig places or 300 poultry units",
-family_employees,employees_farmholdings_agricultural_area_livestock_per_canton,numeric,"The farm manager, his/her immediate family, i.e. father, mother, brothers, sisters and children aged 15 and over who work on the farm.",
-utilised_agricultural_area_in_hectares,employees_farmholdings_agricultural_area_livestock_per_canton,numeric,"Total area taken up by arable land, permanent grassland, permanent crops and kitchen gardens used by the holding, regardless of the type of tenure or of whether it is used as a part of common land",
+farmholding_system;employees_farmholdings_agricultural_area_livestock_per_canton;categorical;;;Farmholding system - total,Organic farming,Conventional farming
+farmholdings;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;48344,48864,49363
+employees_total;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;149578,150231,149521
+full_time_employees_75_percent_or_more;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;66349,66453,66333
+part_time_employees_50_75_percent;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;30083,30038,29920
+part_time_employees_2_less_than_50_percent;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;53146,53740,53268
+employees_men;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;94706,95486,95252
+employees_women;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;54872,54745,54269
+employees_women_manager_label;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;3472,3362,3233
+employees_swiss;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;131072,131955,131581
+employees_foreign_nationals;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;18506,18276,17940
+family_employees;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;112047,113317,113847
+beef_cattle_and_cows_farm;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;32581,33091,33662
+horse_and_other_equine_farm;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;11123,11196,11227
+sheep_farm;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;7969,7977,8016
+goat_farm;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;6559,6592,6355
+pig_farms;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;5467,5561,5600
+poultry_farm;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;14876,14434,13485
+farms_with_other_animals;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;6138,6101,6000
+utilised_agricultural_area_in_hectares;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;1042013.785,1042053.004,1044033.706
+arable_land_in_hectares;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;276114.0758,276496.4816,274448.9291
+grassland_in_hectares;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;726091.9808,725854.0912,730039.4586
+permanent_crops_in_hectares;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;24040.2951,24285.0786,24061.4945
+other_utilised_agricultural_area_in_hectares;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;15767.4333,15417.3522,15483.8239
+livestock_beef_cattle_and_cows;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;1525270,1513701,1515123
+livestock_horses_and_other_equines;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;80950,80096,80072
+livestock_sheep;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;355893,349112,343528
+livestock_goats;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;82313,82045,79562
+livestock_pigs;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;1372772,1366359,1348306
+livestock_poultry;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;13219724,12676402,12541044
+livestock_other_animals;employees_farmholdings_agricultural_area_livestock_per_canton;numeric;;;126789,137616,131876
