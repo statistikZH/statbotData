@@ -1,10 +1,10 @@
 data_indicator,status,name,format,size,encoding,px_id,publisher,organization,access_url,query_url,download_url,lang
-A1,approved,medizinisch_technische_infrastruktur,px,,,px-x-1404010100_101,fso,bfs,,,,de
+A1,uploaded,medizinisch_technische_infrastruktur,px,,,px-x-1404010100_101,fso,bfs,,,,de
 A3,approved,treibhausgasemission_in_mio_tonnen,xlsx,,,,fso,bfs,,,https://dam-api.bfs.admin.ch/hub/api/dam/assets/23567511/master,en
 A4,uploaded,energiebilanz_schweiz_in_tera_joule,csv,,,,fso,opendata,,,https://www.uvek-gis.admin.ch/BFE/ogd/115/ogd115_gest_bilanz.csv,de
 A5,uploaded,ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit,px,,,px-x-1305000000_101,fso,bfs,,,,de
 A6,uploaded,abstimmungsvorlagen_seit_1971,px,,,px-x-1703010000_103,fso,bfs,,,,de
-A7,approved,arztpraxen_ambulante_zentren,px,,,px-x-1404050000_103,fso,bfs,,,,de
+A7,uploaded,arztpraxen_ambulante_zentren,px,,,px-x-1404050000_103,fso,bfs,,,,de
 A8,uploaded,nationalratswahlen,px,,,px-x-1702020000_104,fso,bfs,,,,de
 A10,uploaded,criminal_offences_registered_by_swiss_criminal_code,px,,UTF-8,px-x-1903020100_101,fso,bfs,,,,en
 S1,uploaded,median_strompreis_per_kanton,rdf,,,NA,fso,lindas,,https://energy.ld.admin.ch/query,,de
