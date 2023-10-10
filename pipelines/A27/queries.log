@@ -1,4 +1,4 @@
-[1] "Environment: REMOTE, Time: 2023-10-09 17:38:10"
+[1] "Environment: REMOTE, Time: 2023-10-10 08:43:07"
 
 Query Nr. 1
 -- Wie setzt sich die erneuerbare Energieproduktion im Kanton Thurgau seit 2018 jährlich zusammen?
@@ -6,8 +6,8 @@ SELECT     T.jahr,     SUM(biogasanlagen_abwasser_gwh),     SUM(biogasanlagen_in
  jahr   sum   sum..3 sum..4 sum..5   sum..6  sum..7 sum..8 sum..9  sum..10
  2018 7.045 1.826000  7.983  3.072 45.76800 113.017 32.147  0.004 210.8620
  2019 6.485 1.326000  9.791  2.552 55.34500 126.267 46.327  0.006 248.0990
- 2020 7.458 1.819000 12.213  2.570 57.31700 146.075 40.544  0.005 268.0010
  2021 7.440 0.651573 12.333  3.270 49.98273 170.916 48.561  0.005 293.1593
+ 2020 7.458 1.819000 12.213  2.570 57.31700 146.075 40.544  0.005 268.0010
 
 Query Nr. 2
 -- Wie viel Prozent der erneuerbaren Energie in Frauenfeld TG wurde im Jahr 2021 durch Solarenergie erzeugt?
@@ -73,9 +73,13 @@ SELECT S.name AS gemeinde FROM thurgau_erneuerbare_elektrizitatsproduktion_gemei
 
 Query Nr. 11
 -- Wie viele GWh Energie wurden im Jahr 2015 im Kanton Thurgau aus den einzelnen Biogasanlagentypen produziert?
-SELECT SUM(biogasanlagen_abwasser_gwh), SUM(biogasanlagen_industrie_gwh), SUM(biogasanlagen_landwirtschaft_gwh) FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2015;
-   sum sum..2 sum..3
- 4.816   2.27  3.656
+SELECT     SUM(biogasanlagen_abwasser_gwh) AS biogasanlagen_abwasser_gwh_kanton_thurgau,     SUM(biogasanlagen_industrie_gwh) AS biogasanlagen_industrie_gwh_kanton_thurgau,     SUM(biogasanlagen_landwirtschaft_gwh) AS biogasanlagen_landwirtschaft_gwh_kanton_thurgau FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND T.jahr = 2015;
+ biogasanlagen_abwasser_gwh_kanton_thurgau
+                                     4.816
+ biogasanlagen_industrie_gwh_kanton_thurgau
+                                       2.27
+ biogasanlagen_landwirtschaft_gwh_kanton_thurgau
+                                           3.656
 
 Query Nr. 12
 -- Welche war die kleinste Gemeinde (in Einwohnern), die im Jahr 2021 im Kanton Thurgau Energie aus der Kehrichtverbrennung produzierte?

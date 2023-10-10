@@ -102,7 +102,10 @@ ORDER BY T.biomasse_holz_gwh DESC
 LIMIT 2;
 
 -- Wie viele GWh Energie wurden im Jahr 2015 im Kanton Thurgau aus den einzelnen Biogasanlagentypen produziert?
-SELECT SUM(biogasanlagen_abwasser_gwh), SUM(biogasanlagen_industrie_gwh), SUM(biogasanlagen_landwirtschaft_gwh)
+SELECT
+    SUM(biogasanlagen_abwasser_gwh) AS biogasanlagen_abwasser_gwh_kanton_thurgau,
+    SUM(biogasanlagen_industrie_gwh) AS biogasanlagen_industrie_gwh_kanton_thurgau,
+    SUM(biogasanlagen_landwirtschaft_gwh) AS biogasanlagen_landwirtschaft_gwh_kanton_thurgau
 FROM thurgau_erneuerbare_elektrizitatsproduktion_gemeinde AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
