@@ -23,7 +23,7 @@ generate_metadata_templates <- function(ds) {
   # metadata_tables entry: if possible load metadata
   table_description <- ""
   if (ds$organization == "bfs" && ds$format == "px") {
-    bfs_metadata <- BFS::bfs_get_metadata(number_bfs = ds$sheet, language = ds$lang)
+    bfs_metadata <- BFS::bfs_get_metadata(number_bfs = ds$px_id, language = ds$lang)
     table_description <- unique(bfs_metadata$title)
   }
   metadata_tables <- tibble::tibble(
