@@ -1,0 +1,6 @@
+name;table_name;data_type;title;title_en;example_values
+function_cofog_narrow;government_expenditure_by_function_cofog;categorical;Narrow function of govenrment by COFOG (Classification of the functions of government) of the United Nations;Narrow function of govenrment by COFOG (Classification of the functions of government) of the United Nations;"Foreign economic aid","General services","Executive and legislative organs, financial and fiscal affairs, external affairs"
+function_cofog_broad;government_expenditure_by_function_cofog;categorical;Broad function of govenrment by COFOG (Classification of the functions of government) of the United Nations;Broad function of govenrment by COFOG (Classification of the functions of government) of the United Nations;"General public services","Defence","Public order and safety"
+institutional_sector;government_expenditure_by_function_cofog;categorical;Institutional Sector;Institutional Sector;"Government",   "Confederation","Canton","Commune","Social security funds"
+expenses_in_million_chf;government_expenditure_by_function_cofog;numeric;Expenses in million CHF;Expenses in million CHF;2167,2341,2599
+percentage_of_total_expenses;government_expenditure_by_function_cofog;numeric;percentage of total expenses;percentage of total expenses;1.1,1.2,2.6
