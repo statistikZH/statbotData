@@ -1,7 +1,5 @@
 # -------------------------------------------------------------------------
-# Steps: Get the data
-# input: data/const/statbot_input_data.csv
-# output: ds$data, ds$dir
+# Step 0: Get and aggregate the data
 # -------------------------------------------------------------------------
 
 ds <- statbotData::create_dataset("A29")
@@ -10,53 +8,69 @@ ds <- statbotData::create_dataset("A29")
 # with only the year changing
 
 agg_month <- function(df) {
-  # TODO: Pivot on Parameter
-  # TODO: Convert timestamp to datetime -> group by month
-  # TODO: summarize for each parameter
-  agg <- df
+  # Only measurements from Stampfenbachstrasse are kept
+  # (only station available for all years)
+  # Exclude parameters that represent a threshold/max value
+  # Widen table to have 1 column per parameter
+  # Truncate timestamps to month (yyyy-mm)
+  # Compute monthly mean for each parameter
+  agg <- df %>%
+    janitor::clean_names() %>%
+    dplyr::filter(
+      standort == "Zch_Stampfenbachstrasse",
+      !parameter %in% c("O3_nb_h1>120", "O3_max_h1")
+    ) %>%
+    dplyr::select(-intervall, -status) %>%
+    tidyr::pivot_wider(
+      names_from = c(parameter, einheit),
+      values_from = wert,
+      names_glue = "{parameter}_{einheit}"
+    ) %>%
+    janitor::clean_names(replace = janitor:::mu_to_u) %>%
+    dplyr::mutate(datum = substr(datum, 1, 7)) %>%
+    dplyr::group_by(datum) %>%
+    dplyr::summarise(across(is.numeric, ~ mean(.x, na.rm = T))) %>%
+    dplyr::mutate(across(everything(), ~ ifelse(is.nan(.), NA, .)))
   return(agg)
 }
 
-ds
+# Download + aggregate data from each year
+# and collect all years in a single tibble
+full_data <- tibble::tibble()
 for (year in 1983:2023) {
-  ds$download_url <- stringr::str_replace(ds$download_url, "[0-9]{4}", as.character(year))
-  temp <- statbotData::download_data(ds)
+  # Year is substituted in URL
+  ds$download_url <- stringr::str_replace(
+    ds$download_url,
+    "[0-9]{4}",
+    as.character(year)
+  )
+  # Daily data for a single year aggregated by month
+  temp <- statbotData::download_data(ds)$data
+  temp <- agg_month(temp)
+  # Monthly data for a single year appended to the full dataset
+  full_data <- dplyr::bind_rows(full_data, temp)
 }
+# Overwrite ds$data with the full dataset
+ds$data <- full_data
 
 # -------------------------------------------------------------------------
-# Step 1 rename columns + clean values
+# Step 1: Prepare rename columns
 # -------------------------------------------------------------------------
 
-# Missing values are denoted as ".", here we can discard them
 ds$postgres_export <- ds$data %>%
-  janitor::clean_names() %>%
-  dplyr::select(-bfs_nr_gemeinde) %>%
-  dplyr::rename(beschaftigte_personen = beschaeftigte_personen) %>%
-  dplyr::mutate(beschaftigte_personen = as.numeric(beschaftigte_personen)) %>%
-  dplyr::filter(!is.na(beschaftigte_personen))
+  dplyr::mutate(
+    jahr = as.integer(substr(datum, 1, 4)),
+    monat = as.integer(substr(datum, 6, 7))
+  ) %>%
+  dplyr::select(-datum)
+
 # -------------------------------------------------------------------------
 # Step 2 map to spatial units
 # -------------------------------------------------------------------------
 
-# Merge with spatialunits to get a uid for each municipality
-spatial_mapping <- ds$postgres_export %>%
-  dplyr::select(gemeinde, jahr) %>%
-  dplyr::distinct(gemeinde, jahr) %>%
-  dplyr::mutate(canton = "TG") %>%
-  statbotData::map_ds_municipalities(
-    year = jahr,
-    canton_abbr = canton,
-    municipality_name = gemeinde
-  ) %>%
-  dplyr::select(gemeinde, jahr, spatialunit_uid) %>%
-  dplyr::mutate(jahr = lubridate::year(jahr))
-
-
+# All data comes from Stadt Zürich. Explicitely adding UID
 ds$postgres_export <- ds$postgres_export %>%
-  dplyr::left_join(spatial_mapping, by = c("gemeinde", "jahr")) %>%
-  dplyr::filter(!is.na(spatialunit_uid)) %>%
-  dplyr::select(-gemeinde) %>%
-  janitor::clean_names()
+  dplyr::mutate(spatialunit_uid = "253_A.ADM3")
 
 # -------------------------------------------------------------------------
 # Step: Upload dataset to postgres, test run queries, generate a sample and
