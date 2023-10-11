@@ -63,35 +63,31 @@ ds$postgres_export <- ds$data %>%
   janitor::clean_names() %>%
   dplyr::rename(
     jahr = period,
-    aufgabenbereich_cofog_gruppen = cofog_narrow,
-    aufgabenbereich_cofog_teilung = cofog_broad,
+    aufgabenbereich_cofog_feingliederung = cofog_narrow,
+    aufgabenbereich_cofog_grobgliederung = cofog_broad,
     institutioneller_sektor = sector,
     ausgaben_in_mio_chf = mio_chf_expenditure,
     prozent_der_gesamtausgaben = percent_total_expenditure
   ) %>%
   # add CH as spatial unit
   dplyr::mutate(spatialunit_uid = statbotData::spatial_mapping_country())
-
-
-# -------------------------------------------------------------------------
-# Step: Testrun queries on sqllite
-#   input:  ds$postgres_export, ds$dir/queries.sql
-#   output: ds$dir/queries.log
-# -------------------------------------------------------------------------
-
-statbotData::testrun_queries(
-  ds$postgres_export,
-  ds$dir,
-  ds$name
-)
+ds$name
 
 # -------------------------------------------------------------------------
-# Step: Write metadata tables
-#   input:  ds$postgres_export
-#   output: ds$dir/metadata_tables.csv
-#           ds$dir/metadata_table_columns.csv
-#           ds$dir/sample.csv
+# Step: After the dataset has been build use functions of package stabotData
+# to upload the dataset to postgres, testrun the queries, generate a sample
+# upload the metadata, etc
 # -------------------------------------------------------------------------
 
-read_write_metadata_tables(ds)
-dataset_sample(ds)
+# create the table in postgres
+statbotData::create_postgres_table(ds)
+
+# upload metadata
+statbotData::update_metadata_in_postgres(ds)
+
+# generate sample data for the dataset from the local tibble
+statbotData::dataset_sample(ds)
+
+# testrun queries
+statbotData::testrun_queries(ds)
+
