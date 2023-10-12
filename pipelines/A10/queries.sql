@@ -62,7 +62,7 @@ WHERE S.name='Switzerland'
   AND T.number_criminal_offences_registered IS NOT NULL
   AND T.offence_category='Bribery';
 
--- Which twp crime categories had the lowest crime detection rate in 2019 in Switzerland and what were these rates?
+-- Which three crime categories had the lowest crime detection rate in 2019 in Switzerland and what were these rates?
 SELECT T.offence_category,
 100 * SUM(T.number_criminal_offences_solved) / SUM(T.number_criminal_offences_registered)
 AS crime_detection_rate
