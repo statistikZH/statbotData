@@ -64,7 +64,7 @@ SELECT T.year, T.percent_share_full_time_employment_of_tourism as percent_share_
 FROM tourism_economy_by_canton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
 WHERE S.canton = TRUE
-    AND S.name_de = 'Kanton Zürich'
+    AND S.name LIKE '%Zürich%'
     AND T.year >= 2017
     AND T.year <= 2019;
 
