@@ -69,7 +69,7 @@ SELECT year, births - deaths
 FROM demographic_balance_by_canton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
 WHERE S.canton=TRUE
-    AND S.name='Canton Vaud'
+    AND S.name LIKE '%Vaud%'
     AND T.year>=2015
     AND T.year>=2020
     AND T.citizenship_category='Citizenship (category) - total';
