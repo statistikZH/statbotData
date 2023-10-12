@@ -1,4 +1,4 @@
-[1] "Environment: REMOTE, Time: 2023-10-10 07:09:30.450475"
+[1] "Environment: REMOTE, Time: 2023-10-12 14:07:48.398863"
 
 Query Nr. 1
 -- In which year were there the most crimes in Switzerland? Also please provide the number of committed crimes.
@@ -8,9 +8,9 @@ SELECT T.year AS year_with_most_crimes, T.number_criminal_offences_registered FR
 
 Query Nr. 2
 -- What is the most committed crime in Switzerland?
-SELECT T.offence_criminal_code AS most_common_criminal_offence FROM criminal_offences_registered_by_police AS T JOIN spatial_unit AS S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name='Switzerland'   AND S.country = TRUE   AND T.offence_criminal_code!='Offence - total'   AND T.number_criminal_offences_registered IS NOT NULL GROUP BY T.offence_criminal_code,   T.number_criminal_offences_registered ORDER BY T.number_criminal_offences_registered DESC LIMIT 1;
-       most_common_criminal_offence
- Criminal damage + theft (art. 144)
+SELECT T.offence_criminal_code AS most_common_criminal_offence FROM criminal_offences_registered_by_police AS T JOIN spatial_unit AS S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name='Switzerland'   AND S.country = TRUE   AND T.offence_criminal_code!='Offence - total'   AND T.number_criminal_offences_registered IS NOT NULL GROUP BY T.offence_criminal_code ORDER BY SUM(T.number_criminal_offences_registered) DESC LIMIT 1;
+ most_common_criminal_offence
+             Theft (art. 139)
 
 Query Nr. 3
 -- How many crimes were solved in Bern in 2022?
@@ -37,7 +37,7 @@ SELECT 100 * SUM(T.number_criminal_offences_solved) / SUM(T.number_criminal_offe
                          90
 
 Query Nr. 7
--- Which twp crime categories had the lowest crime detection rate in 2019 in Switzerland and what were these rates?
+-- Which three crime categories had the lowest crime detection rate in 2019 in Switzerland and what were these rates?
 SELECT T.offence_category, 100 * SUM(T.number_criminal_offences_solved) / SUM(T.number_criminal_offences_registered) AS crime_detection_rate FROM criminal_offences_registered_by_police AS T JOIN spatial_unit AS S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name='Switzerland'   AND S.country = TRUE   AND T.year = 2019   AND T.offence_criminal_code!='Offence - total' GROUP BY T.offence_category ORDER BY crime_detection_rate LIMIT 3;
                                                                offence_category crime_detection_rate
  Counterfeiting of Money, Official Stamps, Official Marks, Weights and Measures             22.13720

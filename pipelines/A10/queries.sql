@@ -16,9 +16,8 @@ WHERE S.name='Switzerland'
   AND S.country = TRUE
   AND T.offence_criminal_code!='Offence - total'
   AND T.number_criminal_offences_registered IS NOT NULL
-GROUP BY T.offence_criminal_code,
-  T.number_criminal_offences_registered
-ORDER BY T.number_criminal_offences_registered DESC LIMIT 1;
+GROUP BY T.offence_criminal_code
+ORDER BY SUM(T.number_criminal_offences_registered) DESC LIMIT 1;
 
 -- How many crimes were solved in Bern in 2022?
 SELECT T.number_criminal_offences_solved as solved_criminal_offences_2022_bern
