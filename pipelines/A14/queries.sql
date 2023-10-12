@@ -56,7 +56,7 @@ SELECT T.total_full_time_employment_of_tourism
 FROM tourism_economy_by_canton as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
 WHERE S.country=TRUE
-    AND S.name_de = 'Schweiz'
+    AND S.name = 'Switzerland'
     AND T.year = 2019;
 
 -- What percentage of full time employment was allocated in canton Zurich between 2017 and 2019?
