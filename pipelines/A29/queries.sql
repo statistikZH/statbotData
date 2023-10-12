@@ -1,0 +1,13 @@
+-- In what year did the concentration of carbon monoxide in the air reach its maximum in the city of Zürich?
+-- What month typically has the fewest particles in the air in Stadt Zürich?
+-- What was the concentration (in parts per billion) of nitric oxides per month in Stadt Zürich in 2019?
+-- What was yearly average concentration of nitric monoxide and nitric dioxide in Stadt Zürich, for years 1993, 2003, 2013 and 2023?
+-- What year had the lowest concentration of fine particulate matter (PM2.5) in Zürich?
+-- What was the concentration of sulfur dioxide in the air in Zürich throught 2019? Show the concentration in milligram per cubic meter.
+-- What was the concentration of CO and SO2 in Zürich in from October 1999 to July 2000?
+-- Show me the mean PM10 and PM2.5 concentration in Zurich during each season from the year 2018.
+-- What was the relative change, in percent, of the concentration of PM10 in Zürich from 1983 to 2023?
+-- Give me the particle count, in part per million (ppm), of the air in Zürich in the month of January for the years 2017 to 2021.
+-- How much ozon was in the air of stadt Zurich during the year 2005?
+-- Is the concentration of carbon monoxide generally higher during the winter or the summer in Zürich?
+-- Show me the particle count for each month in Zurich, averaging all available years.
