@@ -30,7 +30,8 @@ agg_month <- function(df) {
     dplyr::mutate(datum = substr(datum, 1, 7)) %>%
     dplyr::group_by(datum) %>%
     dplyr::summarise(across(is.numeric, ~ mean(.x, na.rm = T))) %>%
-    dplyr::mutate(across(everything(), ~ ifelse(is.nan(.), NA, .)))
+    dplyr::mutate(across(everything(), ~ ifelse(is.nan(.), NA, .))) %>%
+    dplyr::rename(nox_ppb = "n_ox_ppb")
   return(agg)
 }
 
