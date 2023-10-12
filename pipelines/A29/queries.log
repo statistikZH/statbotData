@@ -1,0 +1,102 @@
+[1] "Environment: REMOTE, Time: 2023-10-12 18:33:48"
+
+Query Nr. 1
+-- When did the concentration of carbon monoxide in the air reach its maximum in the city of Zürich? Also report the concentration in mg/m3.
+SELECT T.jahr, T.monat, T.co_mg_m3 FROM stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = 'Zürich' ORDER BY T.co_mg_m3 DESC LIMIT 1;
+ jahr monat co_mg_m3
+ 1984    11 4.651667
+
+Query Nr. 2
+-- What month typically has the fewest particles in the air in Stadt Zürich?
+SELECT T.monat, SUM(T.pn_1_cm3) / COUNT(T.pn_1_cm3) AS monat_avg_pn_1_cm3 FROM stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = 'Zürich' GROUP BY T.monat ORDER BY SUM(T.pn_1_cm3) / COUNT(T.pn_1_cm3) ASC LIMIT 1;
+ monat monat_avg_pn_1_cm3
+    12           13083.66
+
+Query Nr. 3
+-- What was the concentration (in parts per billion) of nitric oxides per month in Stadt Zürich in 2019?
+SELECT T.monat, T.nox_ppb FROM stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = 'Zürich'     AND T.jahr = 2019 ORDER BY T.monat ASC;
+ monat  nox_ppb
+     1 23.38516
+     2 43.83250
+     3 21.13839
+     4 19.90567
+     5 16.73968
+     6 16.13467
+     7 14.69742
+     8 15.56903
+     9 18.94267
+    10 25.81323
+    11 28.44233
+    12 34.41323
+
+Query Nr. 4
+-- What was the yearly average concentration of nitric monoxide and nitric dioxide in Stadt Zürich, for years 1993, 2003, 2013 and 2023?
+SELECT T.jahr, SUM(T.no_ug_m3) / COUNT(T.no_ug_m3) AS jahr_avg_no_ug_m3, SUM(T.no2_ug_m3) / COUNT(T.no2_ug_m3) AS avg_no2_ug_m3 FROM stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = 'Zürich'     AND T.jahr IN (1993, 2003, 2013, 2023) GROUP BY T.jahr;
+ jahr jahr_avg_no_ug_m3 avg_no2_ug_m3
+ 1993         48.441402      45.86977
+ 2003         29.552807      42.78025
+ 2013         20.718149      33.79991
+ 2023          6.532129      19.14540
+
+Query Nr. 5
+-- What was the lowest concentration of fine particulate matter (PM2.5) ever recorded in Zürich, and on what year was it?
+SELECT T.jahr, T.pm2_5_ug_m3 FROM stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = 'Zürich'     AND T.pm2_5_ug_m3 IS NOT NULL ORDER BY T.pm2_5_ug_m3 ASC LIMIT 1;
+ jahr pm2_5_ug_m3
+ 2022    5.405667
+
+Query Nr. 6
+-- What was the concentration of sulfur dioxide in the air in Zürich through 2019? Show the concentration in milligram per cubic meter.
+SELECT T.monat, T.so2_ug_m3 / 1000 AS so2_mg_m3 FROM stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = 'Zürich'     AND T.jahr = 2019 ORDER BY T.monat ASC;
+ monat    so2_mg_m3
+     1 0.0010593548
+     2 0.0014789286
+     3 0.0012296774
+     4 0.0008716667
+     5 0.0006812903
+     6 0.0011473333
+     7 0.0014664516
+     8 0.0015093548
+     9 0.0013230000
+    10 0.0006209677
+    11 0.0014966667
+    12 0.0016651613
+
+Query Nr. 7
+-- What was the concentration of CO and SO2 (both in microgram/m3) in Zürich in from October 1999 to July 2000?
+SELECT T.jahr, T.monat, T.co_mg_m3 * 1000 AS co_ug_m3, T.so2_ug_m3 FROM stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = 'Zürich'     AND     (         (T.jahr = 1999 AND T.monat >= 10)         OR (T.jahr = 2000 AND T.monat <= 7)     ) ORDER BY T.jahr ASC, T.monat ASC;
+ jahr monat co_ug_m3 so2_ug_m3
+ 1999    10 895.1613  9.278000
+ 1999    11 955.3333 10.376667
+ 1999    12 713.5484  9.607419
+ 2000     1 844.4828 11.155806
+ 2000     2 797.5000  9.929655
+ 2000     3 675.4839  7.746774
+ 2000     4 677.6667  7.812759
+ 2000     5 549.3103  4.227097
+ 2000     6 507.0000  3.376552
+ 2000     7 424.8276  3.157097
+
+Query Nr. 8
+-- Show me the mean PM10 and PM2.5 concentration in Zurich during each season from the year 2018.
+SELECT     CASE         WHEN T.monat IN (12, 1, 2) THEN 'Winter'         WHEN T.monat IN (3, 4, 5) THEN 'Frühling'         WHEN T.monat IN (6, 7, 8) THEN 'Sommer'         WHEN T.monat IN (9, 10, 11) THEN 'Herbst'     END AS jahreszeit,     SUM(T.pm10_ug_m3) / COUNT(T.pm10_ug_m3) AS avg_pm10_ug_m3,     SUM(T.pm2_5_ug_m3) / COUNT(T.pm2_5_ug_m3) AS avg_pm2_5_ug_m3 FROM stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = 'Zürich'     AND T.jahr = 2018 GROUP BY jahreszeit;
+ jahreszeit avg_pm10_ug_m3 avg_pm2_5_ug_m3
+   Frühling       18.37968       11.704186
+     Herbst       21.89971       14.096649
+     Sommer       15.11333        9.196935
+     Winter       16.50175       12.977110
+
+Query Nr. 9
+-- What was the relative change, in percent, of the concentration of PM10 in Zürich from 2017 to 2023?
+SELECT     (         100.0 * SUM(             CASE                 WHEN T.jahr = 2017 THEN T.pm10_ug_m3                 WHEN T.jahr = 2023 THEN -T.pm10_ug_m3             END         ) / SUM(CASE WHEN T.jahr = 2017 THEN T.pm10_ug_m3 END)     ) AS pm10_anderung_2017_2023_prozent FROM stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = 'Zürich'     AND T.jahr IN (2017, 2023);
+ pm10_anderung_2017_2023_prozent
+                        17.69004
+
+Query Nr. 10
+-- Give me the concentration of nitric oxides in the air of Zürich, in part per million (ppm), for the month of January in the years 2017 to 2021.
+SELECT T.jahr, T.monat, T.nox_ppb / 1000 AS nox_ppm FROM stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = 'Zürich'     AND T.monat = 1     AND T.jahr >= 2017     AND T.jahr <= 2021 ORDER BY T.jahr ASC;
+ jahr monat    nox_ppm
+ 2017     1 0.04320645
+ 2018     1 0.02535710
+ 2019     1 0.02338516
+ 2020     1 0.03729032
+ 2021     1 0.02151710
