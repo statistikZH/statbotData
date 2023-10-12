@@ -1,6 +1,6 @@
 name;table_name;data_type;title;title_en;example_values
-aufgabenbereich_cofog_gruppen;staatsausgaben_nach_aufgabenbereichen_cofog;categorical;Aufgabenbereich des Staates (COFOG Gruppen);Scope of functions of the state (COFOG groups);"Alter","Wasserversorgung","Polizei"
-aufgabenbereich_cofog_teilung;staatsausgaben_nach_aufgabenbereichen_cofog;categorical;Aufgabenbereich des states (COFOG Teilung);Scope of functions of the state (COFOG division);"Umweltschutz","Bildungswesen","Freizeitgestaltung, Sport, Kultur und Religion"
+aufgabenbereich_cofog_feingliederung;staatsausgaben_nach_aufgabenbereichen_cofog;categorical;Aufgabenbereich des Staates (COFOG Feingliederung);Scope of functions of the state (COFOG narrow);"Alter","Wasserversorgung","Polizei"
+aufgabenbereich_cofog_grobgliederung;staatsausgaben_nach_aufgabenbereichen_cofog;categorical;Aufgabenbereich des Staates (COFOG Grobgliederung);Scope of functions of the state (COFOG broad);"Umweltschutz","Bildungswesen","Freizeitgestaltung, Sport, Kultur und Religion"
 institutioneller_sektor;staatsausgaben_nach_aufgabenbereichen_cofog;categorical;institutioneller Sektor;institutional sector;"Staat","Kantone","Bund","Gemeinden","Öffentliche Sozialversicherungen"
 ausgaben_in_mio_chf;staatsausgaben_nach_aufgabenbereichen_cofog;numeric;Ausgaben in Millionen CHF;Expenditures in millions of CHF;
 prozent_der_gesamtausgaben;staatsausgaben_nach_aufgabenbereichen_cofog;numeric;Prozent der Gesamtaugaben;Percent of total expenditure;

@@ -5,7 +5,7 @@
 #         - use a sparql query to download the data
 # -------------------------------------------------------------------------
 
-ds <- create_dataset(id = "S3")
+ds <- create_dataset(id = "S3EN")
 
 # query the cube
 
@@ -39,9 +39,9 @@ WHERE {
   FILTER NOT EXISTS { ?x skos:broader ?cofog_narrow_uri } .
 
   # Only include german language data
-  FILTER(LANG(?sector) = "de")
-  FILTER(LANG(?cofog_broad) = "de")
-  FILTER(LANG(?cofog_narrow) = "de")
+  FILTER(LANG(?sector) = "en")
+  FILTER(LANG(?cofog_broad) = "en")
+  FILTER(LANG(?cofog_narrow) = "en")
 }
 '
 ds <- download_data(ds)
@@ -58,20 +58,27 @@ ds <- download_data(ds)
 # cofog_narrow and cofog_broad are known as groups and divisions, respectively
 # Source: https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Glossary:Classification_of_the_functions_of_government_(COFOG)
 
-
 ds$postgres_export <- ds$data %>%
   janitor::clean_names() %>%
   dplyr::rename(
-    jahr = period,
-    aufgabenbereich_cofog_feingliederung = cofog_narrow,
-    aufgabenbereich_cofog_grobgliederung = cofog_broad,
-    institutioneller_sektor = sector,
-    ausgaben_in_mio_chf = mio_chf_expenditure,
-    prozent_der_gesamtausgaben = percent_total_expenditure
+    year = period,
+    function_cofog_narrow = cofog_narrow,
+    function_cofog_broad = cofog_broad,
+    institutional_sector = sector,
+    expenses_in_million_chf = mio_chf_expenditure,
+    percentage_of_total_expenses = percent_total_expenditure
+  ) %>%
+  dplyr::mutate(
+    institutional_sector = dplyr::case_when(
+      institutional_sector == "General government" ~ "Government",
+      institutional_sector == "State government" ~ "Canton",
+      institutional_sector == "Local government" ~ "Commune",
+      institutional_sector == "Central government" ~ "Confederation",
+      institutional_sector == "Social security funds" ~ "Social security funds"
+    )
   ) %>%
   # add CH as spatial unit
   dplyr::mutate(spatialunit_uid = statbotData::spatial_mapping_country())
-ds$name
 
 # -------------------------------------------------------------------------
 # Step: After the dataset has been build use functions of package stabotData
@@ -79,15 +86,14 @@ ds$name
 # upload the metadata, etc
 # -------------------------------------------------------------------------
 
-# create the table in postgres
-statbotData::create_postgres_table(ds)
-
-# upload metadata
-statbotData::update_metadata_in_postgres(ds)
-
 # generate sample data for the dataset from the local tibble
 statbotData::dataset_sample(ds)
 
-# testrun queries
-statbotData::testrun_queries(ds)
+# create the table in postgres
+statbotData::create_postgres_table(ds)
 
+# add metadata to postgres
+statbotData::update_metadata_in_postgres(ds)
+
+# run test queries
+statbotData::testrun_queries(ds)
