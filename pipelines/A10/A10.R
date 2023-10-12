@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------
 # Steps: Get the data
-# input: google sheet
+# input: data/const/statbot_input_data.csv
 # output: ds$data, ds$dir
 # -------------------------------------------------------------------------
 
@@ -17,38 +17,36 @@ df_offences_and_categories <- ds$data %>%
   janitor::clean_names(
   ) %>%
   dplyr::select(
-    c(straftat)
+    c(offence)
   ) %>% dplyr::distinct(
-    straftat
+    offence
   )
 
 # Regular expression pattern to match the crime codes
-pattern_offence <- "\\(Art\\. (\\d+)"
-pattern_category_offence <- "^Total"
+pattern_offence <- "\\(art\\.\\s?(\\d+)"
+pattern_category_offence <- "^total"
 
 df_offence_mapping <- df_offences_and_categories %>%
-  dplyr::filter(grepl(pattern_offence, straftat)) %>%
-  dplyr::mutate(kategorie = "")
+  dplyr::filter(grepl(pattern_offence, offence)) %>%
+  dplyr::mutate(category = "")
 
 # Iterate through the crime vector to create the mapping
 offence_mapping <- list()
-categorie <- NULL
-for (offence in rev(df_offences_and_categories$straftat)) {
+for (offence in rev(df_offences_and_categories$offence)) {
   if (grepl("^Total", offence)) {
-    category <- offence %>% stringr::str_remove("^Total [:digit:]*\\.[:blank:]Titel:[:blank:]")
+    category <- offence %>% stringr::str_remove("^Total[:blank:]Title[:blank:][:alpha:]*:[:blank:]")
   } else if (grepl(pattern_offence, offence)) {
     offence_mapping[[offence]] <- category
   }
 }
 
 # Fill the 'titel' column in the tibble based on the mapping
-for (i in seq_along(df_offence_mapping$straftat)) {
-  mapping_key <- df_offence_mapping$straftat[i]
+for (i in seq_along(df_offence_mapping$offence)) {
+  mapping_key <- df_offence_mapping$offence[i]
   if (mapping_key %in% names(offence_mapping)) {
-    df_offence_mapping$kategorie[i] <- offence_mapping[[mapping_key]]
+    df_offence_mapping$category[i] <- offence_mapping[[mapping_key]]
   }
 }
-df_offence_mapping
 
 # -------------------------------------------------------------------------
 # Step: Clean the data
@@ -57,33 +55,29 @@ df_offence_mapping
 # -------------------------------------------------------------------------
 
 ds$cleaned_data <- ds$data %>%
-  janitor::clean_names(
-  ) %>%
+  janitor::clean_names() %>%
   dplyr::filter(
-    !stringr::str_starts(straftat, "Total")
+    !stringr::str_starts(offence, "Total")
   ) %>%
   dplyr::rename(
-    "anzahl" = polizeilich_registrierte_straftaten_gemass_strafgesetzbuch
+    "number_criminal_offences" = criminal_offences_registered_by_the_police_according_to_the_swiss_criminal_code,
   ) %>%
-  dplyr::left_join(df_offence_mapping, by = "straftat") %>%
+  dplyr::left_join(df_offence_mapping, by = "offence") %>%
   tidyr::pivot_wider(
-    names_from = c("ausfuhrungsgrad", "aufklarungsgrad"),
-    values_from = anzahl,
-    names_prefix = "anzahl_straftaten"
+    names_from = c("level_of_completion", "level_of_detection"),
+    values_from = number_criminal_offences,
+    names_prefix = "number_criminal_offences"
   ) %>%
   janitor::clean_names() %>%
   dplyr::rename(
-    anzahl_straftaten = anzahl_straftaten_ausfuhrungsgrad_total_aufklarungsgrad_total,
-    anzahl_straftaten_unaufgeklaert = anzahl_straftaten_ausfuhrungsgrad_total_unaufgeklart,
-    anzahl_straftaten_aufgeklaert = anzahl_straftaten_ausfuhrungsgrad_total_aufgeklart,
-    anzahl_straftaten_vollendet = anzahl_straftaten_vollendet_aufklarungsgrad_total,
-    anzahl_straftaten_vollendet_unaufgeklart = anzahl_straftaten_vollendet_unaufgeklart,
-    anzahl_straftaten_vollendet_aufgeklart = anzahl_straftaten_vollendet_aufgeklart,
-    anzahl_straftaten_versucht = anzahl_straftaten_versucht_aufklarungsgrad_total,
-    anzahl_straftaten_versucht_unaufgeklart = anzahl_straftaten_versucht_unaufgeklart,
-    anzahl_straftaten_versucht_aufgeklart = anzahl_straftaten_versucht_aufgeklart
+    number_criminal_offences_registered = number_criminal_offences_level_of_completion_total_level_of_detection_total,
+    number_criminal_offences_unsolved = number_criminal_offences_level_of_completion_total_unsolved,
+    number_criminal_offences_solved = number_criminal_offences_level_of_completion_total_solved,
+    number_criminal_offences_completed = number_criminal_offences_completed_level_of_detection_total,
+    number_criminal_offences_attempted = number_criminal_offences_attempted_level_of_detection_total,
+    offence_category = category,
+    offence_criminal_code = offence
   )
-ds$cleaned_data
 
 # -------------------------------------------------------------------------
 # Step: Spatial unit mapping
@@ -92,34 +86,28 @@ ds$cleaned_data
 # --------------------------------------------------------------------------
 
 spatial_mapping <- ds$cleaned_data %>%
-  dplyr::select(kanton) %>%
-  dplyr::distinct(kanton) %>%
+  dplyr::select(canton) %>%
+  dplyr::distinct(canton) %>%
   statbotData::map_ds_spatial_units(c("Country", "Canton"))
 
 ds$postgres_export <- ds$cleaned_data %>%
-  dplyr::left_join(spatial_mapping, by = "kanton") %>%
-  dplyr::select(-c(kanton))
-colnames(ds$postgres_export)
+  dplyr::left_join(spatial_mapping, by = "canton") %>%
+  dplyr::select(-c(canton))
 
 # -------------------------------------------------------------------------
-# Step: Testrun queries on sqllite
-#   input:  ds$postgres_export, ds$dir/queries.sql
-#   output: ds$dir/queries.log
+# Step: After the dataset has been build use functions of package
+# stabotData to upload the dataset to postgres, testrun the queries,
+#  generate a sample, upload the metadata, etc
 # -------------------------------------------------------------------------
 
-statbotData::testrun_queries(
-  ds$postgres_export,
-  ds$dir,
-  ds$name
-)
+# generate sample data for the dataset from the local tibble
+statbotData::dataset_sample(ds)
 
-# -------------------------------------------------------------------------
-# Step: Write metadata tables
-#   input:  ds$postgres_export
-#   output: ds$dir/metadata_tables.csv
-#           ds$dir/metadata_table_columns.csv
-#           ds$dir/sample.csv
-# -------------------------------------------------------------------------
+# create the table in postgres
+statbotData::create_postgres_table(ds)
 
-read_write_metadata_tables(ds)
-dataset_sample(ds)
+# add metadata to postgres
+statbotData::update_metadata_in_postgres(ds)
+
+# run test queries
+statbotData::testrun_queries(ds)

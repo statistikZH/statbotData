@@ -1,12 +1,12 @@
 data_indicator,status,name,format,size,encoding,px_id,publisher,organization,access_url,query_url,download_url,lang
 A1,uploaded,medizinisch_technische_infrastruktur,px,,,px-x-1404010100_101,fso,bfs,,,,de
-A3,approved,treibhausgasemission_in_mio_tonnen,xlsx,,,,fso,bfs,,,https://dam-api.bfs.admin.ch/hub/api/dam/assets/23567511/master,en
+A3,uploaded,greenhouse_gas_emissions_through_consumption,xlsx,,,,fso,bfs,,,https://dam-api.bfs.admin.ch/hub/api/dam/assets/23567511/master,en
 A4,uploaded,energiebilanz_schweiz_in_tera_joule,csv,,,,fso,opendata,,,https://www.uvek-gis.admin.ch/BFE/ogd/115/ogd115_gest_bilanz.csv,de
 A5,uploaded,ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit,px,,,px-x-1305000000_101,fso,bfs,,,,de
 A6,uploaded,abstimmungsvorlagen_seit_1971,px,,,px-x-1703010000_103,fso,bfs,,,,de
 A7,uploaded,arztpraxen_ambulante_zentren,px,,,px-x-1404050000_103,fso,bfs,,,,de
 A8,uploaded,nationalratswahlen,px,,,px-x-1702020000_104,fso,bfs,,,,de
-A10,uploaded,criminal_offences_registered_by_swiss_criminal_code,px,,UTF-8,px-x-1903020100_101,fso,bfs,,,,en
+A10,uploaded,criminal_offences_registered_by_police,px,,UTF-8,px-x-1903020100_101,fso,bfs,,,,en
 S1,uploaded,median_strompreis_per_kanton,rdf,,,NA,fso,lindas,,https://energy.ld.admin.ch/query,,de
 A13,uploaded,number_of_plantations_in_swiss_forest,px,,,px-x-0703030000_112,fso,bfs,,,,en
 S3EN,uploaded,government_expenditure_by_function_cofog,rdf,,,NA,fso,lindas,,https://environment.ld.admin.ch/query,,en

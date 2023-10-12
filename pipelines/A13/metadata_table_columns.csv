@@ -1,5 +1,5 @@
 name;table_name;data_type;title;title_en;example_values
-forstzone;pflanzungen_schweiz;categorical;Forstzone;forest zone;"Schweiz","Jura","Mittelland","Voralpen","Alpen","Alpen-Südseite"
-eigentumertyp;pflanzungen_schweiz;categorical;Eigentümertyp;owner type;"Eigentümertyp - Total","Öffentliche Wälder","Privatwälder"
-holzartengruppe;pflanzungen_schweiz;categorical;Holzartengruppe;wood species group;"Holzartengruppe - Total","Nadelholz","Laubholz"
-anzahl_pflanzungen;pflanzungen_schweiz;numeric;Anzahl Pflanzungen;number of plantations;
+forest_zone;number_of_plantations_in_swiss_forest;categorical;Forstzone;forest zone;"Switzerland","Jura","Central Plain"
+type_of_owner;number_of_plantations_in_swiss_forest;categorical;Eigentümertyp;owner type;"Type of owners - total","Public forest","Private forest"
+wood_species;number_of_plantations_in_swiss_forest;categorical;Holzartengruppe;wood species group;"Species - total","Hardwood (deciduous)","Softwood (conifers)"
+number_of_plantations;number_of_plantations_in_swiss_forest;numeric;number of plantations;number of plantations;14987125 ,11537284 ,3449841 

@@ -1,4 +1,4 @@
-name;table_name;data_type;titel;title_en;example_values
+name;table_name;data_type;title;title_en;example_values
 mio_chf_gross_value_added_of_tourism;tourism_economy_by_canton;numeric;Amount in million CHF of Gross Value that was added by tourism;Amount in million CHF of Gross Value that was added by tourism;
 percent_share_gross_value_added_of_tourism;tourism_economy_by_canton;numeric;Percentage share of Gross Value that was added by tourism;Percentage share of Gross Value that was added by tourism;
 total_full_time_employment_of_tourism;tourism_economy_by_canton;numeric;Full time employment in Tourism;Full time employment in Tourism;

@@ -1,2 +1,2 @@
 name;table_name;data_type;title;title_en;example_values
-anzahl_millionen_tonnen_co2_equivalent;treibhausgasemission_in_mio_tonnen;numeric;Treibhausgasemissionen in Millionen Tonnen CO2 Äquivalent;Greenhouse gas emissions in million metric tons of CO2 equivalent;
+emissions_in_million_tons_co2_equivalent;greenhouse_gas_emissions_through_consumption;numeric;Greenhouse gas emissions in million metric tons of CO2 equivalent;Greenhouse gas emissions in million metric tons of CO2 equivalent;117.900561800408

@@ -1,20 +1,21 @@
+[1] "Environment: REMOTE, Time: 2023-10-10 07:52:28.605827"
 
 Query Nr. 1
 -- Which canton has the most employees in the tourism sector in 2019?
-SELECT S.name FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year = 2019 ORDER BY T.total_full_time_employment_of_tourism DESC LIMIT 1;
-             name
+SELECT S.name AS canton FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year = 2019 ORDER BY T.total_full_time_employment_of_tourism DESC LIMIT 1;
+           canton
  Canton of Zurich
 
 Query Nr. 2
 -- What canton got the most money from tourism in 2016?
-SELECT S.name FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year = 2016 ORDER BY T.mio_chf_gross_value_added_of_tourism DESC LIMIT 1;
-             name
+SELECT S.name AS canton FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year = 2016 ORDER BY T.mio_chf_gross_value_added_of_tourism DESC LIMIT 1;
+           canton
  Canton of Zurich
 
 Query Nr. 3
 -- What canton lost the highest share of revenue from tourism between 2016 and 2019, and what percentage did it lose?
-SELECT     S.name,     SUM(CASE WHEN T.year = 2019 THEN T.percent_share_gross_value_added_of_tourism ELSE 0 END) -     SUM(CASE WHEN T.year = 2016 THEN T.percent_share_gross_value_added_of_tourism ELSE 0 END) AS diff_percentage_gross_value_added_of_tourism_2019_2016 FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year IN (2016, 2019) GROUP BY S.name ORDER BY diff_percentage_gross_value_added_of_tourism_2019_2016 ASC LIMIT 1;
-                   name diff_percentage_gross_value_added_of_tourism_2019_2016
+SELECT     S.name AS canton,     SUM(CASE WHEN T.year = 2019 THEN T.percent_share_gross_value_added_of_tourism ELSE 0 END) -     SUM(CASE WHEN T.year = 2016 THEN T.percent_share_gross_value_added_of_tourism ELSE 0 END) AS diff_percentage_gross_value_added_of_tourism_2019_2016 FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE     AND T.year IN (2016, 2019) GROUP BY S.name ORDER BY diff_percentage_gross_value_added_of_tourism_2019_2016 ASC LIMIT 1;
+                 canton diff_percentage_gross_value_added_of_tourism_2019_2016
  Canton of Schaffhausen                                                  -0.37
 
 Query Nr. 4
@@ -25,13 +26,13 @@ WITH TC as (     SELECT S.name as canton, T.year as year, percent_share_gross_va
 
 Query Nr. 5
 -- How many FTE were allocated to tourism were there in Switzerland 2019?
-SELECT T.total_full_time_employment_of_tourism FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country=TRUE     AND S.name_de = "Schweiz"     AND T.year = 2019;
+SELECT T.total_full_time_employment_of_tourism FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country=TRUE     AND S.name_de = 'Schweiz'     AND T.year = 2019;
  total_full_time_employment_of_tourism
                               174219.5
 
 Query Nr. 6
 -- What percentage of full time employment was allocated in canton Zurich between 2017 and 2019?
-SELECT T.year, T.percent_share_full_time_employment_of_tourism as percent_share_fte_tourism_canton_zurich FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name_de = "Kanton Zürich"     AND T.year >= 2017     AND T.year <= 2019;
+SELECT T.year, T.percent_share_full_time_employment_of_tourism as percent_share_fte_tourism_canton_zurich FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name_de = 'Kanton Zürich'     AND T.year >= 2017     AND T.year <= 2019;
  year percent_share_fte_tourism_canton_zurich
  2017                                    3.79
  2018                                    3.80
@@ -39,8 +40,8 @@ SELECT T.year, T.percent_share_full_time_employment_of_tourism as percent_share_
 
 Query Nr. 7
 -- How much did each canton earn from tourism in 2019?
-SELECT S.name, T.mio_chf_gross_value_added_of_tourism as mio_chf_gross_value_added_of_tourism_2019 FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND T.year = 2019 ORDER BY mio_chf_gross_value_added_of_tourism_2019 DESC;
-                             name mio_chf_gross_value_added_of_tourism_2019
+SELECT S.name as canton, T.mio_chf_gross_value_added_of_tourism as mio_chf_gross_value_added_of_tourism_2019 FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND T.year = 2019 ORDER BY mio_chf_gross_value_added_of_tourism_2019 DESC;
+                           canton mio_chf_gross_value_added_of_tourism_2019
                  Canton of Zurich                                   4097.24
                    Canton of Bern                                   2049.68
                     Canton Geneva                                   1835.28
@@ -70,8 +71,8 @@ SELECT S.name, T.mio_chf_gross_value_added_of_tourism as mio_chf_gross_value_add
 
 Query Nr. 8
 -- What was the percent of gross value added for tourism in the cantons of Zurich, Bern and Geneva in 2017?
-SELECT S.name, T.percent_share_gross_value_added_of_tourism FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND T.year = 2017     AND (         S.name LIKE "%Zurich%"         OR S.name LIKE "%Geneva%"         OR S.name LIKE "%Bern%"     );
-             name percent_share_gross_value_added_of_tourism
+SELECT S.name as canton, T.percent_share_gross_value_added_of_tourism FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND T.year = 2017     AND (         S.name LIKE '%Zurich%'         OR S.name LIKE '%Geneva%'         OR S.name LIKE '%Bern%'     );
+           canton percent_share_gross_value_added_of_tourism
  Canton of Zurich                                       2.62
    Canton of Bern                                       2.61
     Canton Geneva                                       3.27
