@@ -1,5 +1,5 @@
 name;table_name;data_type;title;title_en;example_values
-nationalitat;basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde;categorical;"Nationalität";"Nationality";"Schweiz; Ausland"
+nationalitat;basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde;categorical;"Nationalität";"Nationality";"Schweiz","Ausland"
 gesamt_anzahl_personen;basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde;numeric;"Gesamtanzahl Personen";"Total number of people";
 ​anzahl_evangelisch_reformiert;basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde;numeric;"Anzahl Evangelisch-Reformierten";"Number of Reformed Protestants";
 ​anzahl_romisch_katholisch;basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde;numeric;"Anzahl der Römisch-Katholischen";"Number of Roman Catholics";
