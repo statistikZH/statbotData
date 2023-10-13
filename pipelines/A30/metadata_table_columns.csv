@@ -1,0 +1,6 @@
+name;table_name;data_type;title;title_en;example_values
+faelle;zurich_effektive_preise_wohnbauland;numeric;"Anzahl Transaktionen von unbebautem Wohnbauland";"Number of transactions of undeveloped residential land";1677,1527,2076
+durschnitt_preis_chf_pro_m2;zurich_effektive_preise_wohnbauland;numeric;"Durchschnittspreis in CHF pro Quadratmeter";"Mean price in CHF per square meter";169,175,171
+quantil_25_preis_chf_pro_m2;zurich_effektive_preise_wohnbauland;numeric;"Unteres Quartil der Preise in CHF pro Quadratmeter";"Lower quartile of prices in CHF per square meter";94,100,104
+median_preis_chf_pro_m2;zurich_effektive_preise_wohnbauland;numeric;"Median Preis in CHF pro Quadratmeter";"Median price in CHF per square meter";131,150,137
+quantil_75_preis_chf_pro_m2;zurich_effektive_preise_wohnbauland;numeric;"Oberes Quartil der Preise in CHF pro Quadratmeter";"Upper quartile of prices in CHF per square meter";180,198,191
