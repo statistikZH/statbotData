@@ -1,7 +1,49 @@
-[1] "Environment: REMOTE, Time: 2023-10-10 07:28:43.338585"
+[1] "Environment: REMOTE, Time: 2023-10-13 17:36:23.383352"
 
 Query Nr. 1
--- Wieviel Treibhausgase produzierte die Schweiz Im Jahr 2000?
+-- What Greenhousegas footprint had Switzerland in 2000 through consumption?
 SELECT T.emissions_in_million_tons_co2_equivalent FROM greenhouse_gas_emissions_through_consumption as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name='Switzerland'   AND S.country=TRUE   AND T.year=2000;
  emissions_in_million_tons_co2_equivalent
-                         117.900561800408
+                                 117.9006
+
+Query Nr. 2
+-- What years did the Greenhousegas footprint of Switzerland decrease compared to the previous year and by how much? Order by magnitude of decrease
+WITH EmissionsChange AS (     SELECT         T1.year AS current_year,         T1.emissions_in_million_tons_co2_equivalent AS emissions_current_year,         (T1.year - 1) AS previous_year,         T2.emissions_in_million_tons_co2_equivalent AS emissions_previous_year,         T1.emissions_in_million_tons_co2_equivalent - T2.emissions_in_million_tons_co2_equivalent           AS decrease_from_previous_year     FROM greenhouse_gas_emissions_through_consumption AS T1     JOIN greenhouse_gas_emissions_through_consumption AS T2 ON T1.year = T2.year + 1     WHERE T1.year > 2000 ) SELECT current_year, decrease_from_previous_year FROM EmissionsChange WHERE decrease_from_previous_year < 0 ORDER BY decrease_from_previous_year ASC;
+ current_year decrease_from_previous_year
+         2002                  -11.935098
+         2020                  -11.921975
+         2014                   -5.903603
+         2008                   -4.556293
+         2007                   -3.683829
+         2017                   -3.533551
+         2003                   -2.944295
+         2009                   -2.101355
+         2018                   -2.009928
+         2013                   -1.389285
+
+Query Nr. 3
+-- In which years did the greenhouse footprint increase and by how much? Order by years and start from the present
+WITH EmissionsChange AS (     SELECT         T1.year AS current_year,         T1.emissions_in_million_tons_co2_equivalent AS emissions_current_year,         (T1.year - 1) AS previous_year,         T2.emissions_in_million_tons_co2_equivalent AS emissions_previous_year,         T1.emissions_in_million_tons_co2_equivalent - T2.emissions_in_million_tons_co2_equivalent           AS increase_from_previous_year     FROM greenhouse_gas_emissions_through_consumption AS T1     JOIN greenhouse_gas_emissions_through_consumption AS T2 ON T1.year = T2.year + 1     WHERE T1.year > 2000 ) SELECT current_year, increase_from_previous_year FROM EmissionsChange WHERE increase_from_previous_year > 0 ORDER BY current_year DESC;
+ current_year increase_from_previous_year
+         2019                   0.8487194
+         2016                   3.3100004
+         2015                   0.7271552
+         2012                   1.2383354
+         2011                   5.2035622
+         2010                   6.9742017
+         2006                   2.8809206
+         2005                   6.5733900
+         2004                   0.3695996
+         2001                   7.0880157
+
+Query Nr. 4
+-- How did the greenhousegas footprint develop overall? Did it go up or down and by how much? Compare the first and last year in the data and show both years and the change of the footprint.
+WITH FirstYearEmissions AS (     SELECT         year AS first_observation_year,         emissions_in_million_tons_co2_equivalent AS emissions_first_year     FROM greenhouse_gas_emissions_through_consumption     ORDER BY year ASC     LIMIT 1 ), LastYearEmissions AS (     SELECT         year AS last_observation_year,         emissions_in_million_tons_co2_equivalent AS emissions_last_year     FROM greenhouse_gas_emissions_through_consumption     ORDER BY year DESC     LIMIT 1 ) SELECT     first_observation_year,     last_observation_year,     emissions_last_year - emissions_first_year AS emission_change_in_observered_period FROM FirstYearEmissions CROSS JOIN LastYearEmissions;
+ first_observation_year last_observation_year emission_change_in_observered_period
+                   2000                  2020                            -14.76531
+
+Query Nr. 5
+-- How much was the greenhousegas footprint reduced as percentage of the total footprint in the observation period?
+WITH FirstYearEmissions AS (     SELECT         year AS first_observation_year,         emissions_in_million_tons_co2_equivalent AS emissions_first_year     FROM greenhouse_gas_emissions_through_consumption     ORDER BY year ASC     LIMIT 1 ), LastYearEmissions AS (     SELECT         year AS last_observation_year,         emissions_in_million_tons_co2_equivalent AS emissions_last_year     FROM greenhouse_gas_emissions_through_consumption     ORDER BY year DESC     LIMIT 1 ) SELECT     first_observation_year,     last_observation_year,     ((emissions_last_year - emissions_first_year) * 100 / emissions_first_year) AS emission_precentage_change_in_observered_period FROM FirstYearEmissions CROSS JOIN LastYearEmissions;
+ first_observation_year last_observation_year emission_precentage_change_in_observered_period
+                   2000                  2020                                       -12.52353
