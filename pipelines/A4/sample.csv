@@ -1,41 +1,41 @@
-"jahr";"energietraeger";"spatialunit_uid";"terajoule_bruttoverbrauch";"terajoule_verbrauch_energiesektor_netzverluste_speicherungen";"terajoule_endverbrauch_dienstleistungen";"terajoule_endverbrauch_haushalte";"terajoule_endverbrauch_industrie";"terajoule_endverbrauch_statistische_differenz_landwirtschaft";"terajoule_endverbrauch_total";"terajoule_endverbrauch_verkehr";"terajoule_export";"terajoule_import";"terajoule_inlandproduktion";"terajoule_lagerveranderung";"terajoule_nichtenergetischer_verbrauch"
-"2015";"Erdölprodukte";"0_CH";"330780";"-7040";"35030";"79520";"16270";"3070";"424420";"290530";"-17930";"337620";NA;"11090";"-20900"
-"2022";"Gas";"0_CH";"106720";"-130";"20250";"45550";"33100";"1830";"101650";"920";NA;"106720";"0";NA;NA
-"2006";"Erdölprodukte";"0_CH";"295740";"-15870";"50230";"119090";"34580";"3780";"488980";"281300";"-24360";"327370";NA;"-7270";"-23950"
-"2007";"Kernbrennstoffe";"0_CH";"287390";NA;NA;NA;NA;NA;"0";NA;NA;"287390";NA;NA;NA
-"2017";"Fernwärme";"0_CH";"0";"-1850";"5220";"7730";"6840";"0";"19790";NA;NA;NA;NA;NA;NA
-"2015";"Rohöl";"0_CH";"122200";NA;NA;NA;NA;NA;"0";NA;NA;"121340";"0";"860";NA
-"2015";"Elektrizität";"0_CH";"-3720";"-24040";"61880";"67490";"64560";"3550";"209690";"12210";"-126240";"122520";NA;NA;NA
-"1988";"Erdölprodukte";"0_CH";"358250";"-6790";"62180";"144530";"53000";"2050";"489060";"227300";"-6850";"349730";NA;"15370";"-23700"
-"1988";"Kohle";"0_CH";"14400";NA;"40";"1120";"12870";"0";"14030";NA;"-750";"13690";"0";"1460";NA
-"1984";"Kohle";"0_CH";"20980";NA;"40";"2180";"17550";"0";"19770";NA;"-160";"18250";"0";"2890";NA
-"2010";"Rohöl";"0_CH";"194400";NA;NA;NA;NA;NA;"0";NA;NA;"194360";"0";"40";NA
-"2016";"Erdölprodukte";"0_CH";"323300";"-6530";"35850";"81430";"15910";"3160";"428170";"291820";"-19730";"332110";NA;"10920";"-16760"
-"2001";"Rohöl";"0_CH";"209840";NA;NA;NA;NA;NA;"0";NA;NA;"209970";"0";"-130";NA
-"1981";"Kernbrennstoffe";"0_CH";"157770";NA;NA;NA;NA;NA;"0";NA;NA;"157770";NA;NA;NA
-"2001";"Erdölprodukte";"0_CH";"337980";"-10950";"57610";"122850";"38870";"7420";"512620";"285870";"-24430";"375000";NA;"-12590";"-22230"
-"2000";"Erdölprodukte";"0_CH";"337530";"-10110";"54520";"116480";"36250";"1180";"501800";"293370";"-27640";"329410";NA;"35760";"-22350"
-"2007";"Gas";"0_CH";"110310";"-180";"22480";"39430";"37390";"1430";"102470";"1740";NA;"110310";"0";NA;NA
-"1983";"Erdölprodukte";"0_CH";"317840";"-7620";"66990";"151740";"46710";"3040";"460190";"191710";"-11350";"344720";NA;"-15530";"-18970"
-"2012";"Erdölprodukte";"0_CH";"346780";"-11140";"40360";"94230";"23220";"3320";"460980";"299850";"-13210";"352840";NA;"7150";"-20050"
-"1993";"Uebrige erneuerbare Energien";"0_CH";"5620";NA;"1570";"2860";"330";"60";"4820";NA;NA;NA;"5620";NA;NA
-"2019";"Kohle";"0_CH";"3810";NA;"0";"100";"3710";"0";"3810";NA;"-10";"3360";"0";"460";NA
-"2001";"Gas";"0_CH";"106040";"-200";"21580";"38240";"32860";"4380";"97420";"360";NA;"106040";"0";NA;NA
-"1987";"Holzenergie";"0_CH";"26380";NA;"1150";"22560";"2670";"0";"26380";NA;NA;"500";"25880";NA;NA
-"1998";"Erdölprodukte";"0_CH";"334980";"-11120";"60560";"132040";"43630";"3520";"514210";"274460";"-20500";"362430";NA;"-6950";"-20890"
-"1990";"Gas";"0_CH";"68310";"-170";"15840";"26190";"19610";"1960";"64160";"560";NA;"68180";"130";NA;NA
-"2003";"Uebrige erneuerbare Energien";"0_CH";"8520";NA;"1990";"4740";"550";"60";"7430";"90";"0";"0";"8520";NA;NA
-"2001";"Kohle";"0_CH";"6030";NA;"0";"130";"5900";"0";"6030";NA;"-20";"5330";"0";"720";NA
-"1980";"Wasserkraft";"0_CH";"120750";NA;NA;NA;NA;NA;"0";NA;NA;NA;"120750";NA;NA
-"2013";"Fernwärme";"0_CH";"0";"-1800";"4320";"7150";"6110";"0";"17580";NA;NA;NA;NA;NA;NA
-"2011";"Kohle";"0_CH";"5740";NA;"0";"300";"5440";"0";"5740";NA;"0";"4750";"0";"990";NA
-"2001";"Kernbrennstoffe";"0_CH";"275920";NA;NA;NA;NA;NA;"0";NA;NA;"275920";NA;NA;NA
-"1997";"Kohle";"0_CH";"4590";NA;"20";"220";"4350";"0";"4590";NA;"-10";"3110";"0";"1490";NA
-"1981";"Uebrige erneuerbare Energien";"0_CH";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
-"1991";"Wasserkraft";"0_CH";"119100";NA;NA;NA;NA;NA;"0";NA;NA;NA;"119100";NA;NA
-"1984";"Erdölprodukte";"0_CH";"330190";"-7330";"72650";"154910";"40420";"4350";"471240";"198910";"-16830";"338520";NA;"8500";"-16450"
-"1990";"Wasserkraft";"0_CH";"110430";NA;NA;NA;NA;NA;"0";NA;NA;NA;"110430";NA;NA
-"2006";"Müll und Industrieabfälle";"0_CH";"55090";NA;"0";"0";"10990";"0";"10990";NA;NA;NA;"55090";NA;NA
-"1983";"Uebrige erneuerbare Energien";"0_CH";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
-"2000";"Uebrige erneuerbare Energien";"0_CH";"7440";NA;"1860";"3880";"470";"50";"6330";"70";"0";"0";"7440";NA;NA
-"1991";"Holzenergie";"0_CH";"31610";NA;"3140";"22920";"5020";"500";"31580";NA;"-320";"360";"31570";NA;NA
+"jahr";"nutzungs_sektor";"energietraeger";"energiemenge_in_tera_joule";"spatialunit_uid"
+"2003";"Energieumwandlung - Gaswerke";"Müll und Industrieabfälle";NA;"0_CH"
+"2007";"Endverbrauch - Haushalte";"Gas";"39430";"0_CH"
+"1993";"Endverbrauch - Dienstleistungen";"Kohle";"20";"0_CH"
+"1988";"Energieumwandlung - Diverse Erneuerbare";"Kernbrennstoffe";NA;"0_CH"
+"1984";"Export";"Rohöl";NA;"0_CH"
+"2018";"Lagerveränderung";"Erdölprodukte";"29530";"0_CH"
+"2019";"Energieumwandlung - Diverse Erneuerbare";"Holzenergie";"-1660";"0_CH"
+"2014";"Endverbrauch - Verkehr";"Erdölprodukte";"298260";"0_CH"
+"1998";"Energieumwandlung - Gaswerke";"Gas";"190";"0_CH"
+"2000";"Export";"Elektrizität";"-113040";"0_CH"
+"2018";"Energieumwandlung - Wasserkraftwerke";"Gas";NA;"0_CH"
+"2002";"Endverbrauch - Statistische Differenz inkl. Landwirtschaft";"Wasserkraft";NA;"0_CH"
+"2019";"Energieumwandlung - Kernkraftwerke";"Kohle";NA;"0_CH"
+"2001";"Endverbrauch - Industrie";"Gas";"32860";"0_CH"
+"2006";"Endverbrauch - Dienstleistungen";"Wasserkraft";NA;"0_CH"
+"1980";"Eigenverbrauch des Energiesektors, Netzverluste, Verbrauch der Speicherungen";"Holzenergie";NA;"0_CH"
+"2002";"Energieumwandlung - Wasserkraftwerke";"Uebrige erneuerbare Energien";NA;"0_CH"
+"1994";"Import";"Kernbrennstoffe";"250730";"0_CH"
+"2003";"Endverbrauch - Statistische Differenz inkl. Landwirtschaft";"Uebrige erneuerbare Energien";"60";"0_CH"
+"1993";"Energieumwandlung - Raffinerien";"Elektrizität";NA;"0_CH"
+"2012";"Export";"Kernbrennstoffe";NA;"0_CH"
+"2000";"Energieumwandlung - Gaswerke";"Fernwärme";NA;"0_CH"
+"2009";"Endverbrauch - Dienstleistungen";"Fernwärme";"3540";"0_CH"
+"1985";"Endverbrauch - Statistische Differenz inkl. Landwirtschaft";"Holzenergie";"0";"0_CH"
+"1990";"Energieumwandlung - Kernkraftwerke";"Kohle";NA;"0_CH"
+"1997";"Bruttoverbrauch";"Elektrizität";"-24310";"0_CH"
+"1996";"Bruttoverbrauch";"Erdölprodukte";"314250";"0_CH"
+"2009";"Energieumwandlung - konventionell-thermische Kraft-, Fernheiz- und Fernheizkraftwerke";"Fernwärme";"15480";"0_CH"
+"2018";"Energieumwandlung - Diverse Erneuerbare";"Uebrige erneuerbare Energien";"-10840";"0_CH"
+"2015";"Endverbrauch - Dienstleistungen";"Rohöl";NA;"0_CH"
+"2017";"Energieumwandlung - konventionell-thermische Kraft-, Fernheiz- und Fernheizkraftwerke";"Gas";"-7780";"0_CH"
+"2020";"Lagerveränderung";"Holzenergie";NA;"0_CH"
+"1990";"Energieumwandlung - Wasserkraftwerke";"Elektrizität";"110430";"0_CH"
+"2004";"Eigenverbrauch des Energiesektors, Netzverluste, Verbrauch der Speicherungen";"Elektrizität";"-23930";"0_CH"
+"1983";"Inlandproduktion";"Kernbrennstoffe";NA;"0_CH"
+"1982";"Inlandproduktion";"Fernwärme";NA;"0_CH"
+"1991";"Energieumwandlung - Kernkraftwerke";"Fernwärme";"910";"0_CH"
+"1988";"Import";"Rohöl";"165850";"0_CH"
+"2005";"Endverbrauch - Total";"Rohöl";"0";"0_CH"
+"1991";"Import";"Wasserkraft";NA;"0_CH"

@@ -1,7 +1,145 @@
-[1] "Environment: REMOTE, Time: 2023-10-03 22:13:01.995552"
+[1] "Environment: REMOTE, Time: 2023-10-13 18:31:11.020985"
 
 Query Nr. 1
--- Welches war der am meisten importierte Energietraeger 2020 in der Schweiz?
-SELECT energietraeger as meist_importierte_enrgietraeger_2020 FROM energiebilanz_schweiz_in_tera_joule AS T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND jahr='2020' ORDER BY terajoule_import DESC LIMIT 1;
- meist_importierte_enrgietraeger_2020
-                            Fernwärme
+-- Welches waren die fünf am meisten importierten Energietraeger 2020 in der Schweiz und wieviel wurde importiert?
+SELECT nutzungs_sektor, energietraeger, SUM(energiemenge_in_tera_joule) as tj_import_2020 FROM energiebilanz_schweiz_in_tera_joule WHERE jahr='2020' AND LOWER(nutzungs_sektor) LIKE '%import%' AND energiemenge_in_tera_joule IS NOT NULL GROUP BY energietraeger, nutzungs_sektor ORDER BY tj_import_2020 DESC;
+ nutzungs_sektor               energietraeger tj_import_2020
+          Import                Erdölprodukte         269880
+          Import              Kernbrennstoffe         250800
+          Import                        Rohöl         122930
+          Import                          Gas         119330
+          Import                 Elektrizität          97160
+          Import Uebrige erneuerbare Energien           6810
+          Import                        Kohle           3340
+          Import                  Holzenergie           1930
+
+Query Nr. 2
+-- Welches war der am meisten exportierten Energietraeger 2020 in der Schweiz und wieviel wurde exportiert?
+SELECT nutzungs_sektor, energietraeger, SUM(energiemenge_in_tera_joule) as tj_export_2020 FROM energiebilanz_schweiz_in_tera_joule WHERE jahr='2020' AND LOWER(nutzungs_sektor) LIKE '%export%' AND energiemenge_in_tera_joule IS NOT NULL GROUP BY energietraeger, nutzungs_sektor ORDER BY tj_export_2020 DESC;
+ nutzungs_sektor               energietraeger tj_export_2020
+          Export                        Kohle              0
+          Export Uebrige erneuerbare Energien              0
+          Export                  Holzenergie            -90
+          Export                Erdölprodukte         -18890
+          Export                 Elektrizität        -117170
+
+Query Nr. 3
+-- Gibt es Energieträger der niemals importiert wurden?
+SELECT energietraeger FROM energiebilanz_schweiz_in_tera_joule WHERE LOWER(nutzungs_sektor) LIKE '%import%' GROUP BY energietraeger HAVING SUM(energiemenge_in_tera_joule) IS NULL OR SUM(energiemenge_in_tera_joule) = 0;
+            energietraeger
+                 Fernwärme
+ Müll und Industrieabfälle
+               Wasserkraft
+
+Query Nr. 4
+-- Gibt es Energieträger der niemals exportiert wurden?
+SELECT energietraeger FROM energiebilanz_schweiz_in_tera_joule WHERE LOWER(nutzungs_sektor) LIKE '%export%' GROUP BY energietraeger HAVING SUM(energiemenge_in_tera_joule) IS NULL OR SUM(energiemenge_in_tera_joule) = 0;
+               energietraeger
+                    Fernwärme
+              Kernbrennstoffe
+    Müll und Industrieabfälle
+                        Rohöl
+ Uebrige erneuerbare Energien
+                  Wasserkraft
+
+Query Nr. 5
+-- Welche nutzungssektoren hatten 2020 mit Erneuerbarer Energie zu tun und wenn ja in welchem Umfang?
+SELECT nutzungs_sektor, SUM(energiemenge_in_tera_joule) as anteil_erneuerbare_energien_2020_tj FROM energiebilanz_schweiz_in_tera_joule WHERE jahr='2020' AND LOWER(energietraeger) LIKE '%erneuerbar%' AND energiemenge_in_tera_joule IS NOT NULL AND energiemenge_in_tera_joule !=0 GROUP BY energietraeger, nutzungs_sektor ORDER BY anteil_erneuerbare_energien_2020_tj DESC;
+                                            nutzungs_sektor anteil_erneuerbare_energien_2020_tj
+                                            Bruttoverbrauch                               44200
+                                           Inlandproduktion                               37390
+                                       Endverbrauch - Total                               30420
+                                   Endverbrauch - Haushalte                               17200
+                                     Endverbrauch - Verkehr                                7260
+                                                     Import                                6810
+                            Endverbrauch - Dienstleistungen                                3660
+                                   Endverbrauch - Industrie                                1850
+ Endverbrauch - Statistische Differenz inkl. Landwirtschaft                                 450
+                    Energieumwandlung - Diverse Erneuerbare                              -13780
+
+Query Nr. 6
+-- In 2020 auf welche Energieträger hat sich der Verbrauch von Haushalten gestützt? Gib die Energieträger und Energiemengen an.
+SELECT energietraeger, SUM(energiemenge_in_tera_joule) as energieverbrauch_in_tj FROM energiebilanz_schweiz_in_tera_joule WHERE jahr='2020' AND LOWER(nutzungs_sektor) LIKE '%verbrauch%haushalt%' AND energiemenge_in_tera_joule IS NOT NULL AND energiemenge_in_tera_joule !=0 GROUP BY energietraeger, nutzungs_sektor ORDER BY energieverbrauch_in_tj DESC;
+               energietraeger energieverbrauch_in_tj
+                 Elektrizität                  69200
+                Erdölprodukte                  59470
+                          Gas                  47470
+                  Holzenergie                  17350
+ Uebrige erneuerbare Energien                  17200
+                    Fernwärme                   8640
+                        Kohle                    100
+
+Query Nr. 7
+-- In 2020 welche Endverbrauchs Sektoren haben Kohle als Energieträger benutzt und in welchem Umfang? .
+SELECT nutzungs_sektor, SUM(energiemenge_in_tera_joule) as energieverbrauch_in_kohle_tj FROM energiebilanz_schweiz_in_tera_joule WHERE jahr='2020' AND LOWER(nutzungs_sektor) LIKE '%verbrauch%' AND LOWER(energietraeger) LIKE '%kohle%' AND energiemenge_in_tera_joule IS NOT NULL AND energiemenge_in_tera_joule !=0 GROUP BY nutzungs_sektor ORDER BY energieverbrauch_in_kohle_tj DESC;
+          nutzungs_sektor energieverbrauch_in_kohle_tj
+          Bruttoverbrauch                         3660
+     Endverbrauch - Total                         3660
+ Endverbrauch - Industrie                         3560
+ Endverbrauch - Haushalte                          100
+
+Query Nr. 8
+-- Welche Energieträger kamen 2019 bei Energieumwandlung vor und in welchem Umfang? .
+SELECT nutzungs_sektor, SUM(energiemenge_in_tera_joule) as energie_umwandlung_2019_tj FROM energiebilanz_schweiz_in_tera_joule WHERE LOWER(nutzungs_sektor) LIKE '%umwandlung%' AND energiemenge_in_tera_joule IS NOT NULL AND energiemenge_in_tera_joule !=0 AND jahr = 2019 GROUP BY nutzungs_sektor ORDER BY energie_umwandlung_2019_tj ASC;
+                                                                       nutzungs_sektor energie_umwandlung_2019_tj
+                                                    Energieumwandlung - Kernkraftwerke                    -183350
+ Energieumwandlung - konventionell-thermische Kraft-, Fernheiz- und Fernheizkraftwerke                     -28260
+                                               Energieumwandlung - Diverse Erneuerbare                      -1570
+                                                       Energieumwandlung - Raffinerien                          0
+                                                  Energieumwandlung - Wasserkraftwerke                          0
+
+Query Nr. 9
+-- Bei der Umwandlung durch Kernkraftwerke, welche Energieträger sind da mit welchen Mengen durchschnittlich im Spiel?
+SELECT     energietraeger,     AVG(energiemenge_in_tera_joule) as durchschnittliche_umwandlung_kernkraft_in_tj FROM energiebilanz_schweiz_in_tera_joule WHERE LOWER(nutzungs_sektor) LIKE '%umwandlung%' AND LOWER(nutzungs_sektor) LIKE '%kernkraftwerk%' AND energiemenge_in_tera_joule IS NOT NULL AND energiemenge_in_tera_joule != 0 GROUP BY energietraeger ORDER BY durchschnittliche_umwandlung_kernkraft_in_tj ASC;
+  energietraeger durchschnittliche_umwandlung_kernkraft_in_tj
+ Kernbrennstoffe                                  -245775.116
+       Fernwärme                                     1049.535
+    Elektrizität                                    81106.279
+
+Query Nr. 10
+-- Hat sich der Import Mix über die Jahre veändert? Welche Energieträger wurde jeweils am meisten importiert? Zeige auch die Importmenge.
+WITH RankedImports AS (     SELECT         energietraeger,         jahr,         energiemenge_in_tera_joule,         RANK() OVER (PARTITION BY jahr ORDER BY energiemenge_in_tera_joule DESC) AS rank     FROM energiebilanz_schweiz_in_tera_joule     WHERE LOWER(nutzungs_sektor) LIKE '%import%'       AND energiemenge_in_tera_joule IS NOT NULL       AND energiemenge_in_tera_joule != 0 ) SELECT     energietraeger,     jahr,     energiemenge_in_tera_joule as max_import FROM RankedImports WHERE rank = 1 ORDER BY jahr DESC;
+  energietraeger jahr max_import
+ Kernbrennstoffe 2022     252140
+   Erdölprodukte 2021     259830
+   Erdölprodukte 2020     269880
+   Erdölprodukte 2019     347730
+   Erdölprodukte 2018     293140
+   Erdölprodukte 2017     329760
+   Erdölprodukte 2016     332110
+   Erdölprodukte 2015     337620
+ Kernbrennstoffe 2014     287670
+   Erdölprodukte 2013     318290
+   Erdölprodukte 2012     352840
+   Erdölprodukte 2011     299960
+   Erdölprodukte 2010     311890
+   Erdölprodukte 2009     353920
+   Erdölprodukte 2008     329100
+   Erdölprodukte 2007     296800
+   Erdölprodukte 2006     327370
+   Erdölprodukte 2005     345930
+   Erdölprodukte 2004     317230
+   Erdölprodukte 2003     341510
+   Erdölprodukte 2002     351410
+   Erdölprodukte 2001     375000
+   Erdölprodukte 2000     329410
+   Erdölprodukte 1999     322350
+   Erdölprodukte 1998     362430
+   Erdölprodukte 1997     350310
+   Erdölprodukte 1996     323510
+   Erdölprodukte 1995     313260
+   Erdölprodukte 1994     347460
+   Erdölprodukte 1993     318310
+   Erdölprodukte 1992     389110
+   Erdölprodukte 1991     373070
+   Erdölprodukte 1990     416640
+   Erdölprodukte 1989     379250
+   Erdölprodukte 1988     349730
+   Erdölprodukte 1987     328350
+   Erdölprodukte 1986     388880
+   Erdölprodukte 1985     340200
+   Erdölprodukte 1984     338520
+   Erdölprodukte 1983     344720
+   Erdölprodukte 1982     297560
+   Erdölprodukte 1981     328780
+   Erdölprodukte 1980     338250
