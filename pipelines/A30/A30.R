@@ -25,7 +25,8 @@ ds$postgres_export <- ds$postgres_export %>%
     quantil_25_preis_chf_pro_m2 = q25,
     quantil_75_preis_chf_pro_m2 = q75,
     median_preis_chf_pro_m2 = median,
-  )
+  ) %>%
+  dplyr::mutate(across(everything(), as.numeric))
 
 # -------------------------------------------------------------------------
 # Step 2 map to spatial units
