@@ -6,7 +6,6 @@
 
 ds <- create_dataset(id = "A7")
 ds <- download_data(ds)
-ds
 
 # -------------------------------------------------------------------------
 # Step: Clean the data
@@ -46,7 +45,7 @@ spatial_map <- ds$cleaned_data %>%
 ds$postgres_export <- ds$cleaned_data %>%
   dplyr::left_join(spatial_map, by = "grossregion_kanton") %>%
   dplyr::select(-grossregion_kanton)
-ds$postgres_export
+colnames(ds$postgres_export)
 
 # -------------------------------------------------------------------------
 # Step: After the dataset has been build use functions of package stabotData
@@ -56,9 +55,13 @@ ds$postgres_export
 
 # create the table in postgres
 statbotData::create_postgres_table(ds)
-# copy the metadata templates to the metadata files and then complete them
-statbotData::read_metadata_tables_from_file(ds)
 
+# update metadata
 statbotData::update_metadata_in_postgres(ds)
+
 # generate sample data for the dataset from the local tibble
 statbotData::dataset_sample(ds)
+
+# testrun queries
+statbotData::testrun_queries(ds)
+

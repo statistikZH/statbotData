@@ -1,6 +1,6 @@
 name;table_name;data_type;title;title_en;example_values
 rechtsform;arztpraxen_ambulante_zentren;categorical;Rechtsform der Praxis;Legal form of the practice;"Rechtsform - Total","Einzelunternehmen","Andere Rechtsform"
 geschlecht;arztpraxen_ambulante_zentren;categorical;Geschlecht;Gender;"Geschlecht - Total","Mann","Frau"
-altersklasse;arztpraxen_ambulante_zentren;categorical;Altersklasse;age group;"Altersklasse - Total","Unter 45 Jahre","45-54 Jahre"
+altersgruppe;arztpraxen_ambulante_zentren;categorical;Altersklasse;age group;"Altersklasse - Total","Unter 45 Jahre","45-54 Jahre"
 anzahl_beschaeftigte;arztpraxen_ambulante_zentren;numeric;Anzahl Beschäftigte;Number of employees;
 anzahl_vollzeitaquivalente;arztpraxen_ambulante_zentren;numeric;Anzahl Vollzeitäquivalente;Number of full-time equivalents;
