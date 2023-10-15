@@ -57,3 +57,4 @@ statbotData::update_metadata_in_postgres(ds)
 
 # run test queries
 statbotData::testrun_queries(ds)
+
