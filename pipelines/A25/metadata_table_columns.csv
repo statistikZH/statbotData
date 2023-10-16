@@ -1,10 +1,10 @@
 name;table_name;data_type;title;title_en;example_values
-flache_rebland_rote_europaische_reben_ha;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Fläche Rebland in ha: rotes Gewächs: Europäische Reben";"Area of vineyards in ha: red growth: European vines";"244; 250; 253"
-flache_rebland_kreuzung_rote_weisse_ha;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Fläche Rebland in ha: rotes Gewächs: Direktträgerkreuzungen; ab 2016: Rote und weisse Sorten zusammen";"Area of vineyards in ha - red cultivars: Direct carrier crosses; from 2016: red and white varieties together";"16; 14; 13"
-flache_total;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Fläche Rebland in ha: Total";"Area of vineyards in ha: Total";"119; 126; 124"
-weinernte_total_hl;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Weinernte in hl: Total";"Wine harvest in hl: Total";"16789; 23061; 17054"
-weinernte_rot_europaische_hl;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Weinernte in hl: rotes Gewächs: Europäische Reben";"Wine harvest in hl: red grapes: European vines";"10365; 13861; 11290"
-weinernte_rot_kreuzung_rot_hl;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Weinernte in hl: rotes Gewächs: Direktträgerkreuzungen";"Grape harvest in hl: red growth: Direct carrier crossings";"679; 795; 435"
-weinernte_europaische_weiss_hl;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Weinernte in hl: rotes Gewächs: Europäische Reben";"Wine harvest in hl: red grapes: European vines";"5744; 8405; 5329"
-erntewert_rot_1000_chf;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Erntewert in 1000 Franken: rotes Gewächs";"Harvest value in 1000 francs: red crop";"5744; 8751; 7001"
-erntewert_weiss_1000_chf;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Erntewert in 1000 Franken: weisse Gewächs";"Harvest value in 1000 Swiss francs: white growths";"2996; 4383; 2779"
+flache_rebland_rote_europaische_reben_ha;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Fläche Rebland in ha: rotes Gewächs: Europäische Reben";"Area of vineyards in ha: red growth: European vines";244,250,253
+flache_rebland_kreuzung_rote_weisse_ha;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Fläche Rebland in ha: rotes Gewächs: Direktträgerkreuzungen; ab 2016: Rote und weisse Sorten zusammen";"Area of vineyards in ha - red cultivars: Direct carrier crosses; from 2016: red and white varieties together";16,14,13
+flache_total;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Fläche Rebland in ha: Total";"Area of vineyards in ha: Total";119,126,124
+weinernte_total_hl;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Weinernte in hl: Total";"Wine harvest in hl: Total";16789,23061,17054
+weinernte_rot_europaische_hl;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Weinernte in hl: rotes Gewächs: Europäische Reben";"Wine harvest in hl: red grapes: European vines";10365,13861,11290
+weinernte_rot_kreuzung_rot_hl;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Weinernte in hl: rotes Gewächs: Direktträgerkreuzungen";"Grape harvest in hl: red growth: Direct carrier crossings";679,795,435
+weinernte_europaische_weiss_hl;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Weinernte in hl: rotes Gewächs: Europäische Reben";"Wine harvest in hl: red grapes: European vines";5744,8405,5329
+erntewert_rot_1000_chf;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Erntewert in 1000 Franken: rotes Gewächs";"Harvest value in 1000 francs: red crop";5744,8751,7001
+erntewert_weiss_1000_chf;aargau_obst_rebbau_rebland_wein_ernte;numeric;"Erntewert in 1000 Franken: weisse Gewächs";"Harvest value in 1000 Swiss francs: white growths";2996,4383,2779

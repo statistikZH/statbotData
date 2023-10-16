@@ -1,6 +1,6 @@
 name;table_name;data_type;title;title_en;example_values
-verbrauchskategorie;median_strompreis_per_kanton;categorical;Verbrauchskategorie;Consumption category;"C5; H4; H2"
-verbrauchskategorie_beschreibung;median_strompreis_per_kanton;categorical;"Verbrauchskategorie Beschreibung";Consumption category description;"500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 150 kW' Mittelspannung' eigene Transformatorenstation; 4'500 kWh/Jahr: 5-Zimmerwohnung mit Elektroherd und Tumbler (ohne Elektroboiler); H2: 2'500 kWh/Jahr: 4-Zimmerwohnung mit Elektroherd"
-verbrauchskategorie_grosse_kwh_pro_jahr;median_strompreis_per_kanton;numeric;"Verbrauchskategorie Grösse (kwh/jahr)";Consumption category size (kwh/year);"500000; 4500; 2500"
-energieprodukt;median_strompreis_per_kanton;categorical;Energieprodukt;Energy product;"Günstigstes Produkt; Standardprodukt"
-mittlerer_preis_rappen_pro_kw_hr;median_strompreis_per_kanton;numeric;"Mittlerer Preis in Rappen pro kwh";Average price in rappen per kwh;"17.95067; 18.49410; 17.25452"
+verbrauchskategorie;median_strompreis_per_kanton;categorical;Verbrauchskategorie;Consumption category;C5,H4,H2
+verbrauchskategorie_beschreibung;median_strompreis_per_kanton;categorical;"Verbrauchskategorie Beschreibung";Consumption category description;"4'500 kWh/Jahr: 5-Zimmerwohnung mit Elektroherd und Tumbler (ohne Elektroboiler)","7'500 kWh/Jahr: 5-Zimmer-Einfamilienhaus mit Elektroherd' Elektroboiler und Tumbler"
+verbrauchskategorie_grosse_kwh_pro_jahr;median_strompreis_per_kanton;numeric;"Verbrauchskategorie Grösse (kwh/jahr)";Consumption category size (kwh/year);500000,4500,2500
+energieprodukt;median_strompreis_per_kanton;categorical;Energieprodukt;Energy product;"Günstigstes Produkt","Standardprodukt"
+mittlerer_preis_rappen_pro_kw_hr;median_strompreis_per_kanton;numeric;"Mittlerer Preis in Rappen pro kwh";Average price in rappen per kwh;17.95067,18.49410,17.25452

@@ -1,4 +1,4 @@
 name;table_name;data_type;title;title_en;example_values
-falle;basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr;numeric;"Fälle";"Cases";"17; 32; 9"
-flache_in_m2;basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr;numeric;"Fläche in m2";"Area in m2";"12300; 10400; 4700"
-quadratmeterpreis_chf;basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr;numeric;"Quadratmeterpreis in CHF";"Price per square meter in CHF";"213; 266; 221"
+falle;basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr;numeric;"Fälle";"Cases";17,32,9
+flache_in_m2;basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr;numeric;"Fläche in m2";"Area in m2";12300,10400,4700
+quadratmeterpreis_chf;basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr;numeric;"Quadratmeterpreis in CHF";"Price per square meter in CHF";213,266,221
