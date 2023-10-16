@@ -1,25 +1,123 @@
-[1] "Environment: REMOTE, Time: 2023-10-04 14:41:19.378075"
+[1] "Environment: REMOTE, Time: 2023-10-17 08:25:12.803158"
 
 Query Nr. 1
--- Welche Partei hatte 2019 am meisten fiktive Wàhler in der Schweiz?
-SELECT T.partei, S.name_de, T.jahr, T.anzahl_fiktive_wahlende FROM nationalratswahlen as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.partei!='Übrige' AND T.anzahl_fiktive_wahlende IS NOT NULL AND T.jahr = 2019 ORDER BY anzahl_fiktive_wahlende DESC LIMIT 1;
- partei name_de jahr anzahl_fiktive_wahlende
-    SVP Schweiz 2019                  620350
+-- Welche Partei hatte 2019 am meisten Wàhler (inklusive fiktive Wähler) in der Schweiz?
+SELECT T.partei AS staerkeste_partei_2019,   T.anzahl_fiktive_wahlende FROM nationalratswahlen as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.partei != 'Übrige' AND T.anzahl_fiktive_wahlende IS NOT NULL AND T.jahr = 2019 ORDER BY anzahl_fiktive_wahlende DESC LIMIT 1;
+ staerkeste_partei_2019 anzahl_fiktive_wahlende
+                    SVP                  620350
 
 Query Nr. 2
--- Welche Partei war 2019 prozentual and stàrksten in der Schweiz?
-SELECT T.partei, T.parteistarke_in_prozent, S.name_de, T.jahr FROM nationalratswahlen as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.parteistarke_in_prozent IS NOT NULL AND T.jahr = 2019 ORDER BY T.parteistarke_in_prozent DESC LIMIT 1;
- partei parteistarke_in_prozent name_de jahr
-    SVP                   25.59 Schweiz 2019
+-- Welche Partei war 2019 prozentual am stàrksten in der Schweiz und wie stark war sie?
+SELECT T.partei AS staerkste_partei_2019, T.parteistarke_in_prozent FROM nationalratswahlen as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.parteistarke_in_prozent IS NOT NULL AND T.jahr = 2019 ORDER BY T.parteistarke_in_prozent DESC LIMIT 1;
+ staerkste_partei_2019 parteistarke_in_prozent
+                   SVP                   25.59
 
 Query Nr. 3
--- In welchem Kanton war die FDP 2019 prozentual am stàrksten?
-SELECT S.name_de as kanton_wo_die_fdp_2019_am_starksten_war, T.parteistarke_in_prozent, T.jahr, T.partei FROM nationalratswahlen as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE AND partei = 'FDP' AND T.parteistarke_in_prozent IS NOT NULL AND T.jahr = 2019 ORDER BY T.parteistarke_in_prozent DESC LIMIT 1;
- kanton_wo_die_fdp_2019_am_starksten_war parteistarke_in_prozent jahr partei
-           Kanton Appenzell Ausserrhoden                   48.44 2019    FDP
+-- In welchem Kanton war die FDP 2019 prozentual am stàrksten und wie stark war sie dort?
+SELECT S.name_de as kanton, T.parteistarke_in_prozent AS parteistaerke_fdp_2019 FROM nationalratswahlen as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE AND partei = 'FDP' AND T.parteistarke_in_prozent IS NOT NULL AND T.jahr = 2019 ORDER BY parteistaerke_fdp_2019 DESC LIMIT 1;
+                        kanton parteistaerke_fdp_2019
+ Kanton Appenzell Ausserrhoden                  48.44
 
 Query Nr. 4
--- In welchem Jahr hatte die FDP das schwàchste Ergebnis in Prozent im Kanton Appenzell Ausserrhoden?
-SELECT T.jahr as jahr_wo_die_fdp_schwaechstes_ergebnis_in_appenzell_ausserhoden_hatte FROM nationalratswahlen as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE AND S.name_de LIKE '%Appenzell Ausserrhoden' AND T.partei = 'FDP' AND T.parteistarke_in_prozent IS NOT NULL ORDER BY parteistarke_in_prozent ASC LIMIT 1;
- jahr_wo_die_fdp_schwaechstes_ergebnis_in_appenzell_ausserhoden_
-                                                            1991
+-- In welchem Jahr hatte die FDP das schwàchste Ergebnis in Prozent im Kanton Appenzell Ausserrhoden? Und wie schwach war es?
+SELECT T.jahr, T.parteistarke_in_prozent AS partei_staerke_fdp_appenzell_ausserhoden FROM nationalratswahlen as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE AND S.name_de LIKE '%Appenzell Ausserrhoden' AND T.partei = 'FDP' AND T.parteistarke_in_prozent IS NOT NULL ORDER BY parteistarke_in_prozent ASC LIMIT 1;
+ jahr partei_staerke_fdp_appenzell_ausserhoden
+ 1991                                    30.82
+
+Query Nr. 5
+-- Wann, in welchen Kantonen und welche Partei hatten das beste Ergebnis und wie hoch war es jeweils prozentual? Liste die 5 höchsten Ergenisse auf.
+SELECT S.name_de as kanton, T.parteistarke_in_prozent, T.jahr, T.partei FROM nationalratswahlen as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE AND T.parteistarke_in_prozent IS NOT NULL ORDER BY T.parteistarke_in_prozent DESC LIMIT 5;
+                       kanton parteistarke_in_prozent jahr partei
+ Kanton Appenzell Innerrhoden                   98.71 1991    CVP
+ Kanton Appenzell Innerrhoden                   98.31 1975    CVP
+             Kanton Nidwalden                   97.69 1991    CVP
+             Kanton Nidwalden                   97.60 1975    CVP
+             Kanton Nidwalden                   97.23 1971    CVP
+
+Query Nr. 6
+-- Wann und in welchen Kantonen stand die Partei LEGA zur Wahl und welche Parteistärke hatte sie?
+SELECT S.name_de AS kanton, T.jahr, T.parteistarke_in_prozent AS parteienstaerke_Lega FROM nationalratswahlen as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE   AND T.partei = 'Lega'   AND T.parteistarke_in_prozent IS NOT NULL GROUP BY kanton, T.jahr, T.partei, T.parteistarke_in_prozent ORDER BY jahr ASC;
+        kanton jahr parteienstaerke_lega
+ Kanton Tessin 1991                23.53
+ Kanton Tessin 1995                18.60
+ Kanton Tessin 1999                18.52
+ Kanton Tessin 2003                 7.96
+ Kanton Tessin 2007                14.05
+ Kanton Tessin 2011                17.54
+ Kanton Tessin 2015                21.68
+ Kanton Tessin 2019                16.93
+
+Query Nr. 7
+-- Welche Parteien standen 2019 im Kanton Glarus zur Wahl und welche prozentuale Stärke hatten sie?
+SELECT T.partei, T.parteistarke_in_prozent FROM nationalratswahlen AS T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE T.parteistarke_in_prozent IS NOT NULL   AND T.jahr = 2019   AND S.canton = TRUE AND S.name_de LIKE '%Glarus%';
+ partei parteistarke_in_prozent
+     SP                   28.19
+    BDP                   63.03
+    GPS                    2.75
+ Übrige                    6.03
+
+Query Nr. 8
+-- In wievielen Kantonen waren die Parteien 2019 jeweils aktiv und bei welcher Parteistärke schweizweit?
+SELECT T.partei,   COUNT(CASE WHEN T.parteistarke_in_prozent IS NOT NULL AND S.canton = TRUE THEN 1 ELSE NULL END) AS anzahl_kantone_wo_partei_aktiv_ist,   MAX(CASE WHEN S.country = TRUE THEN T.parteistarke_in_prozent ELSE NULL END) AS parteistarke_schweiz FROM nationalratswahlen AS T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE T.jahr = 2019   AND S.canton = TRUE OR S.country = TRUE GROUP BY T.partei ORDER BY anzahl_kantone_wo_partei_aktiv_ist DESC;
+ partei anzahl_kantone_wo_partei_aktiv_ist parteistarke_schweiz
+    SVP                                 25                29.39
+     SP                                 24                24.87
+    CVP                                 24                21.29
+    FDP                                 22                24.01
+    GPS                                 21                13.20
+    GLP                                 19                 7.80
+ Übrige                                 19                 2.49
+    EVP                                 16                 2.44
+    BDP                                 13                 5.42
+    EDU                                 11                 1.30
+    PdA                                  6                 2.58
+     SD                                  6                 3.39
+    CSP                                  3                 0.43
+   Sol.                                  3                 0.51
+    FGA                                  2                 2.40
+   Lega                                  1                 1.38
+    MCR                                  1                 0.44
+    LPS                                  1                 3.04
+    LdU                                  0                 7.63
+    PSA                                  0                 0.59
+   POCH                                  0                 2.23
+   Sep.                                  0                 0.46
+    FPS                                  0                 5.07
+   Rep.                                  0                 4.25
+
+Query Nr. 9
+-- In welchen Kantonen stand die Partei SVP 2019 nicht zur Wahl?
+SELECT S.name_de AS kanton_ohne_svp_2019 FROM nationalratswahlen as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE   AND T.partei = 'SVP'   AND T.jahr = 2019   AND T.parteistarke_in_prozent IS NULL;
+ kanton_ohne_svp_2019
+        Kanton Glarus
+
+Query Nr. 10
+-- Zeige das Verhältnis Parteistimmen zu fiktiven Wählenden für alle Kantone, Stand 2019. Sortiere nach der Grösse des Faktors.
+SELECT SUM(T.anzahl_parteistimmen) / SUM(T.anzahl_fiktive_wahlende) AS faktor_nationalratswahlen, S.name_de FROM nationalratswahlen AS T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE T.jahr = 2019   AND S.canton = TRUE GROUP BY S.name_de ORDER BY faktor_nationalratswahlen DESC;
+ faktor_nationalratswahlen                       name_de
+                 34.798965                 Kanton Zürich
+                 23.727196                   Kanton Bern
+                 18.484263                  Kanton Waadt
+                 15.746957                 Kanton Aargau
+                 11.866919             Kanton St. Gallen
+                 11.821736                   Kanton Genf
+                  8.913580                 Kanton Luzern
+                  7.846244                 Kanton Wallis
+                  7.795414                 Kanton Tessin
+                  6.902347       Kanton Basel-Landschaft
+                  6.888502               Kanton Freiburg
+                  5.967650                Kanton Thurgau
+                  5.963112              Kanton Solothurn
+                  4.988679            Kanton Basel-Stadt
+                  4.958417             Kanton Graubünden
+                  3.990646                 Kanton Schwyz
+                  3.948409              Kanton Neuenburg
+                  2.990888                    Kanton Zug
+                  1.994754                   Kanton Jura
+                  1.992661           Kanton Schaffhausen
+                  1.000000               Kanton Obwalden
+                  1.000000                    Kanton Uri
+                  1.000000  Kanton Appenzell Innerrhoden
+                  1.000000              Kanton Nidwalden
+                  1.000000                 Kanton Glarus
+                  1.000000 Kanton Appenzell Ausserrhoden
