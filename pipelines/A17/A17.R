@@ -22,7 +22,7 @@ ds$cleaned_data <- ds$data %>%
     "jahr" = stringr::str_extract(datum_und_vorlage, '^\\d{4}')
   ) %>%
   dplyr::mutate(
-    "vorlage_title" = stringr::str_replace(datum_und_vorlage, '^\\d{4}-\\d{2}-\\d{2} ', "")
+    "vorlage" = stringr::str_replace(datum_und_vorlage, '^\\d{4}-\\d{2}-\\d{2} ', "")
   ) %>% dplyr::select(
     -c(datum_und_vorlage)
   ) %>%
