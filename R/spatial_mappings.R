@@ -274,3 +274,38 @@ map_ds_municipalities <- function(.data, year, canton_abbr, municipality_name) {
       )
   return(matches)
 }
+
+#' Get spatialunits of residential areas.
+#'
+#' This function uses temporal and cantonal information to
+#' unambiguously assign a uid to each residential area.
+#'
+#' @param .data A tibble containing at least columns with the year of observation, 2 letter canton abbreviations and names of residential areas.
+#' @param year column containing the year of observation.
+#' @param canton_hist_id column containing the residential area canton's historical id.
+#' @param residential_area_name column containing the names of residential areas.
+#'
+#' @return spatial mapping with input columns, plus valid_until, valid_from, spatialunit and name.
+#' @import rlang dplyr
+#' @export
+#'
+map_ds_residential_areas <- function(.data, year, canton_hist_id, residential_area_name) {
+  selected_cantons <- .data %>%
+    select({{ canton_hist_id }}) %>%
+    distinct() %>%
+    pull()
+  spatial_map <- load_spatial_map() %>%
+    filter(residence_area, !canton) %>%
+    filter(canton_hist_id %in% selected_cantons) %>%
+    select(spatialunit_uid, name, valid_from, valid_until)
+    # Fuzzy merge on date ranges
+    matches <- .data %>%
+      mutate({{ year }} := lubridate::ymd({{ year }}, truncated=2L)) %>%
+      cross_join(spatial_map) %>%
+      filter(
+        {{ year }} >= valid_from,
+        {{ year }} <= valid_until,
+        {{ residential_area_name }} == name
+      )
+  return(matches)
+}
