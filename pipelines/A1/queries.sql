@@ -79,27 +79,13 @@ GROUP BY T.genutzte_infrastruktur
 ORDER BY gerate_anzahl_2020 DESC;
 
 -- Welches drei medizinischen Geräte hatten den meisten Zuwachs zwischen 2013 und 2021 in der Schweiz und wieviele Neuanschaffungen gab es jeweils?
-WITH Infrastruktur2013 AS (
-    SELECT T1.anzahl_gerate as gerate_anzahl_2013, T1.genutzte_infrastruktur
-    FROM medizinisch_technische_infrastruktur as T1
-    JOIN spatial_unit as S on T1.spatialunit_uid = S.spatialunit_uid
-    WHERE S.country=TRUE
-      AND T1.jahr = 2013
-    GROUP BY T1.genutzte_infrastruktur, gerate_anzahl_2013
-),
-Infrastruktur2021 AS (
-    SELECT T2.anzahl_gerate as gerate_anzahl_2021, T2.genutzte_infrastruktur
-    FROM medizinisch_technische_infrastruktur as T2
-    JOIN spatial_unit as S on T2.spatialunit_uid = S.spatialunit_uid
-    WHERE S.country=TRUE
-      AND T2.jahr = 2021
-    GROUP BY T2.genutzte_infrastruktur, gerate_anzahl_2021
-)
-SELECT
-    MI2013.genutzte_infrastruktur,
-    MI2021.gerate_anzahl_2021 - MI2013.gerate_anzahl_2013 AS zuwachs_an_geraeten
-FROM Infrastruktur2013 MI2013
-JOIN Infrastruktur2021 MI2021 ON MI2013.genutzte_infrastruktur = MI2021.genutzte_infrastruktur
+SELECT T.genutzte_infrastruktur,
+    SUM(CASE WHEN T.jahr = 2021 THEN T.anzahl_gerate ELSE -T.anzahl_gerate END) AS zuwachs_an_geraeten
+FROM medizinisch_technische_infrastruktur as T
+JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
+WHERE S.country
+    AND T.jahr IN (2013, 2021)
+GROUP BY T.genutzte_infrastruktur
 ORDER BY zuwachs_an_geraeten DESC
 LIMIT 3;
 
