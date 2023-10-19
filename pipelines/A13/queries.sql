@@ -123,7 +123,7 @@ GROUP BY T.forest_zone
 HAVING SUM(T.number_of_plantations) != 0
 ORDER BY number_of_plantations_canton_jura DESC;
 
--- List for each year the change in number of forests in Kanton Uri?
+-- List for each year the number of forests in Kanton Uri?
 SELECT T.year, SUM(T.number_of_plantations) AS number_of_plantations_canton_uri
 FROM number_of_plantations_in_swiss_forest as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
