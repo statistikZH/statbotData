@@ -103,7 +103,7 @@ JOIN Infrastruktur2021 MI2021 ON MI2013.genutzte_infrastruktur = MI2021.genutzte
 ORDER BY zuwachs_an_geraeten DESC
 LIMIT 3;
 
--- Welchem drei Kantone hatte den grössten Zuwachs and Untersuchungen mit medizinischen Geräten zwischen 2013 and 2021 und wieviel hoch war der Zuwachs verteilt auf ambulante und statinäre Untersuchungen und Geräte?
+-- Welchem drei Kantone hatte den grössten Zuwachs und Untersuchungen mit medizinischen Geräten zwischen 2013 and 2021 und wieviel hoch war der Zuwachs verteilt auf ambulante und stationäre Untersuchungen und Geräte?
 WITH Untersuchungen2013 AS (
 SELECT SUM(T1.anzahl_untersuchungen_total) as anzahl_untersuchungen_gesamt_2013,
   SUM(T1.anzahl_ambulante_untersuchungen) as anzahl_ambulante_untersuchungen_2013,
