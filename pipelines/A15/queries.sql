@@ -104,7 +104,7 @@ WHERE S.canton = TRUE
   AND T.year IN (2010, 2020)
   AND T.farmholding_system IN ('Organic farming', 'Conventional farming');
 
--- Which 5 cantons had 2022 the biggest precentage of their farm area used by organic farming? Order by the percentage of area used for oraganic farming.
+-- Which 5 cantons had in 2022 the biggest precentage of their farm area used by organic farming? Order by the percentage of area used for organic farming.
 SELECT S.name,
    ROUND(100 * SUM(CASE WHEN T.farmholding_system = 'Organic farming'
        THEN T.utilised_agricultural_area_in_hectares ELSE 0 END) /
