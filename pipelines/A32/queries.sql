@@ -1,0 +1,13 @@
+-- What was residential area in Basel Stadt with the highest unemployment rate in 2016?
+-- How did the proportion of foreigners change between 2018 and 2020 in each residential area of Basel-Stadt?
+-- What was the proportion of elderly and young people in Gundelingen, BS in 2015, 2017 and 2019?
+-- What were the 3 residential areas with the smallest living area per inhabitant in 2020?
+-- What year has the highest unemployment record in Vorstädte (BS)?
+-- What was the proportion of people without religious affiliation in 2015 vs 2020 for the 5 residential areas of Basel-Stadt with the highes poportion of young people?
+-- Which residential in Basel-Stadt had the oldest buildings on average in 2020?
+-- Show me all employment related statistics about Iselin (BS)
+-- How did the living area per inhabitant evolve throughout the period 2015 - 2019 in Altstadt Basel?
+-- Which 3 residential areas in Basel had the lowest proportion of social welfare recipients in 2015?
+-- What is the time-range for which employment-related statistics are available about Basel-stadt residential areas?
+-- How did the proportion of green area change (in percent) from 2015 to 2020 in each residential area of Basel-Stadt?
+-- What proportion of secondary school students in BruderHolz, in Basel-Stadt, were in progymnasium classes in 2016 and 2020?
