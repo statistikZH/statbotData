@@ -68,7 +68,7 @@ FROM ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit
 WHERE rententyp = 'Zusatzrente für Ehepartner'
   AND staatsangehorigkeit_kategorie = 'Staatsangehörigkeit - Total' AND wohnsitzstaat_kategorie = 'Wohnsitzstaat - Total';
 
--- In welchen drei Jahren gab es die höchsten Ausgaben für die Zusatzrenten für Waise und wie hoch waren diese?
+-- In welchen drei Jahren gab es die höchsten Ausgaben für die Zusatzrenten für Waise und wie hoch waren diese in CHF?
 SELECT 1000 * SUM(rentensumme_in_tausend_franken) as rentenausgaben_fur_waisenrente_CHF, jahr
 FROM ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit
 WHERE rententyp LIKE '%Waise%'
