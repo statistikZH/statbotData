@@ -1,4 +1,4 @@
--- What was residential area in Basel Stadt with the highest unemployment rate in 2016? Also report its unemployment rate.
+-- Welches war das Wohnviertel in Basel-Stadt mit der höchsten Arbeitslosenquote im Jahr 2016? Geben Sie auch dessen Arbeitslosenquote an.
 SELECT S.name, T.arbeitslosenquote
 FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -7,7 +7,7 @@ WHERE S.residence_area = TRUE
 ORDER BY T.arbeitslosenquote DESC
 LIMIT 1;
 
--- What was the relative change (in %) in the proportion of foreigners between 2018 and 2023 in each residential area of Basel-Stadt?
+-- Wie hoch ist die relative Veränderung (in %) des Ausländeranteils zwischen 2018 und 2023 in den einzelnen Wohnvierteln von Basel-Stadt?
 SELECT
     S.name,
     (   100.0 *
@@ -20,7 +20,7 @@ WHERE S.residence_area = TRUE
     AND T.jahr IN (2018, 2023)
 GROUP BY S.name ;
 
--- What were the Altersquotient and Jugendquotient in Gundelingen, BS in 2015, 2017 and 2019?
+-- Wie hoch waren der Altersquotient und der Jugendquotient in Gundelingen, BS in den Jahren 2015, 2017 und 2019?
 SELECT T.jahr, T.altersquotient_uber_64_jahr, T.jugendquotient_unter_20_jahr
 FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -28,7 +28,7 @@ WHERE S.residence_area = TRUE
     AND S.name = 'Gundeldingen'
     AND T.jahr IN (2015, 2017, 2019);
 
--- What are the names of the 3 Basel-Stadt residential areas with the smallest living area per inhabitant in 2020?
+-- Wie heissen die 3 Wohngebiete in Basel-Stadt mit der kleinsten Wohnfläche pro Einwohner im Jahr 2020?
 SELECT S.name
 FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -37,7 +37,7 @@ WHERE S.residence_area = TRUE
 ORDER BY T.wohnflache_pro_person_m2 ASC
 LIMIT 3;
 
--- What year had the highest recorded unemployment rate in Vorstädte (BS)?
+-- In welchem Jahr war die höchste Arbeitslosenquote in Vorstädte (BS) zu verzeichnen?
 SELECT T.jahr
 FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -46,7 +46,7 @@ WHERE S.residence_area = TRUE
 ORDER BY T.arbeitslosenquote ASC
 LIMIT 1;
 
--- What was the proportion of people without religious affiliation in 2015 and 2018 for Bachletten and St. Alban, BS?
+-- Wie hoch war der Anteil der Personen ohne Religionszugehörigkeit in den Jahren 2015 und 2018 in Bachletten und St. Alban, BS?
 SELECT
     S.name,
     T.jahr,
@@ -57,7 +57,7 @@ WHERE S.residence_area = TRUE
     AND T.jahr IN (2015, 2018)
     AND S.name IN ('St. Alban', 'Bachletten');
 
--- Which residential area in Basel-Stadt had the oldest buildings on average in 2023, and what was the average construction date?
+-- Welches Wohnviertel in Basel-Stadt hatte im Jahr 2023 die durchschnittlich ältesten Gebäude und welches war das durchschnittliche Baudatum?
 SELECT S.name, T.baujahr_der_wohngebaude
 FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -66,7 +66,7 @@ WHERE S.residence_area = TRUE
 ORDER BY T.baujahr_der_wohngebaude ASC
 LIMIT 1;
 
--- Show me employment related statistics about Iselin (BS)
+-- Zeige mir beschäftigungsbezogene Statistiken über Iselin (BS)
 SELECT T.jahr, T.arbeitsplatze_pro_einwohner, T.arbeitslosenquote
 FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -74,7 +74,7 @@ WHERE S.residence_area = TRUE
     AND S.name = 'Iselin'
 ORDER BY T.jahr ASC;
 
--- How did the living area per inhabitant evolve throughout the period 2015 - 2019 in Altstadt Grossbasel?
+-- Wie hat sich die Wohnfläche pro Einwohner in der Altstadt Grossbasel über den Zeitraum 2015 - 2019 entwickelt?
 SELECT T.jahr, T.wohnflache_pro_person_m2
 FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -84,7 +84,7 @@ WHERE S.residence_area = TRUE
     AND T.jahr <= 2019
 ORDER BY T.jahr ASC;
 
--- Which 3 residential areas in Basel had the lowest proportion of social welfare recipients in 2015, and what were the proportions?
+-- Welche 3 Basler Wohngebiete hatten 2015 den geringsten Anteil an Sozialhilfeempfängern und wie hoch waren die Anteile?
 SELECT S.name, T.anteil_sozialhilfeempfanger
 FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -93,13 +93,13 @@ WHERE S.residence_area = TRUE
 ORDER BY T.anteil_sozialhilfeempfanger ASC
 LIMIT 3;
 
--- What is the time-range for which employment-related statistics are available about Basel-stadt residential areas?
+-- Für welchen Zeitraum liegen beschäftigungsbezogene Statistiken über die Wohngebiete in Basel-Stadt vor?
 SELECT MIN(T.jahr) erste_jahr, MAX(T.jahr) AS letzte_jahr
 FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.residence_area = TRUE ;
 
--- How did the proportion of green area change (in percent) from 2015 to 2022 in each residential area of Basel-Stadt?
+-- Wie hat sich der Anteil an Grünflächen (in Prozent) von 2015 bis 2022 in den einzelnen Wohngebieten von Basel-Stadt verändert?
 SELECT
     S.name,
     (   100.0 *
@@ -113,7 +113,7 @@ WHERE S.residence_area = TRUE
 GROUP BY S.name
 ORDER BY prozent_aenderung_anteil_grunflachen_2018_2022 DESC;
 
--- What proportion of secondary school students in BruderHolz, in Basel-Stadt, were in progymnasium classes in 2016 and 2020?
+-- Wie hoch ist der Anteil der Sekundarschülerinnen und -schüler im BruderHolz in Basel-Stadt in den Jahren 2016 und 2020 in den Progymnasialklassen?
 SELECT T.jahr, T.gymnasialquote_anteil_progymnasium
 FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
