@@ -16,7 +16,7 @@ WHERE S.country=TRUE
 GROUP BY T.genutzte_infrastruktur
 ORDER BY anzahl_untersuchungen DESC LIMIT 1;
 
--- Welcher drei Kantone hat den höchsten prozentualen Anteil an ambulanten CT Untersuchungen und wie hoch war er?
+-- Welche drei Kantone haben 2021 den höchsten prozentualen Anteil an ambulanten CT Untersuchungen und wie hoch war er?
 SELECT s.name_de as kanton,
   ROUND(SUM(T.anzahl_ambulante_untersuchungen) * 100 / SUM(T.anzahl_untersuchungen_total), 2) as prozent_ambulante_untersuchungen
 FROM medizinisch_technische_infrastruktur as T
