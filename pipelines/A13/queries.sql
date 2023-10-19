@@ -15,12 +15,12 @@ SELECT
        THEN number_of_plantations ELSE 0 END) /
   SUM(CASE WHEN LOWER(wood_species) LIKE '%total%'
        THEN number_of_plantations ELSE 0 END),
-  2) AS procentage_deciduous_forests,
+  2) AS percentage_deciduous_forests,
     ROUND(100 * SUM(CASE WHEN LOWER(wood_species) LIKE '%conifers%'
        THEN number_of_plantations ELSE 0 END) /
    SUM(CASE WHEN LOWER(wood_species) LIKE '%total%'
        THEN number_of_plantations ELSE 0 END),
-  2) AS procentage_coniferous_forests
+  2) AS percentage_coniferous_forests
 FROM number_of_plantations_in_swiss_forest as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
 WHERE S.country = TRUE
