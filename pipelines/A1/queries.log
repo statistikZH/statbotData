@@ -1,7 +1,86 @@
-[1] "Environment: LOCAL, Time: 2023-10-09 21:16:45.362375"
+[1] "Environment: REMOTE, Time: 2023-10-19 14:29:24.250853"
 
 Query Nr. 1
 -- Wieviele Angiographiegeräte gab es 2013 in der Schweiz?
-SELECT SUM(anzahl_gerate) as anzahl_gerate_in_2013 FROM medizinisch_technische_infrastruktur as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country=TRUE AND jahr = '2013' AND T.genutzte_infrastruktur LIKE '%Angiographie%';
+SELECT SUM(anzahl_gerate) as anzahl_gerate_in_2013 FROM medizinisch_technische_infrastruktur as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country=TRUE   AND jahr = '2013'   AND T.genutzte_infrastruktur LIKE '%Angiographie%';
  anzahl_gerate_in_2013
                    137
+
+Query Nr. 2
+-- Welches war das medizinische Gerät 2021 in der Schweiz mit den meisten Untersuchungen und wieviele Untersuchungen gab es damit?
+SELECT T.genutzte_infrastruktur as meistgenutztes_geraet_2021,   SUM(anzahl_untersuchungen_total) as anzahl_untersuchungen FROM medizinisch_technische_infrastruktur as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country=TRUE   AND jahr = '2021' GROUP BY T.genutzte_infrastruktur ORDER BY anzahl_untersuchungen DESC LIMIT 1;
+ meistgenutztes_geraet_2021 anzahl_untersuchungen
+                 CT Scanner               1178655
+
+Query Nr. 3
+-- Welche drei Kantone haben 2021 den höchsten prozentualen Anteil an ambulanten CT Untersuchungen und wie hoch war er?
+SELECT s.name_de as kanton,   ROUND(SUM(T.anzahl_ambulante_untersuchungen) * 100 / SUM(T.anzahl_untersuchungen_total), 2) as prozent_ambulante_untersuchungen FROM medizinisch_technische_infrastruktur as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE   AND T.jahr = '2021'   AND T.genutzte_infrastruktur LIKE 'CT%'   AND T.anzahl_untersuchungen_total != 0 GROUP BY S.name_de ORDER BY prozent_ambulante_untersuchungen DESC LIMIT 3;
+        kanton prozent_ambulante_untersuchungen
+ Kanton Wallis                            79.52
+    Kanton Zug                            72.40
+  Kanton Waadt                            68.54
+
+Query Nr. 4
+-- Welches fünf medizinische Geräte haben den höchsten prozentualen Anteil an ambulanten Untersuchungen und wie hoch ist er?
+SELECT T.genutzte_infrastruktur,   ROUND(SUM(T.anzahl_ambulante_untersuchungen) * 100 / SUM(T.anzahl_untersuchungen_total), 2) as prozent_ambulante_untersuchungen FROM medizinisch_technische_infrastruktur as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country=TRUE   AND T.anzahl_untersuchungen_total != 0 GROUP BY T.genutzte_infrastruktur ORDER BY prozent_ambulante_untersuchungen DESC LIMIT 5;
+                                   genutzte_infrastruktur prozent_ambulante_untersuchungen
+                      Linearbeschleuniger (Radiotherapie)                            91.58
+                                            Dialysegeräte                            89.18
+                                              PET Scanner                            87.68
+                                                      MRI                            85.23
+ Gamma Camera (inklusive Szintigraphie und SPECT-Scanner)                            83.07
+
+Query Nr. 5
+-- Welche Kantone hatten in 2021 noch keinen CT-Scanner?
+SELECT S.name_de as kanton_ohne_ct_scanner_in_2021 FROM medizinisch_technische_infrastruktur as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE   AND T.genutzte_infrastruktur LIKE 'CT%'   AND T.anzahl_gerate = 0   AND T.jahr = 2021;
+ kanton_ohne_ct_scanner_in_2021
+   Kanton Appenzell Innerrhoden
+
+Query Nr. 6
+-- Welche fünf Kantone hatte 2021 die grösste medizinische Infrastruktur mit den meisten Geräten und wieviele Geräte waren es?
+SELECT S.name_de as kanton_mit_groesster_medizinischer_infrastruktur, SUM(T.anzahl_gerate) as anzahl_geraete FROM medizinisch_technische_infrastruktur as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE   AND T.jahr = 2021 GROUP BY S.name_de ORDER BY anzahl_geraete DESC LIMIT 5;
+ kanton_mit_groesster_medizinischer_infrastruktur anzahl_geraete
+                                    Kanton Zürich            327
+                                      Kanton Bern            297
+                                     Kanton Waadt            233
+                                    Kanton Aargau            179
+                                    Kanton Tessin            139
+
+Query Nr. 7
+-- Welche fünf Kantone machte 2021 den besten Nutzen von seiner CT Scanner mit den meisten Untersuchungen pro CT Scanner und wieviele Untersuchungen gab es pro Gerät und auf wieviele Geräte verteilten sie sich?
+SELECT S.name_de as kanton_mit_meisten_untersuchungen_pro_geraet,   ROUND(SUM(T.anzahl_untersuchungen_total) / SUM(T.anzahl_gerate), 0) as untersuchungen_pro_geraet,   SUM(T.anzahl_gerate) as anzahl_geraete FROM medizinisch_technische_infrastruktur as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE   AND T.jahr = 2021   AND T.genutzte_infrastruktur LIKE 'CT%'   AND T.anzahl_gerate != 0 GROUP BY S.name_de ORDER BY untersuchungen_pro_geraet DESC LIMIT 5;
+ kanton_mit_meisten_untersuchungen_pro_geraet untersuchungen_pro_geraet anzahl_geraete
+                             Kanton Neuenburg                     10087              2
+                             Kanton Solothurn                      7555              5
+                                Kanton Tessin                      6243             15
+                           Kanton Basel-Stadt                      6088             11
+                                Kanton Zürich                      6087             37
+
+Query Nr. 8
+-- Welche medizinischen Geräte zählen in der Schweiz zur medizinischen Infrastruktur und wieviele gab es davon jeweils 2020? Sortiere nach Geräteanzahl.
+SELECT SUM(T.anzahl_gerate) as gerate_anzahl_2020, T.genutzte_infrastruktur FROM medizinisch_technische_infrastruktur as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country=TRUE   AND T.jahr = 2020 GROUP BY T.genutzte_infrastruktur ORDER BY gerate_anzahl_2020 DESC;
+ gerate_anzahl_2020                                   genutzte_infrastruktur
+               1329                                            Dialysegeräte
+                226                                               CT Scanner
+                221                                                      MRI
+                141                                       Angiographiegeräte
+                 67                      Linearbeschleuniger (Radiotherapie)
+                 64 Gamma Camera (inklusive Szintigraphie und SPECT-Scanner)
+                 34                                              PET Scanner
+                 30                                             Lithotriptor
+
+Query Nr. 9
+-- Welches drei medizinischen Geräte hatten den meisten Zuwachs zwischen 2013 und 2021 in der Schweiz und wieviele Neuanschaffungen gab es jeweils?
+SELECT T.genutzte_infrastruktur,     SUM(CASE WHEN T.jahr = 2021 THEN T.anzahl_gerate ELSE -T.anzahl_gerate END) AS zuwachs_an_geraeten FROM medizinisch_technische_infrastruktur as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country     AND T.jahr IN (2013, 2021) GROUP BY T.genutzte_infrastruktur ORDER BY zuwachs_an_geraeten DESC LIMIT 3;
+ genutzte_infrastruktur zuwachs_an_geraeten
+          Dialysegeräte                 189
+                    MRI                  62
+             CT Scanner                  34
+
+Query Nr. 10
+-- Welchem drei Kantone hatte den grössten Zuwachs und Untersuchungen mit medizinischen Geräten zwischen 2013 and 2021 und wieviel hoch war der Zuwachs verteilt auf ambulante und stationäre Untersuchungen und Geräte?
+WITH Untersuchungen2013 AS ( SELECT SUM(T1.anzahl_untersuchungen_total) as anzahl_untersuchungen_gesamt_2013,   SUM(T1.anzahl_ambulante_untersuchungen) as anzahl_ambulante_untersuchungen_2013,   SUM(T1.anzahl_stationare_untersuchungen) as anzahl_stationare_untersuchungen_2013,   SUM(T1.anzahl_gerate) as anzahl_gerate_2013,   S1.name_de as kanton     FROM medizinisch_technische_infrastruktur as T1     JOIN spatial_unit as S1 on T1.spatialunit_uid = S1.spatialunit_uid     WHERE S1.canton=TRUE       AND T1.jahr = 2013     GROUP BY S1.name_de ), Untersuchungen2021 AS (     SELECT SUM(T2.anzahl_untersuchungen_total) as anzahl_untersuchungen_gesamt_2021,       SUM(T2.anzahl_ambulante_untersuchungen) as anzahl_ambulante_untersuchungen_2021,       SUM(T2.anzahl_stationare_untersuchungen) as anzahl_stationare_untersuchungen_2021,       SUM(T2.anzahl_gerate) as anzahl_gerate_2021,       S2.name_de as kanton2021     FROM medizinisch_technische_infrastruktur as T2     JOIN spatial_unit as S2 on T2.spatialunit_uid = S2.spatialunit_uid     WHERE S2.canton=TRUE       AND T2.jahr = 2021     GROUP BY S2.name_de ) SELECT     U2013.kanton,     U2021.anzahl_untersuchungen_gesamt_2021 - U2013.anzahl_untersuchungen_gesamt_2013 AS zuwachs_untersuchungen_gesamt,     U2021.anzahl_ambulante_untersuchungen_2021 - U2013.anzahl_ambulante_untersuchungen_2013 AS zuwachs_ambulante_untersuchungen,     U2021.anzahl_stationare_untersuchungen_2021 - U2013.anzahl_stationare_untersuchungen_2013 AS zuwachs_statinonäre_untersuchungen,     U2021.anzahl_gerate_2021 - U2013.anzahl_gerate_2013 AS zuwachs_geraete FROM Untersuchungen2013 U2013 JOIN Untersuchungen2021 U2021 ON U2013.kanton = U2021.kanton2021 ORDER BY zuwachs_untersuchungen_gesamt DESC LIMIT 3;
+        kanton zuwachs_untersuchungen_gesamt zuwachs_ambulante_untersuchungen zuwachs_statinonäre_untersuchungen zuwachs_geraete
+ Kanton Zürich                        144321                           120472                              24419              62
+   Kanton Bern                        115633                           100105                              19391              44
+  Kanton Waadt                         92205                            81679                              29387              12

@@ -1,4 +1,4 @@
-[1] "Environment: REMOTE, Time: 2023-10-10 07:52:28.605827"
+[1] "Environment: REMOTE, Time: 2023-10-18 21:50:49.900907"
 
 Query Nr. 1
 -- Which canton has the most employees in the tourism sector in 2019?
@@ -26,13 +26,13 @@ WITH TC as (     SELECT S.name as canton, T.year as year, percent_share_gross_va
 
 Query Nr. 5
 -- How many FTE were allocated to tourism were there in Switzerland 2019?
-SELECT T.total_full_time_employment_of_tourism FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country=TRUE     AND S.name_de = 'Schweiz'     AND T.year = 2019;
+SELECT T.total_full_time_employment_of_tourism FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country=TRUE     AND S.name = 'Switzerland'     AND T.year = 2019;
  total_full_time_employment_of_tourism
                               174219.5
 
 Query Nr. 6
 -- What percentage of full time employment was allocated in canton Zurich between 2017 and 2019?
-SELECT T.year, T.percent_share_full_time_employment_of_tourism as percent_share_fte_tourism_canton_zurich FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name_de = 'Kanton Zürich'     AND T.year >= 2017     AND T.year <= 2019;
+SELECT T.year, T.percent_share_full_time_employment_of_tourism as percent_share_fte_tourism_canton_zurich FROM tourism_economy_by_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE     AND S.name LIKE '%Zurich%'     AND T.year >= 2017     AND T.year <= 2019;
  year percent_share_fte_tourism_canton_zurich
  2017                                    3.79
  2018                                    3.80

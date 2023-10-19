@@ -1,5 +1,5 @@
 name;table_name;data_type;title;title_en;example_values
-vorlage_title;volksabstimmung_nach_kanton_seit_1861;categorical;Titel der Abstimmungsvorlage;Title of the referendum;"Bundesgesetz über die Errichtung der schweizerischen Bundesbank","Bundesbeschluss betreffend Revision von Art. 103 der Bundesverfassung und Aufnahme eines Artikels 114bis in die Bundesverfassung","Volksinitiative «für die vermehrte Mitbestimmung der Bundesversammlung und des Schweizervolkes im Nationalstrassenbau»"
+vorlage;volksabstimmung_nach_kanton_seit_1861;categorical;Titel der Abstimmungsvorlage;Title of the referendum;"Bundesgesetz über die Errichtung der schweizerischen Bundesbank","Bundesbeschluss betreffend Revision von Art. 103 der Bundesverfassung und Aufnahme eines Artikels 114bis in die Bundesverfassung","Volksinitiative «für die vermehrte Mitbestimmung der Bundesversammlung und des Schweizervolkes im Nationalstrassenbau»"
 anzahl_stimmberechtigte;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl Stimmberechtigte;number of voters;
 anzahl_abgegebene_stimmen;volksabstimmung_nach_kanton_seit_1861;numeric;Anzahl abgegebene Stimmenen;number of votes cast;
 beteiligung_in_prozent;volksabstimmung_nach_kanton_seit_1861;numeric;Wahlbeteiligung in Prozent;Voter turnout in percent;

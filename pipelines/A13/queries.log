@@ -1,7 +1,168 @@
-[1] "Environment: REMOTE, Time: 2023-10-10 07:41:48.359866"
+[1] "Environment: REMOTE, Time: 2023-10-18 07:35:18.340548"
 
 Query Nr. 1
 -- Which canton had the most private forests in 2019?
 SELECT S.name as canton FROM number_of_plantations_in_swiss_forest as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton=TRUE   AND T.year=2019   AND T.forest_zone='Switzerland'   AND T.wood_species='Species - total'   AND T.type_of_owner='Private forest' ORDER BY number_of_plantations DESC LIMIT 1;
             canton
  Canton of Lucerne
+
+Query Nr. 2
+-- What was the proportion of deciduous to coniferous forests in Switzerland in 2020?
+SELECT   ROUND(100 * SUM(CASE WHEN LOWER(wood_species) LIKE '%deciduous%'        THEN number_of_plantations ELSE 0 END) /   SUM(CASE WHEN LOWER(wood_species) LIKE '%total%'        THEN number_of_plantations ELSE 0 END),   2) AS procentage_deciduous_forests,     ROUND(100 * SUM(CASE WHEN LOWER(wood_species) LIKE '%conifers%'        THEN number_of_plantations ELSE 0 END) /    SUM(CASE WHEN LOWER(wood_species) LIKE '%total%'        THEN number_of_plantations ELSE 0 END),   2) AS procentage_coniferous_forests FROM number_of_plantations_in_swiss_forest as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country = TRUE   AND T.year = 2020   AND S.name = 'Switzerland'   AND T.type_of_owner='Type of owners - total';
+ procentage_deciduous_forests procentage_coniferous_forests
+                        43.83                         56.17
+
+Query Nr. 3
+-- What was the proportion of private to public forests in Switzerland in 2022?
+SELECT   ROUND(100 *     SUM(CASE WHEN LOWER(type_of_owner) LIKE '%private%'         THEN number_of_plantations ELSE 0 END) /     SUM(CASE WHEN LOWER(type_of_owner) LIKE '%total%'         THEN number_of_plantations ELSE 0 END), 2) AS procentage_private_forests,   ROUND(100 *     SUM(CASE WHEN LOWER(type_of_owner) LIKE '%public%'        THEN number_of_plantations ELSE 0 END) /     SUM(CASE WHEN LOWER(type_of_owner) LIKE '%total%'        THEN number_of_plantations ELSE 0 END), 2) AS procentage_public_forests FROM number_of_plantations_in_swiss_forest as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country = TRUE   AND T.year = 2022   AND S.name = 'Switzerland'   AND T.wood_species='Species - total';
+ procentage_private_forests procentage_public_forests
+                      27.35                     72.65
+
+Query Nr. 4
+-- How much did the number of Swiss forest change from 1975 to 2022? Show the change in total and by forest type as conifers or deciduous.
+SELECT   (SUM(CASE WHEN LOWER(wood_species) LIKE '%deciduous%' AND year = 2022        THEN number_of_plantations ELSE 0 END) -    SUM(CASE WHEN LOWER(wood_species) LIKE '%deciduous%' AND year = 1975        THEN number_of_plantations ELSE 0 END)) AS difference_deciduous_number_of_forests_1975_to_2022,   (SUM(CASE WHEN LOWER(wood_species) LIKE '%conifers%' AND year = 2022        THEN number_of_plantations ELSE 0 END) -    SUM(CASE WHEN LOWER(wood_species) LIKE '%conifers%' AND year = 1975        THEN number_of_plantations ELSE 0 END)) AS difference_conifers_number_of_forests_1975_to_2022,   (SUM(CASE WHEN LOWER(wood_species) LIKE '%total%' AND year = 2022        THEN number_of_plantations ELSE 0 END) -    SUM(CASE WHEN LOWER(wood_species) LIKE '%total%' AND year = 1975        THEN number_of_plantations ELSE 0 END)) AS difference_total_number_of_forests_1975_to_2022 FROM number_of_plantations_in_swiss_forest as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country = TRUE   AND T.year IN (1975, 2022)   AND S.name = 'Switzerland'   AND T.forest_zone = 'Switzerland'   AND T.type_of_owner='Type of owners - total';
+ difference_deciduous_number_of_forests_1975_to_2022 difference_conifers_number_of_forests_1975_to_2022 difference_total_number_of_forests_1975_to_2022
+                                           -12454769                                           -1754775                                       -14209544
+
+Query Nr. 5
+-- What canton contribute how many forests to the forestzone Jura by the latest count?
+WITH MostRecentYear AS (   SELECT MAX(year) as most_recent_year   FROM number_of_plantations_in_swiss_forest   WHERE type_of_owner = 'Type of owners - total' ) SELECT   S.name_de as canton,   SUM(T.number_of_plantations) as number_of_plantations_in_jura FROM number_of_plantations_in_swiss_forest as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid JOIN MostRecentYear ON T.year = MostRecentYear.most_recent_year WHERE S.canton = TRUE   AND T.type_of_owner = 'Type of owners - total'   AND T.forest_zone = 'Jura'   AND T.number_of_plantations != 0 AND number_of_plantations IS NOT NULL GROUP BY S.name_de, MostRecentYear.most_recent_year ORDER BY number_of_plantations_in_jura DESC;
+                  canton number_of_plantations_in_jura
+ Kanton Basel-Landschaft                         72890
+           Kanton Aargau                         41088
+             Kanton Jura                         35926
+        Kanton Solothurn                         18624
+     Kanton Schaffhausen                         17464
+        Kanton Neuenburg                         12898
+             Kanton Bern                         11304
+            Kanton Waadt                         10770
+      Kanton Basel-Stadt                          8260
+
+Query Nr. 6
+-- By 2022: Which three forest zones had the most plantations in Switzerland? Provide the forest zones together with the number of plantations.
+SELECT T.forest_zone, SUM(T.number_of_plantations) as number_of_plantations FROM number_of_plantations_in_swiss_forest as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country = TRUE   AND T.type_of_owner = 'Type of owners - total'   AND T.year = 2022   AND T.number_of_plantations != 0 AND number_of_plantations IS NOT NULL   AND T.forest_zone != 'Switzerland' GROUP BY T.forest_zone ORDER BY number_of_plantations DESC LIMIT 3;
+   forest_zone number_of_plantations
+ Central Plain                869094
+          Jura                229224
+       Prealps                218916
+
+Query Nr. 7
+-- Which cantons had in 2022 only public forests?
+SELECT S.name_de as canton FROM number_of_plantations_in_swiss_forest as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE   AND T.type_of_owner = 'Private forest'   AND T.year = 2022 GROUP BY S.name_de HAVING SUM(T.number_of_plantations) = 0;
+             canton
+ Kanton Basel-Stadt
+   Kanton Solothurn
+      Kanton Tessin
+         Kanton Uri
+
+Query Nr. 8
+-- To which Forestzones belongs the canton Jura and how many plantations of Jura are located in that forest zone?
+SELECT T.forest_zone as forest_zone_for_jura, SUM(T.number_of_plantations) AS number_of_plantations_canton_jura FROM number_of_plantations_in_swiss_forest as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE AND S.name_de LIKE '%Jura%'   AND T.type_of_owner = 'Type of owners - total'   AND T.wood_species = 'Species - total'   AND T.forest_zone != 'Switzerland'   AND T.number_of_plantations != 0 GROUP BY T.forest_zone HAVING SUM(T.number_of_plantations) != 0 ORDER BY number_of_plantations_canton_jura DESC;
+ forest_zone_for_jura number_of_plantations_canton_jura
+                 Jura                           1881472
+
+Query Nr. 9
+-- List for each year the change in number of forests in Kanton Uri?
+SELECT T.year, SUM(T.number_of_plantations) AS number_of_plantations_canton_uri FROM number_of_plantations_in_swiss_forest as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE AND S.name_de LIKE '%Uri%'   AND T.type_of_owner = 'Type of owners - total'   AND T.wood_species = 'Species - total'   AND T.forest_zone != 'Switzerland'   AND T.number_of_plantations != 0 GROUP BY T.year ORDER BY T.year DESC;
+ year number_of_plantations_canton_uri
+ 2022                             4730
+ 2021                             7115
+ 2020                             4870
+ 2019                             3310
+ 2018                             9007
+ 2017                             8527
+ 2016                             1633
+ 2015                             4818
+ 2014                             2650
+ 2013                             8402
+ 2012                             2375
+ 2011                             8777
+ 2010                            17523
+ 2009                             9787
+ 2008                            11710
+ 2007                             6735
+ 2006                             9155
+ 2005                             9593
+ 2004                            11209
+ 2003                            14745
+ 2002                            11948
+ 2001                            14928
+ 2000                            27750
+ 1999                            16905
+ 1998                            37415
+ 1997                            35813
+ 1996                            32674
+ 1995                            47286
+ 1994                            49936
+ 1993                            53400
+ 1992                            61220
+ 1991                            36430
+ 1990                            37285
+ 1989                            53220
+ 1988                            66650
+ 1987                            85468
+ 1986                            18276
+ 1985                            20756
+ 1984                            16220
+ 1983                            14775
+ 1982                            40965
+ 1981                            16100
+ 1980                            19700
+ 1979                            24650
+ 1978                            27150
+ 1977                            52400
+ 1976                            24650
+ 1975                            29650
+
+Query Nr. 10
+-- Provide the change over the years of the total number of forests registered in Switzerland. The change should be given in percentage of the number of the previous year.
+WITH PlantationsByYear AS (   SELECT T.year,     SUM(T.number_of_plantations) AS number_of_plantations_switzerland   FROM number_of_plantations_in_swiss_forest AS T   JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid   WHERE S.country = TRUE     AND T.type_of_owner = 'Type of owners - total'     AND T.wood_species = 'Species - total'     AND T.forest_zone != 'Switzerland'     AND T.number_of_plantations != 0   GROUP BY T.year ) SELECT   Curr.year,   Curr.number_of_plantations_switzerland,   ROUND(100 * (Curr.number_of_plantations_switzerland - Prev.number_of_plantations_switzerland) / (Prev.number_of_plantations_switzerland), 2) AS change_from_previous_year FROM PlantationsByYear AS Curr LEFT JOIN PlantationsByYear AS Prev ON Curr.year = Prev.year + 1 ORDER BY Curr.year DESC;
+ year number_of_plantations_switzerland change_from_previous_year
+ 2022                            777581                     -3.27
+ 2021                            803859                    -19.75
+ 2020                           1001733                      0.89
+ 2019                            992914                     18.75
+ 2018                            836106                     -2.95
+ 2017                            861551                     -6.84
+ 2016                            924775                    -12.98
+ 2015                           1062711                     -7.36
+ 2014                           1147172                      4.47
+ 2013                           1098106                     -8.70
+ 2012                           1202761                     -5.51
+ 2011                           1272933                     -5.99
+ 2010                           1354107                     -0.26
+ 2009                           1357638                    -21.10
+ 2008                           1720786                     -3.80
+ 2007                           1788672                     -8.44
+ 2006                           1953599                     -1.69
+ 2005                           1987184                     -9.80
+ 2004                           2203123                    -11.85
+ 2003                           2499326                    -11.70
+ 2002                           2830627                    -14.12
+ 2001                           3296186                     70.62
+ 2000                           1931855                    -22.30
+ 1999                           2486342                    -21.05
+ 1998                           3149397                     -1.93
+ 1997                           3211412                    -13.82
+ 1996                           3726320                    -14.53
+ 1995                           4359784                    -15.43
+ 1994                           5155241                     -3.57
+ 1993                           5346104                    -10.75
+ 1992                           5989859                    -17.55
+ 1991                           7264536                     10.16
+ 1990                           6594594                    -15.52
+ 1989                           7806339                     -6.96
+ 1988                           8390330                     -0.25
+ 1987                           8411442                      1.25
+ 1986                           8307235                     -5.34
+ 1985                           8776174                      3.24
+ 1984                           8500587                      7.47
+ 1983                           7909451                     -9.91
+ 1982                           8779319                     -4.76
+ 1981                           9218477                     -9.03
+ 1980                          10134092                     -8.31
+ 1979                          11053073                     -4.98
+ 1978                          11632072                     -6.90
+ 1977                          12493958                     -3.50
+ 1976                          12947525                    -13.61
+ 1975                          14987125                        NA

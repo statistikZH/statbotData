@@ -1,7 +1,79 @@
-[1] "Environment: REMOTE, Time: 2023-10-02 20:40:11.811903"
+[1] "Environment: REMOTE, Time: 2023-10-16 19:20:09.437544"
 
 Query Nr. 1
--- Welches Jahr hatte die meisten Volksabstimmungen?
-SELECT T.jahr, COUNT(*) as anzahl_volksabstimmungen, S.name_de FROM volksabstimmung_nach_kanton_seit_1861 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE GROUP BY T.jahr, S.name_de ORDER BY anzahl_volksabstimmungen DESC LIMIT 1;
- jahr anzahl_volksabstimmungen name_de
- 2000                       17 Schweiz
+-- Welches Jahr hatte die meisten Volksabstimmungen und wieviele Volksabstimmungen gab es da?
+SELECT T.jahr as jahr_mit_den_meisten_volksabstimmungen, COUNT(*) as anzahl_volksabstimmungen FROM volksabstimmung_nach_kanton_seit_1861 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE GROUP BY T.jahr ORDER BY anzahl_volksabstimmungen DESC LIMIT 1;
+ jahr_mit_den_meisten_volksabstimmungen anzahl_volksabstimmungen
+                                   2000                       17
+
+Query Nr. 2
+-- Welches waren die drei Volksabstimmung mit der höchsten Beteiligung, wann fanden sie statt und wie hoch war die Beteiligung in Prozent?
+SELECT T.jahr, MAX(T.beteiligung_in_prozent) AS hoechste_beteiligung_in_prozent, T.vorlage FROM volksabstimmung_nach_kanton_seit_1861 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND T.beteiligung_in_prozent IS NOT NULL GROUP BY T.jahr, T.vorlage ORDER BY hoechste_beteiligung_in_prozent DESC LIMIT 3;
+ jahr hoechste_beteiligung_in_prozent
+ 1922                           86.26
+ 1935                           84.35
+ 1933                           80.51
+                                                                                                                            vorlage
+                                                                                Volksinitiative «für die Einmalige Vermögensabgabe»
+                                                                              Volksinitiative «zur Bekämpfung der Wirtschaftskrise»
+ Bundesgesetz über die vorübergehende Herabsetzung der Besoldungen, Gehälter und Löhne der im Dienste des Bundes stehenden Personen
+
+Query Nr. 3
+-- Welche Vorlagen hatten mit dem Klima zu tun, wann fanden sie statt, wie waren Beteiligung und Ergebnis?
+SELECT T.vorlage, T.jahr, T.beteiligung_in_prozent, T.ja_in_prozent FROM volksabstimmung_nach_kanton_seit_1861 as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND LOWER(T.vorlage) LIKE '%klima%';
+                                                                                                 vorlage jahr beteiligung_in_prozent ja_in_prozent
+ Bundesgesetz über die Ziele im Klimaschutz, die Innovation und die Stärkung der Energiesicherheit (KlG) 2023                  42.54         59.07
+
+Query Nr. 4
+-- Wieviel Prozent der Vorlagen wurden angenommen und wieviel Prozent wurden zurückgewiesen?
+SELECT   ROUND((100 * COUNT(CASE WHEN T.ja_in_prozent > 50 THEN 1 ELSE NULL END)) /   COUNT(*), 2) AS prozent_angenommene_vorlagen,   ROUND((100 * COUNT(CASE WHEN T.ja_in_prozent <= 50 THEN 1 ELSE NULL END)) /   COUNT(*), 2) AS prozent_zurueckgewiesene_vorlagen FROM volksabstimmung_nach_kanton_seit_1861 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de = 'Schweiz' AND S.country = TRUE;
+ prozent_angenommene_vorlagen prozent_zurueckgewiesene_vorlagen
+                           48                                51
+
+Query Nr. 5
+-- Welche Kantone haben 2023 gegen das Bundesgesetz über Klimaschutz gestimmt und wieviel Prozent Ja Stimmen gab es dort jeweils?
+SELECT S.name_de as kanton_gegen_klimaschutzgesetz, T.ja_in_prozent FROM volksabstimmung_nach_kanton_seit_1861 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE AND LOWER(T.vorlage) LIKE '%bundesgesetz%klimaschutz%' AND T.jahr = 2023 AND T.ja_in_prozent <= 50 GROUP BY S.name_de, T.vorlage, T.jahr, T.ja_in_prozent;
+ kanton_gegen_klimaschutzgesetz ja_in_prozent
+   Kanton Appenzell Innerrhoden         46.49
+                  Kanton Glarus         45.99
+               Kanton Nidwalden         46.80
+                Kanton Obwalden         43.85
+                  Kanton Schwyz         42.48
+                 Kanton Thurgau         49.30
+                     Kanton Uri         43.11
+
+Query Nr. 6
+-- Welches ist aktuellest Vorlage die schweizweit angenommen wurde, aber bei der in der Mehrheit der Kanton dagegen gestimmt wurde? Zeige auch wieviel Prozent Ja Stimmen sie Schweiz weit bekam.
+SELECT T.vorlage,   MAX(CASE WHEN T.ja_in_prozent > 50 AND S.country = TRUE THEN T.ja_in_prozent ELSE NULL END) AS angenommen_gesamt,   COUNT(CASE WHEN T.ja_in_prozent > 50 AND S.canton = TRUE THEN 1 ELSE NULL END) AS angenommen_in,   COUNT(CASE WHEN T.ja_in_prozent <= 50 AND S.canton = TRUE THEN 1 ELSE NULL END) AS abgelehnt_in FROM volksabstimmung_nach_kanton_seit_1861 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid GROUP BY T.vorlage, T.jahr HAVING MAX(CASE WHEN T.ja_in_prozent > 50 AND S.country = TRUE THEN T.ja_in_prozent ELSE NULL END) IS NOT NULL    AND COUNT(CASE WHEN T.ja_in_prozent <= 50 AND S.canton = TRUE THEN 1 ELSE NULL END) > COUNT(CASE WHEN T.ja_in_prozent > 50 AND S.canton = TRUE THEN 1 ELSE NULL END) ORDER BY T.jahr DESC LIMIT 1;
+                                                                                  vorlage angenommen_gesamt angenommen_in abgelehnt_in
+ Volksinitiative «Für verantwortungsvolle Unternehmen - zum Schutz von Mensch und Umwelt»             50.73             9           17
+
+Query Nr. 7
+-- Welche Volksabstimmung und in welchem Jahr hatte die wenigsten gültigen Stimmenzettel? Wieviele waren es? Und wie hoch war die Wahlbeteiligng?
+SELECT T.vorlage AS vorlage_mit_wenigsten_gueltigen_stimmenzetteln, T.jahr,   MIN(T.anzahl_gueltige_stimmzettel) AS anzahl_gueltige_stimmzettel, T.beteiligung_in_prozent FROM volksabstimmung_nach_kanton_seit_1861 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.country = TRUE AND S.name_de = 'Schweiz' GROUP BY T.vorlage, T.jahr, T.beteiligung_in_prozent ORDER BY anzahl_gueltige_stimmzettel ASC LIMIT 1;
+                     vorlage_mit_wenigsten_gueltigen_stimmenzetteln jahr anzahl_gueltige_stimmzettel beteiligung_in_prozent
+ Bundesbeschluss über die Revision des Art. 24 der Bundesverfassung 1897                      245663                  37.84
+
+Query Nr. 8
+-- Welche drei Kanton hatten im Jahr 2023 durchschnittlich die wenigsten Stimmberechtigten? Wieviel Stimmberechtigte waren es jeweils?
+SELECT S.name_de AS kanton, AVG(T.anzahl_stimmberechtigte) AS durchschnittliche_anzahl_stimmberechtigte_2023 FROM volksabstimmung_nach_kanton_seit_1861 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE AND T.jahr = 2023 GROUP BY S.name_de ORDER BY durchschnittliche_anzahl_stimmberechtigte_2023 ASC LIMIT 3;
+                       kanton durchschnittliche_anzahl_stimmberechtigte_2023
+ Kanton Appenzell Innerrhoden                                          12245
+                Kanton Glarus                                          26317
+                   Kanton Uri                                          27031
+
+Query Nr. 9
+-- Welcher Vorlage in welchem Jahr hatte die meisten Nein Stimmen und bei welcher Wahlbeteiligung und wievielen Ja Stimmen in Prozent?
+SELECT T.vorlage, T.jahr, T.anzahl_nein_stimmen AS hoechste_anzahl_nein_stimmen, T.beteiligung_in_prozent, T.ja_in_prozent FROM volksabstimmung_nach_kanton_seit_1861 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.country = TRUE ORDER BY hoechste_anzahl_nein_stimmen DESC LIMIT 1;
+                                                                                                    vorlage jahr hoechste_anzahl_nein_stimmen
+  Volksinitiative «Bestimmung der Bundesrichterinnen und Bundesrichter im Losverfahren» (Justiz-Initiative) 2021                      2335148
+ beteiligung_in_prozent ja_in_prozent
+                  64.68         31.92
+
+Query Nr. 10
+-- Welche Vorlage in welchem Jahr und welchem Kanton bekam jemals die höchste Annahme in Prozent und wie hoch war diese Annahme bei welcher Wahlbeteiligung?
+SELECT T.vorlage, T.jahr, S.name_de AS kanton, T.ja_in_prozent as hoechste_annahme, T.beteiligung_in_prozent FROM volksabstimmung_nach_kanton_seit_1861 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE   AND T.ja_in_prozent IS NOT NULL ORDER BY hoechste_annahme DESC LIMIT 1;
+                                                                                                                                                                                           vorlage
+ Bundesbeschluss über die Ergänzung der Bundesverfassung durch einen Artikel 24septies betreffend den Schutz des Menschen und seiner natürlichen Umwelt gegen schädliche oder lästige Einwirkungen
+ jahr      kanton hoechste_annahme beteiligung_in_prozent
+ 1971 Kanton Genf            99.45                  24.32
