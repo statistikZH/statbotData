@@ -57,7 +57,7 @@ FROM ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit
 WHERE jahr = 2015
   AND geschlecht = 'Geschlecht - Total';
 
--- Wie hoch war der Frauenanteil bei den Zusatzrenten für Ehepartner?
+-- Wie hoch war der Frauenanteil in prozent bei den Zusatzrenten für Ehepartner?
 SELECT
   ROUND(100 * SUM(CASE WHEN geschlecht = 'Frau'
        THEN anzahl_renten ELSE 0 END) /
