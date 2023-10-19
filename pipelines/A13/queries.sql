@@ -34,12 +34,12 @@ SELECT
     SUM(CASE WHEN LOWER(type_of_owner) LIKE '%private%'
         THEN number_of_plantations ELSE 0 END) /
     SUM(CASE WHEN LOWER(type_of_owner) LIKE '%total%'
-        THEN number_of_plantations ELSE 0 END), 2) AS procentage_private_forests,
+        THEN number_of_plantations ELSE 0 END), 2) AS percentage_private_forests,
   ROUND(100 *
     SUM(CASE WHEN LOWER(type_of_owner) LIKE '%public%'
        THEN number_of_plantations ELSE 0 END) /
     SUM(CASE WHEN LOWER(type_of_owner) LIKE '%total%'
-       THEN number_of_plantations ELSE 0 END), 2) AS procentage_public_forests
+       THEN number_of_plantations ELSE 0 END), 2) AS percentage_public_forests
 FROM number_of_plantations_in_swiss_forest as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
 WHERE S.country = TRUE
