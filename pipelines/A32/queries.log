@@ -1,0 +1,141 @@
+[1] "Environment: REMOTE, Time: 2023-10-19 18:26:21"
+
+Query Nr. 1
+-- Welches war das Wohnviertel in Basel-Stadt mit der höchsten Arbeitslosenquote im Jahr 2016? Geben Sie auch dessen Arbeitslosenquote an.
+SELECT S.name, T.arbeitslosenquote FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND T.jahr = 2016 ORDER BY T.arbeitslosenquote DESC LIMIT 1;
+    name arbeitslosenquote
+ Klybeck        0.06890256
+
+Query Nr. 2
+-- Wie hoch ist die relative Veränderung (in %) des Ausländeranteils zwischen 2018 und 2023 in den einzelnen Wohnvierteln von Basel-Stadt?
+SELECT     S.name,     (   100.0 *         SUM(CASE WHEN T.jahr = 2023 THEN T.anteil_auslander ELSE -T.anteil_auslander END) /         SUM(CASE WHEN T.jahr = 2018 THEN T.anteil_auslander END)     ) AS prozent_aenderung_anteil_auslander_2018_2023 FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND T.jahr IN (2018, 2023) GROUP BY S.name ;
+                name prozent_aenderung_anteil_auslander_2018_2023
+ Altstadt Grossbasel                                   14.1755593
+ Altstadt Kleinbasel                                    7.5982533
+             Am Ring                                    9.6713603
+          Bachletten                                    9.2209388
+           Bettingen                                    4.7973571
+              Breite                                   11.6574925
+          Bruderholz                                    3.9211225
+               Clara                                    5.3776644
+            Gotthelf                                    9.7266760
+        Gundeldingen                                    3.7659194
+         Hirzbrunnen                                    5.7820515
+              Iselin                                    4.4717894
+       Kleinhüningen                                    4.3924011
+             Klybeck                                    1.7655326
+            Matthäus                                   -0.5619390
+              Riehen                                   11.1036505
+            Rosental                                    2.5805186
+           St. Alban                                   14.2536179
+          St. Johann                                   -0.7492226
+           Vorstädte                                   12.9296371
+           Wettstein                                    8.5623561
+
+Query Nr. 3
+-- Wie hoch waren der Altersquotient und der Jugendquotient in Gundelingen, BS in den Jahren 2015, 2017 und 2019?
+SELECT T.jahr, T.altersquotient_uber_64_jahr, T.jugendquotient_unter_20_jahr FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND S.name = 'Gundeldingen'     AND T.jahr IN (2015, 2017, 2019);
+ jahr altersquotient_uber_64_jahr jugendquotient_unter_20_jahr
+ 2015                   0.2155231                    0.2048744
+ 2019                   0.2208147                    0.2036714
+ 2017                   0.2185565                    0.2068549
+
+Query Nr. 4
+-- Wie heissen die 3 Wohngebiete in Basel-Stadt mit der kleinsten Wohnfläche pro Einwohner im Jahr 2020?
+SELECT S.name FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND T.jahr = 2020 ORDER BY T.wohnflache_pro_person_m2 ASC LIMIT 3;
+          name
+       Klybeck
+ Kleinhüningen
+      Rosental
+
+Query Nr. 5
+-- In welchem Jahr war die höchste Arbeitslosenquote in Vorstädte (BS) zu verzeichnen?
+SELECT T.jahr FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND S.name = 'Vorstädte' ORDER BY T.arbeitslosenquote ASC LIMIT 1;
+ jahr
+ 2015
+
+Query Nr. 6
+-- Wie hoch war der Anteil der Personen ohne Religionszugehörigkeit in den Jahren 2015 und 2018 in Bachletten und St. Alban, BS?
+SELECT     S.name,     T.jahr,     T.anteil_personen_ohne_religionszugehorigkeit FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND T.jahr IN (2015, 2018)     AND S.name IN ('St. Alban', 'Bachletten');
+       name jahr anteil_personen_ohne_religionszugehorigkeit
+  St. Alban 2015                                   0.4723600
+  St. Alban 2018                                   0.4933680
+ Bachletten 2018                                   0.4814431
+ Bachletten 2015                                   0.4554822
+
+Query Nr. 7
+-- Welches Wohnviertel in Basel-Stadt hatte im Jahr 2023 die durchschnittlich ältesten Gebäude und welches war das durchschnittliche Baudatum?
+SELECT S.name, T.baujahr_der_wohngebaude FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND T.jahr = 2023 ORDER BY T.baujahr_der_wohngebaude ASC LIMIT 1;
+                name baujahr_der_wohngebaude
+ Altstadt Grossbasel                1822.148
+
+Query Nr. 8
+-- Zeige mir beschäftigungsbezogene Statistiken über Iselin (BS)
+SELECT T.jahr, T.arbeitsplatze_pro_einwohner, T.arbeitslosenquote FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND S.name = 'Iselin' ORDER BY T.jahr ASC;
+ jahr arbeitsplatze_pro_einwohner arbeitslosenquote
+ 2015                   0.1550201        0.04267905
+ 2016                   0.1599630        0.04593423
+ 2017                   0.1585376        0.05015391
+ 2018                   0.1560386        0.05015391
+ 2019                   0.1597338        0.05015391
+ 2020                   0.1583872                NA
+ 2021                   0.1559287                NA
+ 2022                   0.1687591                NA
+ 2023                   0.1608849                NA
+
+Query Nr. 9
+-- Wie hat sich die Wohnfläche pro Einwohner in der Altstadt Grossbasel über den Zeitraum 2015 - 2019 entwickelt?
+SELECT T.jahr, T.wohnflache_pro_person_m2 FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND S.name = 'Altstadt Grossbasel'     AND T.jahr >= 2015     AND T.jahr <= 2019 ORDER BY T.jahr ASC;
+ jahr wohnflache_pro_person_m2
+ 2015                 55.73996
+ 2016                 55.19043
+ 2017                 53.60829
+ 2018                 52.67003
+ 2019                 53.15812
+
+Query Nr. 10
+-- Welche 3 Basler Wohngebiete hatten 2015 den geringsten Anteil an Sozialhilfeempfängern und wie hoch waren die Anteile?
+SELECT S.name, T.anteil_sozialhilfeempfanger FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND T.jahr = 2015 ORDER BY T.anteil_sozialhilfeempfanger ASC LIMIT 3;
+                name anteil_sozialhilfeempfanger
+           Bettingen                  0.01534733
+ Altstadt Grossbasel                  0.01711491
+          Bruderholz                  0.01766199
+
+Query Nr. 11
+-- Für welchen Zeitraum liegen beschäftigungsbezogene Statistiken über die Wohngebiete in Basel-Stadt vor?
+SELECT MIN(T.jahr) erste_jahr, MAX(T.jahr) AS letzte_jahr FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE ;
+ erste_jahr letzte_jahr
+       2015        2023
+
+Query Nr. 12
+-- Wie hat sich der Anteil an Grünflächen (in Prozent) von 2015 bis 2022 in den einzelnen Wohngebieten von Basel-Stadt verändert?
+SELECT     S.name,     (   100.0 *         SUM(CASE WHEN T.jahr = 2022 THEN T.anteil_grunflachen ELSE -T.anteil_grunflachen END) /         SUM(CASE WHEN T.jahr = 2015 THEN T.anteil_grunflachen END)     ) AS prozent_aenderung_anteil_grunflachen_2018_2022 FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND T.jahr IN (2015, 2022) GROUP BY S.name ORDER BY prozent_aenderung_anteil_grunflachen_2018_2022 DESC;
+                name prozent_aenderung_anteil_grunflachen_2018_2022
+       Kleinhüningen                                    134.8403687
+            Rosental                                     87.1891283
+             Klybeck                                      9.2602509
+          St. Johann                                      5.0793313
+          Bachletten                                      3.0299353
+             Am Ring                                      2.9211388
+           Wettstein                                      2.5378558
+            Matthäus                                      2.2150854
+        Gundeldingen                                      2.1250303
+               Clara                                      2.1167507
+         Hirzbrunnen                                      1.7441813
+              Breite                                      0.9490459
+           Vorstädte                                      0.9277182
+ Altstadt Grossbasel                                      0.4597842
+           St. Alban                                      0.3927973
+           Bettingen                                     -0.1603205
+            Gotthelf                                     -0.3411753
+          Bruderholz                                     -0.3878907
+              Riehen                                     -0.6519165
+              Iselin                                     -2.6992249
+ Altstadt Kleinbasel                                     -7.1470378
+
+Query Nr. 13
+-- Wie hoch ist der Anteil der Sekundarschülerinnen und -schüler im BruderHolz in Basel-Stadt in den Jahren 2016 und 2020 in den Progymnasialklassen?
+SELECT T.jahr, T.gymnasialquote_anteil_progymnasium FROM basel_stadt_kennzahlen_zu_den_basler_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND S.name = 'Bruderholz'     AND T.jahr IN (2016, 2020);
+ jahr gymnasialquote_anteil_progymnasium
+ 2016                          0.6241611
+ 2020                          0.6585366

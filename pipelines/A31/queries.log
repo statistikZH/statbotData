@@ -1,4 +1,4 @@
-[1] "Environment: REMOTE, Time: 2023-10-18 23:39:46"
+[1] "Environment: REMOTE, Time: 2023-10-19 17:24:14"
 
 Query Nr. 1
 -- Wie hoch war das durchschnittliche steuerbare Einkommen im Kanton Basel-Stadt im Jahr 2014?
@@ -25,13 +25,13 @@ SELECT     (         100.0 *         SUM(CASE WHEN T.jahr = 2015 THEN T.steuerba
                                                     30.31875
 
 Query Nr. 5
--- What residential area in Basel Stadt had the most income inequality in 2020 ?
+-- In welchem Wohnquartier in Basel-Stadt war die Einkommensungleichheit im Jahr 2020 am grössten?
 SELECT S.name FROM basel_stadt_steuerstatistik_kennzahlen_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND T.jahr = 2020 ORDER BY T.reineinkommen_gini_koeffizient DESC LIMIT 1;
       name
  Vorstädte
 
 Query Nr. 6
--- What were the 3 residential areas in Basel-Stadt with the highest mean taxable assets in 2010? Also report the assets.
+-- Welches waren die 3 Wohnvierteln in Basel-Stadt mit dem höchsten durchschnittlichen steuerbaren Vermögen im Jahr 2010? Geben Sie auch das Vermögen an.
 SELECT S.name, T.steuerbares_vermogen_mittelwert FROM basel_stadt_steuerstatistik_kennzahlen_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND T.jahr = 2010 ORDER BY T.steuerbares_vermogen_mittelwert DESC LIMIT 3;
                 name steuerbares_vermogen_mittelwert
           Bruderholz                         1935527
@@ -39,12 +39,12 @@ SELECT S.name, T.steuerbares_vermogen_mittelwert FROM basel_stadt_steuerstatisti
  Altstadt Grossbasel                          915847
 
 Query Nr. 7
--- How did the mean net income and mean taxable income change (in percentage) between 2000 and 2020 in Clara, BS?
-SELECT     SUM(CASE WHEN T.jahr = 2020 THEN T.reineinkommen_mittelwert ELSE -T.reineinkommen_mittelwert END) / SUM(T.reineinkommen_mittelwert) AS reineinkommen_mittelwert_prozent_aenderung_2000_2020,     SUM(CASE WHEN T.jahr = 2020 THEN T.steuerbares_einkommen_mittelwert ELSE -T.steuerbares_einkommen_mittelwert END) / SUM(T.steuerbares_einkommen_mittelwert) AS steuerbares_einkommen_mittelwert_prozent_aenderung_2000_2020 FROM basel_stadt_steuerstatistik_kennzahlen_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND S.name = 'Clara'     AND T.jahr IN (2000, 2020);
+-- Wie haben sich das mittlere Nettoeinkommen und das mittlere steuerpflichtige Einkommen (in Prozent) zwischen 2000 und 2020 in Clara, BS, verändert?
+SELECT     (         100.0 *         SUM(CASE WHEN T.jahr = 2020 THEN T.reineinkommen_mittelwert ELSE -T.reineinkommen_mittelwert END) /         SUM(CASE WHEN T.jahr = 2000 THEN T.reineinkommen_mittelwert END)     ) AS reineinkommen_mittelwert_prozent_aenderung_2000_2020,     (         100.0 *         SUM(CASE WHEN T.jahr = 2020 THEN T.steuerbares_einkommen_mittelwert ELSE -T.steuerbares_einkommen_mittelwert END) /         SUM(CASE WHEN T.jahr = 2000 THEN T.steuerbares_einkommen_mittelwert END)     ) AS steuerbares_einkommen_mittelwert_prozent_aenderung_2000_2020 FROM basel_stadt_steuerstatistik_kennzahlen_wohnvierteln AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.residence_area = TRUE     AND S.name = 'Clara'     AND T.jahr IN (2000, 2020);
  reineinkommen_mittelwert_prozent_aenderung_2000_2020
-                                           0.07225681
+                                              15.5769
  steuerbares_einkommen_mittelwert_prozent_aenderung_2000_2020
-                                                   -0.1178227
+                                                    -21.08075
 
 Query Nr. 8
 -- Zeigen Sie mir alle Einkommenssteuerertragsindikatoren über Breite, im Kanton Basel-Stadt, über den Zeitraum 2015-2020.

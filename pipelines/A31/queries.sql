@@ -35,7 +35,7 @@ WHERE S.residence_area = TRUE
     AND S.name = 'Clara'
     AND T.jahr IN (1995, 2015);
 
--- What residential area in Basel Stadt had the most income inequality in 2020 ?
+-- In welchem Wohnquartier in Basel-Stadt war die Einkommensungleichheit im Jahr 2020 am grössten?
 SELECT S.name
 FROM basel_stadt_steuerstatistik_kennzahlen_wohnvierteln AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -44,7 +44,7 @@ WHERE S.residence_area = TRUE
 ORDER BY T.reineinkommen_gini_koeffizient DESC
 LIMIT 1;
 
--- What were the 3 residential areas in Basel-Stadt with the highest mean taxable assets in 2010? Also report the assets.
+-- Welches waren die 3 Wohnvierteln in Basel-Stadt mit dem höchsten durchschnittlichen steuerbaren Vermögen im Jahr 2010? Geben Sie auch das Vermögen an.
 SELECT S.name, T.steuerbares_vermogen_mittelwert
 FROM basel_stadt_steuerstatistik_kennzahlen_wohnvierteln AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -53,10 +53,18 @@ WHERE S.residence_area = TRUE
 ORDER BY T.steuerbares_vermogen_mittelwert DESC
 LIMIT 3;
 
--- How did the mean net income and mean taxable income change (in percentage) between 2000 and 2020 in Clara, BS?
+-- Wie haben sich das mittlere Nettoeinkommen und das mittlere steuerpflichtige Einkommen (in Prozent) zwischen 2000 und 2020 in Clara, BS, verändert?
 SELECT
-    SUM(CASE WHEN T.jahr = 2020 THEN T.reineinkommen_mittelwert ELSE -T.reineinkommen_mittelwert END) / SUM(T.reineinkommen_mittelwert) AS reineinkommen_mittelwert_prozent_aenderung_2000_2020,
-    SUM(CASE WHEN T.jahr = 2020 THEN T.steuerbares_einkommen_mittelwert ELSE -T.steuerbares_einkommen_mittelwert END) / SUM(T.steuerbares_einkommen_mittelwert) AS steuerbares_einkommen_mittelwert_prozent_aenderung_2000_2020
+    (
+        100.0 *
+        SUM(CASE WHEN T.jahr = 2020 THEN T.reineinkommen_mittelwert ELSE -T.reineinkommen_mittelwert END) /
+        SUM(CASE WHEN T.jahr = 2000 THEN T.reineinkommen_mittelwert END)
+    ) AS reineinkommen_mittelwert_prozent_aenderung_2000_2020,
+    (
+        100.0 *
+        SUM(CASE WHEN T.jahr = 2020 THEN T.steuerbares_einkommen_mittelwert ELSE -T.steuerbares_einkommen_mittelwert END) /
+        SUM(CASE WHEN T.jahr = 2000 THEN T.steuerbares_einkommen_mittelwert END)
+    ) AS steuerbares_einkommen_mittelwert_prozent_aenderung_2000_2020
 FROM basel_stadt_steuerstatistik_kennzahlen_wohnvierteln AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.residence_area = TRUE
