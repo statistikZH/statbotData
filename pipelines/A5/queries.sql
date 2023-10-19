@@ -91,7 +91,7 @@ WHERE T1.jahr = 2001 AND T2.jahr = 2022
   AND T2.renten_mittelwert_in_franken > T1.renten_mittelwert_in_franken
 GROUP BY T1.rententyp;
 
--- Für welche Rentenarten gibt es in der Schweiz und was sind die durchschnittliche Ausgaben dafür pro Jahr?
+-- Welche Rentenarten gibt es in der Schweiz und was sind die durchschnittliche Ausgaben dafür pro Jahr?
 SELECT rententyp,
   (AVG(rentensumme_in_tausend_franken) * 1000) as durchschnittliche_ausgaben_pro_jahr_chf
 FROM ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit
