@@ -1,4 +1,4 @@
-[1] "Environment: REMOTE, Time: 2023-10-13 11:04:34"
+[1] "Environment: REMOTE, Time: 2023-10-20 15:38:56"
 
 Query Nr. 1
 -- Wann erreichte die Kohlenmonoxidkonzentration in der Luft in der Stadt Zürich ihr Maximum? Geben Sie auch die Konzentration in mg/m3 an.
@@ -36,7 +36,7 @@ SELECT T.jahr, SUM(T.no_ug_m3) / COUNT(T.no_ug_m3) AS jahr_avg_no_ug_m3, SUM(T.n
  1993         48.441402      45.86977
  2003         29.552807      42.78025
  2013         20.718149      33.79991
- 2023          6.532129      19.14540
+ 2023          6.524986      18.70414
 
 Query Nr. 5
 -- Welches war die niedrigste Feinstaubkonzentration (PM2.5), die je in Zürich gemessen wurde, und in welchem Jahr war dies?
@@ -89,7 +89,7 @@ Query Nr. 9
 -- Wie hoch ist die relative Veränderung der PM10-Konzentration in Zürich von 2017 bis 2023 in Prozent?
 SELECT     (         100.0 * SUM(             CASE                 WHEN T.jahr = 2017 THEN T.pm10_ug_m3                 WHEN T.jahr = 2023 THEN -T.pm10_ug_m3             END         ) / SUM(CASE WHEN T.jahr = 2017 THEN T.pm10_ug_m3 END)     ) AS pm10_anderung_2017_2023_prozent FROM stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983 AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.municipal = TRUE     AND S.name = 'Zürich'     AND T.jahr IN (2017, 2023)     AND T.pm10_ug_m3 IS NOT NULL;
  pm10_anderung_2017_2023_prozent
-                        17.69004
+                        19.88209
 
 Query Nr. 10
 -- Nennen Sie mir die Konzentration von Stickoxiden in der Luft von Zürich, in Teilen pro Million (ppm), für den Monat Januar in den Jahren 2017 bis 2021.
@@ -138,6 +138,6 @@ SELECT T.monat, SUM(T.pn_1_cm3) / COUNT(T.pn_1_cm3) AS avg_pn_1_cm3 FROM stadt_z
      7     13144.14
      8     13545.95
      9     15271.33
-    10     17149.51
+    10     16788.68
     11     14329.35
     12     13083.66
