@@ -1,4 +1,4 @@
--- What were the names of the 3 most populous municipalities in canton Schwyz in 2015?
+-- Wie hiessen die 3 bevölkerungsreichsten Gemeinden im Kanton Schwyz im Jahr 2015?
 SELECT S.name
 FROM schwyz_standige_wohnbevolkerung_geschlecht_nationalitat AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -8,7 +8,7 @@ GROUP BY S.name
 ORDER BY SUM(T.anzahl_personen) DESC
 LIMIT 3;
 
--- How many inhabitants were there in Freienbach (SZ) during the period 2010 - 2020 ?
+-- Wie viele Einwohner gab es in Freienbach (SZ) im Zeitraum 2010 - 2020 ?
 SELECT T.jahr, SUM(T.anzahl_personen)
 FROM schwyz_standige_wohnbevolkerung_geschlecht_nationalitat AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
@@ -19,7 +19,7 @@ WHERE S.municipal = TRUE
 GROUP BY T.jahr
 ORDER BY T.jahr ASC;
 
--- Which 5 municipalities in Canton Schwyz had the highest male/female ratio in 2010? Also report the ratio.
+-- Welche 5 Gemeinden im Kanton Schwyz hatten 2010 das höchste Verhältnis zwischen Männern und Frauen? Geben Sie auch das Verhältnis an.
 SELECT
     S.name,
     (
@@ -34,7 +34,7 @@ GROUP BY S.name
 ORDER BY weiblich_mannlich_verhaltnis_2010 DESC
 LIMIT 5;
 
--- What is the percentage of municipalities in Schwyz that had more than 10000 inhabitants in 2020?
+-- Wie hoch ist der Prozentsatz der Gemeinden in Schwyz, die im Jahr 2020 mehr als 10000 Einwohner haben?
 SELECT
     (
         100.0 *
@@ -50,7 +50,7 @@ FROM (
     GROUP BY S.name
 ) as T1;
 
--- What were the 10 municipalities in Schwyz with the lowest population growth between 2005 and 2022, and what was their percentage growth ?
+-- Welches waren die 10 Schwyzer Gemeinden mit dem geringsten Bevölkerungswachstum zwischen 2005 und 2022, und wie hoch war ihr prozentuales Wachstum?
 SELECT
     S.name,
     (
@@ -66,7 +66,7 @@ GROUP BY S.name
 ORDER BY prozent_wachstum ASC
 LIMIT 10;
 
--- Show me the number of foreign and Swiss residents for the 5 most populous municipalities in Schwyz in 2015.
+-- Zeigen Sie mir die Anzahl ausländischer und schweizerischer Einwohner für die 5 bevölkerungsreichsten Gemeinden in Schwyz im Jahr 2015.
 SELECT
     S.name,
     SUM(CASE WHEN T.nationalitaet = 'Schweiz' THEN T.anzahl_personen ELSE 0 END) AS schweizer,
@@ -79,7 +79,7 @@ GROUP BY S.name
 ORDER BY SUM(T.anzahl_personen) DESC
 LIMIT 5;
 
--- What was the proportion of men among swiss and foreign residents in canton Schwyz each year between 2015 and 2020?
+-- Wie hoch war der Anteil der Männer an der schweizerischen und ausländischen Wohnbevölkerung im Kanton Schwyz in den Jahren 2015 bis 2020?
 SELECT
     T.jahr,
     (
@@ -98,7 +98,7 @@ WHERE S.municipal = TRUE
 GROUP BY T.jahr
 ORDER BY T.jahr ASC;
 
--- What was the year-on-year growth rate of the population in canton Schwyz each year during the preiod 2005-2010?
+-- Wie hoch war die jährliche Wachstumsrate der Bevölkerung im Kanton Schwyz in den Jahren 2005-2010?
 WITH T1 AS (
     SELECT
         T.jahr,
@@ -120,7 +120,7 @@ SELECT
     ) AS tot_personen_vorjahr
 FROM T1;
 
--- Show me the number of men and women in canton Schwyz in 2005, 2010, 2015 and 2020.
+-- Zeigen Sie mir die Anzahl der Männer und Frauen im Kanton Schwyz in den Jahren 2005, 2010, 2015 und 2020.
 SELECT
     T.jahr,
     SUM(CASE WHEN T.geschlecht = 'männlich' THEN T.anzahl_personen END) AS anzahl_manner,
@@ -132,7 +132,7 @@ WHERE S.municipal = TRUE
 GROUP BY T.jahr
 ORDER BY T.jahr ASC;
 
--- What was the swiss and foreign population in the 3 smallest Schwyz municipalities in 2020?
+-- Wie hoch war die schweizerische und ausländische Bevölkerung in den 3 kleinsten Schwyzer Gemeinden im Jahr 2020?
 SELECT
     S.name,
     SUM(CASE WHEN T.nationalitaet = 'Schweiz' THEN T.anzahl_personen ELSE 0 END) AS anzahl_schweizer,
@@ -145,7 +145,7 @@ GROUP BY S.name
 ORDER BY SUM(T.anzahl_personen) ASC
 LIMIT 3;
 
--- Show me the proportion of foreigners (foreigners/total) in canton Schwyz in each year between 2010 and 2020.
+-- Zeigen Sie mir den Anteil der ausländischen Bevölkerung (als Verhältnis) im Kanton Schwyz in jedem Jahr zwischen 2010 und 2020.
 SELECT
     T.jahr,
     (
@@ -160,7 +160,7 @@ WHERE S.municipal = TRUE
 GROUP BY T.jahr
 ORDER BY T.jahr ASC;
 
--- For each year in the period 2018 - 2021, show me the number of swiss residents in Einsiedeln, SZ.
+-- Zeigen Sie mir für jedes Jahr im Zeitraum 2018 - 2021 die Anzahl der Schweizer Einwohner in Einsiedeln, SZ.
 SELECT T.jahr, SUM(T.anzahl_personen) AS anzahl_schweizer_2021_einsiedeln
 FROM schwyz_standige_wohnbevolkerung_geschlecht_nationalitat AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
