@@ -1,0 +1,4 @@
+name;table_name;data_type;title;title_en;example_values
+geschlecht;schwyz_standige_wohnbevolkerung_geschlecht_nationalität;numeric;"Geschlecht";"Gender";männlich,weiblich
+nationalitaet;schwyz_standige_wohnbevolkerung_geschlecht_nationalität;numeric;"Nationalität";"Nationality";Schweiz,Ausland
+anzahl_personen;schwyz_standige_wohnbevolkerung_geschlecht_nationalität;numeric;"Anzahl Personen";"Number of people";3873,964,2926
