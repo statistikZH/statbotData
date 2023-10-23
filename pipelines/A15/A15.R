@@ -60,23 +60,3 @@ spatial_map <- ds$postgres_export %>%
 ds$postgres_export %<>%
   dplyr::left_join(spatial_map, by = "canton") %>%
   dplyr::select(-canton)
-
-colnames(ds$postgres_export)
-dim(ds$postgres_export)
-# -------------------------------------------------------------------------
-# Step: After the dataset has been build use functions of package stabotData
-# to upload the dataset to postgres, testrun the queries, generate a sample
-# upload the metadata, etc
-# -------------------------------------------------------------------------
-
-# testrun queries
-statbotData::testrun_queries(ds)
-
-# create the table in postgres
-statbotData::create_postgres_table(ds)
-
-# add the metadata to postgres
-statbotData::update_metadata_in_postgres(ds)
-
-# generate sample data for the dataset from the local tibble
-statbotData::dataset_sample(ds)

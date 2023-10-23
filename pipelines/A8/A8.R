@@ -30,7 +30,6 @@ ds$cleaned_data <- ds$data %>%
     "anzahl_parteistimmen" = parteistimmen,
     "anzahl_fiktive_wahlende" = fiktive_wahlende,
   )
-ds$cleaned_data
 
 # -------------------------------------------------------------------------
 # Step: Spatial unit mapping
@@ -46,21 +45,3 @@ spatial_mapping <- ds$cleaned_data %>%
 ds$postgres_export <- ds$cleaned_data %>%
   dplyr::left_join(spatial_mapping, by = "kanton") %>%
   dplyr::select(-c(kanton))
-
-# -------------------------------------------------------------------------
-# Step: After the dataset has been build use functions of package stabotData
-# to upload the dataset to postgres, testrun the queries, generate a sample
-# upload the metadata, etc
-# -------------------------------------------------------------------------
-
-# testrun queries
-statbotData::testrun_queries(ds)
-
-# create the table in postgres
-statbotData::create_postgres_table(ds)
-
-# add the metadata to postgres
-statbotData::update_metadata_in_postgres(ds)
-
-# generate sample data for the dataset from the local tibble
-statbotData::dataset_sample(ds)

@@ -34,18 +34,3 @@ ds$postgres_export <- ds$postgres_export %>%
 
 # Manually add spatialunit for Kanton Zürich
 ds$postgres_export$spatialunit_uid <- "1_A.ADM1"
-# -------------------------------------------------------------------------
-# Step: Upload dataset to postgres, test run queries, generate a sample and
-# metadata files.
-#   input:  ds$postgres_export, ds$dir/queries.sql
-#   output: ds$dir/queries.log
-# -------------------------------------------------------------------------
-
-# create the table in postgres
-statbotData::create_postgres_table(ds)
-# copy the metadata templates to the metadata files and then complete them
-statbotData::update_pipeline_last_run_date(ds)
-statbotData::update_metadata_in_postgres(ds)
-# generate sample data for the dataset from the local tibble
-statbotData::dataset_sample(ds)
-statbotData::testrun_queries(ds)

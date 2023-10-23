@@ -22,21 +22,3 @@ ds$postgres_export <- ds$data %>%
   dplyr::mutate(spatialunit_uid = spatial_mapping_country()) %>%
   dplyr::mutate(emissions_in_million_tons_co2_equivalent = as.numeric(emissions_in_million_tons_co2_equivalent))
 ds$postgres_export
-
-# -------------------------------------------------------------------------
-# Step: After the dataset has been build use functions of package
-# stabotData to upload the dataset to postgres, testrun the queries,
-#  generate a sample, upload the metadata, etc
-# -------------------------------------------------------------------------
-
-# generate sample data for the dataset from the local tibble
-statbotData::dataset_sample(ds)
-
-# create the table in postgres
-statbotData::create_postgres_table(ds)
-
-# add metadata to postgres
-statbotData::update_metadata_in_postgres(ds)
-
-# run test queries
-statbotData::testrun_queries(ds)
