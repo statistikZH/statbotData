@@ -4,8 +4,8 @@
 # output: ds as dataset class
 # -------------------------------------------------------------------------
 
-ds <- statbotData::create_dataset("A8")
-ds <- statbotData::download_data(ds)
+ds <- statbotData::::create_dataset("A8")
+ds <- statbotData::::download_data(ds)
 
 # -------------------------------------------------------------------------
 # Step: Clean the data
@@ -40,7 +40,7 @@ ds$cleaned_data <- ds$data %>%
 spatial_mapping <- ds$cleaned_data %>%
   dplyr::select(kanton) %>%
   dplyr::distinct(kanton) %>%
-  statbotData::map_ds_spatial_units(c("Country", "Canton"))
+  statbotData::::map_ds_spatial_units(c("Country", "Canton"))
 
 ds$postgres_export <- ds$cleaned_data %>%
   dplyr::left_join(spatial_mapping, by = "kanton") %>%

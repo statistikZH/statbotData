@@ -4,8 +4,8 @@
 # output: ds$data, ds$dir
 # -------------------------------------------------------------------------
 
-ds <- create_dataset(id = "A3")
-ds <- download_data(ds)
+ds <- statbotData::create_dataset(id = "A3")
+ds <- statbotData::download_data(ds)
 
 # -------------------------------------------------------------------------
 # Step: Clean the data and add spatial unit

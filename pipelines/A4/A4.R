@@ -4,8 +4,8 @@
 # output: ds$data, ds$dir
 # -------------------------------------------------------------------------
 
-ds <- create_dataset(id = "A4")
-ds <- download_data(ds)
+ds <- statbotData::create_dataset(id = "A4")
+ds <- statbotData::download_data(ds)
 ds$data
 
 # -------------------------------------------------------------------------

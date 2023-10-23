@@ -5,7 +5,7 @@
 #         - use a sparql query to download the data
 # -------------------------------------------------------------------------
 
-ds <- create_dataset(id = "S3")
+ds <- statbotData::create_dataset(id = "S3")
 
 # query the cube
 
@@ -44,7 +44,7 @@ WHERE {
   FILTER(LANG(?cofog_narrow) = "de")
 }
 '
-ds <- download_data(ds)
+ds <- statbotData::download_data(ds)
 
 # -------------------------------------------------------------------------
 # Step: Clean the data

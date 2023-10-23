@@ -5,7 +5,7 @@
 #         - use a sparql query to download the data
 # -------------------------------------------------------------------------
 
-ds <- create_dataset(id = "S1")
+ds <- statbotData::create_dataset(id = "S1")
 
 # query the cube
 
@@ -37,7 +37,7 @@ WHERE {
   FILTER(LANG(?cat_desc) = "de")
 }
 '
-ds <- download_data(ds)
+ds <- statbotData::download_data(ds)
 
 # -------------------------------------------------------------------------
 # Step: Clean the data
@@ -68,7 +68,7 @@ ds$cleaned_data <- ds$data %>%
 spatial_map <- ds$cleaned_data %>%
   dplyr::select(kanton) %>%
   dplyr::distinct(kanton) %>%
-  map_ds_spatial_units()
+  statbotData::map_ds_spatial_units()
 
 ds$postgres_export <- ds$cleaned_data %>%
   dplyr::left_join(spatial_map, by = "kanton") %>%

@@ -1,13 +1,13 @@
 library(magrittr)
 # create ds object --------------------------------------------------------
 
-ds <- create_dataset(id = "A15")
+ds <- statbotData::create_dataset(id = "A15")
 
 
 # download the data -------------------------------------------------------
 
 # Might take 1 - 5 minutes
-ds <- download_data(ds)
+ds <- statbotData::download_data(ds)
 
 # data cleaning -----------------------------------------------------------
 
@@ -55,7 +55,7 @@ ds$postgres_export %<>%
 spatial_map <- ds$postgres_export %>%
   dplyr::select(canton) %>%
   dplyr::distinct(canton) %>%
-  map_ds_spatial_units()
+  statbotData::map_ds_spatial_units()
 
 ds$postgres_export %<>%
   dplyr::left_join(spatial_map, by = "canton") %>%

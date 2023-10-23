@@ -4,8 +4,8 @@
 # output: ds$data, ds$dir
 # -------------------------------------------------------------------------
 
-ds <- create_dataset(id = "A1")
-ds <- download_data(ds)
+ds <- statbotData::create_dataset(id = "A1")
+ds <- statbotData::download_data(ds)
 
 # -------------------------------------------------------------------------
 # Step: Clean the data
@@ -34,8 +34,7 @@ ds$cleaned_data <- ds$data %>%
   dplyr::rename(
     "anzahl_gerate" = anzahl_anzahl_gerate
   )
-ds$cleaned_data
-colnames(ds$cleaned_data)
+
 # -------------------------------------------------------------------------
 # Step: Derive the spatial units mapping and map the spatial units
 #   input:  ds$cleaned_data
@@ -45,7 +44,7 @@ colnames(ds$cleaned_data)
 spatial_map <- ds$cleaned_data %>%
   dplyr::select(grossregion_kanton) %>%
   dplyr::distinct(grossregion_kanton) %>%
-  map_ds_spatial_units()
+  statbotData::map_ds_spatial_units()
 
 ds$postgres_export <- ds$cleaned_data %>%
   dplyr::left_join(spatial_map, by = "grossregion_kanton") %>%
