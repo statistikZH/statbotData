@@ -17,7 +17,7 @@ dataset_sample <- function(ds, sample_size=40) {
   if (is.null(ds$postgres_export)) {
     stop("ds$postgres_export is null therefore no sample has been generated")
   }
-  file_path <- paste0(ds$dir, "sample.csv")
+  file_path <- here::here(ds$dir, "sample.csv")
   ds$sample <- ds$postgres_export
   row_count <- dim(ds$postgres_export)[1]
   if (row_count > sample_size) {
