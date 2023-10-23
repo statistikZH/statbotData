@@ -4,4 +4,4 @@ gesamt_anzahl_personen;basel_land_bevolkerung_nach_nationalitat_konfession_gemei
 ​anzahl_evangelisch_reformiert;basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde;numeric;"Anzahl Evangelisch-Reformierten";"Number of Reformed Protestants";
 ​anzahl_romisch_katholisch;basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde;numeric;"Anzahl der Römisch-Katholischen";"Number of Roman Catholics";
 anzahl_christkatholisch;basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde;numeric;"Anzahl der Christkatholischen";"Number of Christian Catholics";
-anzahl_unbekannt_konfession;basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde;numeric;"Anzahl der Personen mit unbekannter KonfessionAnzahl der ";"Number of people with unknown confession";
+anzahl_unbekannt_konfession;basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde;numeric;"Anzahl der Personen mit unbekannter Konfession";"Number of people with unknown confession";
