@@ -74,7 +74,7 @@ WHERE S.name='Switzerland'
 GROUP BY T.offence_category
 ORDER BY crime_detection_rate LIMIT 3;
 
--- How were the crime preventation rates in Switzerland for 2022 per crime category. Also provide the number of attempted and commited crimes? Order by prevention rate.
+-- How were the crime prevention rates in Switzerland for 2022 per crime category. Also provide the number of attempted and committed crimes? Order by prevention rate.
 SELECT T.offence_category, SUM(T.number_criminal_offences_attempted) AS number_of_attempted_crimes,
   SUM(T.number_criminal_offences_registered) AS number_of_committed_crimes,
   ROUND(100 * SUM(T.number_criminal_offences_attempted) / SUM(T.number_criminal_offences_registered), 2) AS prevention_rate
@@ -88,7 +88,7 @@ WHERE S.name='Switzerland'
 GROUP BY T.offence_category
 ORDER BY prevention_rate DESC;
 
--- Which offences had over 10.000 incidents in Switzerland in 2022. Provide the crimnal codes and the number of incidents.
+-- Which offences had over 10,000 incidents in Switzerland in 2022. Provide the criminal codes and the number of incidents.
 SELECT T.offence_criminal_code,
   SUM(T.number_criminal_offences_registered) AS offences_per_year
 FROM criminal_offences_registered_by_police AS T

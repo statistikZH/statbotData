@@ -1,4 +1,4 @@
-[1] "Environment: REMOTE, Time: 2023-10-18 14:38:58.704017"
+[1] "Environment: REMOTE, Time: 2023-10-23 20:01:43"
 
 Query Nr. 1
 -- In which year were there the most crimes in Switzerland? Also please provide the number of committed crimes.
@@ -39,38 +39,63 @@ SELECT 100 * SUM(T.number_criminal_offences_solved) / SUM(T.number_criminal_offe
 Query Nr. 7
 -- Which three crime categories had the lowest crime detection rate in 2019 in Switzerland and what were these rates?
 SELECT T.offence_category, 100 * SUM(T.number_criminal_offences_solved) / SUM(T.number_criminal_offences_registered) AS crime_detection_rate FROM criminal_offences_registered_by_police AS T JOIN spatial_unit AS S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name='Switzerland'   AND S.country = TRUE   AND T.year = 2019   AND T.offence_criminal_code!='Offence - total' GROUP BY T.offence_category ORDER BY crime_detection_rate LIMIT 3;
-                                                               offence_category crime_detection_rate
- Counterfeiting of Money, Official Stamps, Official Marks, Weights and Measures             22.13720
-                                                                       Property             24.14896
-                                                                        Liberty             45.04472
+                                                               offence_category
+ Counterfeiting of Money, Official Stamps, Official Marks, Weights and Measures
+                                                                       Property
+                                                                        Liberty
+ crime_detection_rate
+             22.13720
+             24.14896
+             45.04472
 
 Query Nr. 8
--- How were the crime preventation rates in Switzerland for 2022 per crime category. Also provide the number of attempted and commited crimes? Order by prevention rate.
+-- How were the crime prevention rates in Switzerland for 2022 per crime category. Also provide the number of attempted and committed crimes? Order by prevention rate.
 SELECT T.offence_category, SUM(T.number_criminal_offences_attempted) AS number_of_attempted_crimes,   SUM(T.number_criminal_offences_registered) AS number_of_committed_crimes,   ROUND(100 * SUM(T.number_criminal_offences_attempted) / SUM(T.number_criminal_offences_registered), 2) AS prevention_rate FROM criminal_offences_registered_by_police AS T JOIN spatial_unit AS S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name='Switzerland'   AND S.country = TRUE   AND T.year = 2022   AND T.number_criminal_offences_registered != 0   AND T.offence_criminal_code != 'Offence - total' GROUP BY T.offence_category ORDER BY prevention_rate DESC;
-                                                               offence_category number_of_attempted_crimes number_of_committed_crimes prevention_rate
-                                                                  Public Health                          4                         34           11.76
-                                                                       Property                      17071                     301888            5.65
-                                                                  Life and Limb                        941                      27228            3.46
-                                                               Sexual Integrity                        231                       9196            2.51
-                                                      Administration of Justice                        106                       5187            2.04
-                                                                  Public Danger                         48                       2398            2.00
-                                                                        Bribery                          1                         57            1.75
-                                                                        Liberty                        945                      59541            1.59
-                                                                 Public Traffic                         10                        907            1.10
-                                                  Official or Professional Duty                          4                        420            0.95
-                                                                        Forgery                         64                       6817            0.94
-                                                                         Family                          8                       1160            0.69
- Counterfeiting of Money, Official Stamps, Official Marks, Weights and Measures                         16                       4093            0.39
-                                                                   Public Order                          3                        804            0.37
-                                                                Official Powers                         31                      11773            0.26
-                               Personal Honour and Breach of Secrecy or Privacy                         33                      18616            0.18
-                                      Offences detrimental to Foreign Relations                          0                          4            0.00
-                                                  Contraventions of Federal Law                          0                       8415            0.00
-                                                    State and National Security                          0                          5            0.00
-                                                             Will of the People                          0                          5            0.00
+                                                               offence_category
+                                                                  Public Health
+                                                                       Property
+                                                                  Life and Limb
+                                                               Sexual Integrity
+                                                      Administration of Justice
+                                                                  Public Danger
+                                                                        Bribery
+                                                                        Liberty
+                                                                 Public Traffic
+                                                  Official or Professional Duty
+                                                                        Forgery
+                                                                         Family
+ Counterfeiting of Money, Official Stamps, Official Marks, Weights and Measures
+                                                                   Public Order
+                                                                Official Powers
+                               Personal Honour and Breach of Secrecy or Privacy
+                                      Offences detrimental to Foreign Relations
+                                                  Contraventions of Federal Law
+                                                    State and National Security
+                                                             Will of the People
+ number_of_attempted_crimes number_of_committed_crimes prevention_rate
+                          4                         34           11.76
+                      17071                     301888            5.65
+                        941                      27228            3.46
+                        231                       9196            2.51
+                        106                       5187            2.04
+                         48                       2398            2.00
+                          1                         57            1.75
+                        945                      59541            1.59
+                         10                        907            1.10
+                          4                        420            0.95
+                         64                       6817            0.94
+                          8                       1160            0.69
+                         16                       4093            0.39
+                          3                        804            0.37
+                         31                      11773            0.26
+                         33                      18616            0.18
+                          0                          4            0.00
+                          0                       8415            0.00
+                          0                          5            0.00
+                          0                          5            0.00
 
 Query Nr. 9
--- Which offences had over 10.000 incidents in Switzerland in 2022. Provide the crimnal codes and the number of incidents.
+-- Which offences had over 10,000 incidents in Switzerland in 2022. Provide the criminal codes and the number of incidents.
 SELECT T.offence_criminal_code,   SUM(T.number_criminal_offences_registered) AS offences_per_year FROM criminal_offences_registered_by_police AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name = 'Switzerland'   AND S.country = TRUE   AND T.year = 2022   AND T.number_criminal_offences_registered > 10000   AND T.offence_criminal_code != 'Offence - total' GROUP BY T.year, T.offence_criminal_code ORDER BY offences_per_year DESC;
                                     offence_criminal_code offences_per_year
                                  Vehicle theft (art. 139)             46385
@@ -91,19 +116,35 @@ SELECT T.offence_criminal_code,   SUM(T.number_criminal_offences_registered) AS 
 Query Nr. 10
 -- Compare the years 2019 and 2020 regarding offence categories that had over a 100 incidents in Kanton of Zurich. Provide the difference and order by how much they increased.
 SELECT T.offence_category,    SUM(CASE WHEN T.year = 2019        THEN T.number_criminal_offences_registered ELSE 0 END) AS number_offences_2019,    SUM(CASE WHEN T.year = 2020        THEN T.number_criminal_offences_registered ELSE 0 END) AS number_offences_2020,    SUM(CASE WHEN T.year = 2020        THEN T.number_criminal_offences_registered ELSE 0 END) -    SUM(CASE WHEN T.year = 2019        THEN T.number_criminal_offences_registered ELSE 0 END) AS increase FROM criminal_offences_registered_by_police AS T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE   AND S.name LIKE '%Zurich%'   AND T.year IN (2019, 2020)   AND T.offence_criminal_code != 'Offence - total' GROUP BY T.offence_category HAVING SUM(CASE WHEN T.year = 2019        THEN T.number_criminal_offences_registered ELSE 0 END) > 100 ORDER BY increase DESC;
-                                                               offence_category number_offences_2019 number_offences_2020 increase
-                                                      Administration of Justice                  745                 1393      648
-                               Personal Honour and Breach of Secrecy or Privacy                 2429                 2944      515
-                                                                Official Powers                 2660                 3156      496
-                                                                 Public Traffic                  113                  360      247
-                                                  Contraventions of Federal Law                  875                 1039      164
-                                                                        Forgery                 1284                 1359       75
-                                                                       Property                60592                60659       67
-                                                                         Family                  102                  149       47
-                                                  Official or Professional Duty                  134                  155       21
-                                                                  Public Danger                  208                  214        6
-                                                               Sexual Integrity                 2440                 2439       -1
-                                                                   Public Order                  202                  190      -12
-                                                                        Liberty                12750                12707      -43
-                                                                  Life and Limb                 6379                 6313      -66
- Counterfeiting of Money, Official Stamps, Official Marks, Weights and Measures                  241                   92     -149
+                                                               offence_category
+                                                      Administration of Justice
+                               Personal Honour and Breach of Secrecy or Privacy
+                                                                Official Powers
+                                                                 Public Traffic
+                                                  Contraventions of Federal Law
+                                                                        Forgery
+                                                                       Property
+                                                                         Family
+                                                  Official or Professional Duty
+                                                                  Public Danger
+                                                               Sexual Integrity
+                                                                   Public Order
+                                                                        Liberty
+                                                                  Life and Limb
+ Counterfeiting of Money, Official Stamps, Official Marks, Weights and Measures
+ number_offences_2019 number_offences_2020 increase
+                  745                 1393      648
+                 2429                 2944      515
+                 2660                 3156      496
+                  113                  360      247
+                  875                 1039      164
+                 1284                 1359       75
+                60592                60659       67
+                  102                  149       47
+                  134                  155       21
+                  208                  214        6
+                 2440                 2439       -1
+                  202                  190      -12
+                12750                12707      -43
+                 6379                 6313      -66
+                  241                   92     -149
