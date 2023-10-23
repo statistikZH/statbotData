@@ -9,7 +9,7 @@ WHERE S.canton=TRUE
   AND T.type_of_owner='Private forest'
 ORDER BY number_of_plantations DESC LIMIT 1;
 
--- What was the percentage of deciduous to coniferous forests in Switzerland in 2020?
+-- What was were proportions, in percent, of deciduous and coniferous forests in Switzerland in 2020?
 SELECT
   ROUND(100 * SUM(CASE WHEN LOWER(wood_species) LIKE '%deciduous%'
        THEN number_of_plantations ELSE 0 END) /
@@ -69,7 +69,7 @@ WHERE S.country = TRUE
   AND T.forest_zone = 'Switzerland'
   AND T.type_of_owner='Type of owners - total';
 
--- What canton contribute how many forests to the forestzone Jura by the latest count?
+-- How many plantations in the "Jura" forest zone does each canton have by the latest count?
 WITH MostRecentYear AS (
   SELECT MAX(year) as most_recent_year
   FROM number_of_plantations_in_swiss_forest
