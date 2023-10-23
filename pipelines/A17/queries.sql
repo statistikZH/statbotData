@@ -54,7 +54,7 @@ HAVING MAX(CASE WHEN T.ja_in_prozent > 50 AND S.country = TRUE THEN T.ja_in_proz
    AND COUNT(CASE WHEN T.ja_in_prozent <= 50 AND S.canton = TRUE THEN 1 ELSE NULL END) > COUNT(CASE WHEN T.ja_in_prozent > 50 AND S.canton = TRUE THEN 1 ELSE NULL END)
 ORDER BY T.jahr DESC LIMIT 1;
 
--- Welche Volksabstimmung und in welchem Jahr hatte die wenigsten gültigen Stimmenzettel? Wieviele waren es? Und wie hoch war die Wahlbeteiligng?
+-- Welche Volksabstimmung und in welchem Jahr hatte die wenigsten gültigen Stimmenzettel? Wieviele waren es? Und wie hoch war die Wahlbeteiligung?
 SELECT T.vorlage AS vorlage_mit_wenigsten_gueltigen_stimmenzetteln, T.jahr,
   MIN(T.anzahl_gueltige_stimmzettel) AS anzahl_gueltige_stimmzettel, T.beteiligung_in_prozent
 FROM volksabstimmung_nach_kanton_seit_1861 AS T

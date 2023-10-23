@@ -1,10 +1,12 @@
-[1] "Environment: REMOTE, Time: 2023-10-18 21:28:19.82461"
+[1] "Environment: REMOTE, Time: 2023-10-23 20:11:55"
 
 Query Nr. 1
 -- What farm animals were bred in the canton of Bern in 2020?
 SELECT livestock_beef_cattle_and_cows, livestock_sheep, livestock_goats, livestock_pigs, livestock_poultry, livestock_other_animals FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name LIKE '%Bern%'     AND S.canton=TRUE     AND T.year=2020     AND T.farmholding_system = 'Farmholding system - total';
- livestock_beef_cattle_and_cows livestock_sheep livestock_goats livestock_pigs livestock_poultry livestock_other_animals
-                         296805           46174           13781         209465           1934593                   18752
+ livestock_beef_cattle_and_cows livestock_sheep livestock_goats livestock_pigs
+                         296805           46174           13781         209465
+ livestock_poultry livestock_other_animals
+           1934593                   18752
 
 Query Nr. 2
 -- How many farms were there in all of Switzerland between 2012 and 2018?
@@ -61,13 +63,13 @@ SELECT farmholding_system, employees_total / farmholdings AS average_employees_p
 Query Nr. 8
 -- How did organic versus conventional farming develop in Kanton Uri between 2010 and 2020? Consider the farm area and the number of farms and give the differences.
 SELECT    SUM(CASE WHEN T.year = 2020 AND T.farmholding_system = 'Organic farming'        THEN T.utilised_agricultural_area_in_hectares ELSE 0 END) -    SUM(CASE WHEN T.year = 2010 AND T.farmholding_system = 'Organic farming'        THEN T.utilised_agricultural_area_in_hectares ELSE 0 END) AS increase_organic_farm_area_in_ha,    SUM(CASE WHEN T.year = 2020 AND T.farmholding_system = 'Organic farming'        THEN T.farmholdings ELSE 0 END) -    SUM(CASE WHEN T.year = 2010 AND T.farmholding_system = 'Organic farming'        THEN T.farmholdings ELSE 0 END) AS increase_number_of_organic_farms,    SUM(CASE WHEN T.year = 2020 AND T.farmholding_system = 'Conventional farming'        THEN T.utilised_agricultural_area_in_hectares ELSE 0 END) -    SUM(CASE WHEN T.year = 2010 AND T.farmholding_system = 'Conventional farming'        THEN T.utilised_agricultural_area_in_hectares ELSE 0 END) AS increase_conventional_farm_area_in_ha,    SUM(CASE WHEN T.year = 2020 AND T.farmholding_system = 'Conventional farming'        THEN T.farmholdings ELSE 0 END) -    SUM(CASE WHEN T.year = 2010 AND T.farmholding_system = 'Conventional farming'        THEN T.farmholdings ELSE 0 END) AS increase_number_of_conventional_farms FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.canton = TRUE   AND S.name LIKE '%Uri%'   AND T.year IN (2010, 2020)   AND T.farmholding_system IN ('Organic farming', 'Conventional farming');
- increase_organic_farm_area_in_ha increase_number_of_organic_farms increase_conventional_farm_area_in_ha
-                           203.62                                4                             -216.4547
- increase_number_of_conventional_farms
-                                  -112
+ increase_organic_farm_area_in_ha increase_number_of_organic_farms
+                           203.62                                4
+ increase_conventional_farm_area_in_ha increase_number_of_conventional_farms
+                             -216.4547                                  -112
 
 Query Nr. 9
--- Which 5 cantons had 2022 the biggest precentage of their farm area used by organic farming? Order by the percentage of area used for oraganic farming.
+-- Which 5 cantons had in 2022 the biggest precentage of their farm area used by organic farming? Order by the percentage of area used for organic farming.
 SELECT S.name,    ROUND(100 * SUM(CASE WHEN T.farmholding_system = 'Organic farming'        THEN T.utilised_agricultural_area_in_hectares ELSE 0 END) /    NULLIF(SUM(CASE WHEN T.farmholding_system = 'Farmholding system - total'        THEN T.utilised_agricultural_area_in_hectares ELSE 0 END), 0), 2) AS percentage_of_organically_used_farmarea FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE T.year = 2022     AND S.canton = TRUE     AND T.farmholding_system IN ('Organic farming', 'Farmholding system - total') GROUP BY S.name ORDER BY percentage_of_organically_used_farmarea DESC LIMIT 5;
                   name percentage_of_organically_used_farmarea
      Canton Graubünden                                   66.35
@@ -77,7 +79,7 @@ SELECT S.name,    ROUND(100 * SUM(CASE WHEN T.farmholding_system = 'Organic farm
          Canton Ticino                                   25.36
 
 Query Nr. 10
---How was the split between Swiss population and foreign nationlas on Swiss farms in 2022?
+--How was the split between Swiss population and foreign nationals on Swiss farms in 2022?
 SELECT ROUND(100 * employees_swiss / employees_total, 2) AS percentage_of_swiss_employees,   ROUND(100 * employees_foreign_nationals / employees_total, 2) AS percentage_foreign_nationals_employees FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country = TRUE     AND year = 2022     AND T.farmholding_system = 'Farmholding system - total';
  percentage_of_swiss_employees percentage_foreign_nationals_employees
                          87.63                                  12.37
@@ -85,8 +87,10 @@ SELECT ROUND(100 * employees_swiss / employees_total, 2) AS percentage_of_swiss_
 Query Nr. 11
 -- What was the precentage of family employees in organic and conventional farming in 2022?
 SELECT    ROUND(100 * SUM(CASE WHEN T.farmholding_system = 'Organic farming'        THEN T.family_employees ELSE 0 END) /    SUM(CASE WHEN T.farmholding_system = 'Organic farming'        THEN T.employees_total ELSE 0 END), 2) AS percentage_family_employees_organic_farming,    ROUND(100 * SUM(CASE WHEN T.farmholding_system = 'Conventional farming'        THEN T.family_employees ELSE 0 END) /    SUM(CASE WHEN T.farmholding_system = 'Conventional farming'        THEN T.employees_total ELSE 0 END), 2) AS percentage_family_employees_conventional_farming FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S ON T.spatialunit_uid = S.spatialunit_uid WHERE T.year = 2022     AND S.country = TRUE     AND T.farmholding_system IN ('Organic farming', 'Conventional farming');
- percentage_family_employees_organic_farming percentage_family_employees_conventional_farming
-                                       69.12                                            76.19
+ percentage_family_employees_organic_farming
+                                       69.12
+ percentage_family_employees_conventional_farming
+                                            76.19
 
 Query Nr. 12
 -- How was the split between men and women in farm employment in canton Uri in 2015?
@@ -97,20 +101,26 @@ SELECT ROUND(100 * employees_women / employees_total, 2) AS percentage_of_female
 Query Nr. 13
 -- What are the percentages of part time work in Organic Farming?
 SELECT ROUND(100 * full_time_employees_75_percent_or_more / employees_total, 2) AS precentage_75_percent_and_above,   ROUND(100 * part_time_employees_50_75_percent / employees_total, 2) AS percentage_of_between_50_and_75_percent,   ROUND(100 * part_time_employees_50_75_percent / employees_total, 2) AS percentage_below_50_precent FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country = TRUE     AND year = 2015     AND T.farmholding_system = 'Organic farming';
- precentage_75_percent_and_above percentage_of_between_50_and_75_percent percentage_below_50_precent
-                           40.91                                   23.42                       23.42
+ precentage_75_percent_and_above percentage_of_between_50_and_75_percent
+                           40.91                                   23.42
+ percentage_below_50_precent
+                       23.42
 
 Query Nr. 14
 -- How was the farmland used in organic farming in 2017? Provide land usage in percentage of the farming area.
 SELECT ROUND(100 * T.arable_land_in_hectares / T.utilised_agricultural_area_in_hectares, 2) AS percentage_arable_land,   ROUND(100 * T.grassland_in_hectares / T.utilised_agricultural_area_in_hectares, 2) AS percentage_grassland,   ROUND(100 * T.permanent_crops_in_hectares / T.utilised_agricultural_area_in_hectares, 2) AS percentage_permanent_crops,   ROUND(100 * T.other_utilised_agricultural_area_in_hectares / T.utilised_agricultural_area_in_hectares, 2) AS precentage_other_usage FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.country = TRUE     AND year = 2015     AND T.farmholding_system = 'Organic farming';
- percentage_arable_land percentage_grassland percentage_permanent_crops precentage_other_usage
-                  10.54                86.74                       1.11                   1.61
+ percentage_arable_land percentage_grassland percentage_permanent_crops
+                  10.54                86.74                       1.11
+ precentage_other_usage
+                   1.61
 
 Query Nr. 15
 -- What kind of animal farms existed in Kanton Uri in 2012? Give the number of each farm type.
 SELECT beef_cattle_and_cows_farm, horse_and_other_equine_farm,   sheep_farm, goat_farm, pig_farms, poultry_farm, farms_with_other_animals FROM employees_farmholdings_agricultural_area_livestock_per_canton as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name LIKE '%Uri%'     AND S.canton=TRUE     AND T.year=2012     AND T.farmholding_system = 'Farmholding system - total';
- beef_cattle_and_cows_farm horse_and_other_equine_farm sheep_farm goat_farm pig_farms poultry_farm farms_with_other_animals
-                       508                          29        186       122        44          154                       45
+ beef_cattle_and_cows_farm horse_and_other_equine_farm sheep_farm goat_farm
+                       508                          29        186       122
+ pig_farms poultry_farm farms_with_other_animals
+        44          154                       45
 
 Query Nr. 16
 -- Which five cantons had in 2022 the highest percentage of women farmers in mangement position? Also provide the precentage of women who had a manager position.
