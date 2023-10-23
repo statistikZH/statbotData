@@ -118,7 +118,7 @@ WHERE T.year = 2022
 GROUP BY S.name
 ORDER BY percentage_of_organically_used_farmarea DESC LIMIT 5;
 
---How was the split between Swiss population and foreign nationlas on Swiss farms in 2022?
+--How was the split between Swiss population and foreign nationals on Swiss farms in 2022?
 SELECT ROUND(100 * employees_swiss / employees_total, 2) AS percentage_of_swiss_employees,
   ROUND(100 * employees_foreign_nationals / employees_total, 2) AS percentage_foreign_nationals_employees
 FROM employees_farmholdings_agricultural_area_livestock_per_canton as T
