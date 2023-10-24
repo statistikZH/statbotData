@@ -9,7 +9,7 @@ WHERE S.canton=TRUE
   AND T.type_of_owner='Private forest'
 ORDER BY number_of_plantations DESC LIMIT 1;
 
--- What was were proportions, in percent, of deciduous and coniferous forests in Switzerland in 2020?
+-- What were proportions, in percent, of deciduous and coniferous forests in Switzerland in 2020?
 SELECT
   ROUND(100 * SUM(CASE WHEN LOWER(wood_species) LIKE '%deciduous%'
        THEN number_of_plantations ELSE 0 END) /
