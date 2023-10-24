@@ -1,4 +1,4 @@
--- What Greenhousegas footprint had Switzerland in 2000 through consumption?
+-- What greenhouse gas footprint had Switzerland in 2000 through consumption?
 SELECT T.emissions_in_million_tons_co2_equivalent
 FROM greenhouse_gas_emissions_through_consumption as T
 JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
@@ -6,7 +6,7 @@ WHERE S.name='Switzerland'
   AND S.country=TRUE
   AND T.year=2000;
 
--- What years did the Greenhousegas footprint of Switzerland decrease compared to the previous year and by how much? Order by magnitude of decrease
+-- What years did the greenhouse gas footprint of Switzerland decrease compared to the previous year and by how much? Order by magnitude of decrease
 WITH EmissionsChange AS (
     SELECT
         T1.year AS current_year,
@@ -42,7 +42,7 @@ FROM EmissionsChange
 WHERE increase_from_previous_year > 0
 ORDER BY current_year DESC;
 
--- How did the greenhousegas footprint develop overall? Did it go up or down and by how much? Compare the first and last year in the data and show both years and the change of the footprint.
+-- How did the greenhouse gas footprint develop overall? Did it go up or down and by how much? Compare the first and last year in the data and show both years and the change of the footprint.
 WITH FirstYearEmissions AS (
     SELECT
         year AS first_observation_year,
@@ -66,7 +66,7 @@ SELECT
 FROM FirstYearEmissions
 CROSS JOIN LastYearEmissions;
 
--- How much was the greenhousegas footprint reduced as percentage of the total footprint in the observation period?
+-- How much was the greenhouse gas footprint reduced as percentage of the total footprint in the observation period?
 WITH FirstYearEmissions AS (
     SELECT
         year AS first_observation_year,

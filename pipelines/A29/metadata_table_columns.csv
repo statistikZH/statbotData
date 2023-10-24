@@ -1,9 +1,9 @@
 name;table_name;data_type;title;title_en;example_values
 co_mg_m3;stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983;numeric;"Kohlenmonoxid (CO) in mg/m3";"Carbon monoxide (CO) in mg/m3";"3.69741935483871,2.3325,2.45451612903226"
-no2_ug_m3;stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983;numeric;"Stickstoffdioxid (N02) in µg/m3";"Nitrogen dioxide (NO2) in µg/m3";"38.5848387096774,47.8067857142857,48.0387096774194"
+no2_ug_m3;stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983;numeric;"Stickstoffdioxid (NO2) in µg/m3";"Nitrogen dioxide (NO2) in µg/m3";"38.5848387096774,47.8067857142857,48.0387096774194"
 no_ug_m3;stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983;numeric;"Stickstoffmonoxid (NO) in µg/m3";"Nitrogen monoxide (NO) in µg/m3";"162.903870967742,157.969285714286,171.871290322581"
 nox_ppb;stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983;numeric;"Stickstoffoxide (NOx) in ppb";"Nitrogen oxides (NOx) in ppb";"150.781612903226,151.648214285714,162.916774193548"
-so2_ug_m3;stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983;numeric;"Schwefeldioxid (SO2) in µg/m3";"Sulfur dioxid (SO2) in µg/m3";"83.6127586206897,100.517142857143,69.5396666666667"
+so2_ug_m3;stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983;numeric;"Schwefeldioxid (SO2) in µg/m3";"Sulfur dioxide (SO2) in µg/m3";"83.6127586206897,100.517142857143,69.5396666666667"
 o3_ug_m3;stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983;numeric;"Ozon (O3) in µg/m3";"Ozone (O3) in µ3/m3";"11.4648148148148,6.99464285714286"
 pm10_ug_m3;stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983;numeric;"Schwebestaub PM10 (Durchmesser 10µm oder weniger) in µg/m3";"Airborne dust PM10 (diameter 10µm or less) in µg/m3";"33.9512,30.7521428571429"
 pn_1_cm3;stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983;numeric;"Partikelanzahl pro cm3";"Particle count per cm3";"23403.0509090909,12632.1964516129"

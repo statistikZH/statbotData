@@ -5,7 +5,7 @@ JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
     AND S.name IN ('Uttwil', 'Uttwil (TG)')
     AND T.jahr = 2015
-    AND T.sektor = 1;
+    AND T.sektor = 'Primär';
 
 -- Wie viele Beschäftigte des tertiären Sektors waren 2011 und 2021 im Kanton Thurgau tätig?
 SELECT T.jahr, SUM(T.beschaftigte_personen)
@@ -13,14 +13,14 @@ FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal=TRUE
     AND T.jahr IN (2011, 2021)
-    AND T.sektor = 3
+    AND T.sektor = 'Tertiär'
 GROUP BY T.jahr;
 
 -- Welches sind die fünf Thurgauer Gemeinden mit dem höchsten Anteil an Beschäftigten im sekundären Sektor im Jahr 2020? Geben Sie auch die Anteile in Prozent an.
 SELECT
     S.name AS gemeinde,
     (
-        100.0 * SUM(CASE WHEN T.sektor = 2 THEN T.beschaftigte_personen ELSE 0 END) /
+        100.0 * SUM(CASE WHEN T.sektor = 'Sekundär' THEN T.beschaftigte_personen ELSE 0 END) /
         SUM(T.beschaftigte_personen)
     ) as prozent_beschaftigte_personen_sektor_2
 FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T
@@ -38,7 +38,7 @@ JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
     AND S.name IN ('Frauenfeld', 'Frauenfeld (TG)')
     AND T.jahr = 2015
-    AND T.sektor = 2;
+    AND T.sektor = 'Sekundär';
 
 -- Wie hoch war die Zahl der Beschäftigten pro Wirtschaftszweig im Kanton Thurgau in den Jahren 2017 bis 2020?
 SELECT T.jahr, T.sektor, SUM(T.beschaftigte_personen)
@@ -86,7 +86,7 @@ SELECT T.jahr
 FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
-    AND T.sektor = 1
+    AND T.sektor = 'Primär'
 GROUP BY T.jahr
 ORDER BY SUM(T.beschaftigte_personen) DESC LIMIT 1;
 
@@ -98,8 +98,8 @@ SELECT (
 FROM (
     SELECT
         S.name AS gemeinde,
-        SUM(CASE WHEN T.sektor = 1 THEN T.beschaftigte_personen ELSE 0 END) AS beschaftigte_personen_sektor_1,
-        SUM(CASE WHEN T.sektor = 2 THEN T.beschaftigte_personen ELSE 0 END) AS beschaftigte_personen_sektor_2
+        SUM(CASE WHEN T.sektor = 'Primär' THEN T.beschaftigte_personen ELSE 0 END) AS beschaftigte_personen_sektor_1,
+        SUM(CASE WHEN T.sektor = 'Sekundär' THEN T.beschaftigte_personen ELSE 0 END) AS beschaftigte_personen_sektor_2
     FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T
     JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
     WHERE S.municipal = TRUE
@@ -121,7 +121,7 @@ FROM (
     JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
     WHERE S.municipal = TRUE
         AND T.jahr IN (2013, 2018)
-        AND T.sektor = 1
+        AND T.sektor = 'Primär'
     GROUP BY S.name
 ) AS T;
 
@@ -141,7 +141,7 @@ JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.municipal = TRUE
     AND S.name IN ('Arbon', 'Arbon (TG)', 'Egnach', 'Egnach (TG)')
     AND T.jahr IN (2012, 2019)
-    AND T.sektor = 1
+    AND T.sektor = 'Primär'
 GROUP BY T.jahr, S.name
 ORDER BY S.name, T.jahr;
 
@@ -150,5 +150,5 @@ SELECT T.jahr, T.beschaftigte_personen AS beschaftigte_personen_sektor_3
 FROM thurgau_beschaftigte_nach_sektoren_und_gemeinden AS T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.name IN ('Frauenfeld', 'Frauenfeld (TG)')
-    AND T.sektor = 3
+    AND T.sektor = 'Tertiär'
 ORDER BY T.beschaftigte_personen DESC LIMIT 1;

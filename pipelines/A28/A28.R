@@ -17,7 +17,13 @@ ds$postgres_export <- ds$data %>%
   dplyr::select(-bfs_nr_gemeinde) %>%
   dplyr::rename(beschaftigte_personen = beschaeftigte_personen) %>%
   dplyr::mutate(beschaftigte_personen = as.numeric(beschaftigte_personen)) %>%
-  dplyr::filter(!is.na(beschaftigte_personen))
+  dplyr::filter(!is.na(beschaftigte_personen)) %>%
+  mutate(sektor = case_when(
+    sektor == 1 ~ "Primär",
+    sektor == 2 ~ "Sekundär",
+    sektor == 3 ~ "Tertiär",
+  ))
+
 # -------------------------------------------------------------------------
 # Step 2 map to spatial units
 # -------------------------------------------------------------------------

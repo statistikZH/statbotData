@@ -1,7 +1,7 @@
-[1] "Environment: REMOTE, Time: 2023-10-15 16:14:02.006405"
+[1] "Environment: REMOTE, Time: 2023-10-23 20:01:31"
 
 Query Nr. 1
--- Was war die haeufigste Rentenart 2022 in der Schweiz?
+-- Was war die häufigste Rentenart 2022 in der Schweiz?
 SELECT rententyp as haufigste_rentenart_2022_schweiz FROM ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit AS T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name_de='Schweiz' AND S.country=TRUE AND jahr='2022' ORDER BY anzahl_renten DESC LIMIT 1;
  haufigste_rentenart_2022_schweiz
                       Altersrente
@@ -9,49 +9,84 @@ SELECT rententyp as haufigste_rentenart_2022_schweiz FROM ahv_renten_nach_wohnsi
 Query Nr. 2
 -- Was waren die Gesamtausgaben für Renten 2022 in Franken, wie verteilten sie sich auf die Rentenarten, auf wieviele Renten jeweils und was kam dabei als durchschnittliche Rente heraus? Ordne das Ergebnis nach Anzahl der Renten.
 SELECT rententyp,   anzahl_renten AS renten_anzahl_2022,   1000 * rentensumme_in_tausend_franken AS rentengesamt_ausgaben_in_CHF,   renten_mittelwert_in_franken AS durchschnittliche_rente_in_CHF FROM ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit WHERE jahr = 2022   AND staatsangehorigkeit_kategorie = 'Staatsangehörigkeit - Total'   AND geschlecht = 'Geschlecht - Total'   AND wohnsitzstaat_kategorie = 'Wohnsitzstaat - Total' ORDER BY anzahl_renten DESC;
-                       rententyp renten_anzahl_2022 rentengesamt_ausgaben_in_chf durchschnittliche_rente_in_chf
-                     Altersrente            2504898                   3719763000                           1485
-                    Witwer/Witwe             181432                    149534000                            824
-  Zusatzrente für Kinder (Vater)              28922                     18406000                            636
-                   Waise (Vater)              23486                     14688000                            625
-      Zusatzrente für Ehepartner              16234                      1821000                            112
-                  Waise (Mutter)               7043                      4163000                            591
- Zusatzrente für Kinder (Mutter)               2325                      1351000                            581
-                 Waise (doppelt)                 30                        21000                            707
+                       rententyp renten_anzahl_2022
+                     Altersrente            2504898
+                    Witwer/Witwe             181432
+  Zusatzrente für Kinder (Vater)              28922
+                   Waise (Vater)              23486
+      Zusatzrente für Ehepartner              16234
+                  Waise (Mutter)               7043
+ Zusatzrente für Kinder (Mutter)               2325
+                 Waise (doppelt)                 30
+ rentengesamt_ausgaben_in_chf durchschnittliche_rente_in_chf
+                   3719763000                           1485
+                    149534000                            824
+                     18406000                            636
+                     14688000                            625
+                      1821000                            112
+                      4163000                            591
+                      1351000                            581
+                        21000                            707
 
 Query Nr. 3
 -- Wie entwickelten sich die Differenz der durchschnittliche Altersrente und der Anzahl der Renten für Frauen und Männern über die Jahre?
 SELECT T1.jahr,   (T1.renten_mittelwert_in_franken - T2.renten_mittelwert_in_franken) AS differenz_durchschnittliche_altersrente_frauen_maenner,   (T1.anzahl_renten - T2.anzahl_renten) AS differenz_anzahl_altersrenten_frauen_maenner FROM ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit AS T1 JOIN ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit AS T2 ON T1.jahr = T2.jahr WHERE T1.geschlecht = 'Frau'   AND T2.geschlecht = 'Mann'   AND T1.rententyp = 'Altersrente' AND T2.rententyp = 'Altersrente'   AND T1.staatsangehorigkeit_kategorie = 'Staatsangehörigkeit - Total'   AND T2.staatsangehorigkeit_kategorie = 'Staatsangehörigkeit - Total'   AND T1.wohnsitzstaat_kategorie = 'Wohnsitzstaat - Total'   AND T2.wohnsitzstaat_kategorie = 'Wohnsitzstaat - Total';
- jahr differenz_durchschnittliche_altersrente_frauen_maenner differenz_anzahl_altersrenten_frauen_maenner
- 2001                                                     54                                       349986
- 2002                                                     63                                       339494
- 2003                                                     77                                       332702
- 2004                                                     90                                       325545
- 2005                                                    105                                       284507
- 2006                                                    115                                       273705
- 2007                                                    121                                       268136
- 2008                                                    124                                       262801
- 2009                                                    130                                       253997
- 2010                                                    129                                       241948
- 2011                                                    128                                       224569
- 2012                                                    129                                       214850
- 2013                                                    129                                       205303
- 2014                                                    129                                       197349
- 2015                                                    129                                       187703
- 2016                                                    127                                       181830
- 2017                                                    126                                       175453
- 2018                                                    125                                       170210
- 2019                                                    125                                       164078
- 2020                                                    123                                       160307
- 2021                                                    121                                       156873
- 2022                                                    117                                       153502
+ jahr differenz_durchschnittliche_altersrente_frauen_maenner
+ 2001                                                     54
+ 2002                                                     63
+ 2003                                                     77
+ 2004                                                     90
+ 2005                                                    105
+ 2006                                                    115
+ 2007                                                    121
+ 2008                                                    124
+ 2009                                                    130
+ 2010                                                    129
+ 2011                                                    128
+ 2012                                                    129
+ 2013                                                    129
+ 2014                                                    129
+ 2015                                                    129
+ 2016                                                    127
+ 2017                                                    126
+ 2018                                                    125
+ 2019                                                    125
+ 2020                                                    123
+ 2021                                                    121
+ 2022                                                    117
+ differenz_anzahl_altersrenten_frauen_maenner
+                                       349986
+                                       339494
+                                       332702
+                                       325545
+                                       284507
+                                       273705
+                                       268136
+                                       262801
+                                       253997
+                                       241948
+                                       224569
+                                       214850
+                                       205303
+                                       197349
+                                       187703
+                                       181830
+                                       175453
+                                       170210
+                                       164078
+                                       160307
+                                       156873
+                                       153502
 
 Query Nr. 4
 -- Gab es Rentenarten bei der der Anteil der an im Ausland lebenden ausländischer Staatsangehöriger im Jahr 2022 höher war als der der Anteil der im Inland lebenden Schweizer Staatsangeörigen: was waren die Zahlen?
 SELECT T1.rententyp,   SUM(T1.anzahl_renten) AS anzahl_renten_auslaender_im_ausland_2022,   SUM(T2.anzahl_renten) AS anzahl_renten_schweizer_im_inland_2022 FROM ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit AS T1 JOIN ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit AS T2 ON T1.rententyp = T2.rententyp WHERE T1.jahr = 2022 and T2.jahr = 2022   AND T1.staatsangehorigkeit_kategorie = 'Ausland' AND T1.wohnsitzstaat_kategorie = 'Ausland'   AND T2.staatsangehorigkeit_kategorie = 'Schweiz' AND T2.wohnsitzstaat_kategorie = 'Schweiz'   AND T2.geschlecht = 'Geschlecht - Total' AND T1.geschlecht = 'Geschlecht - Total'   AND T1.anzahl_renten > T2.anzahl_renten GROUP BY T1.rententyp;
-                  rententyp anzahl_renten_auslaender_im_ausland_2022 anzahl_renten_schweizer_im_inland_2022
-               Witwer/Witwe                                   123311                                  38124
- Zusatzrente für Ehepartner                                    15216                                    254
+                  rententyp anzahl_renten_auslaender_im_ausland_2022
+               Witwer/Witwe                                   123311
+ Zusatzrente für Ehepartner                                    15216
+ anzahl_renten_schweizer_im_inland_2022
+                                  38124
+                                    254
 
 Query Nr. 5
 -- Wieviel Prozent der Rentenausgaben floss 2015 an Schweizer, die im Ausland leben und wieviel waren ?
@@ -60,13 +95,13 @@ SELECT   ROUND((SUM(CASE WHEN jahr = 2015        AND staatsangehorigkeit_kategor
                                             3.81
 
 Query Nr. 6
--- Wie hoch war der Frauenanteil bei den Zusatzrenten für Ehepartner?
+-- Wie hoch war der Frauenanteil in prozent bei den Zusatzrenten für Ehepartner?
 SELECT   ROUND(100 * SUM(CASE WHEN geschlecht = 'Frau'        THEN anzahl_renten ELSE 0 END) /    SUM(CASE WHEN geschlecht = 'Geschlecht - Total'        THEN anzahl_renten ELSE 0 END)   , 2) AS prozent_frauenanteil_bei_ehepartner_zusatzrenten FROM ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit WHERE rententyp = 'Zusatzrente für Ehepartner'   AND staatsangehorigkeit_kategorie = 'Staatsangehörigkeit - Total' AND wohnsitzstaat_kategorie = 'Wohnsitzstaat - Total';
  prozent_frauenanteil_bei_ehepartner_zusatzrenten
                                             99.41
 
 Query Nr. 7
--- In welchen drei Jahren gab es die höchsten Ausgaben für die Zusatzrenten für Waise und wie hoch waren diese?
+-- In welchen drei Jahren gab es die höchsten Ausgaben für die Zusatzrenten für Waise und wie hoch waren diese in CHF?
 SELECT 1000 * SUM(rentensumme_in_tausend_franken) as rentenausgaben_fur_waisenrente_CHF, jahr FROM ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit WHERE rententyp LIKE '%Waise%'   AND staatsangehorigkeit_kategorie = 'Staatsangehörigkeit - Total'   AND wohnsitzstaat_kategorie = 'Wohnsitzstaat - Total'   AND geschlecht = 'Geschlecht - Total' GROUP BY jahr ORDER BY rentenausgaben_fur_waisenrente_CHF DESC LIMIT 3;
  rentenausgaben_fur_waisenrente_chf jahr
                            24072000 2005
@@ -84,7 +119,7 @@ SELECT T1.rententyp,   (AVG(T2.renten_mittelwert_in_franken) - AVG(T1.renten_mit
   Zusatzrente für Kinder (Vater)                                101
 
 Query Nr. 9
--- Für welche Rentenarten gibt es in der Schweiz und was sind die durchschnittliche Ausgaben dafür pro Jahr?
+-- Welche Rentenarten gibt es in der Schweiz und was sind die durchschnittliche Ausgaben dafür pro Jahr?
 SELECT rententyp,   (AVG(rentensumme_in_tausend_franken) * 1000) as durchschnittliche_ausgaben_pro_jahr_chf FROM ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit WHERE staatsangehorigkeit_kategorie = 'Staatsangehörigkeit - Total'   AND wohnsitzstaat_kategorie = 'Wohnsitzstaat - Total'   AND geschlecht = 'Geschlecht - Total' GROUP BY rententyp ORDER BY durchschnittliche_ausgaben_pro_jahr_chf DESC;
                        rententyp durchschnittliche_ausgaben_pro_jahr_chf
                      Altersrente                            2931055727.3
@@ -99,5 +134,7 @@ SELECT rententyp,   (AVG(rentensumme_in_tausend_franken) * 1000) as durchschnitt
 Query Nr. 10
 -- Welcher Rententyp wird von Ausländern, die im Ausland leben, am häufigsten bezogen und wieviele Renten sind es?
 SELECT rententyp as haufigster_rententy_fur_auslaender_im_ausland,   MAX(anzahl_renten) as anzahl_renten_auslaender_im_ausland FROM ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit WHERE staatsangehorigkeit_kategorie = 'Ausland'   AND wohnsitzstaat_kategorie = 'Ausland'   AND geschlecht = 'Geschlecht - Total' GROUP BY rententyp ORDER BY anzahl_renten_auslaender_im_ausland DESC LIMIT 1;
- haufigster_rententy_fur_auslaender_im_ausland anzahl_renten_auslaender_im_ausland
-                                   Altersrente                              662685
+ haufigster_rententy_fur_auslaender_im_ausland
+                                   Altersrente
+ anzahl_renten_auslaender_im_ausland
+                              662685

@@ -7,6 +7,6 @@ anzahl_motorrader;aargau_privatverkehr_bestand_nach_fahrzeugarten;numeric;"Anzah
 anzahl_klein_motorrader;aargau_privatverkehr_bestand_nach_fahrzeugarten;numeric;"Anzahl kleine Motorräder";"Number of small motorcycles";25,34,30
 anzahl_motorfahrrader;aargau_privatverkehr_bestand_nach_fahrzeugarten;numeric;"Anzahl Motorfahrräder";"Number of motorized bicycles";517,498,469
 anzahl_landwirtschaftliche_motorfahrzeuge;aargau_privatverkehr_bestand_nach_fahrzeugarten;numeric;"Anzahl Landwirtschaftliche Motorfahrzeuge";"Number of agricultural motor vehicles";46,49,45
-anzahl_anhaenger;aargau_privatverkehr_bestand_nach_fahrzeugarten;numeric;"Anzahl Anhaenger";"Number of trailers";831,820,845
+anzahl_anhaenger;aargau_privatverkehr_bestand_nach_fahrzeugarten;numeric;"Anzahl Anhänger";"Number of trailers";831,820,845
 anzahl_kollektivfahrzeuge;aargau_privatverkehr_bestand_nach_fahrzeugarten;numeric;"Anzahl Kollektivfahrzeuge";"Number of collective vehicles";53,56,55
 anzahl_personenwagen_pro_1000_einwohner;aargau_privatverkehr_bestand_nach_fahrzeugarten;numeric;"Motorisierungsgrad: Anzahl Personenwagen pro 1000 Einwonhner/-innen.";"Motorisation rate: number of cars per 1000 inhabitants.";485.5,488.6,485.1
