@@ -2,8 +2,8 @@
 # Steps: Get the data
 # -------------------------------------------------------------------------
 
-ds <- statbotData::::create_dataset("A25")
-ds <- statbotData::::download_data(ds)
+ds <- statbotData::create_dataset("A25")
+ds <- statbotData::download_data(ds)
 
 # -------------------------------------------------------------------------
 # Step 1 rename columns + clean values
