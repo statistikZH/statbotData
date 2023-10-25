@@ -211,7 +211,7 @@ These are metadata for the table columns in postgres. They are loaded into the p
 ## Scripts
 
 
-But the code for these choires is always the same and consists of using the appropriate functions of the package `statbotData`. It does not depend on the specific pipeline or dataset, but on the situation and the status of the dataset. Therefore this code has been extracted from the pipelines and put into a directory of its own with a selection of different sample scripts that relate to certain scenarios: 
+But the code for these chores is always the same and consists of using the appropriate functions of the package `statbotData`. It does not depend on the specific pipeline or dataset, but on the situation and the status of the dataset. Therefore this code has been extracted from the pipelines and put into a directory of its own with a selection of different sample scripts that relate to certain scenarios: 
 
 - `scripts/upload_new_dataset.R`: for uploading a new dataset with its metadata 
 - `scripts/dataset_in_postgres.R`: for testrunning queries for a dataset as part of the [Statbot Training Data](#statbot-training-data) and checking its metadata
