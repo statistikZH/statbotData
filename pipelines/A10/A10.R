@@ -4,8 +4,8 @@
 # output: ds$data, ds$dir
 # -------------------------------------------------------------------------
 
-ds <- statbotData::::create_dataset("A10")
-ds <- statbotData::::download_data(ds)
+ds <- statbotData::create_dataset("A10")
+ds <- statbotData::download_data(ds)
 
 # -------------------------------------------------------------------------
 # Step: Map Crminal offences to categories
