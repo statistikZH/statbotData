@@ -4,8 +4,8 @@
 # output: ds$data, ds$dir
 # -------------------------------------------------------------------------
 
-ds <- statbotData::::create_dataset("A27")
-ds <- statbotData::::download_data(ds)
+ds <- statbotData::create_dataset("A27")
+ds <- statbotData::download_data(ds)
 
 # -------------------------------------------------------------------------
 # Step 1 rename columns + clean values
