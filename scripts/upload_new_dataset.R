@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------
 # This script assumes you have entered the dataset in
 # `data/const/statbot_data_input.csv
-# You have build a pipeline in `pipelines/` with a script to
+# You have built a pipeline in `pipelines/` with a script to
 # download the data and build `ds$postgres_export` as a tibble ready
 # to be exported to postgres
 # Goal:
