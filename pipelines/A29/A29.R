@@ -46,7 +46,7 @@ for (year in 1983:2023) {
     as.character(year)
   )
   # Daily data for a single year aggregated by month
-  temp <- statbotData::::download_data(ds)$data
+  temp <- statbotData::download_data(ds)$data
   temp <- agg_month(temp)
   # Monthly data for a single year appended to the full dataset
   full_data <- dplyr::bind_rows(full_data, temp)
