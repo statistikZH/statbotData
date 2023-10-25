@@ -58,10 +58,8 @@ ds_input$status == 'uploaded'
 # first try whether the metadata are readable form their files
 statbotData::read_metadata_tables_from_file(ds)
 
-# if they are okay: uncomment the lines below and run them
-# --------------------------------------------------------
-# statbotData::update_pipeline_last_run_date(ds)
-# statbotData::update_metadata_in_postgres(ds)
+statbotData::update_pipeline_last_run_date(ds)
+statbotData::update_metadata_in_postgres(ds)
 
 # -----------------------------------------------------------------------
 # STEP 4: Testrun the queries on the updated postgres table
