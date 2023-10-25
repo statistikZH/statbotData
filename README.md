@@ -64,7 +64,7 @@ classDiagram
     class CsvFile{
       download_url
     }
-    class ExelSheet{
+    class ExcelSheet{
       download_url
     }   
     class LINDAS{
