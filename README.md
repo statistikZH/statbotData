@@ -106,7 +106,7 @@ erDiagram
     dataset_observation }o--|| spatial_unit : spatial_scope
  ```
 
-**dataset**: each dataset is uploaded into exactly one table in [Statbot Postgres DB](#statbot-postgres-db): all tables contain these two columns mandatory:
+**dataset**: each dataset is uploaded into exactly one table in [Statbot Postgres DB](#statbot-postgres-db): all tables contain these two mandatory columns:
 - `year`: year of the observation
 - `spatialunit_uid`: Swiss administrative unit that the observation refers to
 
