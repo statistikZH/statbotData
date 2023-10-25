@@ -38,10 +38,9 @@ statbotData::dataset_sample(ds)
 # -----------------------------------------------------------------------
 # STEP 2: Reupload the dataset to postgres
 # -----------------------------------------------------------------------
-# uncomment the lines below and run them
 # ------------------------------------------------
-# statbotData::delete_table_in_postgres(ds$name)
-# statbotData::create_postgres_table(ds)
+statbotData::delete_table_in_postgres(ds$name)
+statbotData::create_postgres_table(ds)
 
 # -----------------------------------------------------------------------
 # STEP 3: Update the metadata to postgres
