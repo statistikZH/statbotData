@@ -2,7 +2,7 @@
 # Step 0: Get and aggregate the data
 # -------------------------------------------------------------------------
 
-ds <- statbotData::::create_dataset("A29")
+ds <- statbotData::create_dataset("A29")
 
 # The dataset is split into 1 csv file per year, the URL remains the same
 # with only the year changing
