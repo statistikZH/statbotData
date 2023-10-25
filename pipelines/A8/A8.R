@@ -4,8 +4,8 @@
 # output: ds as dataset class
 # -------------------------------------------------------------------------
 
-ds <- statbotData::::create_dataset("A8")
-ds <- statbotData::::download_data(ds)
+ds <- statbotData::create_dataset("A8")
+ds <- statbotData::download_data(ds)
 
 # -------------------------------------------------------------------------
 # Step: Clean the data
