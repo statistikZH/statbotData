@@ -210,7 +210,6 @@ These are metadata for the table columns in postgres. They are loaded into the p
 
 ## Scripts
 
-Originally the repo did not have a scripts directory and all the work like test running the queries and uploading metadata and data to postgres had been done directly in the pipelines. 
 
 But the code for these choires is always the same and consists of using the appropriate functions of the package `statbotData`. It does not depend on the specific pipeline or dataset, but on the situation and the status of the dataset. Therefore this code has been extracted from the pipelines and put into a directory of its own with a selection of different sample scripts that relate to certain scenarios: 
 
