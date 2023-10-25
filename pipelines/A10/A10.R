@@ -88,7 +88,7 @@ ds$cleaned_data <- ds$data %>%
 spatial_mapping <- ds$cleaned_data %>%
   dplyr::select(canton) %>%
   dplyr::distinct(canton) %>%
-  statbotData::::map_ds_spatial_units(c("Country", "Canton"))
+  statbotData::map_ds_spatial_units(c("Country", "Canton"))
 
 ds$postgres_export <- ds$cleaned_data %>%
   dplyr::left_join(spatial_mapping, by = "canton") %>%
