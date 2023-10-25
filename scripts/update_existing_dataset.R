@@ -1,5 +1,5 @@
 # =======================================================================
-# Exmaple Script to upload a new dataset to postgres
+# Example script to upload a new dataset to postgres
 # -----------------------------------------------------------------------
 # This script assumes your dataset and metadata is already in postgres
 # but you have changed the dataset locally and want to update the
