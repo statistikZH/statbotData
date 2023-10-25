@@ -4,8 +4,8 @@
 # output: ds$data, ds$dir
 # -------------------------------------------------------------------------
 
-ds <- statbotData::::create_dataset("A22")
-ds <- statbotData::::download_data(ds)
+ds <- statbotData::create_dataset("A22")
+ds <- statbotData::download_data(ds)
 
 # -------------------------------------------------------------------------
 # Step 1 rename columns + wide format
