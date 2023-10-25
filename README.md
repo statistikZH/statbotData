@@ -44,7 +44,7 @@ The statbot input data `statbot_input_data.csv` describes datasets that are avai
 classDiagram
     Dataset <|-- PxCube
     Dataset <|-- CsvFile
-    Dataset <|-- ExelSheet
+    Dataset <|-- ExcelSheet
     Dataset <|-- LINDAS
     Dataset : data_indicator
     Dataset : status
