@@ -54,27 +54,9 @@ ds$cleaned_data <- ds$data %>%
 spatial_map <- ds$cleaned_data %>%
   dplyr::select(kanton) %>%
   dplyr::distinct(kanton) %>%
-  map_ds_spatial_units()
+  statbotData::map_ds_spatial_units()
 
 ds$postgres_export <- ds$cleaned_data %>%
   dplyr::left_join(spatial_map, by = "kanton") %>%
   dplyr::select(-kanton)
 ds$postgres_export
-
-# -------------------------------------------------------------------------
-# Step: After the dataset has been build use functions of package stabotData
-# to upload the dataset to postgres, testrun the queries, generate a sample
-# upload the metadata, etc
-# -------------------------------------------------------------------------
-
-# testrun queries
-statbotData::testrun_queries(ds)
-
-# create the table in postgres
-statbotData::create_postgres_table(ds)
-
-# add the metadata to postgres
-statbotData::update_metadata_in_postgres(ds)
-
-# generate sample data for the dataset from the local tibble
-statbotData::dataset_sample(ds)

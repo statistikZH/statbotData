@@ -5,7 +5,7 @@
 #         - use a sparql query to download the data
 # -------------------------------------------------------------------------
 
-ds <- create_dataset(id = "S3EN")
+ds <- statbotData::create_dataset(id = "S3EN")
 
 # query the cube
 
@@ -44,7 +44,7 @@ WHERE {
   FILTER(LANG(?cofog_narrow) = "en")
 }
 '
-ds <- download_data(ds)
+ds <- statbotData::download_data(ds)
 
 # -------------------------------------------------------------------------
 # Step: Clean the data
@@ -79,21 +79,3 @@ ds$postgres_export <- ds$data %>%
   ) %>%
   # add CH as spatial unit
   dplyr::mutate(spatialunit_uid = statbotData::spatial_mapping_country())
-
-# -------------------------------------------------------------------------
-# Step: After the dataset has been build use functions of package stabotData
-# to upload the dataset to postgres, testrun the queries, generate a sample
-# upload the metadata, etc
-# -------------------------------------------------------------------------
-
-# generate sample data for the dataset from the local tibble
-statbotData::dataset_sample(ds)
-
-# create the table in postgres
-statbotData::create_postgres_table(ds)
-
-# add metadata to postgres
-statbotData::update_metadata_in_postgres(ds)
-
-# run test queries
-statbotData::testrun_queries(ds)

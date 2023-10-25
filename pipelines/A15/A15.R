@@ -1,13 +1,13 @@
 library(magrittr)
 # create ds object --------------------------------------------------------
 
-ds <- create_dataset(id = "A15")
+ds <- statbotData::create_dataset(id = "A15")
 
 
 # download the data -------------------------------------------------------
 
 # Might take 1 - 5 minutes
-ds <- download_data(ds)
+ds <- statbotData::download_data(ds)
 
 # data cleaning -----------------------------------------------------------
 
@@ -55,28 +55,8 @@ ds$postgres_export %<>%
 spatial_map <- ds$postgres_export %>%
   dplyr::select(canton) %>%
   dplyr::distinct(canton) %>%
-  map_ds_spatial_units()
+  statbotData::map_ds_spatial_units()
 
 ds$postgres_export %<>%
   dplyr::left_join(spatial_map, by = "canton") %>%
   dplyr::select(-canton)
-
-colnames(ds$postgres_export)
-dim(ds$postgres_export)
-# -------------------------------------------------------------------------
-# Step: After the dataset has been build use functions of package stabotData
-# to upload the dataset to postgres, testrun the queries, generate a sample
-# upload the metadata, etc
-# -------------------------------------------------------------------------
-
-# testrun queries
-statbotData::testrun_queries(ds)
-
-# create the table in postgres
-statbotData::create_postgres_table(ds)
-
-# add the metadata to postgres
-statbotData::update_metadata_in_postgres(ds)
-
-# generate sample data for the dataset from the local tibble
-statbotData::dataset_sample(ds)

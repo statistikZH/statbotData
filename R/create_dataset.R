@@ -24,7 +24,7 @@ create_dataset <- function(id) {
   dataset <- datasets %>%
     dplyr::filter(data_indicator == id)
   ds_as_list <- as.list(dataset[1, ])
-  ds_as_list$dir <- here::here("pipelines", ds_as_list$data_indicator, "")
+  ds_as_list$dir <- here::here("pipelines", ds_as_list$data_indicator)
   if (ds_as_list$status == "uploaded") {
     ds_as_list$db_instance = "postgres"
   } else {

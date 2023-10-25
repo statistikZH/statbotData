@@ -17,8 +17,8 @@
 generate_metadata_templates <- function(ds) {
 
   # set path for metadata storage
-  path_table <- paste0(ds$dir, "metadata_tables.template.csv")
-  path_table_columns <- paste0(ds$dir, "metadata_table_columns.template.csv")
+  path_table <- here::here(ds$dir, "metadata_tables.template.csv")
+  path_table_columns <- here::here(ds$dir, "metadata_table_columns.template.csv")
 
   # metadata_tables entry: if possible load metadata
   table_description <- ""
@@ -84,8 +84,8 @@ generate_metadata_templates <- function(ds) {
 #' }
 read_metadata_tables_from_file <- function(ds) {
   # set path for metadata storage
-  path_table <- paste0(ds$dir, "metadata_tables.csv")
-  path_table_columns <- paste0(ds$dir, "metadata_table_columns.csv")
+  path_table <- here::here(ds$dir, "metadata_tables.csv")
+  path_table_columns <- here::here(ds$dir, "metadata_table_columns.csv")
 
   if (file.exists(path_table) && file.exists(path_table_columns)) {
     metadata_tables = readr::read_delim(path_table,
@@ -117,7 +117,7 @@ update_pipeline_last_run_date <- function(ds) {
   }
 
   # set path for metadata storage
-  path_table <- paste0(ds$dir, "metadata_tables.csv")
+  path_table <- here::here(ds$dir, "metadata_tables.csv")
   if (!file.exists(path_table)) {
     stop("Metadata file `metadata_tables.csv` is missing.")
   }
