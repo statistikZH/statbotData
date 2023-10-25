@@ -198,7 +198,7 @@ The `queries.sql` files contain the [Statbot Training Data](#statbot-training-da
 
 #### `queries.log`
 
-These files are the output of a run of `statbotData::testrun_queries(ds)` on the queries in the `queries.sql` file of the dataset. A datatime indicates the datetime of the run. It contains also information whether the file was run on the remote postgres instance  `REMOTE` or on the local `ds$postgres` data frame.
+These files are the output of a run of `statbotData::testrun_queries(ds)` on the queries in the `queries.sql` file of the dataset. A timestamp indicates the date and time of the run. It also contains information on whether the file was run on the remote postgres instance  `REMOTE` or on the local `ds$postgres` data frame.
 
 #### `metadata_tables.csv`
 
