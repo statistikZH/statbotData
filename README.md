@@ -12,12 +12,12 @@ This repo takes care of the following two tasks:
 - it provides questions and queries as [Statbot Training Data](#statbot-training-data) for the [Statbot Chatbot](#statbot-chatbot):
 
 ```mermaid
- flowchart TD
-    C[Federal Datasets] -->|Preprocess| B(Statbot postgress DB)
-    A[Cantonal Datasets] -->|Preprocess| B(Statbot postgress DB)
-    A[Cantonal Datasets] -->|Preprocess| B(Statbot postgress DB)
-    C[Federal Datasets] -->|Preprocess| B(Statbot postgress DB)
-    D{Ask Questions} -->|Statbot Swiss| B(Statbot postgress DB)
+flowchart TD
+    Fed[Federal Datasets] -->|Preprocess| Scripts[Statbot scripts]
+    Scripts -->|Upload| DB(Statbot postgress DB)
+    Can[Cantonal Datasets] -->|Preprocess| Scripts
+    User -->|Ask Questions| Chatbot(Statbot Swiss)
+    Chatbot -->|query| DB(Statbot postgress DB)
 ```
 
 
