@@ -26,7 +26,7 @@ This repo takes care of the following two tasks:
 The repo consists of the following parts:
 - **input datasets**: contains the list input datasets for the pipelines and also a list of Swiss adminstative units, that are linked to each dataset
 - **R package `statbotData`**: the functions in the directory `R` make up a R package of reusable functions, that are used throughout the pipelines and scripts 
-- **pipelines** per **dataset**: they contain scripts for downloading datasets from its origin and preprocessing it for the postgres integration into Statbot Postgres DB](#statbot-postgres-db). They also include other files that relate to the dataset such as the [Statbot Training Data].
+- **pipelines** per **dataset**: they contain scripts for downloading datasets from their origin and preprocessing them for the postgres integration into [Statbot Postgres DB](#statbot-postgres-db). They also include other files that relate to the dataset such as the [Statbot Training Data](#statbot-training-data).
 - **scripts**: the scripts directory contains sample scripts that can be used to do chores on the datasets and pipelines, such as uploading the dataset and its metadata to the Statbot Postgres DB](#statbot-postgres-db)
 - **app**: `app.R` is a local shiny app that gives an overview about the repo and its pipelines: this app is only meant to support the development process and is not deployed anywhere
 
