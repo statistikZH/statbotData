@@ -1,0 +1,1762 @@
+[1] "Environment: REMOTE, Time: 2023-10-27 16:32:11"
+
+Query Nr. 1
+-- What was the proportion of electric vehicles in Geneva in 2010?
+SELECT     SUM(CASE WHEN sv.fuel_type ILIKE '%electric%' THEN sv.amount ELSE 0 END) AS electric_vehicles,     SUM(sv.amount) AS total_vehicles,     (         SUM(CASE WHEN sv.fuel_type ILIKE '%electric%' THEN sv.amount ELSE 0 END) * 100.0 /         NULLIF(SUM(sv.amount), 0)     ) AS proportion_electric_vehicles FROM spatial_unit su INNER JOIN stock_vehicles sv ON su.spatialunit_uid = sv.spatialunit_uid WHERE su.name ILIKE '%geneva%'     AND sv.year = 2010;
+ electric_vehicles total_vehicles proportion_electric_vehicles
+              1425         591846                    0.2407721
+
+Query Nr. 2
+-- What was the city with the most cars in 2015?
+SELECT     su.name AS city,     SUM(sv.amount) AS total_cars FROM spatial_unit su INNER JOIN stock_vehicles sv ON su.spatialunit_uid = sv.spatialunit_uid WHERE sv.year = 2015     AND su.municipal = True     AND sv.fuel_type = 'total' GROUP BY     su.name ORDER BY total_cars DESC LIMIT 1;
+   city total_cars
+ Zürich     186565
+
+Query Nr. 3
+-- What is the most popular car type in the canton of Zurich?
+SELECT     sv.vehicle_type AS car_type,     SUM(sv.amount) AS total_cars FROM spatial_unit su INNER JOIN stock_vehicles sv ON su.spatialunit_uid = sv.spatialunit_uid WHERE su.name ILIKE '%zurich%'     AND su.canton = True     AND sv.fuel_type = 'total'     AND sv.year BETWEEN 2013 AND 2018 GROUP BY sv.vehicle_type ORDER BY total_cars DESC LIMIT 1;
+                          car_type total_cars
+ passenger transportation vehicles    4344056
+
+Query Nr. 4
+-- What types of fuel are there?
+SELECT DISTINCT fuel_type FROM stock_vehicles;
+                        fuel_type
+ Benzine-electric: Plug-in-hybrid
+         Gas (mono- and bivalent)
+                           Diesel
+  Diesel-electric: Plug-in-hybrid
+                          Benzine
+                         Electric
+   Diesel-electric: Normal-hybrid
+                         Hydrogen
+                            other
+                            total
+  Benzine-electric: Normal-hybrid
+
+Query Nr. 5
+-- What year saw the biggest year-on-year increase in electric cars in the city of Basel?
+SELECT     year,     year_on_year_increase FROM (     SELECT         sv.year,         (sv.amount - lag(sv.amount) OVER (ORDER BY sv.year)) AS year_on_year_increase     FROM         spatial_unit su         INNER JOIN stock_vehicles sv ON su.spatialunit_uid = sv.spatialunit_uid     WHERE         su.name = 'Basel' and su.municipal = True         AND sv.fuel_type ILIKE '%electric%' ) AS subquery WHERE     year_on_year_increase IS NOT NULL ORDER BY     year_on_year_increase DESC LIMIT 1;
+ year year_on_year_increase
+ 2021                  1753
+
+Query Nr. 6
+-- How did the proportion of fuel types evolve since 2010?
+SELECT     sv.year,     sv.fuel_type,     SUM(sv.amount) AS total_cars,     (SUM(sv.amount) * 100.0 / NULLIF(SUM(SUM(sv.amount)) OVER (PARTITION BY sv.year), 0)) AS proportion FROM     stock_vehicles sv WHERE     sv.year >= 2010 and sv.fuel_type != 'total' GROUP BY     sv.year, sv.fuel_type ORDER BY     sv.year, sv.fuel_type;
+ year                        fuel_type total_cars   proportion
+ 2010                          Benzine   15808135 7.126231e+01
+ 2010  Benzine-electric: Normal-hybrid      66334 2.990305e-01
+ 2010 Benzine-electric: Plug-in-hybrid          4 1.803181e-05
+ 2010                           Diesel    4782951 2.156131e+01
+ 2010   Diesel-electric: Normal-hybrid        176 7.933995e-04
+ 2010  Diesel-electric: Plug-in-hybrid          0 0.000000e+00
+ 2010                         Electric      25999 1.172022e-01
+ 2010         Gas (mono- and bivalent)      35043 1.579721e-01
+ 2010                         Hydrogen          8 3.606361e-05
+ 2010                            other    1464375 6.601331e+00
+ 2011                          Benzine   15805115 6.963474e+01
+ 2011  Benzine-electric: Normal-hybrid      85193 3.753464e-01
+ 2011 Benzine-electric: Plug-in-hybrid         12 5.287003e-05
+ 2011                           Diesel    5221673 2.300583e+01
+ 2011   Diesel-electric: Normal-hybrid        298 1.312939e-03
+ 2011  Diesel-electric: Plug-in-hybrid          0 0.000000e+00
+ 2011                         Electric      35550 1.566275e-01
+ 2011         Gas (mono- and bivalent)      38550 1.698450e-01
+ 2011                         Hydrogen          8 3.524669e-05
+ 2011                            other    1510770 6.656205e+00
+ 2012                          Benzine   15734501 6.775484e+01
+ 2012  Benzine-electric: Normal-hybrid     105684 4.550893e-01
+ 2012 Benzine-electric: Plug-in-hybrid        122 5.253481e-04
+ 2012                           Diesel    5738641 2.471135e+01
+ 2012   Diesel-electric: Normal-hybrid       3240 1.395187e-02
+ 2012  Diesel-electric: Plug-in-hybrid          0 0.000000e+00
+ 2012                         Electric      49312 2.123440e-01
+ 2012         Gas (mono- and bivalent)      40983 1.764782e-01
+ 2012                         Hydrogen         32 1.377962e-04
+ 2012                            other    1550182 6.675288e+00
+ 2013                          Benzine   15560622 6.593885e+01
+ 2013  Benzine-electric: Normal-hybrid     127966 5.422618e-01
+ 2013 Benzine-electric: Plug-in-hybrid        404 1.711969e-03
+ 2013                           Diesel    6219455 2.635523e+01
+ 2013   Diesel-electric: Normal-hybrid       6439 2.728556e-02
+ 2013  Diesel-electric: Plug-in-hybrid        469 1.987409e-03
+ 2013                         Electric      60193 2.550706e-01
+ 2013         Gas (mono- and bivalent)      44568 1.888590e-01
+ 2013                         Hydrogen         44 1.864520e-04
+ 2013                            other    1578403 6.688556e+00
+ 2014                          Benzine   15451142 6.442140e+01
+ 2014  Benzine-electric: Normal-hybrid     148507 6.191794e-01
+ 2014 Benzine-electric: Plug-in-hybrid       1875 7.817553e-03
+ 2014                           Diesel    6645246 2.770643e+01
+ 2014   Diesel-electric: Normal-hybrid       8430 3.514772e-02
+ 2014  Diesel-electric: Plug-in-hybrid       1010 4.211055e-03
+ 2014                         Electric      72460 3.021119e-01
+ 2014         Gas (mono- and bivalent)      47716 1.989453e-01
+ 2014                         Hydrogen         44 1.834519e-04
+ 2014                            other    1608057 6.704571e+00
+ 2015                          Benzine   15362019 6.292774e+01
+ 2015  Benzine-electric: Normal-hybrid     167980 6.880998e-01
+ 2015 Benzine-electric: Plug-in-hybrid       7365 3.016939e-02
+ 2015                           Diesel    7083957 2.901815e+01
+ 2015   Diesel-electric: Normal-hybrid      11513 4.716093e-02
+ 2015  Diesel-electric: Plug-in-hybrid       1552 6.357488e-03
+ 2015                         Electric      88518 3.625980e-01
+ 2015         Gas (mono- and bivalent)      50947 2.086952e-01
+ 2015                         Hydrogen         44 1.802381e-04
+ 2015                            other    1638263 6.710849e+00
+ 2016                          Benzine   15296003 6.164318e+01
+ 2016  Benzine-electric: Normal-hybrid     190816 7.689921e-01
+ 2016 Benzine-electric: Plug-in-hybrid      16058 6.471404e-02
+ 2016                           Diesel    7470113 3.010470e+01
+ 2016   Diesel-electric: Normal-hybrid      13851 5.581979e-02
+ 2016  Diesel-electric: Plug-in-hybrid       2274 9.164263e-03
+ 2016                         Electric     103036 4.152370e-01
+ 2016         Gas (mono- and bivalent)      52840 2.129462e-01
+ 2016                         Hydrogen         84 3.385216e-04
+ 2016                            other    1668705 6.724913e+00
+ 2017                          Benzine   15228826 6.060355e+01
+ 2017  Benzine-electric: Normal-hybrid     219199 8.723087e-01
+ 2017 Benzine-electric: Plug-in-hybrid      26247 1.044507e-01
+ 2017                           Diesel    7764381 3.089858e+01
+ 2017   Diesel-electric: Normal-hybrid      14545 5.788225e-02
+ 2017  Diesel-electric: Plug-in-hybrid       2657 1.057361e-02
+ 2017                         Electric     120138 4.780926e-01
+ 2017         Gas (mono- and bivalent)      54273 2.159810e-01
+ 2017                         Hydrogen        104 4.138710e-04
+ 2017                            other    1698233 6.758167e+00
+ 2018                          Benzine   15211072 5.990856e+01
+ 2018  Benzine-electric: Normal-hybrid     250391 9.861608e-01
+ 2018 Benzine-electric: Plug-in-hybrid      39981 1.574645e-01
+ 2018                           Diesel    7947789 3.130224e+01
+ 2018   Diesel-electric: Normal-hybrid      15888 6.257463e-02
+ 2018  Diesel-electric: Plug-in-hybrid       3044 1.198874e-02
+ 2018                         Electric     142281 5.603714e-01
+ 2018         Gas (mono- and bivalent)      55346 2.179793e-01
+ 2018                         Hydrogen        119 4.686795e-04
+ 2018                            other    1724572 6.792198e+00
+ 2019                          Benzine   15163778 5.922545e+01
+ 2019  Benzine-electric: Normal-hybrid     299946 1.171505e+00
+ 2019 Benzine-electric: Plug-in-hybrid      52727 2.059368e-01
+ 2019                           Diesel    8062530 3.148997e+01
+ 2019   Diesel-electric: Normal-hybrid      25580 9.990828e-02
+ 2019  Diesel-electric: Plug-in-hybrid       3063 1.196322e-02
+ 2019                         Electric     186293 7.276080e-01
+ 2019         Gas (mono- and bivalent)      55996 2.187046e-01
+ 2019                         Hydrogen        213 8.319181e-04
+ 2019                            other    1753357 6.848119e+00
+ 2020                          Benzine   15215847 5.864162e+01
+ 2020  Benzine-electric: Normal-hybrid     381946 1.472014e+00
+ 2020 Benzine-electric: Plug-in-hybrid      88181 3.398481e-01
+ 2020                           Diesel    8125351 3.131497e+01
+ 2020   Diesel-electric: Normal-hybrid      44675 1.721767e-01
+ 2020  Diesel-electric: Plug-in-hybrid       3263 1.257555e-02
+ 2020                         Electric     250944 9.671340e-01
+ 2020         Gas (mono- and bivalent)      56691 2.184862e-01
+ 2020                         Hydrogen        337 1.298792e-03
+ 2020                            other    1779944 6.859875e+00
+ 2021                          Benzine   15115757 5.756897e+01
+ 2021  Benzine-electric: Normal-hybrid     532361 2.027518e+00
+ 2021 Benzine-electric: Plug-in-hybrid     160931 6.129122e-01
+ 2021                           Diesel    8126617 3.095055e+01
+ 2021   Diesel-electric: Normal-hybrid      80967 3.083661e-01
+ 2021  Diesel-electric: Plug-in-hybrid       5231 1.992247e-02
+ 2021                         Electric     368374 1.402967e+00
+ 2021         Gas (mono- and bivalent)      54866 2.089594e-01
+ 2021                         Hydrogen        751 2.860214e-03
+ 2021                            other    1810924 6.896977e+00
+
+Query Nr. 7
+-- What are the top 10 cities with the highest proportion of diesel cars?
+SELECT     su.name AS city,     (SUM(CASE WHEN sv.fuel_type ILIKE '%diesel%' THEN sv.amount ELSE 0 END) * 100.0 / SUM(CASE WHEN sv.fuel_type = 'total' THEN sv.amount ELSE 0 END) ) AS proportion_diesel FROM     spatial_unit su     INNER JOIN stock_vehicles sv ON su.spatialunit_uid = sv.spatialunit_uid WHERE     su.name IS NOT NULL GROUP BY     su.name ORDER BY     proportion_diesel DESC LIMIT 10;
+               city proportion_diesel
+        Kammersrohr          52.94118
+        Bosco/Gurin          52.55713
+            Samnaun          51.84470
+      Mont-Tramelan          49.14034
+         Tschappina          49.13462
+             Sufers          48.94578
+          Safiental          48.69951
+             Oppens          48.43441
+ Muntogna da Schons          47.58571
+              Furna          47.00493
+
+Query Nr. 8
+-- When was the first record of an electric vehicle?
+SELECT     MIN(year) AS first_record_year FROM stock_vehicles WHERE fuel_type ILIKE '%electric%';
+ first_record_year
+              2010
+
+Query Nr. 9
+-- In how many cities are vehicles records available?
+SELECT COUNT(DISTINCT spatialunit_uid) AS total_cities FROM stock_vehicles;
+ total_cities
+         2323
+
+Query Nr. 10
+-- What are fuel types starting with d?
+SELECT DISTINCT fuel_type FROM stock_vehicles WHERE fuel_type ILIKE 'd%';
+                       fuel_type
+                          Diesel
+ Diesel-electric: Plug-in-hybrid
+  Diesel-electric: Normal-hybrid
+
+Query Nr. 11
+-- How many electric-only cars are registered in 2013?
+SELECT SUM(amount) AS total_electric_cars FROM stock_vehicles WHERE fuel_type = 'Electric'     AND year = 2013;
+ total_electric_cars
+               60193
+
+Query Nr. 12
+-- What is the proportion of electric vehicles of each type in the most recent year, in descending order?
+SELECT     vehicle_type,     SUM(CASE WHEN fuel_type ILIKE '%electric%' THEN amount ELSE 0 END) AS electric_cars,     SUM(amount) AS total_cars,     (         SUM(CASE WHEN fuel_type ILIKE '%electric%' THEN amount ELSE 0 END) * 100.0 /         NULLIF(SUM(amount), 0)     ) AS proportion_electric FROM stock_vehicles WHERE year = (     SELECT MAX(year)     FROM stock_vehicles     ) GROUP BY vehicle_type ORDER BY proportion_electric DESC;
+                      vehicle_type electric_cars total_cars proportion_electric
+ passenger transportation vehicles       1047902   36340558          2.88356057
+                       motorcycles         15880     603506          2.63129116
+                          trailers         66762    6082470          1.09761331
+             agricultural vehicles         13992    3596844          0.38900770
+                    cargo vehicles          2763     756962          0.36501172
+               industrial vehicles           565    1540258          0.03668217
+                    passenger_cars             0    3592960          0.00000000
+
+Query Nr. 13
+-- What cities do not have any electric cars registered?
+SELECT su.name AS city FROM spatial_unit su WHERE NOT EXISTS (     SELECT 1     FROM stock_vehicles sv     WHERE su.spatialunit_uid = sv.spatialunit_uid         AND sv.fuel_type = 'Electric' );
+                                     city
+                              Biel-Benken
+                                 Isenfluh
+                                 Borgnone
+                                  Zezikon
+                               Montalchez
+                                   Zürich
+                                    Cadro
+                                 Fleurier
+                              Corsalettes
+                           Peney-le-Jorat
+                                 Tschierv
+                                Montmelon
+                              Lajoux (BE)
+                           Zürichsee (SZ)
+                                  Oleyres
+                               Bezirk Wil
+                     District de Grandson
+                                Comologno
+                            Niederstocken
+                              Zauggenried
+                                    Cauco
+                                     Osco
+                                   Peccia
+                                 Develier
+                                   Horgen
+                                 Carabbia
+                                Cavagnago
+                         Mett-Oberschlatt
+                                    Cully
+                                   Leggia
+                                  Engwang
+                                  Le Crêt
+                            Bonnefontaine
+                           Kümmertshausen
+                              Bertschikon
+                                Vaumarcus
+                Région sans district Vaud
+                           Marly-le-Petit
+                    Bezirk Unterlandquart
+                     Aeusserer Landesteil
+                         Morbio Superiore
+                              Bottighofen
+                                Prugiasco
+                        Opfertshofen (SH)
+                                  Mundaun
+                                 Bévilard
+                               Sonterswil
+                                Thunersee
+                              Wiesen (GR)
+                               Etzelkofen
+                                 Bironico
+                                   Vernay
+                                Obstalden
+                                  Mattwil
+                           Colombier (VD)
+                               Roggenburg
+                                 Rümligen
+                            Montfavergier
+                              Schönenbuch
+                                 Boécourt
+                                    Forst
+                                 Kreis 12
+                                  Golaten
+                                  Bissegg
+                               Oberschrot
+                                 Magadino
+                      Lossy-Formangueires
+                             Vendlincourt
+                               Roche-d'Or
+                                   Scherz
+                                 Engollon
+                                 Malleray
+                          Villeneuve (FR)
+                               Mettendorf
+    Bezirk Maloja / Distretto di Maloggia
+                                  Sugnens
+                                    Bauma
+                            Oberried (FR)
+                 Chavannes-sous-Orsonnens
+                                  Linthal
+                                 Lauffohr
+                                    Pagig
+                             Gundeldingen
+                          Buch bei Märwil
+                               Ammannsegg
+                                Rohr (AG)
+                             Benzenschwil
+        Territorio senza distretto Ticino
+                             Mühlethurnen
+                           Oron-le-Châtel
+                        St. Antönien Rüti
+                               Nussbaumen
+                                   Prêles
+                                Mervelier
+                                   Bagnes
+                         Region Limmattal
+                                 Valcolla
+                               Buchs (LU)
+                              Rossemaison
+                                Chandolin
+                                   Krinau
+                                  Saatlen
+                                  Mammern
+                                 Lamboing
+                                  Monible
+                                    Posat
+                         Opfershofen (TG)
+                        Villars-sous-Mont
+                             Rothenhausen
+                                 Aawangen
+                      District de Moutier
+                        Goumoens-la-Ville
+                           Region Glattal
+                                 Neirivue
+                                  Marnand
+                                   Bonfol
+                        Nesslau-Krummenau
+                                  Chandon
+                               Ecuvillens
+                                  Vissoie
+                                   Cabbio
+                Oberhofen bei Kreuzlingen
+                                   Cheiry
+                            Kleinhüningen
+                                    Wäldi
+                                   Noréaz
+          Bezirksfreies Gebiet St. Gallen
+                              Obersommeri
+                                   Sulgen
+                                  Am Ring
+                               Tägerschen
+                                     Alle
+                                   Corban
+                                  Vicques
+                                Hemmental
+                              Beurnevésin
+                                Gächliwil
+                                 Gumefens
+                                    Tegna
+                                  Kottwil
+                                   Camuns
+                                Epiquerez
+                                  Kreis 5
+                                   Aquila
+                   Bezirk Prättigau-Davos
+                     Amtsbezirk Aarwangen
+                                Corjolens
+                                  Kreis 8
+                                   Betten
+                                     Enge
+                   St. Antönien Ascharina
+                  Vierwaldstättersee (NW)
+                               Breganzona
+                       Saint-Aubin-Sauges
+                                   Aumont
+                  Vierwaldstättersee (OW)
+                           Oberhofen (AG)
+                          Poliez-le-Grand
+                                  Cernier
+                                     Loco
+        Lago di Lugano (ohne Campione, I)
+                              Haldenstein
+                                Affoltern
+                                Retschwil
+                                    Donat
+                              Les Bayards
+                           Le Bémont (BE)
+                               Strohwilen
+                               Lüsslingen
+                              Kienersrüti
+                       Distretto di Moësa
+                    Hermetschwil-Staffeln
+                                Montignez
+                               Wallenbuch
+                                    Riein
+                                     Toos
+                                  Oberönz
+                                   Bevaix
+                                 Aetingen
+                                 Leimbach
+                                    Reuti
+                                      Sur
+                     Granges-près-Marnand
+                             Sempachersee
+                         Rueyres-les-Prés
+                              Nennigkofen
+              Bezirksfreies Gebiet Luzern
+                                  Gorgier
+                               Niederwald
+                              Unterstrass
+                              Saint-Brais
+                               Brunnadern
+                                   Souboz
+                                  Kreis 2
+                      Corpataux-Magnedens
+                                Brontallo
+                           Fontaines (NE)
+                               Längenbühl
+                                    Ladir
+                            Patzen-Fardün
+                  Amtsbezirk Trachselwald
+                           Santa Domenica
+                                   Mollis
+                           Lac Léman (VD)
+                                   Vaglio
+                                    Wängi
+                    Montaubion-Chardonney
+                                  Sirnach
+                                    Zuben
+                                 Chevenez
+                                Magnedens
+                               Birsfelden
+                                   Mathon
+                             Baldeggersee
+                                 Ottoberg
+                           Lac Léman (GE)
+                            Formangueires
+                                  Rocourt
+                                   Kyburg
+                                 Zollikon
+                        Münster-Geschinen
+                            Bezirk Gaster
+                             Villarimboud
+                             Rossens (VD)
+                               La Folliaz
+                                Bangerten
+                            Lippoldswilen
+                                  Berzona
+                                  Schlans
+                                 Hersiwil
+                               Courtedoux
+                                Pedrinate
+                         Unterehrendingen
+                               Castasegna
+                                 Ballmoos
+                                  Lodrino
+                                Ennetaach
+                              Andelfingen
+                                 Bruzella
+                                Trimstein
+                                     Sool
+                                 Vellerat
+                                  Therwil
+                                Leimiswil
+                               Klarsreuti
+                              Courtételle
+                        Casti-Wergenstein
+                               Vernamiège
+                                Portalban
+                             Kleingurmels
+                                    Susch
+                                  Sonogno
+                                   Peiden
+                                   Rodels
+                     Gündelhart-Hörhausen
+                             Oberwil (BL)
+                                   Saulcy
+                      Fenin-Vilars-Saules
+                             Les Ecasseys
+                             Courtemaîche
+                              Ellighausen
+                                   Vermes
+                                Chironico
+                                Mötschwil
+                                Calpiogna
+                              Le Noirmont
+                                 Casaccia
+                             Schlattingen
+                                Viganello
+                                   Gresso
+                               Grafenried
+                               Charmoille
+                                   Lommis
+                                Mühlethal
+                               Palagnedra
+                                Besencens
+                                Krillberg
+                                     City
+                                 Lentigny
+                                  Illhart
+                           Bezirk Plessur
+                         Niedererlinsbach
+                         District de Nyon
+                                   Arvigo
+                          Davesco-Soragno
+                       Langnau bei Reiden
+                             Schocherswil
+                                Camignolo
+                                  Goumois
+                             Cerniat (FR)
+                                   Böztal
+                           Bezirk Sargans
+                               Fischingen
+                               Tscheppach
+                                   Altwis
+                          District d'Orbe
+                           Obererlinsbach
+           Kommunanz Gluringen/Grafschaft
+                                 Bignasco
+                         La Tour-de-Trême
+                                  Damvant
+                               Bassecourt
+                                 Aurigeno
+                         Amtsbezirk Nidau
+                                 Attelwil
+                                  Marolta
+                              Oberbözberg
+                                Glovelier
+                         Granges-de-Vesin
+                              Ponte Tresa
+                                Sementina
+                   District de Courtelary
+                            Bezirk Albula
+                                Montévraz
+                                     Agra
+                                 Oberaach
+                             Kleindietwil
+                               Sitterdorf
+                                   Diesse
+                              Onnens (FR)
+                                   Lessoc
+              Bezirksfreies Gebiet Zürich
+                             Ependes (FR)
+                                Braunwald
+                            Leimbach (TG)
+                                Villarlod
+                               Mettemberg
+                                    Vella
+                              Brunnenthal
+                                Castrisch
+                              Epauvillers
+                               Bruderholz
+                           Châtillon (BE)
+           Région sans district Neuchâtel
+     Région sans district Valais / Wallis
+                                 Wil (SG)
+                                 Tersnaus
+                                  Kreis 3
+                                Corzoneso
+                              Fontanezier
+                                 Coffrane
+                                  Oppikon
+                                Arlesheim
+                                     Ayer
+                                     Pfyn
+                                  Berlens
+                            Saint-Ursanne
+                                 Romanens
+                               Landarenca
+                                 Gotthelf
+                      Vuisternens-en-Ogoz
+                                  Zumholz
+                                     Fahy
+                               Montmollin
+                                    Mörel
+                                Grandvaux
+                                  Châbles
+                                   Bouloz
+                                 Barzheim
+                    C'za Capriasca/Lugano
+                                Montignez
+                                Grenilles
+                                    Clara
+                                Cutterwil
+                          Amtsbezirk Thun
+                                  Tremona
+                                   Ocourt
+                                  Seefeld
+                      Rüti bei Riggisberg
+                                   Näfels
+                                 Hilfikon
+                                   Pigniu
+                                   Monnaz
+                                Saint-Luc
+                           Bezirk Imboden
+                           Schweizersholz
+                     District de Cossonay
+                                  Rocourt
+                                 Movelier
+                                   Mülchi
+                                Pleujouse
+                                Frasnacht
+                                    Monte
+                                    Enney
+                                Obersaxen
+                               Rebévelier
+                                 Lurtigen
+                                   Halden
+                             Welschenrohr
+                                    Höngg
+                             Oberwil (TG)
+                                Bichelsee
+                               Montagnola
+                                 Cureggia
+                           Dompierre (FR)
+                                Arconciel
+                                  Progens
+                             Mollens (VS)
+                                    Trans
+                           Mühledorf (BE)
+                                 Lottigna
+                                  Neuhaus
+                               Courfaivre
+                                  Kreis 6
+                               Hüttlingen
+                   Villars-sous-Champvent
+                       District de Lavaux
+                                 Châtelat
+                      Chavannes-les-Forts
+                             Innerferrera
+                            Zugersee (SZ)
+                               Martisberg
+                               Roche-d'Or
+                                    Bogno
+                                  Gettnau
+                              Epauvillers
+                                 Les Bois
+                                     Buix
+                            Carrouge (VD)
+                                 Randogne
+                            Bodensee (TG)
+                       District de Moudon
+                                Allschwil
+                                 Indemini
+                                 Leontica
+                        Tüscherz-Alfermée
+                                  Zwingen
+                           Villars-d'Avry
+                                Vauffelin
+                                 Langwies
+                                  Sottens
+                   Sta. Maria Val Müstair
+                             Villarvolard
+                                   Mugena
+                                     Mase
+                                   Castro
+                          Villars-Lussery
+                                 Oberösch
+                                  Sevgein
+                                    Asuel
+                                La Heutte
+                                  Gandria
+                    District de la Vallée
+                            Monte Carasso
+                                Giumaglio
+                                   Franex
+            District de la Chaux-de-Fonds
+                               La Rogivue
+                            Essert-Pittet
+                                  Fresens
+                               Grafschaft
+                               St. Antoni
+                           Niederwil (TG)
+                                  Pratval
+                                  Certara
+                                  Hennens
+                     District de Lausanne
+                            Saint-Cierges
+                             Ruppoldsried
+                              Fregiécourt
+                                Bettingen
+                               Vuarmarens
+                                   Vermes
+                                  Splügen
+                                   Fuyens
+                                  Olivone
+                              Bibern (SO)
+                               Goppisberg
+                               Istighofen
+                              Friesenberg
+                                 Hauptwil
+               District du Val-de-Travers
+                                Rüti (GL)
+                                   Hirzel
+                                  Weinegg
+                                  Charrat
+                        District du Locle
+                           Montet (Broye)
+                                   Middes
+                                    Augio
+                                  Braggio
+                                  Bramois
+                                    Rueun
+                              Obergesteln
+                           Bosco Luganese
+                                 Valangin
+                                 Lumbrein
+                                   Veyras
+                               Vergeletto
+                                Krummenau
+                            Les Pommerats
+                                  Réclère
+                            Schwarzenbach
+                               Richenthal
+                                  Ludiano
+                             Amt Hochdorf
+                                   Surava
+                              Albisrieden
+                                Palézieux
+                                   Murist
+                                 Autafond
+                                     Jona
+                                  Broglio
+                                   Laufen
+                                Selkingen
+                             Brè-Aldesago
+                         Brienz/Brinzauls
+                                    Hofen
+                          District d'Oron
+                              Wigoltingen
+                             Cottens (VD)
+                                 Agriswil
+                             Wiesendangen
+                                    Ilanz
+                           Lac Léman (VS)
+                               Ebersecken
+                                  Corippo
+                                   Strada
+                                   Guarda
+                          St. Peter-Pagig
+                      Bezirk Diessenhofen
+                                  Witikon
+                                Erschmatt
+                                     Bure
+                             Betschwanden
+                                 Montenol
+                                     Vrin
+                                    Bondo
+                          Villarsiviriaux
+                    Bezirk Obertoggenburg
+                           Niederwil (SO)
+                                 Belpberg
+                                     Saas
+                                 Turtmann
+                           Zürichsee (ZH)
+                            Les Pommerats
+                                St. Peter
+                      Amtsbezirk Frutigen
+                             Brot-Dessous
+                    Chardonney-sur-Morges
+                             Ganterschwil
+              Bezirksfreies Gebiet Schwyz
+                                     Bôle
+                                 Rosental
+                           Langrickenbach
+                                     Werd
+                      District d'Avenches
+                            Diesbach (GL)
+                                   Mutten
+                                   Salouf
+                                  Andiast
+                                   Almens
+                          Bezirk Surselva
+                                     Cimo
+                                 Capolago
+                                 Schwändi
+                                  Senèdes
+                                  Klybeck
+                                    Tenna
+                                     Péry
+                              Uors-Peiden
+                    Lac de Neuchâtel (VD)
+               C'za Cadenazzo/Monteceneri
+                                 Valendas
+                                Mühlebach
+                                  Charmey
+                              Coussiberlé
+                           Untersteckholz
+                                      Nax
+                                    Filet
+                               Ausserbinn
+                                Mühlebach
+                                  Caviano
+                            Wetzikon (TG)
+                                    Riedt
+                              Hessigkofen
+                                 Büchslen
+                                     Sent
+                              Les Brenets
+                           Schwanden (GL)
+                              Rebeuvelier
+                                 Camorino
+                                Gillarens
+                           Reckingen (VS)
+                                  Lopagno
+                                Bas-Vully
+                      Combremont-le-Petit
+                                   Etzgen
+                     Chesalles-sur-Moudon
+                             Riom-Parsonz
+                          Niederwichtrach
+                                   Cumbel
+                                 Autavaux
+                       Wilen bei Neunforn
+                        Burg im Leimental
+                                    Peist
+                           Lanzenneunforn
+                                    Ardez
+                                 Romairon
+                              Lac de Joux
+                                  Filisur
+                      Altstadt Grossbasel
+                                Villariaz
+                                    Bauen
+                                  Bollion
+                                Robasacco
+                          Region Oberland
+                             Oberneunforn
+                                 Ruschein
+                      Villaz-Saint-Pierre
+                               Monterschu
+                                Herrenhof
+                               Villaranon
+                                Montherod
+                       Chesalles-sur-Oron
+                                Malvaglia
+                              Arrissoules
+                                Boveresse
+                         Bezirk Landquart
+                                  Castiel
+                          Le Pâquier (NE)
+                                Lohn (GR)
+                            Tschiertschen
+                                Piazzogna
+                                    Warth
+                                     Grod
+                              Essert (FR)
+                              Chésopelloz
+                                 Miécourt
+                     Villarsel-le-Gibloux
+                          Goumoens-le-Jux
+                                     Präz
+                                 Scheunen
+                           Feldis/Veulden
+                           Châtillon (BE)
+                  Vierwaldstättersee (SZ)
+                                   Guttet
+                        Illnau-Effretikon
+                     Neukirch an der Thur
+                               Mogelsberg
+                                Courgenay
+                              Villarbeney
+                  C'za Capriasca/Lugaggia
+                                  Ennenda
+                                 Cavergno
+                                 Sornetan
+                                Lieffrens
+                                  Tuttwil
+                                  Tannegg
+                               Amt Luzern
+                        Neyruz-sur-Moudon
+                                 Blessens
+                                  Mettlen
+                                   Lodano
+                                     Riex
+                        Amtsbezirk Saanen
+                       District d'Yverdon
+                                  Ohmstal
+                                    Miège
+                           Zürichsee (SG)
+                                Montmagny
+                                  Molinis
+                        Vira (Gambarogno)
+                       Bezirk Vorderrhein
+                  C'za Medeglia/Robasacco
+                                   Couvet
+                            Fontainemelon
+                           Campo (Blenio)
+                                  Semione
+           Bielersee / Lac de Bienne (BE)
+                                Goldingen
+                         Bezirk Steckborn
+                                   Scheid
+                               Bassecourt
+                              Rebeuvelier
+                                    Lavin
+                                  Pitasch
+       C'za Bidogno/Capriasca/Corticiasca
+                                   Casima
+                                  Contone
+                    Lac de Neuchâtel (NE)
+                                   Denezy
+                                 Salorino
+                                    Claro
+                                Sédeilles
+                         Les Genevez (BE)
+                               Weerswilen
+              Bezirksfreies Gebiet Aargau
+                             Graltshausen
+                                 Maladers
+                                  Feschel
+                                Eschlikon
+                                Dittingen
+                       Bezirk Kreuzlingen
+                              Lajoux (BE)
+                             Triboltingen
+                        Region Zimmerberg
+                                  Seebach
+                            Oberwichtrach
+                            Sant'Abbondio
+                                  Neudorf
+                                    Russo
+                              Champmartin
+                                 Mex (VS)
+              Guntershausen bei Birwinken
+                   District du Val-de-Ruz
+                             St. Antönien
+                                  Netstal
+                                    Lieli
+                               Forel (FR)
+                                    Duvin
+                     Bezirk Alttoggenburg
+                            Oberstammheim
+                        Brione (Verzasca)
+                            Gewerbeschule
+                     Bezirk Unterrheintal
+                              Wollishofen
+                                  Winikon
+                               Blitzingen
+                             Biessenhofen
+                                  Braunau
+                                Promasens
+                                Brigerbad
+                              Oberstocken
+                               Hirslanden
+                                    Russy
+                     Amtsbezirk Oberhasli
+                          Villars-Bramard
+                       Gerra (Gambarogno)
+                               Courfaivre
+                                  Gossens
+                              Courrendlin
+                               Dombresson
+                                  Islikon
+                             Amt Willisau
+                                 Müllheim
+                               Oberwangen
+                              Bibern (SH)
+                                 Campello
+                        Montreux-Planches
+ Kommunanz Reckingen-Gluringen/Grafschaft
+ Région sans district Fribourg / Freiburg
+                                Berg (TG)
+                        Hallwilersee (LU)
+                                 Cagiallo
+                            Lago Maggiore
+                               Basadingen
+                                    Vezio
+                               Ried-Mörel
+                                 Lugaggia
+                              Hessenreuti
+                                 Steinhof
+                              Hirzbrunnen
+                                Fiaugères
+                               Montborget
+                 Guntershausen bei Aadorf
+                       Amtsbezirk Aarberg
+                                 Fluntern
+                            Boudevilliers
+                                  Kefikon
+                               Bottmingen
+                        Bezirk Frauenfeld
+                         Bezirk Rorschach
+                                  Müstair
+                                Damphreux
+                                  Hottwil
+                              Villaraboud
+                                  Verscio
+                                Binningen
+                                 Mastrils
+                                 Seigneux
+                                Noiraigue
+                                Hottingen
+                                 Medeglia
+                             Cerniaz (VD)
+                                   Pignia
+                    Blonay - Saint-Légier
+                                Praratoud
+                             Courtemaîche
+                                Alterswil
+                                 Gerlikon
+                                   Gampel
+                                Wallenwil
+                                    Someo
+                            Bodensee (SG)
+                              Hochschulen
+                               Barberêche
+                                   Parpan
+                                  Fuldera
+                               Bezirk Inn
+                       Bezirk Hinterrhein
+                               Mannenbach
+                                 Wuppenau
+                             Bezirk Arbon
+               Amtsbezirk Niedersimmental
+                                   Meride
+                              Les Agettes
+                                     Mund
+                             Montsevelier
+                               Bachletten
+                                Vaugondry
+                                  Montécu
+                                    Selma
+                     Bezirk Neutoggenburg
+                            Bezirk Albula
+                                    Asuel
+                              Gallenkirch
+                                 Menzonio
+                                   Carona
+                       Prez-vers-Siviriez
+                             La Joux (FR)
+                         Kleinguschelmuth
+                                Domdidier
+                                  Besazio
+                        Amtsbezirk Wangen
+                           Pont (Veveyse)
+                                Schalunen
+           Röthenbach bei Herzogenbuchsee
+                                      Mon
+                               Bourrignon
+                         Schönenberg (ZH)
+                                   Gressy
+                              Illighausen
+                                    Twann
+                                  Sonvico
+                 Amtsbezirk Obersimmental
+                                  Seleute
+                                   Buttes
+                                      Elm
+                                     Glis
+                             Räuchlisberg
+                                 Cormérod
+                         Damphreux-Lugnez
+                              La Vounaise
+                                Verdabbio
+                           Niederneunforn
+                Region Winterthur u. Umg.
+                                   Greich
+                       Saint-Sulpice (NE)
+                                    Sessa
+                            Ausserferrera
+                                   Cremin
+                                     Siat
+                         Bussy-Chardonney
+                               Weingarten
+                                  Nufenen
+                                   Soglio
+                                Wädenswil
+                                Reverolle
+                                  Mulegns
+                        Bezirk St. Gallen
+                            Zugersee (ZG)
+                                   Soulce
+                          Rapperswil (SG)
+                                  Wilihof
+                     Bezirk Oberlandquart
+                               Götighofen
+                                   Wahlen
+        Bezirksfreies Gebiet Schaffhausen
+                                     Rasa
+                                    Vesin
+                              Wagenhausen
+                            Siegershausen
+                               Lanterswil
+                            Unterendingen
+                           Sala Capriasca
+                          Villars-Mendraz
+                              Morens (FR)
+                                   Soubey
+                           Bioley-Orjulaz
+                                   Corban
+                                    Fusio
+                        Montagny-la-Ville
+    Bezirk Maloja / Distretto di Maloggia
+                             Ferlens (VD)
+                District du Pays-d'Enhaut
+                                 Courtion
+                          Villars-Burquin
+                          Amtsbezirk Thun
+                                 Wiezikon
+                       Distretto di Moesa
+                                  Kreis 7
+                                Oberurnen
+                            Zugersee (LU)
+                                  Sarzens
+                        Waltensburg/Vuorz
+                             Bressaucourt
+                      District de Payerne
+                    Essert-sous-Champvent
+                              Genestrerio
+                              Altishausen
+                        Villars-Tiercelin
+                               Donzhausen
+                                  Rancate
+                              Griesenberg
+                        Bezirk Weinfelden
+                                     Font
+                                  Rathaus
+                                 Unterems
+                                 Valchava
+                                Biel (VS)
+                                  Chanéaz
+                                   Porsel
+                                  Stierva
+                                Orsonnens
+                                Neckertal
+                           Region Furttal
+                                   Mauren
+                                   Buhwil
+                                  Ramosch
+                                  Seleute
+                              Corticiasca
+                               Wellhausen
+                            Obersteckholz
+                            Bodensee (SH)
+                                 Valzeina
+                              Courrendlin
+                               Wolfisberg
+                         Villars-le-Grand
+                                  Chabrey
+                           Colombier (NE)
+                  Vierwaldstättersee (LU)
+                                  Kreis 4
+                 Amtsbezirk Schwarzenburg
+                                 Birgisch
+                               Calfreisen
+                                Dommartin
+                       Bezirk Heinzenberg
+                             Rossens (FR)
+                             Landschlacht
+                                     Arzo
+                               Porrentruy
+                                     Hard
+                                   Blauen
+                   Heinrichswil-Winistorf
+                                    Degen
+                                  Kradolf
+                                      Naz
+                          Hofstetten (ZH)
+                            Bezirk Gossau
+                                 Neuwilen
+                                   Gadmen
+                                 La Magne
+                                  Vignogn
+                             Martherenges
+                              Villangeaux
+                               St. Martin
+                                   Plagne
+                                   Frasco
+                               Bussy (FR)
+                              Hohentannen
+                                 Pazzallo
+                     Estavayer-le-Gibloux
+                               Les Enfers
+                                    Henau
+                                   Ocourt
+                               Châtillens
+                            Schwende-Rüte
+                                 Barbengo
+                             Alt-Wiedikon
+                                 Kreis 11
+                                  Hämikon
+                                  Kreis 9
+                                Marmorera
+                                Lindenhof
+                                 Miécourt
+                           Bellerive (VD)
+                                     Iseo
+                               Chermignon
+                                     Elgg
+                                   Rieden
+                                 Heldswil
+                                   Hütten
+                                 Chevenez
+                                   Sévery
+                                 Matthäus
+                                   Osogna
+                        Bezirk Münchwilen
+                                 Caneggio
+                             Sant'Antonio
+                                    Jeuss
+                             Les Cullayes
+                            Tinizong-Rona
+                              Undervelier
+                           Sales (Sarine)
+                               Chiggiogna
+                                  Prahins
+                       Roveredo-Capriasca
+                    Amtsbezirk Interlaken
+                        Amtsbezirk Erlach
+                             Tiefencastel
+                                Auvernier
+                      Kappel (Toggenburg)
+                  Niederried bei Kallnach
+                                Winistorf
+                                   Corban
+                          Schinznach-Dorf
+                                   Stampa
+                                 Wil (AG)
+                      Reckingen-Gluringen
+                               Eschikofen
+                         Region Unterland
+                                   Dongio
+                                    Luven
+                              Escher Wyss
+                       District de Morges
+                            St. Peterzell
+                           Salen-Reutenen
+                        District de Rolle
+                                  Riedern
+                                  Mitlödi
+                           Bezirk Plessur
+                                    Flond
+                          Bergün/Bravuogn
+                                   Moleno
+                               Roggenburg
+                                 Dotnacht
+                                  Ghirone
+                                  Wahlern
+                           Herznach-Ueken
+                                     Rona
+                           Bezirk Imboden
+                                 Intragna
+                             Uerschhausen
+                             Zihlschlacht
+                               Pregassona
+                       Mannens-Grandsivaz
+                             Marbach (LU)
+                                     Envy
+                                 Boncourt
+                     District d'Echallens
+                                       Lü
+                                  Montana
+                        Bezirk Werdenberg
+                     Schwamendingen-Mitte
+                                 Ecoteaux
+                                 Ettingen
+                               Ligornetto
+                                Courlevon
+                                  Cordast
+                           Kyburg-Buchegg
+                            Biogno-Beride
+                                Gluringen
+                                 Thundorf
+                             Granges (VS)
+                                   Mettau
+                              Grattavache
+                                 Correvon
+                               Aesch (BL)
+                     Distretto di Bernina
+                                     Ftan
+                                   Umiken
+                                 Montenol
+                Saint-Saphorin-sur-Morges
+                            Willisau Land
+                                Soyhières
+                                 Pampigny
+                      Altstadt Kleinbasel
+                          Burg bei Murten
+                                Salvenach
+                           Le Peuchapatte
+                              Montbrelloz
+                            Region Zürich
+                                Mervelier
+                                Thierrens
+                            Büren zum Hof
+                           Mühledorf (SO)
+                Dippishausen-Oftershausen
+                                   Lovens
+                                 Vellerat
+                         Prez-vers-Noréaz
+                   Bezirk Untertoggenburg
+                          Balm bei Messen
+                                Aegerisee
+                                Vorstädte
+                            Montfavergier
+                                   Suraua
+                              Küttigkofen
+                                  Bidogno
+                                Wipkingen
+                                 Gordevio
+                               St. Johann
+                                  Posieux
+                                  Frasses
+                              Bollodingen
+           Bielersee / Lac de Bienne (NE)
+                               Harenwilen
+                        Farvagny-le-Petit
+                                Sarnersee
+                                 Wildhaus
+                              Dettighofen
+                              Courchapoix
+                                 Brügglen
+                                    Malix
+                                 Cugnasco
+                               Oberstrass
+                                Cresciano
+                                  Mosogno
+         Lac de la Gruyère / Greyerzersee
+                        Busswil bei Büren
+                                   Glarus
+                            Grandfontaine
+                                   Sassel
+                           Les Thioleyres
+                                  Kreis 1
+                                Gutenburg
+                                 Bionnens
+                          Amtsbezirk Bern
+                       District d'Aubonne
+                         Chapelle (Broye)
+                                     Pizy
+                              La Neirigue
+                                 Calonico
+                               Macconnens
+                               Herblingen
+                                     Gudo
+                                  Wanzwil
+                              Waltalingen
+                               Schlosswil
+                                   Coeuve
+                               Carabietta
+                              Leuggelbach
+                                 Filzbach
+                                   Apples
+                                   Isorno
+                                     Sarn
+                                    Mosen
+                District de la Neuveville
+                              Fregiécourt
+                              Cournillens
+                              Hautemorges
+                                   Horben
+                                  Morlens
+                          Region Weinland
+                                 Sigirino
+                               Friltschen
+                        Villette (Lavaux)
+                           Peyres-Possens
+                                Giubiasco
+                                   Versam
+                               Hirzenbach
+        Bezirksfreies Gebiet Bern / Berne
+                                Altavilla
+                            Thielle-Wavre
+                              Hugelshofen
+                                 Moghegno
+                               La Rougève
+                                 Le Glèbe
+                           Schinznach-Bad
+                              Estavannens
+                             Les Tavernes
+                                   Mossel
+                          Staatswald Galm
+                                 Vuissens
+                                   Coglio
+                       District de Boudry
+                                 Largario
+                            Walensee (GL)
+                                Campestro
+                                  Bratsch
+                                Pleujouse
+                                  Croglio
+                                Hätzingen
+                                  Preonzo
+                               Grellingen
+            Murtensee / Lac de Morat (FR)
+                               Greifensee
+                               Engishofen
+                              Brienzersee
+                                   Iragna
+                              Gänsbrunnen
+                                  Cheyres
+                                   Clugin
+                              Dünnershaus
+                                   Märwil
+                               Chandossel
+                              Ettenhausen
+                                    Bivio
+                            Wilen bei Wil
+                                     Lüen
+                   Amtsbezirk Fraubrunnen
+                                Le Saulgy
+                                 Courroux
+                                   Delley
+                           Marin-Epagnier
+                                 Anzonico
+                                Fescoggia
+                           Pambio-Noranco
+                                  Pleigne
+                                   Breite
+                                Malapalud
+                                 Kreis 10
+                                 Cimadera
+                                   Riehen
+                                  Parsonz
+                             Reinach (BL)
+                                Courtaman
+                                   Cunter
+                               Amt Sursee
+                            Mézières (VD)
+                                Bütschwil
+                               Nenzlingen
+                            Prato-Sornico
+                             Môtiers (NE)
+                                  Nidfurn
+                                Vauderens
+                     Chézard-Saint-Martin
+                                Cormagens
+                                Montmelon
+                             Bronschhofen
+                              Les Friques
+                      Medels im Rheinwald
+                                     Says
+                                  Goumois
+                             Les Breuleux
+                                   Littau
+                                  Portein
+                  Amtsbezirk Trachselwald
+                                 Oerlikon
+                                    Tobel
+                       Bezirk Hinterrhein
+                              Sternenberg
+                                Müswangen
+                                 Röschenz
+                          Amtsbezirk Biel
+                      Bezirk Oberrheintal
+             Bezirksfreies Gebiet Thurgau
+                                   Tomils
+                                Gentilino
+                                Sulz (AG)
+                               Liebistorf
+                        Amtsbezirk Laupen
+                                 Delémont
+                      Bezirk Bischofszell
+                                 Ulrichen
+                                 Brislach
+                                    Seiry
+                                   Iselin
+                       Les Hauts-Geneveys
+                              Courchapoix
+                               Castagnola
+                             Schwendibach
+                             Münchenstein
+                               Charmoille
+                              Rossemaison
+                                Ritzingen
+                               Haut-Vully
+                                    Crana
+                                  Esmonts
+                         Amtsbezirk Büren
+                                  Damvant
+                    La Chaux-des-Breuleux
+                                 Vollèges
+                                 Mur (VD)
+                              Undervelier
+                                 Eschiens
+                                  Travers
+                                Epiquerez
+                               Tägertschi
+                        Schönenbaumgarten
+                                Chésalles
+                              Niederurnen
+                                 Morissen
+                                Pfeffikon
+                                 Vuippens
+                                  Epesses
+                                Geschinen
+                              Benken (BL)
+                               Stein (SG)
+                                  Tschlin
+                                   Safien
+                                  Schnaus
+                           Kirchenthurnen
+                                 Grimentz
+                         Forel-sur-Lucens
+                               Lipperswil
+                             Rheinklingen
+                      Chapelle-sur-Moudon
+                                   Lugnez
+                                   Soulce
+                                Gossliwil
+                                     Igis
+                              Langstrasse
+                             Unterschlatt
+                                Burgäschi
+                       Bezirk Val Müstair
+                               Courchavon
+                         Nierlet-les-Bois
+                                  Gunzwil
+                              Scherzingen
+                                Glovelier
+                              Kalthäusern
+                   Amtsbezirk Konolfingen
+                                Eclagnens
+                               Sommentier
+                               Niederösch
+                               Villarepos
+                                 Auressio
+                                   Muggio
+                                   Rivera
+                                 Liesberg
+                          Ponto Valentino
+                             Bressaucourt
+                                  Réclère
+                        District de Vevey
+                                La Corbaz
+                                   Tartar
+                         District d'Aigle
+                                 Savognin
+                              Alterswilen
+                            Tumegl/Tomils
+                           Bezirk Glenner
+                                 Albligen
+                             Saignelégier
+                                Monteggio
+                                    Sagno
+                                Sulz (LU)
+                                Savagnier
+                          Oberehrendingen
+                                   Le Bry
+                               Bettwiesen
+                             Gelterfingen
+                                 Pianezzo
+                               Cavigliano
+                                 Val Mara
+                    District de Neuchâtel
+                               Wallenried
+                  Corcelles-sur-Chavornay
+                               Englisberg
+                               Bezirk See
+                                Mühlehorn
+                               Gommiswald
+                                  Zurzach
+                                 Dussnang
+                         St. Gallenkappel
+                                   Bilten
+                                   Gnosca
+                                    Torre
+                                Wittenwil
+                                  Wattwil
+                               Salenstein
+                                   Stilli
+                           Weiningen (TG)
+                                   Salins
+                              Ernetschwil
+                                     Buix
+                                  Sihlsee
+                                St. Alban
+                          Eschenbach (SG)
+                                   Avegno
+                                     Linn
+                               Zimmerwald
+                                 Mairengo
+                           Alt St. Johann
+                                 Donatyre
+                               Altstetten
+                             Montsevelier
+                                 Farvagny
+                             Diessenhofen
+                      Amtsbezirk Seftigen
+                                Gelfingen
+                               Lussy (FR)
+                             Münster (VS)
+                  Vierwaldstättersee (UR)
+                                Hosenruck
+                          Happerswil-Buch
+                                    Höfen
+                      Amtsbezirk Burgdorf
+                           Willisau Stadt
+                                  Dättwil
+                        Amtsbezirk Signau
+                               Montfaucon
+                         Gerra (Verzasca)
+                             Unterbözberg
+                                  Hohtenn
+                                   Maules
+                      Combremont-le-Grand
+                        Amtsbezirk Wangen
+                                 Venthône
+                             Villargiroud
+                           Martigny-Ville
+                                Wettstein
+                               Saint-Jean
+                                  Gorduno
+                                  Brenles
+                      Region Pfannenstiel
+                              Hessenreuti
+                    Lac de Neuchâtel (FR)
+            Murtensee / Lac de Morat (VD)
+                                   Praden
+                                Duggingen
+                               Ichertswil
+                                    Erlen
+                          Staatswald Galm
+                                 Kulmerau
+                            Amt Entlebuch
+                                Fontenais
+                                  Uffikon
+                                 Villiers
+                              Guschelmuth
+                            Oron-la-Ville
+                             Guntmadingen
+                                   Tarasp
+                            Saint-Ursanne
+                                     Steg
+                               Les Glânes
+                   Corcelles-Cormondrèche
+                                 Vuibroye
+                                  Alvaneu
+                                   Sobrio
+                                Hermiswil
+                    Lac de Neuchâtel (BE)
+                                Vallamand
+                               Uesslingen
+                        Rueyres-Treyfayes
+                                  Vicques
+                                   Cornol
+                           Le Peuchapatte
+                               Aetigkofen
+                Les Geneveys-sur-Coffrane
+                       Region Knonaueramt
+                                     Engi
+                              Oberramsern
+                  Schönenberg an der Thur
+                                  Muriaux
+                                     Matt
+                                  Muttenz
+                     Distretto di Bernina
+                                  Vogorno
+                               Willisdorf
+                              Escholzmatt
+                                Steinhaus
+                                 Sihlfeld
+                                 Surcuolm
+                                   Haslen
+                                  Zénauva
+                            Walensee (SG)
+                                   Noflen
+                               Pfeffingen
+                                   Peseux
+                                Montbovon
+                        Oulens-sur-Lucens
+                                   Eyholz
+                                  Rossura
+                              Osterfingen
+                                 Aeschlen
+                Bleiken bei Oberdiessbach
+                                Rohr (SO)
+                               Oberflachs
+                               Alvaschein
+                       Innerer Landesteil
+                               Luchsingen
+                                    Breno
+                         Les Genevez (BE)
+                               Ederswiler
+                             Altdorf (SH)
+                                   Arosio
+                              Constantine
+                         Estavayer-le-Lac
+                                Léchelles
+                                Lohnstorf
+                              Hinterrhein
+                        Hallwilersee (AG)
+                        Amtsbezirk Wangen
+                                Birwinken
+                              San Nazzaro
+                           Villa Luganese
+                                Ittenthal
+                                 Corserey
+                    Mézery-près-Donneloye
+                             Oberbussnang
+                                  Paspels
+                              Münchringen
+                                    Fanas
+                               Bezirk Inn
+                                 Pontenet
+                                   Illens
+                           Torny-le-Grand
+                           Unterstammheim
+                               Estévenens
+                               Herlisberg
+                                  Nesslau
+                        Bussigny-sur-Oron
+                                 Oberwald
+                                  Limpach
+                              Vicosoprano
+
+Query Nr. 14
+-- What type of vehicle is the most frequent in the canton of Basel?
+SELECT     vehicle_type,     SUM(amount) AS total_amount FROM     spatial_unit su     INNER JOIN stock_vehicles sv ON su.spatialunit_uid = sv.spatialunit_uid WHERE     su.canton = true     AND su.name ILIKE '%basel%' GROUP BY     vehicle_type ORDER BY     total_amount DESC LIMIT 1;
+                      vehicle_type total_amount
+ passenger transportation vehicles      5072462
+
+Query Nr. 15
+-- What is the percent change in the number of hybrid cars change in the city of Basel between 2013 and 2014?
+SELECT     vehicle_type,     SUM(CASE WHEN fuel_type ILIKE '%hybrid%' AND year = 2014 THEN amount ELSE 0 END) -     SUM(CASE WHEN fuel_type ILIKE '%hybrid%' AND year = 2013 THEN amount ELSE 0 END) AS hybrid_change,     (SUM(CASE WHEN fuel_type ILIKE '%hybrid%' AND year = 2014 THEN amount ELSE 0 END) -     SUM(CASE WHEN fuel_type ILIKE '%hybrid%' AND year = 2013 THEN amount ELSE 0 END)) * 100.0 /     NULLIF(SUM(CASE WHEN fuel_type ILIKE '%hybrid%' AND year = 2013 THEN amount ELSE 0 END), 0) AS hybrid_percent_change FROM     spatial_unit su     INNER JOIN stock_vehicles sv ON su.spatialunit_uid = sv.spatialunit_uid WHERE     su.name ILIKE 'Basel'     AND su.municipal = True AND fuel_type ILIKE '%hybrid%'     AND (year = 2013 OR year = 2014) GROUP BY     vehicle_type;
+                      vehicle_type hybrid_change hybrid_percent_change
+             agricultural vehicles             1             100.00000
+                    cargo vehicles             0                    NA
+               industrial vehicles             0               0.00000
+                       motorcycles             0               0.00000
+ passenger transportation vehicles            63              12.23301
+                    passenger_cars             0                    NA
+                          trailers             6             120.00000
+
+Query Nr. 16
+-- What canton has the most agricultural vehicles across all years?
+SELECT     su.name AS city,     SUM(sv.amount) AS total_agricultural_vehicles FROM     spatial_unit su     INNER JOIN stock_vehicles sv ON su.spatialunit_uid = sv.spatialunit_uid WHERE     sv.vehicle_type ILIKE '%agricultural%'     AND su.canton = True GROUP BY     su.name ORDER BY     total_agricultural_vehicles DESC LIMIT 1;
+             city total_agricultural_vehicles
+ Canton of Zurich                     1428308
+
+Query Nr. 17
+-- What are the 5 cantons with the most agricultural vehicles per passenger transportation vehicle in 2010?
+SELECT     su.name AS canton,     SUM(CASE WHEN sv.vehicle_type ILIKE '%agricultural%' THEN sv.amount ELSE 0 END) AS total_agricultural_vehicles,     SUM(CASE WHEN sv.vehicle_type ILIKE '%passenger transportation%' THEN sv.amount ELSE 0 END) AS total_passenger_vehicles,     (SUM(CASE WHEN sv.vehicle_type ILIKE '%agricultural%' THEN sv.amount ELSE 0 END) * 1.0 / NULLIF(SUM(CASE WHEN sv.vehicle_type ILIKE '%passenger transportation%' THEN sv.amount ELSE 0 END), 0)) AS ratio_agricultural_to_passenger FROM spatial_unit su INNER JOIN stock_vehicles sv ON su.spatialunit_uid = sv.spatialunit_uid WHERE sv.year = 2010     AND su.canton = True GROUP BY su.name ORDER BY ratio_agricultural_to_passenger DESC LIMIT 5;
+                canton total_agricultural_vehicles total_passenger_vehicles
+ Canton of Basel-Stadt                       15024                   132154
+     Canton Graubünden                       21152                   200244
+      Canton of Glarus                        3892                    41302
+        Canton of Bern                       89488                   962060
+         Canton Ticino                       37514                   408924
+ ratio_agricultural_to_passenger
+                      0.11368555
+                      0.10563113
+                      0.09423272
+                      0.09301707
+                      0.09173832
+
+Query Nr. 18
+-- What fuel type is most frequently used for motorcycles?
+SELECT     fuel_type,     SUM(amount) AS total_amount FROM stock_vehicles WHERE vehicle_type ILIKE '%motorcycle%'     AND fuel_type != 'total' GROUP BY fuel_type ORDER BY total_amount DESC LIMIT 1;
+ fuel_type total_amount
+    Diesel      2672994
+
+Query Nr. 19
+-- How many diesel industrial vehicles were there in Switzerland in 2013?
+SELECT SUM(amount) AS total_diesel_industrial_vehicles FROM spatial_unit su INNER JOIN stock_vehicles sv ON su.spatialunit_uid = sv.spatialunit_uid WHERE su.name = 'Switzerland'     AND sv.vehicle_type = 'industrial vehicles'     AND sv.fuel_type = 'Diesel'     AND sv.year = 2013;
+ total_diesel_industrial_vehicles
+                           168254
