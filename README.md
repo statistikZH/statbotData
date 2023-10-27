@@ -1,12 +1,12 @@
 # statbotData
 
 ## The project
-This repo is part of the [Statbot Swiss Project](https://www.bfs.admin.ch/bfs/de/home/dscc/blog/2023-02-statbot.html). The project has following parts: 
-- **[Statbot Postgres DB](#statbot-postgres-db)**: A Postgres DB that is filled with open data from Swiss Statistical offices (Federal Office of Statistics and selected Cantonal Statistical Offices) 
+This repo is part of the [Statbot Swiss Project](https://www.bfs.admin.ch/bfs/de/home/dscc/blog/2023-02-statbot.html). The project has following parts:
+- **[Statbot Postgres DB](#statbot-postgres-db)**: A Postgres DB that is filled with open data from Swiss Statistical offices (Federal Office of Statistics and selected Cantonal Statistical Offices)
 - **[Statbot Training Data](#statbot-training-data)**: Training and test data for the [Statbot Chatbot](#statbot-chatbot), see below.
 - **[Statbot Chatbot](#statbot-chatbot)**: An ML Model for a Chatbot that turns questions into sql queries in order to derive answers to these questions by running the sql queries on the [Statbot Postgres DB](#statbot-postgres-db). It uses the [Statbot Training Data](#statbot-training-data) for its model training.
 
-This repo takes care of the following two tasks: 
+This repo takes care of the following two tasks:
 - it provides functions and pipelines to fill and update the [Statbot Postgres DB](#statbot-postgres-db)
 
 - it provides questions and queries as [Statbot Training Data](#statbot-training-data) for the [Statbot Chatbot](#statbot-chatbot):
@@ -25,7 +25,7 @@ flowchart TD
 
 The repo consists of the following parts:
 - **input datasets**: contains the list input datasets for the pipelines and also a list of Swiss adminstative units, that are linked to each dataset
-- **R package `statbotData`**: the functions in the directory `R` make up a R package of reusable functions, that are used throughout the pipelines and scripts 
+- **R package `statbotData`**: the functions in the directory `R` make up a R package of reusable functions, that are used throughout the pipelines and scripts
 - **pipelines** per **dataset**: they contain scripts for downloading datasets from their origin and preprocessing them for the postgres integration into [Statbot Postgres DB](#statbot-postgres-db). They also include other files that relate to the dataset such as the [Statbot Training Data](#statbot-training-data).
 - **scripts**: the scripts directory contains sample scripts that can be used to do chores on the datasets and pipelines, such as uploading the dataset and its metadata to the Statbot Postgres DB](#statbot-postgres-db)
 - **app**: `app.R` is a local shiny app that gives an overview about the repo and its pipelines: this app is only meant to support the development process and is not deployed anywhere
@@ -34,11 +34,11 @@ The repo consists of the following parts:
 
 The `data/const` directory consists of two files:
 - `statbot_input_data.csv`: this is a csv file of all the datasets that have been uploaded to Statbot Postgres DB
-- `spatial_unit_postgres.csv`: this is a csv file for Swiss adminstrative units. It corresponds to the table `spatial_unit` in the  Statbot Postgres DB. 
+- `spatial_unit_postgres.csv`: this is a csv file for Swiss adminstrative units. It corresponds to the table `spatial_unit` in the  Statbot Postgres DB.
 
 ### Dataset Input Data
 
-The statbot input data `statbot_input_data.csv` describes datasets that are available as opendata and have the following properties: 
+The statbot input data `statbot_input_data.csv` describes datasets that are available as opendata and have the following properties:
 
 ```mermaid
 classDiagram
@@ -66,7 +66,7 @@ classDiagram
     }
     class ExcelSheet{
       download_url
-    }   
+    }
     class LINDAS{
       query_url
     }
@@ -74,8 +74,8 @@ classDiagram
 
 **mandatory properties**:
 - `data_indicator`: an identifier for the dataset pipeline such as `A1`: this identifier serves also the directory name for the pipeline files in the repo
-- `status`: only the status `uploaded` is relevant and indicates that the dataset is already in postgres, any other status can be chosen as needed.
-- `name`: the table name in postgres for this dataset 
+- `status`: only the statuses `uploaded` or `remote` are relevant and indicates that the dataset is already in postgres, any other status can be chosen as needed.
+- `name`: the table name in postgres for this dataset
 - `format`: the format determines how the data is retrieved from its origin: `px`, `csv`, `xlsx`, `rdf` are the current options
 - `lang`: the language of the dataset, currently this can be either `en`, `de` or `fr`
 - `publisher`: the publisher of the dataset
@@ -140,14 +140,14 @@ This metadata table has the following fields:
 This metadata table has the following fields:
 - `name`: name of the column in the table
 - `table_name`: name of the postgres table the column belongs to
-- `data_type`: either `numeric` or `categorical` 
+- `data_type`: either `numeric` or `categorical`
 - `title`: Title of the column in the datasets language
-- `title_en`: English translation of the column title  
+- `title_en`: English translation of the column title
 - `example_values`: 3 to five example values in this column
 
 ## Statbot Training Data
 
-The statbot training data consists of questions in natural language and the corresponding 
+The statbot training data consists of questions in natural language and the corresponding
 sql queries. The queries relate to a single input dataset that has been uploaded to the [Statbot Postgres DB](#statbot-postgres-db). The queries don't have joins instead of one possible join on the `spatial_unit` table.
 
 Below is an examples for the Statbot Training Data:
@@ -168,7 +168,7 @@ WHERE S.name_de='Schweiz' AND S.country=TRUE;
 
 ## Statbot Chatbot
 
-The Chatbot is not yet publically available and currently under active development. 
+The Chatbot is not yet publically available and currently under active development.
 More information on this part of the project will be added later.
 
 ## The Pipelines
@@ -179,7 +179,7 @@ The pipelines are intended to process datasets, that have been selected in the i
 
 Each pipeline has a directory in `pipelines` by the name of the `data_indicator` (from the input data). It consists of the following files:
 
-- `<data_indicator>.R`: a script for downloading a dataset, processing it and preparing it for the postgres export 
+- `<data_indicator>.R`: a script for downloading a dataset, processing it and preparing it for the postgres export
 - `metadata_table_columns.csv`: metadata for the postgres table, describing the fields, besides `year` and `spatialunit_uid``
 - `metadata_tables.csv`: metadata for the postgres_table
 - `queries.sql`: Natural language questions and corresponding sql queries to answer these questions. This is the [Statbot Training Data]
@@ -202,25 +202,25 @@ These files are the output of a run of `statbotData::testrun_queries(ds)` on the
 
 #### `metadata_tables.csv`
 
-These are metadata for a table in postgres. They are loaded into the postgres metadata table `metadata_tables`, see section on the [Statbot Postgres DB](#statbot-postgres-db) above. 
+These are metadata for a table in postgres. They are loaded into the postgres metadata table `metadata_tables`, see section on the [Statbot Postgres DB](#statbot-postgres-db) above.
 
 #### `metadata_table_columns_.csv`
 
-These are metadata for the table columns in postgres. They are loaded into the postgres metadata table `metadata_table_columns`, see [Statbot Postgres DB](#statbot-postgres-db) for details. 
+These are metadata for the table columns in postgres. They are loaded into the postgres metadata table `metadata_table_columns`, see [Statbot Postgres DB](#statbot-postgres-db) for details.
 
 ## Scripts
 
 
-But the code for these chores is always the same and consists of using the appropriate functions of the package `statbotData`. It does not depend on the specific pipeline or dataset, but on the situation and the status of the dataset. Therefore this code has been extracted from the pipelines and put into a directory of its own with a selection of different sample scripts that relate to certain scenarios: 
+But the code for these chores is always the same and consists of using the appropriate functions of the package `statbotData`. It does not depend on the specific pipeline or dataset, but on the situation and the status of the dataset. Therefore this code has been extracted from the pipelines and put into a directory of its own with a selection of different sample scripts that relate to certain scenarios:
 
-- `scripts/upload_new_dataset.R`: for uploading a new dataset with its metadata 
+- `scripts/upload_new_dataset.R`: for uploading a new dataset with its metadata
 - `scripts/dataset_in_postgres.R`: for testrunning queries for a dataset as part of the [Statbot Training Data](#statbot-training-data) and checking its metadata
 - `scripts/update_existing_dataset.R`: for updating a dataset and its metadata on postgres in case the dataset has changed at its origin (a new release of the dataset might have been published with an additional year of statistics added for example)
-- `scripts/operate_on_db.R`: for checking on the [Statbot Postgres DB](#statbot-postgres-db): listing its tables and checking on metadata for the tables 
+- `scripts/operate_on_db.R`: for checking on the [Statbot Postgres DB](#statbot-postgres-db): listing its tables and checking on metadata for the tables
 
 ## Access to the Statbot Postgres DB
 
-In order to run the functions, pipelines and scripts in this repo access to the [Statbot Postgres DB](#statbot-postgres-db) is needed. This access is set up via an environment file: 
+In order to run the functions, pipelines and scripts in this repo access to the [Statbot Postgres DB](#statbot-postgres-db) is needed. This access is set up via an environment file:
 ```
 cp sample.env .env
 ```
