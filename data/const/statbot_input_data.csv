@@ -1,31 +1,37 @@
-data_indicator,status,name,format,size,encoding,px_id,publisher,organization,access_url,query_url,download_url,lang
-A1,uploaded,medizinisch_technische_infrastruktur,px,,,px-x-1404010100_101,fso,bfs,,,,de
-A3,uploaded,greenhouse_gas_emissions_through_consumption,xlsx,,,,fso,bfs,,,https://dam-api.bfs.admin.ch/hub/api/dam/assets/23567511/master,en
-A4,uploaded,energiebilanz_schweiz_in_tera_joule,csv,,,,fso,opendata,,,https://www.uvek-gis.admin.ch/BFE/ogd/115/ogd115_gest_bilanz.csv,de
-A5,uploaded,ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit,px,,,px-x-1305000000_101,fso,bfs,,,,de
-A6,uploaded,abstimmungsvorlagen_seit_1971,px,,,px-x-1703010000_103,fso,bfs,,,,de
-A7,uploaded,arztpraxen_ambulante_zentren,px,,,px-x-1404050000_103,fso,bfs,,,,de
-A8,uploaded,nationalratswahlen,px,,,px-x-1702020000_104,fso,bfs,,,,de
-A10,uploaded,criminal_offences_registered_by_police,px,,UTF-8,px-x-1903020100_101,fso,bfs,,,,en
-S1,uploaded,median_strompreis_per_kanton,rdf,,,NA,fso,lindas,,https://energy.ld.admin.ch/query,,de
-A13,uploaded,number_of_plantations_in_swiss_forest,px,,,px-x-0703030000_112,fso,bfs,,,,en
-S3EN,uploaded,government_expenditure_by_function_cofog,rdf,,,NA,fso,lindas,,https://environment.ld.admin.ch/query,,en
-S3,uploaded,staatsausgaben_nach_aufgabenbereichen_cofog,rdf,,,NA,fso,lindas,,https://environment.ld.admin.ch/query,,de
-A14,uploaded,tourism_economy_by_canton,px,,,px-x-1002020000_101,fso,bfs,,,,en
-A15,uploaded,employees_farmholdings_agricultural_area_livestock_per_canton,px,large,latin1,px-x-0702000000_101,fso,bfs,,,,en
-A16,uploaded,demographic_balance_by_canton,px,,,px-x-0102020000_101,fso,bfs,,,,en
-A17,uploaded,volksabstimmung_nach_kanton_seit_1861,px,,,px-x-1703030000_100,fso,bfs,,,,de
-A21,uploaded,basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr,csv,,,,basel_land,opendata,,,https://data.bl.ch/api/explore/v2.1/catalog/datasets/10190/exports/csv?lang=de&timezone=Europe%2FParis&use_labels=true&delimiter=%3B,de
-A22,uploaded,basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde,csv,,,,basel_land,opendata,,,https://data.bl.ch/api/explore/v2.1/catalog/datasets/10020/exports/csv?lang=de&timezone=Europe%2FParis&use_labels=true&delimiter=%3B,de
-A23,uploaded,basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr,csv,,,,basel_land,opendata,,,https://data.bl.ch/api/explore/v2.1/catalog/datasets/10200/exports/csv?lang=de&timezone=Europe%2FParis&use_labels=true&delimiter=%3B,de
-A24,uploaded,aargau_privatverkehr_bestand_nach_fahrzeugarten,json,,,,aargau,Strassenverkehrsamt des Kantons Aargau,,,https://api.ag.ch/ogd/p/privatverkehr-fahrzeuge-fahrzeugbestand-bestand-nach-fahrzeugarten?page=1&size=100000,de
-A25,uploaded,aargau_obst_rebbau_rebland_wein_ernte,json,,,,aargau,"Kanton Aargau, Abteilung Landwirtschaft",,,https://api.ag.ch/ogd/p/landwirtschaft-obst-und-rebbau-rebbau-rebland-wein-ernte-oechsle-ab-19702019?page=1&size=100000,de
-A26,uploaded,aargau_brandversicherung_brandschaden_anzahl_schadensummen,json,,,,aargau,"Aargauisches Versicherungsamt (AVA)",,,https://api.ag.ch/ogd/p/versicherungen-brandversicherung-brandschaeden-anzahl-und-schadensummen?page=1&size=100000,de
-A27,uploaded,thurgau_erneuerbare_elektrizitatsproduktion_gemeinde,csv,,,,thurgau,"Amt für Energie Kanton Thurgau",,,https://data.tg.ch/api/explore/v2.1/catalog/datasets/div-energie-10/exports/csv?lang=en&timezone=Europe%2FZurich&use_labels=true&delimiter=%2C,de
-A28,uploaded,thurgau_beschaftigte_nach_sektoren_und_gemeinden,csv,,,,thurgau,"Dienststelle für Statistik Kanton Thurgau",,,https://data.tg.ch/api/explore/v2.1/catalog/datasets/sk-stat-98/exports/csv?lang=en&timezone=UTC&use_labels=true&delimiter=%2C,de
-A29,uploaded,stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983,csv,,,,stadt_zurich,"Messung Luftqualität, Umwelt- und Gesundheitsschutz, Gesundheits- und Umweltdepartement",,,https://data.stadt-zuerich.ch/dataset/ugz_luftschadstoffmessung_tageswerte/download/ugz_ogd_air_d1_1983.csv,de
-A30,uploaded,zurich_effektive_preise_wohnbauland,xlsx,,,,zurich,"Statistisches Amt des Kantons Zürich",,,https://www.web.statistik.zh.ch/ogd/daten/ressourcen/KTZH_00000073_00001202.xlsx,de
-A31,uploaded,basel_stadt_steuerstatistik_kennzahlen_wohnvierteln,csv,,,,basel_stadt,"Statistisches Amt",,,https://data.bs.ch/api/explore/v2.1/catalog/datasets/100165/exports/csv?lang=en&timezone=UTC&use_labels=true&delimiter=%3B,de
-A32,uploaded,basel_stadt_kennzahlen_zu_den_basler_wohnvierteln,csv,,,,basel_stadt,"Statistisches Amt",,,https://data.bs.ch/api/explore/v2.1/catalog/datasets/100011/exports/csv?lang=en&timezone=UTC&use_labels=true&delimiter=%3B,de
-A33,uploaded,schwyz_standige_wohnbevolkerung_geschlecht_nationalitat,csv,,,,schwyz,"Amt für Wirtschaft Kanton Schwyz",,,https://data.sz.ch/api/explore/v2.1/catalog/datasets/staendige-wohnbevoelkerung-nach-geschlecht-und-nationalitaet/exports/csv?lang=de&timezone=Europe%2FBerlin&use_labels=true&delimiter=%2C,de
-B1,remote,stock_vehicles,px,,,px-x-1103020100_111,fso,bfs,,,,en
+data_indicator,status,name,format,size,encoding,px_id,publisher,organization,access_url,query_url,download_url,lang,comment
+A1,uploaded,medizinisch_technische_infrastruktur,px,,,px-x-1404010100_101,fso,bfs,,,,de,
+A3,uploaded,greenhouse_gas_emissions_through_consumption,xlsx,,,,fso,bfs,,,https://dam-api.bfs.admin.ch/hub/api/dam/assets/23567511/master,en,
+A4,uploaded,energiebilanz_schweiz_in_tera_joule,csv,,,,fso,opendata,,,https://www.uvek-gis.admin.ch/BFE/ogd/115/ogd115_gest_bilanz.csv,de,
+A5,uploaded,ahv_renten_nach_wohnsitz_und_staatsangehoerigkeit,px,,,px-x-1305000000_101,fso,bfs,,,,de,
+A6,uploaded,abstimmungsvorlagen_seit_1971,px,,,px-x-1703010000_103,fso,bfs,,,,de,
+A7,uploaded,arztpraxen_ambulante_zentren,px,,,px-x-1404050000_103,fso,bfs,,,,de,
+A8,uploaded,nationalratswahlen,px,,,px-x-1702020000_104,fso,bfs,,,,de,
+A10,uploaded,criminal_offences_registered_by_police,px,,UTF-8,px-x-1903020100_101,fso,bfs,,,,en,
+S1,uploaded,median_strompreis_per_kanton,rdf,,,NA,fso,lindas,,https://energy.ld.admin.ch/query,,de,
+A13,uploaded,number_of_plantations_in_swiss_forest,px,,,px-x-0703030000_112,fso,bfs,,,,en,
+S3EN,uploaded,government_expenditure_by_function_cofog,rdf,,,NA,fso,lindas,,https://environment.ld.admin.ch/query,,en,
+S3,uploaded,staatsausgaben_nach_aufgabenbereichen_cofog,rdf,,,NA,fso,lindas,,https://environment.ld.admin.ch/query,,de,
+A14,uploaded,tourism_economy_by_canton,px,,,px-x-1002020000_101,fso,bfs,,,,en,
+A15,uploaded,employees_farmholdings_agricultural_area_livestock_per_canton,px,large,latin1,px-x-0702000000_101,fso,bfs,,,,en,
+A16,uploaded,demographic_balance_by_canton,px,,,px-x-0102020000_101,fso,bfs,,,,en,
+A17,uploaded,volksabstimmung_nach_kanton_seit_1861,px,,,px-x-1703030000_100,fso,bfs,,,,de,
+A21,uploaded,basel_land_endverbrauch_von_ektrizitat_nach_gemeinde_und_jahr,csv,,,,basel_land,opendata,,,https://data.bl.ch/api/explore/v2.1/catalog/datasets/10190/exports/csv?lang=de&timezone=Europe%2FParis&use_labels=true&delimiter=%3B,de,
+A22,uploaded,basel_land_bevolkerung_nach_nationalitat_konfession_gemeinde,csv,,,,basel_land,opendata,,,https://data.bl.ch/api/explore/v2.1/catalog/datasets/10020/exports/csv?lang=de&timezone=Europe%2FParis&use_labels=true&delimiter=%3B,de,
+A23,uploaded,basel_land_quadratmeterpreis_wohnbauland_nach_gemeinde_und_jahr,csv,,,,basel_land,opendata,,,https://data.bl.ch/api/explore/v2.1/catalog/datasets/10200/exports/csv?lang=de&timezone=Europe%2FParis&use_labels=true&delimiter=%3B,de,
+A24,uploaded,aargau_privatverkehr_bestand_nach_fahrzeugarten,json,,,,aargau,Strassenverkehrsamt des Kantons Aargau,,,https://api.ag.ch/ogd/p/privatverkehr-fahrzeuge-fahrzeugbestand-bestand-nach-fahrzeugarten?page=1&size=100000,de,
+A25,uploaded,aargau_obst_rebbau_rebland_wein_ernte,json,,,,aargau,"Kanton Aargau, Abteilung Landwirtschaft",,,https://api.ag.ch/ogd/p/landwirtschaft-obst-und-rebbau-rebbau-rebland-wein-ernte-oechsle-ab-19702019?page=1&size=100000,de,
+A26,uploaded,aargau_brandversicherung_brandschaden_anzahl_schadensummen,json,,,,aargau,"Aargauisches Versicherungsamt (AVA)",,,https://api.ag.ch/ogd/p/versicherungen-brandversicherung-brandschaeden-anzahl-und-schadensummen?page=1&size=100000,de,
+A27,uploaded,thurgau_erneuerbare_elektrizitatsproduktion_gemeinde,csv,,,,thurgau,"Amt für Energie Kanton Thurgau",,,https://data.tg.ch/api/explore/v2.1/catalog/datasets/div-energie-10/exports/csv?lang=en&timezone=Europe%2FZurich&use_labels=true&delimiter=%2C,de,
+A28,uploaded,thurgau_beschaftigte_nach_sektoren_und_gemeinden,csv,,,,thurgau,"Dienststelle für Statistik Kanton Thurgau",,,https://data.tg.ch/api/explore/v2.1/catalog/datasets/sk-stat-98/exports/csv?lang=en&timezone=UTC&use_labels=true&delimiter=%2C,de,
+A29,uploaded,stadt_zurich_monatlich_luftqualitatsmessungen_seit_1983,csv,,,,stadt_zurich,"Messung Luftqualität, Umwelt- und Gesundheitsschutz, Gesundheits- und Umweltdepartement",,,https://data.stadt-zuerich.ch/dataset/ugz_luftschadstoffmessung_tageswerte/download/ugz_ogd_air_d1_1983.csv,de,
+A30,uploaded,zurich_effektive_preise_wohnbauland,xlsx,,,,zurich,"Statistisches Amt des Kantons Zürich",,,https://www.web.statistik.zh.ch/ogd/daten/ressourcen/KTZH_00000073_00001202.xlsx,de,
+A31,uploaded,basel_stadt_steuerstatistik_kennzahlen_wohnvierteln,csv,,,,basel_stadt,"Statistisches Amt",,,https://data.bs.ch/api/explore/v2.1/catalog/datasets/100165/exports/csv?lang=en&timezone=UTC&use_labels=true&delimiter=%3B,de,
+A32,uploaded,basel_stadt_kennzahlen_zu_den_basler_wohnvierteln,csv,,,,basel_stadt,"Statistisches Amt",,,https://data.bs.ch/api/explore/v2.1/catalog/datasets/100011/exports/csv?lang=en&timezone=UTC&use_labels=true&delimiter=%3B,de,
+A33,uploaded,schwyz_standige_wohnbevolkerung_geschlecht_nationalitat,csv,,,,schwyz,"Amt für Wirtschaft Kanton Schwyz",,,https://data.sz.ch/api/explore/v2.1/catalog/datasets/staendige-wohnbevoelkerung-nach-geschlecht-und-nationalitaet/exports/csv?lang=de&timezone=Europe%2FBerlin&use_labels=true&delimiter=%2C,de,
+B1,remote,stock_vehicles,px,,,px-x-1103020100_111,fso,bfs,,,,en,"dataset does not exist in english but was translated"
+B2,remote,baby_names_favorite_firstname,px,,,px-x-0104050000_101,fso,bfs,,,,en,"the mentioned dataset had only male firstnames and was combined with the the dataset for female firstnames of px number px-x-0104050000_102"
+B3,remote,divorces_duration_of_marriage_age_classes,px,,,px-x-0102020203_104,fso,bfs,,,,en,
+B4,remote,divorces_duration_of_marriage_citizenship_categories,px,,,px-x-0102020203_103,fso,bfs,,,,en,
+B5,remote,marriage_citizenship,px,,,px-x-0102020202_102.px,fso,bfs,,,,en,
+B6,remote,resident_population_birthplace_citizenship_type,xlsx,,,,fso,bfs,,,https://www.bfs.admin.ch/asset/en/je-e-01.02.03.06,en,"origin of the dataset is unclear: several datasets might have been merged"
+B7,remote,resident_population_type_citizenship_category_gender_age,xlsx,,,,fso,bfs,,,https://www.bfs.admin.ch/asset/en/je-e-01.02.03.02,en,"dataset is not avalable in English language but has been translated"
