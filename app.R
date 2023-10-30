@@ -28,7 +28,7 @@ choices_ds <- dataset_list %>%
   dplyr::left_join(counts, by = "data_indicator") %>%
   dplyr::mutate(
     location = dplyr::case_when(
-      status == "uploaded" ~ "REMOTE",
+      status %in% c("remote", "uploaded") ~ "REMOTE",
       .default = "LOCAL"
     )) %>%
   dplyr::mutate(

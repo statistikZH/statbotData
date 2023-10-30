@@ -12,7 +12,7 @@ ds <- statbotData::create_dataset(data_indicator)
 
 # check dataset status
 ds$status
-# in case the status is `uploaded` the queries will run on postgres
+# in case the status is `remote` or `uploaded` the queries will run on postgres
 # otherwise the queries will run locally on a db in memory
 
 # testrun queries on postgres

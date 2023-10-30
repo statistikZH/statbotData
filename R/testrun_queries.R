@@ -159,7 +159,7 @@ log_result <- function(result, output_path) {
 #' log_question_and_query(ds$status, output_path)
 #' }
 log_time_and_environment <- function(pipeline_status, output_path) {
-  if (pipeline_status == "uploaded") {
+  if (pipeline_status %in% c("remote", "uploaded")) {
     env <- "REMOTE"
   } else {
     env <- "LOCAL"

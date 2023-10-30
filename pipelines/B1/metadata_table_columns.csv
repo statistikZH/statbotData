@@ -1,0 +1,4 @@
+name;table_name;data_type;title;title_en;example_values
+vehicle_type;stock_vehicles;categorical;"Vehicle type";"Vehicle type";"passenger_cars,trailers,motorcycles,passenger transportation vehicles"
+amount;stock_vehicles;numeric;"Amount of vehicles";"Amount of vehicles";"0,2,240"
+fuel_type;stock_vehicles;categorical;"Fuel type";"Fuel type";"total,Hydrogen,Electric,Diesel-electric: Normal-hybrid"
