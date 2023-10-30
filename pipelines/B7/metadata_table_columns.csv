@@ -1,0 +1,6 @@
+name;table_name;data_type;title;title_en;example_values
+population_type;resident_population_type_citizenship_category_gender_age;categorical;"population type";"population type";"Non permanent resident population,Permanent resident population"
+gender;resident_population_type_citizenship_category_gender_age;categorical;gender;gender;"Abroad,Switzerland,Place of birth - total""Male,Female,Sex - total"
+age_group;resident_population_type_citizenship_category_gender_age;categorical;"citizenship";"citizenship";"115,90 years,1 year"
+citizenship_category;resident_population_type_citizenship_category_gender_age;categorical;"citizenship category";"citizenship category";"Foreign country,Citizenship (category) - total,Switzerland"
+amount;resident_population_type_citizenship_category_gender_age;numeric;"number of persons";"number of persons";20
