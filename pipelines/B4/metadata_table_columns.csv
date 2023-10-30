@@ -1,0 +1,5 @@
+name;table_name;data_type;title;title_en;example_values
+citizenship_category_husband;divorces_duration_of_marriage_citizenship_categories;categorical;"citizen category husband: either foreign or Swiss";"citizen category husband: either foreign or Swiss";"Foreign country,Citizenship of husband - total,Switzerland"
+citizenship_category_wife;divorces_duration_of_marriage_citizenship_categories;categorical;"citizen category wife: either foreign or Swiss";"citizen category wife: either foreign or Swiss";"Foreign country,Citizenship of wife - total,Switzerland"
+duration_of_marriage;divorces_duration_of_marriage_citizenship_categories;categorical;"duration class of the marriage";"duration class of marriage";"Duration of marriage - total,10-14 years,20 years or more"
+amount;divorces_duration_of_marriage_citizenship_categories;numeric;"number of divorces";"number of divorces";10
