@@ -74,7 +74,7 @@ classDiagram
 
 **mandatory properties**:
 - `data_indicator`: an identifier for the dataset pipeline such as `A1`: this identifier serves also the directory name for the pipeline files in the repo
-- `status`: only the statuses `uploaded` or `remote` are relevant and indicates that the dataset is already in postgres, any other status can be chosen as needed.
+- `status`: only the statuses `uploaded` or `remote` are relevant and indicates that the dataset is already in postgres, any other status can be chosen as needed. The status `uploaded` indicates the dataset was uploaded to postgres via this `statbotData` repository. The status `remote` indicates that the dataset was uploaded to postgres previously.
 - `name`: the table name in postgres for this dataset
 - `format`: the format determines how the data is retrieved from its origin: `px`, `csv`, `xlsx`, `rdf` are the current options
 - `lang`: the language of the dataset, currently this can be either `en`, `de` or `fr`
@@ -97,6 +97,7 @@ By default the [R package BFS](https://felixluginbuhl.com/BFS/) is used to retri
 - `download_url`: for file format `csv` or `xlsx` the file download url is required
 
 ## Statbot Postgres DB
+
 One goal of this repo ist to fill up the [Statbot Postgres DB](#statbot-postgres-db). This database has the following tables:
 
 ```mermaid
@@ -240,7 +241,7 @@ The functions of the statbotData package consist of reusable functions that are 
 
 ### Functions to run if `ds$postgres_export` has been generated
 
-`ds$postgres_export` is the processed dataset that can be uploaded to the postgres instance Statbot Postgres DB](#statbot-postgres-db). To build this is the goal of each of the pipelines. Certain function in `statbotData` perform operations on this tibble, in case the dataset is not yet in the status `uploaded`:
+`ds$postgres_export` is the processed dataset that can be uploaded to the postgres instance Statbot Postgres DB](#statbot-postgres-db). To build this is the goal of each of the pipelines. Certain function in `statbotData` perform operations on this tibble, in case the dataset is not yet in the status `uploaded` or `remote`:
 
 - `statbotData::dataset_sample`: this function generates a sample of the dataset from `ds$postgres_export`
 - `statbotData::testrun_queries`: this runs the queries from a file `queries.sql` in the pipeline directory `ds$dir` and writes a logfile `queries.log` into the same directory
