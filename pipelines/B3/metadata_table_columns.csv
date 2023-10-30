@@ -1,0 +1,5 @@
+name;table_name;data_type;title;title_en;example_values
+age_class_husband;divorces_duration_of_marriage_age_classes;categorical;"age class of the husband";"age class of the husband";"Age class of husband - total,Less than 20 years,80-89 years"
+age_class_wife;divorces_duration_of_marriage_age_classes;categorical;"age class of the wife";"age class of the wife";"Age class of wife - total,Less than 20 years,80-89 years"
+duration_of_marriage;divorces_duration_of_marriage_age_classes;categorical;"duration class of the marriage";"duration class of marriage";"Duration of marriage - total,5-9 years,20 years or more"
+amount;divorces_duration_of_marriage_age_classes;numeric;"Count of divorces";"Count of divorces";120
