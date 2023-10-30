@@ -28,7 +28,7 @@ statbotData::generate_metadata_templates(ds)
 # STEP 1: Rebuild dataset from origin to get `ds$postgres_export`
 # -----------------------------------------------------------------------
 # get path to the build script for the dataset
-pipeline_build_path <- here::here(ds$dir, paste0(id, ".R"))
+pipeline_build_path <- here::here(ds$dir, paste0(data_indicator, ".R"))
 
 # rebuild dataset locally for origin
 source(path)
