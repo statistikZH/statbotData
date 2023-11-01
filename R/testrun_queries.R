@@ -190,7 +190,6 @@ log_time_and_environment <- function(pipeline_status, output_path) {
 #'   )
 #' }
 prepare_test_db <- function(db, df, table_name) {
-  statbotdb <- DBI::dbConnect(RSQLite::SQLite(), "")
   spatial_df <- load_spatial_map()
   DBI::dbWriteTable(db, "spatial_unit", spatial_df, overwrite = TRUE)
   DBI::dbWriteTable(db, table_name, df, overwrite = TRUE)
