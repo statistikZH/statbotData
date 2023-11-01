@@ -1,0 +1,5 @@
+name;table_name;data_type;title;title_en;example_values
+population_type;resident_population_birthplace_citizenship_type;categorical;"population type";"population type";"Non permanent resident population,Permanent resident population"
+place_of_birth;resident_population_birthplace_citizenship_type;categorical;"Place of birth: Switzerland or abroad";"Place of birth: Switzerland or abroad";"Abroad,Switzerland,Place of birth - total"
+citizenship;resident_population_birthplace_citizenship_type;categorical;"citizenship";"citizenship";"Sweden,São Tomé and Príncipe,Uganda"
+amount;resident_population_birthplace_citizenship_type;numeric;"number of persons";"number of persons";20

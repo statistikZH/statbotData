@@ -13,9 +13,9 @@
 # - reupload metadata to postgres if necessary
 # =======================================================================
 
-# setup dataset class: (change `id` to the id of your pipeline)
-id <- "A1"
-ds <- statbotData::create_dataset(id)
+# setup dataset class: (change `data_indicator` to the data_indicator
+# of your dataset
+data_indicator <- "A1"
 
 # you might need to work in the pipeline directory first:
 # - ds$dir/ds$data_indicator.R produces ds$postgres_export
@@ -25,7 +25,7 @@ ds <- statbotData::create_dataset(id)
 # STEP 1: rebuild dataset from origin to get `ds$postgres_export`
 # -----------------------------------------------------------------------
 # get path to the build script for the dataset
-pipeline_build_path <- here::here(ds$dir, paste0(id, ".R"))
+pipeline_build_path <- here::here(ds$dir, paste0(data_indicator, ".R"))
 
 # rebuild dataset locally for origin
 source(path)

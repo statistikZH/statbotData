@@ -1,0 +1,5 @@
+name;table_name;data_type;title;title_en;example_values
+gender;baby_names_favorite_firstname;categorical;gender;gender;"girl,boy"
+first_name;baby_names_favorite_firstname;categorical;First name;First name;"Anna,Martin"
+rank;baby_names_favorite_firstname;numeric;rank;rank;12
+amount;baby_names_favorite_firstname;numeric;amount;amount;20
