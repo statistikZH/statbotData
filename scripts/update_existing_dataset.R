@@ -16,7 +16,6 @@
 # setup dataset class: (change `data_indicator` to the data_indicator
 # of your dataset
 data_indicator <- "A1"
-ds <- statbotData::create_dataset(data_indicator)
 
 # you might need to work in the pipeline directory first:
 # - ds$dir/ds$data_indicator.R produces ds$postgres_export
