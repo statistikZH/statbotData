@@ -28,10 +28,11 @@ ds$data
 # -------------------------------------------------------------------------
 # Step: Clean the data
 #   input: ds$data
-#.  output: ds$cleaned_data: separate data by units
+# .  output: ds$cleaned_data: separate data by units
 # -------------------------------------------------------------------------
 
 ds$cleaned_data <- ds$data %>%
+  dplyr::filter(unit_of_measure == "Number") %>%
   dplyr::rename(
     amount = data_person,
     canton = language_region_canton
@@ -42,15 +43,19 @@ ds$cleaned_data <- ds$data %>%
   dplyr::filter(
     !stringr::str_detect(canton, "speaking")
   )
-ds$cleaned_data
+
+# Compute rank per year, gender and region
+ds$cleaned_data <- ds$cleaned_data %>%
+  group_by(gender, canton, year) %>%
+  mutate(rank = dplyr::dense_rank(desc(amount)))
 
 # -------------------------------------------------------------------------
 # Step: Spatial unit mapping
 #   input:  ds$cleaned_data
-#.  output: ds$postgres_export
+# .  output: ds$postgres_export
 # --------------------------------------------------------------------------
 
-spatial_mapping <- ds$cleaned_data %>%
+spatial_mapping() <- ds$cleaned_data %>%
   dplyr::select(canton) %>%
   dplyr::distinct(canton) %>%
   statbotData::map_ds_spatial_units(c("Country", "Canton"))
@@ -63,4 +68,3 @@ ds$postgres_export
 
 # testrun queries on postgres
 statbotData::testrun_queries(ds)
-
