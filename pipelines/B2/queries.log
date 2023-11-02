@@ -1,0 +1,2985 @@
+[1] "Environment: REMOTE, Time: 2023-11-02 21:17:18.581006"
+
+Query Nr. 1
+-- How many girls borned in 2014 in Switzeland is named as Lena. Return me the rank as well.
+SELECT amount, rank FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE year = 2014     AND bnff.gender = 'girl'     AND bnff.first_name = 'Lena'     AND su.name = 'Switzerland'     AND su.country = 'TRUE';
+ amount rank
+    264   13
+
+Query Nr. 2
+-- Show me the most popular names of girls in Switzerland in 2016.
+SELECT first_name, gender, amount, rank FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE year = 2016 and gender = 'girl' AND su.country = 'True' AND su.name = 'Switzerland' ORDER BY bnff.amount DESC LIMIT 1;
+ first_name gender amount rank
+        Mia   girl    488    1
+
+Query Nr. 3
+-- How many girls new borned with name initial L from canton Zurich in 2016?
+SELECT sum(amount) FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE year = 2016 AND gender = 'girl' AND su.canton = 'True' AND su.name ilike '%zurich%' AND bnff.first_name ilike 'l%';
+  sum
+ 1130
+
+Query Nr. 4
+-- How many boys were registered in Canton Valais in year 2011?
+SELECT sum(amount) FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE year = 2011 AND gender = 'boy' AND su.name ilike '%valais%' AND su.canton = 'TRUE';
+   sum
+ 24414
+
+Query Nr. 5
+-- Which canton has the most borned boys called 'Oscar' in 2016?
+SELECT su.name, bnff.amount FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE year = 2011 AND gender = 'boy' AND bnff.first_name = 'Oscar' AND su.canton = 'TRUE' ORDER BY bnff.amount DESC LIMIT 1;
+           name amount
+ Canton of Bern    271
+
+Query Nr. 6
+-- How many favorite babynames are registered in year 2011?
+SELECT DISTINCT COUNT(bnff.first_name) FROM baby_names_favorite_firstname as bnff WHERE bnff.year = 2011;
+  count
+ 150660
+
+Query Nr. 7
+-- Please list all registered baby names in Canton Zug in all years. Return me the result in order of alphabets.
+SELECT DISTINCT bnff.first_name FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE su.name ilike '%Zug%' and su.canton = 'TRUE' ORDER BY bnff.first_name;
+  first_name
+        Aada
+     Aadhira
+      Aadhya
+      Aadvik
+       Aadya
+     Aaliyah
+       Aanya
+        Aari
+       Aaron
+     Aarusha
+       Aarvi
+     Aashika
+    Aathiran
+       Aayan
+     Aayansh
+      Abanob
+     Abanoub
+       Abbas
+       Abbie
+        Abby
+       Abdel
+  Abdirahman
+    Abdullah
+        Abel
+     Abigael
+     Abigail
+     Abigaël
+   Abigaëlle
+     Abigaïl
+      Abiner
+    Abiselom
+     Abishan
+     Abraham
+         Ace
+     Achille
+    Achilles
+         Ada
+        Adal
+     Adaline
+        Adam
+        Adan
+        Adar
+        Adea
+        Adel
+       Adela
+    Adelaide
+       Adele
+      Adelia
+     Adelina
+     Adeline
+        Adem
+        Aden
+       Adena
+      Adhira
+     Adhiran
+     Adhvika
+         Adi
+       Adian
+        Adil
+        Adin
+       Adina
+        Adis
+       Admir
+        Adna
+       Adnan
+      Adonay
+      Adonis
+        Ador
+       Adora
+      Adrian
+     Adriana
+     Adriano
+      Adriel
+      Adrien
+     Adrijan
+    Adrijana
+      Adrián
+        Adán
+       Adèle
+    Adélaïde
+      Adélie
+       Aeden
+        Aela
+       Aelia
+      Aeneas
+        Aesa
+        Afan
+       Afnan
+      Afonso
+       Afron
+        Agan
+       Agata
+      Agatha
+      Agathe
+        Agim
+        Agir
+        Agit
+       Agnes
+      Agnese
+       Agnès
+        Agon
+       Agron
+     Agustin
+        Ahad
+       Ahana
+       Ahmad
+       Ahmed
+       Ahmet
+        Aian
+       Aiana
+       Aiara
+       Aicha
+         Aid
+        Aida
+       Aidan
+       Aiden
+  Aikaterini
+        Aila
+      Aileen
+       Ailin
+       Aiman
+       Aimee
+       Aimie
+        Aimo
+        Aimy
+       Aimée
+        Aina
+      Ainara
+      Ainhoa
+        Aino
+       Ainoa
+        Aira
+       Aisha
+      Aitana
+       Aivar
+       Aiven
+      Aiyana
+        Aiza
+        Ajan
+       Ajana
+        Ajas
+        Ajay
+       Ajdin
+        Ajka
+        Ajla
+       Ajlin
+      Ajlina
+        Ajna
+        Ajra
+       Ajuna
+        Akan
+        Akay
+       Akemi
+        Akif
+        Akil
+        Akin
+       Akira
+       Akram
+        Aksa
+       Aksel
+     Akshara
+      Akshay
+       Alaia
+       Alaja
+        Alan
+       Alana
+       Alani
+       Alara
+       Alaya
+        Alaz
+       Alaïa
+        Alba
+       Alban
+      Albane
+      Albert
+     Alberto
+       Albin
+        Alda
+       Aldin
+      Aldion
+        Aldo
+        Alea
+       Aleah
+    Aleandro
+        Alec
+      Aleena
+       Aleja
+   Alejandra
+   Alejandro
+      Alejna
+        Alek
+       Aleks
+  Aleksandar
+  Aleksander
+   Aleksandr
+  Aleksandra
+     Aleksej
+    Aleksija
+        Alem
+        Alen
+       Alena
+       Alend
+      Alenia
+      Alenja
+        Aleo
+      Alerio
+      Alessa
+  Alessandra
+  Alessandro
+     Alessia
+     Alessio
+     Alessya
+        Alex
+       Alexa
+   Alexander
+   Alexandra
+   Alexandre
+   Alexandro
+  Alexandros
+   Alexandru
+      Alexey
+       Alexi
+      Alexia
+      Alexis
+       Alexy
+       Aleya
+      Aleyah
+      Aleyna
+       Alfie
+      Alfred
+         Ali
+        Alia
+       Aliah
+       Alian
+       Alica
+       Alice
+      Alicia
+      Alicja
+       Alija
+        Alim
+        Alin
+       Alina
+       Aline
+        Alis
+       Alisa
+       Alise
+      Alisea
+      Alisha
+      Alisia
+      Alison
+      Alissa
+     Alissia
+    Alistair
+       Alita
+        Alix
+       Aliya
+      Aliyah
+        Aliz
+       Aliza
+      Alizée
+     Aliénor
+    Aljoscha
+       Allan
+     Allegra
+     Allison
+        Ally
+        Alma
+      Almaas
+    Almedina
+      Almila
+       Almin
+       Almir
+      Almira
+       Alois
+        Alon
+       Alona
+       Aloys
+       Aloïs
+      Aloïse
+         Alp
+   Alparslan
+       Alpay
+     Alperen
+       Altea
+      Althea
+       Altin
+      Altina
+        Alva
+      Alvaro
+       Alvin
+        Alya
+       Alyah
+       Alyan
+      Alyana
+      Alycia
+       Alyna
+      Alyson
+      Alyssa
+     Alyssia
+      Alícia
+         Ama
+       Amaar
+      Amadeo
+     Amadeus
+       Amael
+       Amaia
+       Amaja
+        Amal
+      Amalia
+      Amalie
+      Amalya
+      Amanda
+    Amandine
+       Amani
+       Amant
+     Amanuel
+        Amar
+       Amara
+       Amari
+       Amaro
+       Amaru
+      Amaury
+       Amaya
+      Amayra
+       Amaël
+       Amber
+       Ambra
+       Ambre
+    Ambroise
+        Amea
+        Amel
+       Amela
+       Ameli
+      Amelia
+      Amelie
+     Amelija
+      Amelio
+       Amely
+      Amelya
+        Amen
+        Ameo
+        Amer
+       Ameya
+        Amia
+      Amicia
+        Amie
+      Amiira
+        Amil
+       Amila
+      Amilah
+      Amilia
+        Amin
+       Amina
+    Aminadab
+      Aminah
+     Aminata
+       Amine
+       Amino
+        Amir
+       Amira
+       Amjad
+        Amla
+       Ammar
+        Amna
+        Amon
+        Amos
+        Amra
+         Amy
+      Amália
+      Amélia
+      Amélie
+      Amélya
+   Aménadiel
+         Ana
+   Ana-Maria
+     Anabell
+    Anabelle
+     Anaelle
+     Anahita
+       Anahí
+      Anaiah
+       Anais
+     Anaisha
+      Anakin
+      Analia
+   Anamarija
+      Ananya
+        Anar
+        Anas
+   Anastasia
+  Anastasija
+   Anastasya
+     Anatole
+       Anaya
+        Anaé
+       Anaël
+     Anaëlle
+       Anaïa
+       Anaïs
+        Anda
+        Andi
+   Andjelina
+        Ando
+       Andor
+       Andra
+       Andre
+      Andrea
+     Andreas
+     Andreea
+      Andrei
+      Andrej
+      Andres
+      Andrew
+       Andri
+    Andriana
+     Andrija
+   Andrijana
+      Andrin
+     Andrina
+      Andris
+      Andrra
+       André
+      Andréa
+     Andréas
+      Andrés
+     Anduena
+        Anea
+        Anel
+       Anela
+        Anes
+       Anesa
+        Ange
+       Angel
+      Angela
+    Angelica
+    Angelika
+    Angelina
+      Angelo
+      Angèle
+        Ania
+        Anic
+       Anica
+       Anida
+        Anik
+       Anika
+        Anil
+       Anila
+       Anina
+      Anique
+        Anir
+        Anis
+       Anisa
+      Anissa
+       Anita
+        Anja
+         Ann
+        Anna
+  Anna-Maria
+     Annabel
+   Annabella
+   Annabelle
+    Annalena
+     Annalia
+   Annamaria
+        Anne
+ Anne-Sophie
+        Anni
+       Annic
+       Annie
+     Annigna
+       Annik
+      Annika
+      Annina
+     Annique
+      Anouck
+       Anouk
+     Anselme
+     Anshika
+       Anteo
+      Anthea
+     Anthony
+     Antoine
+       Anton
+   Antonella
+      Antoni
+     Antonia
+    Antonija
+     Antonin
+     Antonio
+    Antonios
+      Antony
+     António
+       Anuar
+        Anue
+        Anuk
+    Anuschka
+       Anuya
+       Anwar
+       Anwen
+        Anya
+     Apoline
+    Apolline
+   Apollonia
+       April
+    Arabella
+        Araf
+        Aram
+        Aran
+        Aras
+       Araya
+        Araz
+       Arben
+       Arbor
+      Arbora
+       Arbër
+      Archie
+        Arda
+       Arden
+      Ardian
+       Ardit
+        Arel
+        Aren
+        Ares
+         Ari
+        Aria
+     Ariadne
+     Ariadni
+       Ariam
+       Arian
+      Ariana
+      Ariane
+     Arianna
+      Ariano
+       Ariel
+      Ariela
+      Ariele
+     Ariella
+     Arielle
+      Arijan
+     Arijana
+      Arijon
+        Arik
+       Arila
+     Arilena
+        Arin
+       Arina
+        Ario
+       Arion
+      Ariona
+        Aris
+       Arisa
+    Aristeas
+       Ariya
+      Ariyam
+      Ariyan
+     Arizona
+       Arjan
+       Arjen
+       Arjon
+       Arjun
+      Arlind
+        Arlo
+      Armaan
+       Arman
+     Armance
+      Armand
+     Armando
+       Armel
+      Armela
+     Armelle
+       Armin
+       Armon
+      Arnaud
+        Arno
+      Arnold
+         Aro
+        Aroa
+        Aron
+      Arsema
+       Arsen
+    Arsenije
+     Arsiema
+      Arsène
+         Art
+        Arta
+       Artan
+     Artemii
+     Artemis
+      Arthur
+      Arthus
+        Arti
+      Artian
+       Artin
+      Artina
+       Artur
+      Arturo
+       Artus
+        Arun
+       Aruna
+       Arush
+        Arvi
+       Arvid
+       Arvin
+        Arvo
+        Arwa
+       Arwen
+       Arwin
+         Ary
+        Arya
+       Aryam
+       Aryan
+      Aryana
+        Arys
+       Arzen
+        Arès
+         Asa
+        Asad
+        Asaf
+       Asaël
+        Asel
+     Ashanti
+       Asher
+      Ashira
+      Ashley
+      Ashwin
+        Asia
+       Asija
+        Asil
+        Asim
+      Asinat
+       Asiya
+      Asiyah
+        Asja
+       Aslan
+        Asma
+       Asmin
+        Asra
+       Asser
+       Assia
+     Assinat
+      Assiya
+       Assya
+        Asta
+      Astrid
+      Astrit
+        Asya
+         Ata
+       Atdhe
+       Atena
+        Ates
+  Athanasios
+     Atharva
+      Athena
+      Athina
+     Athiran
+      Athéna
+    Athénaïs
+       Atika
+       Atlas
+      Atréju
+      Attila
+     Attilio
+        Aude
+      Audrey
+      August
+     Auguste
+    Augustin
+   Augustine
+       Aulon
+      Aulona
+        Aura
+       Aurea
+       Aurel
+      Aurela
+     Aurelia
+    Aurelian
+   Aureliano
+     Aurelie
+     Aurelio
+    Aurelius
+        Auri
+     Auriane
+      Auriel
+    Aurielle
+       Aurin
+       Auron
+      Aurora
+      Aurore
+      Aurèle
+       Aurél
+     Aurélia
+     Aurélie
+    Aurélien
+      Austin
+         Ava
+       Avani
+     Avelina
+     Aveline
+        Aven
+       Avery
+         Avi
+       Aviel
+        Avin
+       Avina
+       Avyan
+         Awa
+        Axel
+      Axelle
+         Aya
+       Ayaan
+        Ayah
+       Ayala
+        Ayan
+       Ayana
+      Ayanna
+       Ayara
+        Ayas
+        Ayat
+        Ayaz
+       Aydan
+       Ayden
+       Aydin
+      Ayelén
+      Ayesha
+        Ayet
+       Aykan
+        Ayla
+       Aylan
+      Ayleen
+       Aylen
+       Aylin
+      Aylina
+      Ayline
+       Aylis
+       Ayliz
+       Aylon
+       Ayman
+      Aymara
+       Aymen
+     Aymeric
+        Ayna
+       Ayoub
+        Ayra
+      Ayrton
+        Ayse
+       Ayshe
+        Aysu
+        Ayub
+       Ayumi
+       Ayuna
+       Ayush
+        Azad
+      Azahel
+      Azalea
+      Azaria
+      Azarya
+        Azem
+        Azer
+        Aziz
+       Azlan
+        Azra
+      Azzura
+     Azzurra
+      Azélie
+       Aélia
+        Aïda
+       Aïdan
+       Aïden
+        Aïna
+      Aïnhoa
+       Aïsha
+    Aïssatou
+        Aïvy
+       Bahar
+      Bajram
+     Balduin
+      Balian
+   Balthasar
+   Balthazar
+        Balz
+      Balázs
+        Bana
+         Bao
+    Baptiste
+       Baran
+     Barbara
+       Barin
+       Baris
+      Barkot
+     Bartosz
+       Basil
+      Basile
+     Bastian
+     Bastien
+     Batseba
+        Batu
+     Batuhan
+        Baya
+        Beat
+    Beatrice
+     Beatrix
+     Beatriz
+        Beda
+        Bela
+     Belinda
+       Bella
+       Belén
+         Ben
+     Benaiah
+      Benaja
+       Bence
+   Benedetta
+    Benedict
+    Benedikt
+    Benedita
+       Benet
+      Benett
+        Beni
+     Benicio
+    Benjamim
+    Benjamin
+       Benji
+      Bennet
+     Bennett
+       Benno
+      Benoit
+      Benoît
+       Beona
+       Beran
+       Berat
+      Berfin
+     Beritan
+      Berkan
+      Berkay
+    Bernardo
+    Bertille
+        Besa
+     Besiana
+      Besnik
+   Bethlehem
+      Betiel
+       Betty
+        Beya
+       Beyza
+         Bia
+      Bianca
+      Bianka
+       Bigna
+      Bignia
+       Bilal
+       Bilel
+      Billie
+       Billy
+       Binia
+       Binja
+        Birk
+     Bitania
+     Bitanya
+       Bjorn
+       Björn
+       Bjørn
+      Blaise
+       Blake
+      Blanca
+     Blanche
+      Blanka
+      Bleran
+      Blerim
+        Blin
+       Blina
+      Blinor
+        Boas
+         Bob
+       Bodhi
+      Bogdan
+      Boiken
+       Bojan
+      Bonnie
+        Bora
+       Boris
+       Bosco
+     Bradley
+        Bran
+      Brando
+      Brayan
+     Brendon
+       Brian
+      Briana
+     Brianna
+        Bron
+        Bruk
+       Bruna
+       Brune
+       Bruno
+       Bryan
+        Buna
+       Burak
+     Butrint
+    Béatrice
+        Béla
+    Bérénice
+     Cadence
+      Caelan
+      Caesar
+     Caetano
+        Caio
+     Caitlin
+     Caitlyn
+       Caleb
+        Cali
+       Calie
+      Calina
+     Calista
+      Callie
+      Calvin
+     Camelia
+     Cameron
+       Camie
+       Camil
+      Camila
+      Camill
+     Camilla
+     Camille
+     Camillo
+      Camilo
+     Camélia
+         Can
+     Candice
+    Capucine
+        Cara
+      Carina
+        Carl
+       Carla
+       Carlo
+      Carlos
+     Carlota
+    Carlotta
+      Carmen
+     Carmine
+       Carol
+     Carolin
+    Carolina
+    Caroline
+       Casey
+      Caspar
+      Casper
+   Cassandra
+   Cassandre
+      Cassia
+     Cassian
+      Cassie
+    Cataleya
+    Catalina
+    Catarina
+    Caterina
+   Cathaleya
+   Catharina
+   Catherine
+    Cattleya
+      Cayden
+     Cecilia
+      Cedric
+     Celeste
+       Celia
+      Celina
+      Celine
+       Celio
+         Cem
+      Cesare
+       Ceyda
+      Ceylan
+      Cezary
+       Chaim
+      Chanel
+     Chantal
+    Charlene
+     Charles
+      Charli
+     Charlie
+    Charline
+    Charlise
+    Charlize
+   Charlotta
+   Charlotte
+      Charly
+     Charlyn
+    Charlyne
+    Charlène
+       Chaya
+    Chayenne
+      Chaïma
+     Chelsea
+     Chelsey
+      Chelsy
+    Cheyenne
+      Chiara
+  Chimamanda
+       Chloe
+       Chloè
+       Chloé
+ [ reached 'max' / getOption("max.print") -- omitted 4475 rows ]
+
+Query Nr. 8
+-- Show me all registered gender-universal names in Switzerland.
+SELECT DISTINCT bnff.first_name FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE su.name ilike '%Switzerland%' and su.country = 'TRUE' and gender = 'girl' intersect SELECT DISTINCT bnff.first_name FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE su.name ilike '%Switzerland%' and su.country = 'TRUE' and gender = 'boy';
+ first_name
+       Amen
+       Numa
+    Camille
+       Mavi
+       Leni
+      Elvin
+        Eli
+     Maxime
+      Lavin
+       Elie
+       Juli
+      Lorin
+       Aria
+        Noé
+       Adel
+     Lilian
+       Joey
+       Élie
+       Jona
+        Joe
+    Charlie
+        Rio
+      Amine
+      Riley
+      Malin
+       Nuri
+      Rayan
+      Wanja
+     Leslie
+       Niki
+      Quinn
+      Robin
+       Lois
+       Mali
+      Sacha
+       Olin
+      Ariel
+        Dea
+      Deniz
+        Maé
+      Milou
+       Evin
+        Lua
+      Lovis
+       Anik
+       Alix
+       Mika
+     Paulin
+       Eden
+      Swann
+       Juno
+     Andrea
+       Nour
+     Felice
+       Elia
+      Sasha
+       Ilay
+       Kaya
+      Marlo
+      Ellis
+      Liyan
+        Ari
+     Elisha
+      Derin
+        Nil
+       Yuma
+        Isa
+       Lien
+       Arin
+       Esra
+      Sened
+       Sena
+       Toni
+        Nur
+       Zola
+      Eliah
+        Rey
+      Sonam
+       Enea
+       Yael
+     Alexis
+        Mio
+       Amel
+       Loïs
+       Elis
+        Sol
+      Eliya
+       Cali
+      Kayra
+      Angel
+      Nilay
+        Lou
+       Elya
+     Nikita
+     Tenzin
+        Joy
+     Eliyah
+        Lis
+        Noa
+       Sora
+        Noe
+     Azahel
+      Jamie
+      Layan
+     Simone
+
+Query Nr. 9
+-- Which canton has most borned girls registed in 2011?
+SELECT sum(bnff.amount), su.name FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE su.canton = 'TRUE' and bnff.gender = 'girl' and bnff.year = 2011 GROUP BY su.name ORDER BY sum(bnff.amount) DESC LIMIT 1;
+  sum             name
+ 5160 Canton of Zurich
+
+Query Nr. 10
+-- Which canton has least borned boys registed in 2011?
+SELECT sum(bnff.amount), su.name FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE su.canton = 'TRUE' and bnff.gender = 'boy' and bnff.year = 2011 GROUP BY su.name ORDER BY sum(bnff.amount) LIMIT 1;
+ sum                            name
+  24 Canton of Appenzell Innerrhoden
+
+Query Nr. 11
+-- Show me the top one ranking girl names from year 2010 in Switzerland.
+SELECT bnff.first_name, bnff.year FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE su.country = 'TRUE' and su.name ilike '%Switzerland%' and bnff.gender = 'girl' and bnff.year >= 2010 and bnff.rank = 1 ORDER BY bnff.year;
+ first_name year
+       Lara 2010
+       Emma 2011
+       Emma 2012
+        Mia 2013
+       Emma 2014
+        Mia 2015
+        Mia 2016
+       Emma 2017
+       Emma 2018
+        Mia 2019
+        Mia 2020
+        Mia 2021
+
+Query Nr. 12
+-- Show me the top one ranking boy names for each year after 2012 in canton Zug. Fetch me the result in an ascending order of the year.
+SELECT bnff.first_name, bnff.year FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE su.canton = 'TRUE' and su.name ilike '%Zug%' and bnff.gender = 'boy' and bnff.year > 2012 and bnff.rank = 1 ORDER BY bnff.year;
+ first_name year
+      Liano 2013
+      Colin 2013
+      Kerem 2013
+       Ryan 2013
+       Ivan 2013
+       Luka 2013
+       Dean 2013
+    Alessio 2013
+     Marlon 2013
+      Mateo 2013
+    William 2013
+    Leandro 2013
+      Nelio 2013
+       Elio 2013
+        Nik 2013
+      Lucas 2013
+       Alan 2013
+ Maximilian 2013
+       Luis 2013
+       Nael 2013
+      Lenny 2013
+     Silvan 2013
+    Charlie 2013
+       Lias 2013
+     Alexis 2013
+       Nael 2014
+        Lio 2014
+      Linus 2014
+       Levi 2014
+       Timo 2014
+   Benjamin 2014
+       Carl 2014
+    Theodor 2014
+    Charlie 2014
+  Sebastian 2014
+       Ryan 2014
+     Philip 2014
+        Noé 2014
+      Diego 2014
+       Elia 2014
+       Nico 2014
+       Elio 2014
+       Adam 2014
+      Nelio 2014
+     Nathan 2014
+       Gino 2014
+      Yaron 2014
+      Nando 2014
+    Alessio 2014
+      Leano 2014
+     Jannis 2014
+      Mailo 2014
+      Lucas 2014
+      Aaron 2014
+      Logan 2014
+    Leandro 2015
+       Nael 2015
+      Romeo 2015
+       Ivan 2015
+        Lio 2015
+    Laurenz 2015
+  Sebastian 2015
+       Carl 2015
+    Theodor 2015
+    Vincent 2015
+       Timo 2015
+   Valentin 2015
+     Nikita 2015
+      Leano 2015
+    Aurelio 2015
+      Nevio 2015
+      Nelio 2015
+      Aurel 2015
+       Elia 2015
+       Luis 2015
+       Lias 2015
+       Lars 2015
+      Nando 2015
+        Ian 2015
+       Noam 2015
+      Oscar 2015
+      Loris 2016
+       Alan 2016
+   Benjamin 2016
+       Elio 2016
+     Henrik 2016
+        Ian 2016
+       Ilay 2016
+       Ivan 2016
+      Jamie 2016
+      Lauro 2016
+      Liano 2016
+       Lias 2016
+      Linus 2016
+       Luka 2016
+       Lyan 2016
+     Marlon 2016
+      Nando 2016
+      Nelio 2016
+      Nevio 2016
+       Nico 2016
+        Nik 2016
+        Noé 2016
+      Oscar 2016
+     Philip 2016
+   Philippe 2016
+       Remy 2016
+  Sebastian 2016
+     Silvan 2016
+   Valentin 2016
+    William 2016
+      Yaron 2016
+  Sebastian 2017
+      Leano 2017
+       Theo 2017
+       Nils 2017
+       Fynn 2017
+    Charlie 2017
+     Viktor 2017
+       Milo 2017
+     Alexis 2017
+      Nelio 2017
+      Oscar 2017
+       Elio 2017
+   Leonardo 2017
+       Carl 2017
+       Noel 2017
+      Dario 2017
+       Timo 2017
+  Ferdinand 2018
+      Benji 2018
+      Colin 2018
+      Romeo 2018
+      Jamie 2018
+       Roan 2018
+       Elia 2018
+     Nikita 2018
+     Viktor 2018
+        Ben 2018
+        Noé 2018
+       Dean 2018
+       Noel 2018
+       Carl 2018
+    Leandro 2018
+       Milo 2018
+      Loris 2018
+       Ivan 2018
+      Yaron 2018
+        Tom 2018
+       Lars 2018
+     Marlon 2019
+       Luis 2019
+       Mael 2019
+       Kian 2019
+     Jannis 2019
+ Maximilian 2019
+       Ilay 2019
+  Ferdinand 2019
+    Aurelio 2019
+       Yuri 2019
+      Nevio 2019
+   Valentin 2019
+       Elia 2019
+        Nik 2019
+       Dean 2019
+      Oscar 2019
+     Philip 2019
+       Remy 2019
+       Ryan 2019
+    Charlie 2019
+  Sebastian 2019
+       Alan 2019
+     Silvan 2019
+      Levin 2019
+       Lias 2019
+        Tim 2019
+      Linus 2019
+      Lenny 2019
+        Lio 2019
+      Livio 2019
+      Logan 2019
+      Loris 2019
+       Lars 2019
+      Loris 2020
+  Ferdinand 2020
+     Henrik 2020
+       Ilay 2020
+      Linus 2020
+      Jamie 2020
+       Luke 2020
+    Aurelio 2020
+     Marlon 2020
+     Jannis 2020
+     Julian 2020
+      Jonas 2020
+        Noé 2020
+       Noam 2020
+      Diego 2020
+       Mael 2020
+      Dario 2020
+       Nino 2020
+      Kerem 2020
+    Vincent 2020
+    Raphael 2020
+       Alan 2020
+      Lenny 2020
+   Valentin 2020
+      Robin 2020
+       Elia 2020
+      Nevio 2020
+      Colin 2020
+      Nelio 2020
+    Leandro 2020
+
+Query Nr. 13
+-- All names that have been utilized by over 50 baby girls in canton Vaud. Please order the results by year.
+SELECT bnff.first_name, bnff.year, bnff.amount FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE su.canton = 'TRUE' and su.name ilike '%Vaud%'  and bnff.gender = 'girl' and bnff.amount > 50 ORDER BY bnff.year;
+ first_name year amount
+      Laura 2000     52
+        Lea 2000     76
+        Lea 2001     56
+       Emma 2004     59
+       Emma 2005     64
+       Emma 2006     55
+       Emma 2008     55
+       Emma 2010     56
+       Emma 2011     55
+       Emma 2012     54
+       Emma 2013     57
+       Emma 2014     66
+       Emma 2017     65
+       Emma 2018     63
+      Alice 2018     62
+
+Query Nr. 14
+-- How many baby names were registered?
+SELECT DISTINCT COUNT(bnff.first_name) FROM baby_names_favorite_firstname as bnff;
+   count
+ 3314520
+
+Query Nr. 15
+-- Show me all registered names in records.
+SELECT DISTINCT bnff.first_name FROM baby_names_favorite_firstname as bnff;
+   first_name
+         Agit
+       Romain
+         Gion
+       Orfeas
+       Cezary
+       Ledian
+        Erick
+       Cornel
+          Iva
+      Philine
+         Lyon
+      Aminata
+     Victoria
+      Avelina
+       Yanick
+       Tijana
+        Lania
+        Yorik
+     Priyanka
+        Keira
+         Ares
+         Rita
+        Zaïna
+        Osman
+        Kaisa
+         Numa
+        Harea
+      Blanche
+     Viktoria
+        Henry
+          Téa
+       Olivér
+        Yurui
+         Ezgi
+         Ejla
+        Talea
+        Lexie
+        Mesut
+        Aline
+         Liar
+     Ludovico
+       Linaya
+        Josef
+        Eliel
+        Cyrus
+        Rania
+         Asaf
+        Fionn
+         Mick
+     Coraline
+       Ceylan
+        Noyan
+        Linus
+        Jaira
+        Nilas
+     Mélusine
+      Valerie
+       Haroon
+        Josua
+      Raffael
+     Georgios
+      Maëlyne
+      Jeanine
+    Christina
+        Ahmet
+        Norea
+         Eila
+    Cathaleya
+       Halley
+         Leni
+        Lucie
+     Gauthier
+          Doa
+         Adna
+     Angelica
+        Lenna
+       Josias
+         Adin
+      Melodie
+      Salmaan
+        Gresa
+     Angelika
+       Salome
+         Neyl
+     Leonhard
+       Noémie
+    Aménadiel
+        Sevan
+        Moïse
+      Eduarda
+         Zoha
+       Amalie
+      Stefano
+          Eno
+       Alizée
+        Noris
+       Emília
+       Lilien
+       Charly
+         Kody
+          Emi
+        Péter
+        Paolo
+       Axelle
+       Shahin
+         Samu
+        Flynn
+        Zehra
+      Carlota
+       Alyson
+        Arjun
+        Salih
+        Lilli
+       Louise
+       Pierre
+        Aïden
+      Thibaud
+        Elvis
+         Dzan
+        Diana
+         Arun
+      Allegra
+       Sesuna
+      Malcolm
+       Maelle
+        Todor
+          Men
+       Davina
+     Geronimo
+      Léonard
+       Eliano
+         Rémi
+        Kenza
+         Niah
+     Adrijana
+       Finnia
+     Doroteja
+         Syed
+        Bjorn
+      Marysol
+       Naliya
+     Sulaiman
+        Ellyn
+        Dusan
+      Aleksej
+          Aid
+       Ismael
+        Assya
+      Mathieu
+        Ilyam
+        Asher
+         Leta
+       Louisa
+         Eléa
+        Admir
+     Johannes
+        Aylin
+       Tizian
+       Kaycee
+       Aleyna
+      Marlena
+        Avani
+     Léontine
+       Milica
+       Joakim
+       Elhana
+       Moussa
+         Jaël
+         Zion
+       Saliou
+         Edda
+       Martim
+         Ajka
+      Florent
+       Afonso
+         Isak
+       Kalila
+         Jane
+         Elih
+      Dorotea
+        Dunja
+       Oriana
+          Keo
+         Ediz
+      Melaher
+          Eli
+        Eddie
+        Viggo
+     Penelope
+       Ismaël
+       Damian
+     Giuliano
+          Mal
+      Phileas
+        Ayden
+        Sabah
+         Luke
+        Abdel
+       Maxime
+        Sanja
+       Viktor
+         Yare
+         Nate
+         Lola
+        Lavin
+        Anuar
+        Dunia
+        Miria
+          Ron
+        Ariya
+        Nando
+         Ylvi
+         Yaro
+      Elliott
+        Santo
+        Liona
+          Jed
+       Markus
+         Eloá
+         Mnis
+         Juli
+         Hope
+      Gregory
+        Karim
+        Issam
+        Keren
+        Elaia
+       Aloïse
+        Tylan
+     Nikolina
+       Ylenia
+      Lavinia
+        Yaman
+       Yosief
+         Pius
+         Sara
+      Lou-Ann
+        Ariam
+         Oana
+        Navin
+      Marissa
+       Yanara
+    Anastasya
+       Devran
+        Heidi
+          Ben
+         Ilaf
+     Fryderyk
+         Seid
+     Natalija
+        Björn
+        Ahmad
+        Jusra
+        Enola
+        Sadaf
+         Umay
+          Iga
+       Shahan
+        Thaïs
+        Aryan
+     Madlaina
+     Lucienne
+       Hannes
+         Nila
+       Giosuè
+       Claude
+         Edin
+       Melody
+        Basil
+       Malick
+       Timaël
+       Malika
+         Théa
+        Ronya
+          Lya
+      Annigna
+      Giulien
+      Étienne
+   Anna-Maria
+        Miran
+       Emélie
+       Benoît
+    Apollonia
+     Eleonore
+      Johanna
+         Arik
+        Romeo
+      Corinne
+         Lévi
+          Noé
+       Marion
+         Nalu
+       Willow
+       Lamija
+       Kaspar
+       Keylen
+        Selim
+      Cillian
+       Loresa
+        Julie
+         Aziz
+        Jonte
+         Naya
+         Fran
+       Leonid
+        Vadim
+      Filippa
+        Flóra
+        Reyan
+      Michail
+       Hermon
+        Milas
+        Davis
+        Dalia
+       Selina
+       Finlay
+         Iman
+         Snit
+         Rúna
+       Alenia
+        Lejan
+        Mijat
+       Jérôme
+       Mladen
+        Moris
+         Saja
+   Clémentine
+       Anakin
+      Laurene
+      Alperen
+   Aleksandar
+       Rachel
+     Marianne
+       Janoah
+          Era
+     Giordano
+         Naïa
+       Malonn
+         Kiki
+    Nathanaël
+        Niilo
+        Avery
+         Leya
+        Ivana
+      Deborah
+   Christelle
+         Fynn
+       Ronnie
+        Sylia
+        Hanaé
+        Irini
+        Youna
+         Nilo
+        Duana
+         Joey
+        Loran
+        Ianis
+         Roma
+      Gavrilo
+          Edi
+        Aiven
+       Elénie
+         Laïa
+      Armando
+        Jalia
+     Benedict
+        Lilia
+         Sion
+        Liham
+         Zayn
+        Emile
+       Pietro
+        Magda
+          Aro
+        Kyano
+        Jakov
+         Aren
+       Amelia
+       Lyonel
+        Denis
+      Jonatan
+          Mae
+         Izia
+      Mamadou
+       Sidney
+         Oona
+        Redon
+        Tuana
+       Norela
+        Roman
+          Nia
+        Iouri
+     Isabella
+      Giorgio
+        Aiman
+        Lucas
+     Pénélope
+         Alem
+       Emilie
+        Idris
+         Muad
+      Maxwell
+        Daris
+       Ronela
+        Edwin
+      Viviane
+        Salma
+        Selva
+      Theresa
+       Ledion
+     Katarina
+         Emie
+         Aysu
+       Andrra
+          Tin
+         Maïa
+      Niccolò
+        Elora
+        Darko
+        Kinay
+         Yuna
+        Jules
+       Samaël
+      Clemens
+         Batu
+     Felicity
+       Ainara
+       Leonik
+       Sierra
+        Miraz
+      Butrint
+      Charlie
+        Anina
+     Valentim
+     Lauriane
+      Matheus
+     Lawrence
+        Liwia
+   Evangéline
+          Cla
+         Enar
+        Yanay
+       Jérémy
+       Jannah
+        Leija
+         Nela
+        Naïla
+        Cosmo
+     Khadidja
+         Gaia
+        Varun
+      Liandro
+         Rodi
+         Joah
+    Aureliano
+    Philippos
+       Mellie
+      Joaquim
+         Gaël
+      Celeste
+       Agnese
+       Julian
+         Amin
+        Yusra
+      Pascale
+       Amilah
+        Titus
+     Zackaria
+        Lamin
+        Aisha
+      Samuele
+     Bérénice
+       Mihael
+         Ziad
+       Alessa
+        Aviel
+       Leonia
+      Gaspard
+       Andrej
+          Geo
+       Paloma
+        Samia
+       Javier
+        Lenya
+      Sereina
+        Adina
+       Olympe
+         Kuno
+        Dilan
+        Xaver
+        Fenja
+        Tilia
+    Gian-Luca
+         Aimy
+       Nikola
+      Martina
+      Marcell
+      Rosalía
+     Nicholas
+        Eslem
+         Nino
+       Lissia
+    Joséphine
+       Azalea
+        Loann
+       Connor
+       Jeanne
+       Henrik
+          Max
+        Lejna
+        Rahma
+         Anne
+         Léia
+        Gioia
+     Domenica
+       Sultan
+      Lennart
+        Baris
+         Loic
+    Sebastian
+         Mino
+         Laya
+       Hikaru
+          Yun
+        Arush
+        Flori
+         Hans
+       Sabela
+      Cassian
+       Lumina
+        Kayan
+       Szófia
+        Diona
+       Ashira
+         Simo
+         Joha
+        Roger
+         Mady
+        Eymen
+        Navid
+        Afnan
+      Édouard
+        Daisy
+         Lyah
+        Natan
+        Kamal
+         Doan
+     Bertille
+    Cassandra
+         Bron
+         Sita
+        Kairo
+        Yared
+       Elysha
+       Maryam
+         Mija
+         Enes
+       Albane
+     Scarlett
+         Amea
+       Mjalta
+        Kylie
+        Asiya
+         Enzo
+       Noraya
+      Eugenia
+         Safa
+        Robyn
+          Nel
+        Megan
+        Turan
+         Máté
+      Solomon
+      Joschua
+      Mafalda
+         Mete
+         Ciro
+    Magdalena
+        Elyna
+         Lyas
+      Mariano
+        Zoran
+        Devin
+        Esmée
+        Amine
+         Siro
+        Siena
+       Agathe
+     Isabelle
+        Irina
+         Inna
+       Lennon
+        Sammy
+        Faris
+      Alessya
+        Nikos
+        Neyla
+        Liano
+         Jela
+        Lucía
+   Emmanuelle
+        Resul
+        Manel
+       Joseph
+         Eray
+      Nicolai
+       Daimon
+         Yuno
+         Tani
+        Cyril
+        Munir
+      Chantal
+          Wim
+        Ayman
+      Numidia
+     Kathleen
+        Meret
+          Dua
+      Carolin
+        Sivan
+       Leesha
+       Arsène
+        Aiana
+        Yahya
+     Poseidon
+      Nathane
+       Hector
+        Conan
+      Gennaro
+        Alexa
+        Riley
+       Madlen
+        Malin
+       Efraim
+         Maél
+      Fabrice
+      Clarice
+         Gema
+         Aiza
+       Solana
+       Ayline
+        Erina
+         Dyon
+         Tyam
+       Sienna
+         Davi
+         Edon
+     Aurélien
+       Giulio
+        Zayan
+       Mervan
+        Abbas
+         Sole
+       Siméon
+          Ema
+         Esma
+       Analia
+       Matija
+    Katharina
+         Mena
+        Janna
+      Tsering
+       Morena
+        Lavan
+        Ethan
+      Emilian
+         Nias
+        Jonas
+       Eldian
+       Maissa
+          Luc
+       Judith
+       Yussef
+         Nemo
+     Leonidas
+       Kornél
+     Anuschka
+       Violet
+       Phoebe
+         Kaid
+      Adhvika
+      Timothé
+        Ilias
+      Alissia
+        Neria
+         Adil
+         Myra
+        Conor
+       Lucian
+     Benjamim
+         Isia
+      Hendrik
+        Lamek
+       Noélia
+       Althea
+       Adrian
+        Aarvi
+      Firdeus
+        Jaime
+         Elma
+        Tiann
+         Ania
+       Ilajda
+       Josief
+        Laïla
+         Akan
+        Wayna
+         Joye
+        Tomáš
+   Franciszek
+        Ellie
+        Wanja
+        Danis
+        Artin
+         Ange
+      Nikodem
+         Irma
+         Eben
+          Eya
+       Maleya
+       Aylina
+        Amaël
+       Petros
+       Nahier
+        Aleya
+      Mikolaj
+     Kristian
+     Ambroise
+         Aimo
+       Lillie
+       Leslie
+        Yonas
+        Leona
+       Kellyn
+     Nikolaos
+        Arzen
+       Shreya
+          Jax
+       Sofian
+        Laora
+    Maddalena
+        Alara
+         Kiro
+           Su
+      Mayline
+       Malone
+      Vanessa
+        Amaja
+        Betty
+        Aliza
+      Hanibal
+       Dorian
+      Annalia
+        Merle
+        Selen
+         Cloe
+      Zackary
+          Rea
+        Nejla
+         Anja
+        Maïna
+       Lorian
+      Dorijan
+        Maela
+    Elizabeth
+        Linor
+         Besa
+        Sanna
+       Amelio
+       Mateus
+        Mirek
+        Lenia
+       Gloria
+        Jasin
+       Prisha
+       Elayah
+        Arila
+       Lyanna
+       Maxine
+          Zia
+         Niki
+       Naiara
+         Tibo
+        Naomi
+      Zakarya
+        Emran
+       Dániel
+         Mate
+        Adèle
+         Lény
+       Eszter
+      Danijel
+       Amanda
+        Jenna
+        Elija
+         Lise
+      Alessia
+        Adele
+         Lija
+        Enrik
+      Rosario
+         Azer
+        Amjad
+      Vincenz
+        Mirko
+         Ayna
+         Miya
+     Madeline
+        Nahël
+        Maïly
+    Antonella
+       Norwin
+       Servan
+     Benjamin
+       Mattiu
+        Robin
+         Lois
+     Ibrahima
+         Haya
+        Elana
+       Clovis
+      Vincent
+        Kejan
+     Gabriele
+      Ismaele
+       Palina
+       Maksim
+       Aurore
+         Mali
+        Lidya
+         Alea
+      Claudia
+       Noémia
+        Nayan
+        Jusuf
+       Margot
+      Keilani
+       Abiner
+       Roxana
+        Jigme
+         Duaa
+         Paco
+      Richard
+        Freja
+       Talina
+        Saray
+        Lydie
+      Félicie
+         Buna
+       Camila
+         Yago
+          Nói
+       Mattia
+     Cristina
+         Roni
+        Sahid
+       Eliane
+      Sotiris
+         Nils
+    Benedetta
+       Dustin
+      Mathias
+        Driss
+      Muhrael
+       Bonnie
+         Luin
+      Octavia
+        Nahia
+     Marielle
+        Lavea
+      Freddie
+      Julieta
+      Ludovic
+         Lisa
+       Maelie
+         Hena
+        Sohan
+         Côme
+       Camilo
+      Dimitri
+       Cyrill
+         Eneo
+        Ravin
+       Blerim
+       Joshua
+          Aya
+         Newa
+      Adelina
+     Giovanna
+      Adaline
+        Delya
+        Imran
+        Arvin
+        Adora
+    Fatoumata
+          Vuk
+        Teuta
+         Liza
+        Wanda
+        Sinja
+        Ramon
+         Nyat
+        Yalda
+        Dajen
+       Mascha
+          Tom
+         Yori
+         Aron
+    Florentin
+       Mégane
+        Moena
+        Kaleb
+       Collin
+        Senna
+      Isidora
+     Aïssatou
+       Arlind
+        Noham
+        Anteo
+        Ejona
+      Valerio
+         Enia
+       Farhan
+         Anna
+       Xavier
+      Marlene
+       Assiya
+      Nikolaj
+       Jayvin
+         Mlat
+         Ivan
+        Arsen
+         Riva
+         Evie
+        Marin
+     Juliette
+      Adriana
+         Theo
+        Vania
+        Kabir
+         Rino
+       Vivien
+       Saiyan
+        Mehdi
+      Matisse
+        Marla
+         Malu
+         Eyla
+       Ermias
+        Kiash
+        Nalea
+          Éva
+          Ann
+       Emilio
+        Kelyo
+    Valentine
+         Ziya
+        Jonin
+         Amir
+        Naida
+      Louison
+       Liyara
+       Darina
+       Jacopo
+         Olin
+       Milian
+        Aurel
+        Lijas
+        Auron
+        Araya
+        Tirza
+       Calvin
+ Massimiliano
+        Kadir
+        Nabil
+        Loren
+     Carlotta
+     Timothée
+        Kelly
+         Ajra
+      Leandro
+      Bastien
+       Ayleen
+       Tamara
+       Ariela
+        Mayla
+        Marah
+        Anahí
+        Levin
+        Shawn
+        Vukan
+        Keyah
+        Yohan
+      Barbara
+         Vesa
+         Lexa
+       Lyanah
+        Sirak
+        Glenn
+      Hermela
+ [ reached 'max' / getOption("max.print") -- omitted 4475 rows ]
+
+Query Nr. 16
+-- Show me all top-1 ranked boy names for in each canton in year 2014.
+SELECT bnff.first_name, su.name FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE su.canton = 'TRUE' and bnff.gender = 'boy' and bnff.year = 2014 and bnff.rank = 1;;
+  first_name                             name
+       Aaron                Canton Graubünden
+       Aaron                      Canton Jura
+       Aaron                 Canton of Schwyz
+       Aaron                    Canton of Zug
+    Abdullah                    Canton Geneva
+        Abel                    Canton Valais
+     Achille               Canton of Fribourg
+     Achille                   Canton of Bern
+     Achille                    Canton Valais
+        Adam           Canton of Schaffhausen
+        Adam                 Canton of Schwyz
+        Adam                    Canton of Zug
+        Adan                      Canton Vaud
+        Adem                 Canton of Zurich
+        Adem                    Canton Geneva
+       Adian             Canton of St. Gallen
+        Adis                 Canton of Zurich
+      Adonis                      Canton Vaud
+      Adrian               Canton of Fribourg
+      Adrian           Canton of Schaffhausen
+      Adrian                Canton Graubünden
+      Adrian               Canton of Obwalden
+      Adrián                 Canton of Zurich
+     Adriano                Canton Graubünden
+     Adriano                    Canton Geneva
+       Ahmet                 Canton of Zurich
+       Ahmet                    Canton Geneva
+        Aian                      Canton Vaud
+         Aid                 Canton of Zurich
+       Aiden                   Canton of Bern
+        Ajan       Canton of Basel-Landschaft
+       Akram                 Canton of Zurich
+        Alan                    Canton Aargau
+        Alec                    Canton Valais
+   Alejandro                    Canton Aargau
+   Alejandro                      Canton Vaud
+  Aleksander                 Canton of Zurich
+     Aleksej                Canton of Lucerne
+        Alem                 Canton of Zurich
+        Alen                    Canton Aargau
+  Alessandro       Canton of Basel-Landschaft
+     Alessio                    Canton of Zug
+        Alex                   Canton Thurgau
+   Alexandru                 Canton of Zurich
+       Alexi                      Canton Vaud
+      Alexis                   Canton of Bern
+      Alexis                Canton of Lucerne
+      Alfred                 Canton of Zurich
+         Ali                    Canton Valais
+         Ali                 Canton of Schwyz
+        Alix                      Canton Vaud
+       Aloïs                   Canton of Bern
+       Aloys               Canton of Fribourg
+         Alp                    Canton Aargau
+         Alp                    Canton Geneva
+       Altin                 Canton of Zurich
+       Amael              Canton of Solothurn
+        Amar                Canton of Lucerne
+      Amaury                      Canton Vaud
+    Ambroise                      Canton Vaud
+        Amir              Canton of Solothurn
+        Amir           Canton of Schaffhausen
+        Amir                    Canton Aargau
+       Ammar                   Canton of Bern
+        Anas                 Canton of Zurich
+        Anas               Canton of Fribourg
+     Anatole                      Canton Vaud
+      Andrea                    Canton Valais
+      Andrej                    Canton Aargau
+      Andrej                   Canton Thurgau
+       Andri                    Canton Aargau
+       Andri                   Canton Thurgau
+      Andrin            Canton of Basel-Stadt
+      Andrin           Canton of Schaffhausen
+      Andrin                 Canton of Schwyz
+      Andrin               Canton of Obwalden
+       Angel                    Canton Aargau
+        Anik              Canton of Solothurn
+        Anik                   Canton of Bern
+        Anil                 Canton of Zurich
+        Anis                    Canton Aargau
+     Antoine                 Canton Neuchâtel
+       Anton            Canton of Basel-Stadt
+       Anton                      Canton Vaud
+      Antoni              Canton of Solothurn
+      Antoni             Canton of St. Gallen
+      Antoni                   Canton of Bern
+     Antonio       Canton of Basel-Landschaft
+     Antonio                      Canton Vaud
+        Aras              Canton of Solothurn
+        Aras            Canton of Basel-Stadt
+        Aras             Canton of St. Gallen
+        Aras                   Canton of Bern
+       Arbër                Canton of Lucerne
+        Arda                    Canton Geneva
+        Arel                 Canton of Zurich
+        Arel           Canton of Schaffhausen
+        Ares                    Canton Aargau
+        Ares                   Canton of Bern
+         Ari              Canton of Solothurn
+         Ari            Canton of Basel-Stadt
+         Ari                    Canton Aargau
+         Ari                   Canton of Bern
+         Ari                      Canton Vaud
+       Ariel                      Canton Vaud
+       Arion                Canton of Lucerne
+        Aris                   Canton of Bern
+        Aris                    Canton Ticino
+      Armand                    Canton Geneva
+     Armando             Canton of St. Gallen
+     Armando                   Canton of Bern
+       Armin                Canton Graubünden
+       Armin                 Canton of Schwyz
+        Arno                 Canton Neuchâtel
+        Arno                Canton of Lucerne
+        Aron                Canton of Lucerne
+        Aron                 Canton of Schwyz
+        Áron                 Canton of Zurich
+      Arthur       Canton of Basel-Landschaft
+      Arthur                 Canton of Schwyz
+       Artin                 Canton of Zurich
+       Artur                   Canton of Bern
+      Arturo                 Canton of Zurich
+        Arun                    Canton Aargau
+       Aryan       Canton of Basel-Landschaft
+       Aslan       Canton of Basel-Landschaft
+      Attila                 Canton of Zurich
+      August                      Canton Vaud
+     Auguste                      Canton Vaud
+       Aulon                    Canton Aargau
+       Aurel              Canton of Solothurn
+       Aurel                 Canton of Schwyz
+     Aurelio                   Canton Thurgau
+       Aurin                   Canton of Bern
+        Ayan                    Canton Aargau
+        Ayaz                 Canton of Zurich
+        Ayaz              Canton of Solothurn
+        Ayaz       Canton of Basel-Landschaft
+        Ayaz                   Canton of Bern
+       Ayden                 Canton Neuchâtel
+       Aylan                    Canton Geneva
+       Ayman                      Canton Vaud
+        Azad                    Canton Aargau
+        Azad                      Canton Vaud
+       Baran                 Canton of Zurich
+       Baran                    Canton Aargau
+       Basil                      Canton Vaud
+        Bela                    Canton Aargau
+        Béla            Canton of Basel-Stadt
+         Ben               Canton of Fribourg
+         Ben           Canton of Schaffhausen
+         Ben                 Canton Neuchâtel
+         Ben                    Canton Geneva
+    Benjamin                    Canton of Uri
+    Benjamin                    Canton of Zug
+      Berkay                 Canton of Zurich
+    Bernardo               Canton of Fribourg
+    Bernardo                   Canton of Bern
+       Björn                 Canton of Zurich
+       Björn                    Canton Aargau
+        Blin              Canton of Solothurn
+      Bogdan             Canton of St. Gallen
+       Boris                 Canton of Zurich
+       Boris             Canton of St. Gallen
+     Bradley                      Canton Vaud
+      Brando                    Canton Ticino
+       Brian                    Canton Ticino
+       Brian                    Canton Valais
+       Bryan                Canton of Lucerne
+       Caleb                    Canton Geneva
+     Camillo                 Canton of Zurich
+      Camilo                 Canton of Zurich
+        Carl            Canton of Basel-Stadt
+        Carl                    Canton of Zug
+       Casey                 Canton of Zurich
+      Caspar                 Canton of Zurich
+      Caspar            Canton of Basel-Stadt
+      Cédric                    Canton Aargau
+      Cédric                    Canton Valais
+      Célian                    Canton Geneva
+         Cem                   Canton of Bern
+       Chaim                 Canton of Zurich
+     Charles               Canton of Fribourg
+     Charles                    Canton Aargau
+     Charles                   Canton of Bern
+     Charles                 Canton Neuchâtel
+     Charlie                   Canton of Bern
+     Charlie                    Canton of Zug
+      Charly                    Canton Valais
+   Christian             Canton of St. Gallen
+ Christopher                    Canton Geneva
+       Cihan                 Canton of Zurich
+        Ciro                    Canton Aargau
+      Clovis                      Canton Vaud
+       Colin                      Canton Jura
+        Côme               Canton of Fribourg
+        Côme                      Canton Vaud
+    Corentin               Canton of Fribourg
+     Corrado                 Canton of Zurich
+    Cristian                      Canton Vaud
+       Cyril                 Canton of Zurich
+      Cyrill                    Canton Aargau
+      Damian           Canton of Schaffhausen
+      Damjan                      Canton Vaud
+         Dan                 Canton of Zurich
+     Daniele                      Canton Vaud
+      Danilo       Canton of Basel-Landschaft
+       Dante                    Canton Ticino
+      Darian                    Canton Aargau
+       Dario                    Canton Valais
+       Dario                    Canton of Uri
+       Dávid                 Canton of Zurich
+      Davide                      Canton Vaud
+       Davud                 Canton of Zurich
+        Dean                   Canton Thurgau
+      Demian                 Canton of Zurich
+       Denis                    Canton Valais
+       Deniz                      Canton Vaud
+       Devin             Canton of St. Gallen
+       Devin                 Canton of Schwyz
+        Dian                   Canton of Bern
+        Dian                Canton of Lucerne
+        Diar                      Canton Vaud
+       Diego                    Canton of Zug
+       Dijar                   Canton Thurgau
+       Dilan               Canton of Fribourg
+     Dimitri                Canton of Lucerne
+         Din                    Canton Aargau
+       Dinis                 Canton Neuchâtel
+        Dion              Canton of Solothurn
+        Dion       Canton of Basel-Landschaft
+       Diyan                 Canton of Zurich
+       Diyar       Canton of Basel-Landschaft
+       Diyar                    Canton Aargau
+     Djibril                      Canton Vaud
+     Dominic                    Canton Aargau
+     Dominik             Canton of St. Gallen
+        Dren                 Canton of Zurich
+      Duarte                   Canton of Bern
+        Eden                   Canton of Bern
+        Eden                    Canton Geneva
+        Eden                      Canton Jura
+       Edgar                      Canton Vaud
+        Edis                 Canton of Zurich
+        Edon                 Canton of Zurich
+     Édouard                      Canton Vaud
+         Ege                 Canton of Zurich
+         Ege                    Canton Aargau
+         Eli                   Canton of Bern
+        Elia            Canton of Basel-Stadt
+        Elia               Canton of Obwalden
+        Elia                 Canton of Glarus
+        Elia                    Canton of Zug
+       Eliah              Canton of Solothurn
+       Eliah                    Canton Valais
+       Elian                    Canton Aargau
+      Eliano       Canton of Basel-Landschaft
+      Eliano                    Canton Aargau
+      Eliano                   Canton of Bern
+      Eliano                   Canton Thurgau
+       Elias Canton of Appenzell Ausserrhoden
+       Elías                 Canton of Zurich
+       Élias                      Canton Vaud
+        Elie                 Canton Neuchâtel
+        Elie                    Canton Geneva
+       Eliel                 Canton of Zurich
+       Eliel                      Canton Vaud
+       Elija             Canton of St. Gallen
+       Elija                 Canton of Schwyz
+      Elijah                    Canton Aargau
+      Elijah                    Canton Valais
+      Elijas             Canton of St. Gallen
+       Elino                   Canton of Bern
+        Elio       Canton of Basel-Landschaft
+        Elio                Canton Graubünden
+        Elio                    Canton Ticino
+        Elio                    Canton Valais
+        Elio                    Canton of Zug
+       Eliot            Canton of Basel-Stadt
+       Eliot                      Canton Jura
+      Elisha                    Canton Aargau
+     Elliott                      Canton Vaud
+     Elliott                    Canton Geneva
+       Ellis                 Canton of Zurich
+       Eloan                    Canton Valais
+        Elon                   Canton of Bern
+        Eloy                 Canton of Zurich
+       Elyas            Canton of Basel-Stadt
+     Emanuel                   Canton Thurgau
+     Emanuel                    Canton Valais
+        Emil       Canton of Basel-Landschaft
+        Emil                   Canton Thurgau
+        Emil                      Canton Vaud
+       Émile                    Canton Geneva
+      Emilio              Canton of Solothurn
+      Emilio                   Canton Thurgau
+        Emin              Canton of Solothurn
+        Emir                    Canton Geneva
+    Emmanuel              Canton of Solothurn
+        Enea               Canton of Fribourg
+        Enea           Canton of Schaffhausen
+        Enes              Canton of Solothurn
+        Enes                    Canton Aargau
+        Enio                 Canton of Zurich
+        Enio                   Canton of Bern
+       Ennio            Canton of Basel-Stadt
+       Ennio                    Canton Aargau
+        Enor                    Canton Geneva
+        Enzo             Canton of St. Gallen
+        Eray            Canton of Basel-Stadt
+        Eric                    Canton Geneva
+        Erik                Canton Graubünden
+        Erik                      Canton Vaud
+       Erion                Canton of Lucerne
+     Ernesto                      Canton Vaud
+        Eron               Canton of Fribourg
+        Eron              Canton of Solothurn
+        Eros                 Canton of Zurich
+       Etnik                Canton of Lucerne
+       Eugen                   Canton of Bern
+        Evan             Canton of St. Gallen
+        Evan                   Canton of Bern
+        Even                      Canton Jura
+     Ezekiel                    Canton Geneva
+        Ezio               Canton of Fribourg
+        Ezio                      Canton Vaud
+        Ezra                    Canton Geneva
+      Fabian            Canton of Basel-Stadt
+      Fabian                Canton Graubünden
+       Fabio Canton of Appenzell Ausserrhoden
+       Falco                    Canton Ticino
+      Fallou                    Canton Geneva
+      Felipe                    Canton Geneva
+       Felix              Canton of Solothurn
+       Felix            Canton of Basel-Stadt
+       Felix                 Canton of Schwyz
+    Fernando             Canton of St. Gallen
+       Filip                    Canton Ticino
+         Fin                 Canton of Zurich
+      Finley                 Canton of Zurich
+      Finley       Canton of Basel-Landschaft
+        Finn               Canton of Fribourg
+        Finn                      Canton Vaud
+     Finnley                 Canton of Zurich
+       Fionn                   Canton of Bern
+      Flavio              Canton of Solothurn
+      Flavio                    Canton Ticino
+      Flavio                      Canton Vaud
+     Florent                 Canton of Zurich
+     Florent               Canton of Fribourg
+   Florentin                 Canton of Zurich
+       Flori                 Canton of Zurich
+     Florian Canton of Appenzell Ausserrhoden
+      Florin                   Canton Thurgau
+      Flurin       Canton of Basel-Landschaft
+      Flurin                Canton of Lucerne
+       Flynn             Canton of St. Gallen
+       Flynn                Canton Graubünden
+   Francisco               Canton of Fribourg
+    François                      Canton Vaud
+    Frédéric                 Canton of Zurich
+   Frederick                 Canton of Zurich
+   Friedrich                 Canton of Zurich
+   Friedrich                   Canton of Bern
+    Gabriele                Canton Graubünden
+        Gael                   Canton of Bern
+        Gael                    Canton Geneva
+        Gaël                   Canton of Bern
+        Gaël                    Canton Geneva
+      Gaëtan                      Canton Vaud
+     Gaspard                 Canton of Zurich
+     Gaspard                    Canton Valais
+      Gaston               Canton of Fribourg
+      Gaston                   Canton of Bern
+       Georg                   Canton of Bern
+     Georges                      Canton Vaud
+    Georgios                 Canton of Zurich
+        Gian               Canton of Fribourg
+        Gian                    Canton of Uri
+      Gianni                Canton Graubünden
+      Gilles                 Canton of Zurich
+      Gilles                    Canton Valais
+        Gino                   Canton Thurgau
+        Gino                    Canton of Zug
+        Gion                   Canton of Bern
+     Giorgio                    Canton Aargau
+    Giovanni                Canton Graubünden
+    Giovanni                    Canton Aargau
+    Giuliano                    Canton Aargau
+      Giulio                      Canton Vaud
+    Giuseppe                 Canton of Zurich
+       Glenn                   Canton of Bern
+     Gonçalo                    Canton Valais
+     Gonçalo                Canton of Lucerne
+      Gustav                      Canton Vaud
+     Gustavo             Canton of St. Gallen
+     Gustavo                   Canton of Bern
+     Hadrien                      Canton Vaud
+       Hakan                      Canton Vaud
+       Hamza            Canton of Basel-Stadt
+       Hamza                Canton of Lucerne
+      Hannes                    Canton Valais
+        Hans                   Canton of Bern
+       Haris                 Canton of Zurich
+       Haris               Canton of Fribourg
+       Haris                    Canton Aargau
+       Haris                    Canton Geneva
+       Harry                      Canton Vaud
+      Hektor                    Canton Aargau
+     Hendrik                 Canton of Zurich
+     Hendrik              Canton of Solothurn
+     Hendrik                    Canton Aargau
+       Henri               Canton of Fribourg
+       Henri            Canton of Basel-Stadt
+       Henri             Canton of St. Gallen
+       Henri                Canton of Lucerne
+    Henrique                 Canton of Zurich
+       Henry                    Canton Valais
+       Henry               Canton of Obwalden
+       Henry              Canton of Nidwalden
+      Henryk                 Canton of Zurich
+        Hugo                    Canton Aargau
+        Hugo                   Canton of Bern
+         Ian              Canton of Solothurn
+         Ian                      Canton Vaud
+         Ian                Canton of Lucerne
+       Idris                   Canton of Bern
+       Idris                    Canton Geneva
+        Iker                 Canton of Zurich
+        Ilan                 Canton of Zurich
+        Ilan                    Canton Aargau
+        Ilan                   Canton of Bern
+      Ilario                      Canton Vaud
+        Ilay       Canton of Basel-Landschaft
+        Ilay             Canton of St. Gallen
+        Ilay                    Canton Aargau
+        Ilay                   Canton of Bern
+        Ilay                   Canton Thurgau
+        Ilia                 Canton of Zurich
+       Ilian       Canton of Basel-Landschaft
+       Ilian                      Canton Vaud
+       Ilian                    Canton Geneva
+       Ilias             Canton of St. Gallen
+       Ilias                 Canton Neuchâtel
+       Ilija                    Canton Aargau
+        Ilja                Canton of Lucerne
+       Ilyan                      Canton Vaud
+       Ilyan                 Canton Neuchâtel
+       Ilyas             Canton of St. Gallen
+       Ilyas                    Canton Geneva
+       Imran             Canton of St. Gallen
+       Imran                   Canton of Bern
+       Imran                      Canton Vaud
+         Isa             Canton of St. Gallen
+         Isa                    Canton Aargau
+         Isa                   Canton of Bern
+       Isaac             Canton of St. Gallen
+      Isaiah                 Canton of Zurich
+        Isak                 Canton of Zurich
+       Ishak                 Canton of Zurich
+      Ismael                   Canton of Bern
+      Ismaël                    Canton Valais
+      Ismail             Canton of St. Gallen
+        Issa                   Canton of Bern
+        Ivan             Canton of St. Gallen
+         Ivo                Canton of Lucerne
+        Iyad                 Canton of Zurich
+        Jack                 Canton of Schwyz
+     Jackson                 Canton of Zurich
+       Jacob                      Canton Vaud
+         Jad                   Canton of Bern
+       Jaden                      Canton Vaud
+       Jakob                    Canton Aargau
+       Jakov                 Canton of Zurich
+       Jamal             Canton of St. Gallen
+       Jamal                   Canton of Bern
+       Jamal                    Canton Valais
+       James       Canton of Basel-Landschaft
+       Jamie            Canton of Basel-Stadt
+       Jamie                Canton Graubünden
+         Jan                    Canton Geneva
+      Janick             Canton of St. Gallen
+       Janis Canton of Appenzell Ausserrhoden
+       Janko                 Canton of Zurich
+      Jannis                    Canton Aargau
+      Jannis                    Canton of Zug
+        Jano                 Canton of Zurich
+        Jano               Canton of Fribourg
+        Jari              Canton of Solothurn
+        Jari                Canton Graubünden
+        Jaro       Canton of Basel-Landschaft
+        Jaro                   Canton Thurgau
+        Jaro                 Canton of Schwyz
+      Jascha                 Canton of Zurich
+       Jasin                   Canton of Bern
+       Jason                 Canton of Schwyz
+         Jay                    Canton Valais
+      Jayden               Canton of Fribourg
+      Jayden                   Canton Thurgau
+      Jayden                    Canton Valais
+ [ reached 'max' / getOption("max.print") -- omitted 666 rows ]
+
+Query Nr. 17
+-- Show me all top-1 ranked girl names for in each canton in year 2016. Return me the amount and year as well.
+SELECT bnff.first_name, su.name, bnff.amount, bnff.year FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE su.canton = 'TRUE' and bnff.gender = 'girl' and bnff.year = 2016 and bnff.rank = 1;
+ first_name                             name amount year
+      Alice                      Canton Vaud     46 2016
+      Alina Canton of Appenzell Ausserrhoden      9 2016
+      Alina                    Canton of Zug     11 2016
+       Anna            Canton of Basel-Stadt     12 2016
+      Elena                   Canton of Bern     59 2016
+       Emma               Canton of Fribourg     18 2016
+       Emma              Canton of Solothurn     21 2016
+       Emma                      Canton Vaud     46 2016
+       Emma                    Canton Valais     25 2016
+       Emma                 Canton Neuchâtel     13 2016
+       Emma                    Canton Geneva     38 2016
+        Lea              Canton of Nidwalden      5 2016
+     Leonie       Canton of Basel-Landschaft     17 2016
+        Mia                 Canton of Zurich     88 2016
+        Mia           Canton of Schaffhausen      7 2016
+        Mia             Canton of St. Gallen     35 2016
+        Mia                Canton Graubünden     13 2016
+        Mia                    Canton Aargau     46 2016
+        Mia                   Canton Thurgau     20 2016
+        Mia                      Canton Jura      6 2016
+        Mia                Canton of Lucerne     36 2016
+        Mia                 Canton of Schwyz     17 2016
+       Mila       Canton of Basel-Landschaft     17 2016
+      Sofia                    Canton Ticino     29 2016
+
+Query Nr. 18
+-- Which year has the least registered baby names for all cantons?
+SELECT bnff.year, sum(bnff.amount) FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE su.canton = 'TRUE' group by bnff.year ORDER BY sum(bnff.amount) LIMIT 1;
+ year    sum
+ 2001 586206
+
+Query Nr. 19
+-- Which year has the most registered baby names for all cantons?
+SELECT bnff.year, sum(bnff.amount) FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE su.canton = 'TRUE' group by bnff.year ORDER BY sum(bnff.amount) DESC LIMIT 1;
+ year     sum
+ 2021 1230510
+
+Query Nr. 20
+-- Show me all amount of baby names in all municipalities.
+SELECT bnff.first_name, bnff.amount FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE su.municipal = 'TRUE';
+[1] first_name amount    
+<0 rows> (or 0-length row.names)
