@@ -1,4 +1,4 @@
-[1] "Environment: REMOTE, Time: 2023-11-02 21:17:18.581006"
+[1] "Environment: REMOTE, Time: 2023-11-02 21:24:12.583646"
 
 Query Nr. 1
 -- How many girls borned in 2014 in Switzeland is named as Lena. Return me the rank as well.
@@ -26,9 +26,9 @@ SELECT sum(amount) FROM baby_names_favorite_firstname as bnff JOIN spatial_unit 
 
 Query Nr. 5
 -- Which canton has the most borned boys called 'Oscar' in 2016?
-SELECT su.name, bnff.amount FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE year = 2011 AND gender = 'boy' AND bnff.first_name = 'Oscar' AND su.canton = 'TRUE' ORDER BY bnff.amount DESC LIMIT 1;
+SELECT su.name, bnff.amount FROM baby_names_favorite_firstname as bnff JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid WHERE year = 2016 AND gender = 'boy' AND bnff.first_name = 'Oscar' AND su.canton = 'TRUE' ORDER BY bnff.amount DESC LIMIT 1;
            name amount
- Canton of Bern    271
+ Canton of Bern    299
 
 Query Nr. 6
 -- How many favorite babynames are registered in year 2011?

@@ -32,7 +32,7 @@ WHERE year = 2011 AND gender = 'boy' AND su.name ilike '%valais%' AND su.canton 
 SELECT su.name, bnff.amount
 FROM baby_names_favorite_firstname as bnff
 JOIN spatial_unit as su ON bnff.spatialunit_uid = su.spatialunit_uid
-WHERE year = 2011 AND gender = 'boy' AND bnff.first_name = 'Oscar' AND su.canton = 'TRUE'
+WHERE year = 2016 AND gender = 'boy' AND bnff.first_name = 'Oscar' AND su.canton = 'TRUE'
 ORDER BY bnff.amount DESC LIMIT 1;
 
 -- How many favorite babynames are registered in year 2011?
