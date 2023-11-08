@@ -1,7 +1,7 @@
 -- How many marriages occurred in Reiden in 1999 with a wife who held Swiss citizenship?
 SELECT  T1.citizenship_category_wife, T2.name,T1.year, T1.amount FROM marriage_citizenship as T1
 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid
-WHERE T2.name ilike  '%Reiden%' and T1.year= 1999 and T1.citizenship_category_wife='Switzerland' and T1.citizenship_category_husband = 'Citizenship of husband - total'
+WHERE T2.name ilike  '%Reiden%' and T1.year= 1999 and T1.citizenship_category_wife='Switzerland' and T1.citizenship_category_husband = 'Citizenship of husband - total';
 
 -- Which canton has the highest number of marriages between Swiss women and Swiss men on 2018?
 SELECT  T2.name,T1.citizenship_category_wife,T1.citizenship_category_husband,T1.year, T1.amount FROM marriage_citizenship as T1
@@ -65,7 +65,7 @@ LIMIT 1;
 -- In the year 1982, what was the average number of marriages at the municipal level, where the husbands were citizens of foreign countries?
 SELECT  AVG(T1.amount)  FROM marriage_citizenship as T1
 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid
-WHERE T2.municipal = True AND T1.year = 2012  AND T1.citizenship_category_husband = 'Foreign country' AND  T1.citizenship_category_wife ='Citizenship of wife - total'
+WHERE T2.municipal = True AND T1.year = 2012  AND T1.citizenship_category_husband = 'Foreign country' AND  T1.citizenship_category_wife ='Citizenship of wife - total';
 
 -- In 2006, what were the top 10 cantons with the highest number of marriages where the grooms were Swiss nationals?
 SELECT  T2.name, T2.spatialunit_ontology,T1.year, T1.amount   FROM marriage_citizenship as T1
@@ -89,7 +89,7 @@ WHERE T2.municipal = True AND T1.year = 2011  AND T1.citizenship_category_husban
 -- Give me the average number of marriages at the canton level in 2001, where both the husband and wife are citizens of Swiss?
 SELECT  AVG(T1.amount)  FROM marriage_citizenship as T1
 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid
-WHERE T2.canton = True AND T1.year = 2001  AND T1.citizenship_category_husband = 'Switzerland' AND  T1.citizenship_category_wife ='Switzerland'
+WHERE T2.canton = True AND T1.year = 2001  AND T1.citizenship_category_husband = 'Switzerland' AND  T1.citizenship_category_wife ='Switzerland';
 
 -- Give me the 5 highest numbers of marriages that occurred at the canton level in 2010, where both the wife and husband were citizens of foreign countries?
 SELECT  T2.name, T1.amount FROM marriage_citizenship as T1
