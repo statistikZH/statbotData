@@ -88,7 +88,8 @@ SELECT T1.year,T1.population_type,T1.place_of_birth,T1.citizenship, T1.amount fr
 JOIN spatial_unit AS T2 ON T1.spatialunit_uid = T2.spatialunit_uid
 WHERE T2.canton=True AND T2.name ilike '%Zug%' AND T1.year=2020 AND T1.population_type ='Non permanent resident population' AND T1.place_of_birth ='Place of birth - total' AND T1.citizenship='Citizenship - total';
 
--- How many of the people were born abroad in municipality level  had the permanent residenship on 2010?	"SELECT T1.year, T2.spatialunit_ontology, T2.name, T1.population_type,T1.place_of_birth, T1.amount from resident_population_birthplace_citizenship_type AS T1
+-- How many of the people were born abroad in municipality level  had the permanent residenship on 2010?
+SELECT T1.year, T2.spatialunit_ontology, T2.name, T1.population_type,T1.place_of_birth, T1.amount from resident_population_birthplace_citizenship_type AS T1
 JOIN spatial_unit AS T2 ON T1.spatialunit_uid = T2.spatialunit_uid
 WHERE T2.municipal=True  AND T1.year=2010 AND T1.population_type ='Permanent resident population' AND T1.place_of_birth ='Abroad' AND T1.citizenship='Citizenship - total';
 
