@@ -26,7 +26,8 @@ SELECT value FROM resident_population_type_citizenship_category_gender_age
 WHERE gender = 'Female' AND citizenship_category = 'Switzerland'
 AND population_type = 'Permanent resident population'
 AND spatialunit_name = 'Schwyz'
-AND EXTRACT(YEAR from time_value) = 2013);
+AND EXTRACT(YEAR from time_value) = 2013;
+
 -- How many therewere registered Swiss women in Küttigen in 2020?
 SELECT value
 FROM resident_population_type_citizenship_category_gender_age
