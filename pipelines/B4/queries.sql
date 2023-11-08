@@ -218,35 +218,6 @@ JOIN (
 ) AS ausserrhoden ON innerrhoden.year = ausserrhoden.year
 WHERE innerrhoden.total_divorces > ausserrhoden.total_divorces;
 
--- What percentage of total divorces on a cantonal level between 1996 and 2017 occurred between Swiss couples, and what percentage occurred where at least one partner was not Swiss, for each canton in Switzerland?
-SELECT su.name AS canton_name,
-       COALESCE(swiss.swiss_divorces, 0) AS swiss_divorces,
-       COALESCE(not_swiss.not_swiss_divorces, 0) AS not_swiss_divorces,
-       100.0 * COALESCE(swiss.swiss_divorces, 0) / (COALESCE(swiss.swiss_divorces, 0) + COALESCE(not_swiss.not_swiss_divorces, 0)) AS percentage_swiss,
-       100.0 * COALESCE(not_swiss.not_swiss_divorces, 0) / (COALESCE(swiss.swiss_divorces, 0) + COALESCE(not_swiss.not_swiss_divorces, 0)) AS percentage_not_swiss
-FROM (
-  SELECT spatialunit_uid AS canton_id,
-         SUM(amount) AS swiss_divorces
-  FROM divorces_duration_of_marriage_citizenship_categories
-  WHERE duration_of_marriage = 'Duration of marriage - total'
-    AND citizenship_category_husband = 'Switzerland'
-    AND citizenship_category_wife = 'Switzerland'
-    AND year BETWEEN 1996 AND 2017
-    AND spatialunit_uid LIKE '%_ADM1'  -- Assuming this is the pattern for cantonal IDs
-  GROUP BY spatialunit_uid
-) AS swiss
-FULL JOIN (
-  SELECT spatialunit_uid AS canton_id,
-         SUM(amount) AS not_swiss_divorces
-  FROM divorces_duration_of_marriage_citizenship_categories
-  WHERE duration_of_marriage = 'Duration of marriage - total'
-    AND (citizenship_category_husband = 'Foreign country' OR citizenship_category_wife = 'Foreign country')
-    AND year BETWEEN 1996 AND 2017
-    AND spatialunit_uid LIKE '%_ADM1'  -- Assuming this is the pattern for cantonal IDs
-  GROUP BY spatialunit_uid
-) AS not_swiss ON swiss.canton_id = not_swiss.canton_id
-JOIN spatial_unit su ON COALESCE(swiss.canton_id, not_swiss.canton_id) = su.spatialunit_uid;
-
 -- In which year between 1996 and 2017 did the canton of Graubünden experience the biggest difference in the percentage of total divorces between Swiss couples and couples where at least one partner was not Swiss?
 WITH swiss AS (
   SELECT year,
