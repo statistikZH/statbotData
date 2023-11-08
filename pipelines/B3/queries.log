@@ -1,0 +1,370 @@
+[1] "Environment: REMOTE, Time: 2023-11-08 16:19:47"
+
+Query Nr. 1
+-- How many divorces were there in canton zurich in 2020?
+SELECT S.name, T.year, sum(T.amount) as total_divorces FROM divorces_duration_of_marriage_age_classes as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name ilike '%Zurich%' AND T.year=2020 AND S.canton=True AND T.duration_of_marriage='Duration of marriage - total' AND T.age_class_husband='Age class of husband - total' AND T.age_class_wife='Age class of wife - total' GROUP BY S.name, T.year;
+             name year total_divorces
+ Canton of Zurich 2020           2823
+
+Query Nr. 2
+-- How many men divorced at an age between 60 and 69 in canton zurich in 2020?
+SELECT S.name, T.year, T.age_class_husband, sum(T.amount) AS total_divorces FROM divorces_duration_of_marriage_age_classes as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name ilike '%Zurich%' AND T.year=2020 AND S.canton=True AND T.duration_of_marriage='Duration of marriage - total' AND T.age_class_husband='60-69 years' AND T.age_class_wife='Age class of wife - total' GROUP BY S.name, T.year, T.age_class_husband;
+             name year age_class_husband total_divorces
+ Canton of Zurich 2020       60-69 years            323
+
+Query Nr. 3
+-- How many women divorced at age between 20 and 29 in canton zurich in 2020?
+SELECT S.name, T.year, T.age_class_wife, sum(T.amount) as total_divorces FROM divorces_duration_of_marriage_age_classes as T JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid WHERE S.name ilike '%Zurich%' AND T.year=2020 AND S.canton=True AND T.duration_of_marriage='Duration of marriage - total' AND T.age_class_husband='Age class of husband - total' AND T.age_class_wife='20-29 years' GROUP BY S.name, T.year, T.age_class_wife;
+             name year age_class_wife total_divorces
+ Canton of Zurich 2020    20-29 years            200
+
+Query Nr. 4
+-- Which Kanton had the most divorces in 2015?
+SELECT S.name, T.year, SUM(T.amount) AS total_divorces FROM spatial_unit AS S INNER JOIN divorces_duration_of_marriage_age_classes AS T ON S.spatialunit_uid = T.spatialunit_uid WHERE T.year = 2015 AND T.duration_of_marriage='Duration of marriage - total' AND T.age_class_husband='Age class of husband - total' AND T.age_class_wife='Age class of wife - total' AND S.canton GROUP BY S.name, T.year ORDER BY total_divorces DESC LIMIT 1;
+             name year total_divorces
+ Canton of Zurich 2015           3127
+
+Query Nr. 5
+-- How many couples were divorced in Switzerland in the year 2000?
+SELECT T.year, S.name, sum(T.amount) as total_divorces FROM divorces_duration_of_marriage_age_classes as T JOIN spatial_unit AS S ON T.spatialunit_uid = s.spatialunit_uid WHERE S.country AND T.year='2000' AND T.duration_of_marriage='Duration of marriage - total' AND T.age_class_husband='Age class of husband - total' AND T.age_class_wife='Age class of wife - total' GROUP BY S.name, T.year;
+ year        name total_divorces
+ 2000 Switzerland          10511
+
+Query Nr. 6
+-- How many marriages in Switzerland got divorced after less then 5 years in 2000?
+SELECT sum(amount) AS total_divorces FROM divorces_duration_of_marriage_age_classes as T JOIN spatial_unit AS S ON T.spatialunit_uid = s.spatialunit_uid WHERE S.country AND T.year='2000' AND T.duration_of_marriage='0-4 years' AND T.age_class_husband='Age class of husband - total' AND T.age_class_wife='Age class of wife - total';
+ total_divorces
+           1645
+
+Query Nr. 7
+-- What was the prominent age for men that divorced in Switzerland in 2000?
+SELECT T.age_class_husband, SUM(T.amount) AS total_divorces FROM spatial_unit AS S INNER JOIN divorces_duration_of_marriage_age_classes AS T ON S.spatialunit_uid = T.spatialunit_uid WHERE T.year = 2000 AND T.duration_of_marriage='Duration of marriage - total' AND T.age_class_wife='Age class of wife - total' AND T.age_class_husband!='Age class of husband - total' AND S.country GROUP BY T.age_class_husband ORDER BY total_divorces DESC LIMIT 1;
+ age_class_husband total_divorces
+       30-39 years           3906
+
+Query Nr. 8
+-- What was the prominent age for women that divorced in Switzerland in 2000?
+SELECT T.age_class_wife, SUM(T.amount) AS total_divorces FROM spatial_unit AS S INNER JOIN divorces_duration_of_marriage_age_classes AS T ON S.spatialunit_uid = T.spatialunit_uid WHERE T.year = 2000 AND T.duration_of_marriage='Duration of marriage - total' AND T.age_class_wife!='Age class of wife - total' AND T.age_class_husband='Age class of husband - total' AND S.country GROUP BY T.age_class_wife ORDER BY total_divorces DESC LIMIT 1;
+ age_class_wife total_divorces
+    30-39 years           4202
+
+Query Nr. 9
+-- From 2000 to 2022 which year saw the most divorces in Switzerland?
+SELECT T.year, SUM(T.amount) AS total_divorces FROM spatial_unit AS S INNER JOIN divorces_duration_of_marriage_age_classes AS T ON S.spatialunit_uid = T.spatialunit_uid WHERE T.year >= 2000 AND T.year <= 2022 AND T.duration_of_marriage='Duration of marriage - total' AND T.age_class_wife='Age class of wife - total' AND T.age_class_husband='Age class of husband - total' AND S.country GROUP BY T.year ORDER BY total_divorces DESC LIMIT 1;
+ year total_divorces
+ 2010          22081
+
+Query Nr. 10
+-- Did 2020 have more divorces than 2019?
+SELECT T.year, SUM(T.amount) AS total_divorces FROM spatial_unit AS S INNER JOIN divorces_duration_of_marriage_age_classes AS T ON S.spatialunit_uid = T.spatialunit_uid WHERE (T.year=2019 OR T.year=2020) AND T.duration_of_marriage='Duration of marriage - total' AND T.age_class_wife='Age class of wife - total' AND T.age_class_husband='Age class of husband - total' AND S.country GROUP BY T.year ORDER BY T.year DESC;
+ year total_divorces
+ 2020          16210
+ 2019          16885
+
+Query Nr. 11
+-- How many divorces happened in Basel in 2015 and after how many years of marriage?
+SELECT S.name, S.spatialunit_ontology, T.year, T.duration_of_marriage, SUM(T.amount) AS total_divorces FROM divorces_duration_of_marriage_age_classes AS T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE T.year=2015 AND T.duration_of_marriage!='Duration of marriage - total' AND T.age_class_wife='Age class of wife - total' AND T.age_class_husband='Age class of husband - total' AND S.name ilike '%basel%' GROUP BY T.year, T.duration_of_marriage, S.spatialunit_ontology, S.name;
+                       name spatialunit_ontology year duration_of_marriage
+ Canton of Basel-Landschaft               Canton 2015            0-4 years
+      Canton of Basel-Stadt               Canton 2015            0-4 years
+ Canton of Basel-Landschaft               Canton 2015          10-14 years
+      Canton of Basel-Stadt               Canton 2015          10-14 years
+ Canton of Basel-Landschaft               Canton 2015          15-19 years
+      Canton of Basel-Stadt               Canton 2015          15-19 years
+ Canton of Basel-Landschaft               Canton 2015     20 years or more
+      Canton of Basel-Stadt               Canton 2015     20 years or more
+ Canton of Basel-Landschaft               Canton 2015            5-9 years
+      Canton of Basel-Stadt               Canton 2015            5-9 years
+ total_divorces
+             51
+             57
+             80
+             78
+             92
+             41
+            174
+            107
+            128
+            129
+
+Query Nr. 12
+-- Which Kanton had the most divorces after only a short marriage in 2020?
+SELECT S.name, T.duration_of_marriage, SUM(T.amount) AS total_divorces FROM spatial_unit AS S INNER JOIN divorces_duration_of_marriage_age_classes AS T ON S.spatialunit_uid = T.spatialunit_uid WHERE T.year = 2020 AND T.duration_of_marriage='0-4 years' AND T.age_class_husband='Age class of husband - total' AND T.age_class_wife='Age class of wife - total' AND S.canton GROUP BY S.name, T.duration_of_marriage ORDER BY total_divorces DESC LIMIT 1;
+             name duration_of_marriage total_divorces
+ Canton of Zurich            0-4 years            381
+
+Query Nr. 13
+-- Which Kanton had the most divorces after only a very long marriage in 2020?
+SELECT S.name, T.duration_of_marriage, SUM(T.amount) AS total_divorces FROM spatial_unit AS S INNER JOIN divorces_duration_of_marriage_age_classes AS T ON S.spatialunit_uid = T.spatialunit_uid WHERE T.year = 2020 AND T.duration_of_marriage='20 years or more' AND T.age_class_husband='Age class of husband - total' AND T.age_class_wife='Age class of wife - total' AND S.canton GROUP BY S.name, T.duration_of_marriage ORDER BY total_divorces DESC LIMIT 1;
+             name duration_of_marriage total_divorces
+ Canton of Zurich     20 years or more            760
+
+Query Nr. 14
+-- How did the amount of divorces in Switzerland develop since 1990?
+SELECT T.year, SUM(T.amount) AS total_divorces FROM spatial_unit AS S INNER JOIN divorces_duration_of_marriage_age_classes AS T ON S.spatialunit_uid = T.spatialunit_uid WHERE T.year >= 1990 AND T.duration_of_marriage='Duration of marriage - total' AND T.age_class_wife='Age class of wife - total' AND T.age_class_husband='Age class of husband - total' AND S.country GROUP BY T.year ORDER BY T.year;
+ year total_divorces
+ 1990          13184
+ 1991          13628
+ 1992          14530
+ 1993          15054
+ 1994          15634
+ 1995          15703
+ 1996          16172
+ 1997          17073
+ 1998          17868
+ 1999          20809
+ 2000          10511
+ 2001          15778
+ 2002          16363
+ 2003          16799
+ 2004          17949
+ 2005          21332
+ 2006          20981
+ 2007          19882
+ 2008          19613
+ 2009          19321
+ 2010          22081
+ 2011          17566
+ 2012          17550
+ 2013          17119
+ 2014          16737
+ 2015          16960
+ 2016          17028
+ 2017          15906
+ 2018          16542
+ 2019          16885
+ 2020          16210
+ 2021          17159
+
+Query Nr. 15
+-- Which Canton had the least divorces in 2002?
+SELECT T.year, T.duration_of_marriage, T.amount AS total_divorces FROM spatial_unit AS S INNER JOIN divorces_duration_of_marriage_age_classes AS T ON S.spatialunit_uid = T.spatialunit_uid WHERE T.year >= 1990 AND T.duration_of_marriage!='Duration of marriage - total' AND T.age_class_wife='Age class of wife - total' AND T.age_class_husband='Age class of husband - total' AND S.country GROUP BY T.year, T.duration_of_marriage, T.amount ORDER BY T.year, T.duration_of_marriage;
+ year duration_of_marriage total_divorces
+ 1990            0-4 years           3128
+ 1990          10-14 years           2051
+ 1990          15-19 years           1679
+ 1990     20 years or more           2853
+ 1990            5-9 years           3473
+ 1991            0-4 years           3386
+ 1991          10-14 years           2192
+ 1991          15-19 years           1606
+ 1991     20 years or more           2884
+ 1991            5-9 years           3560
+ 1992            0-4 years           3657
+ 1992          10-14 years           2389
+ 1992          15-19 years           1673
+ 1992     20 years or more           2959
+ 1992            5-9 years           3852
+ 1993            0-4 years           3748
+ 1993          10-14 years           2312
+ 1993          15-19 years           1613
+ 1993     20 years or more           3180
+ 1993            5-9 years           4201
+ 1994            0-4 years           3664
+ 1994          10-14 years           2521
+ 1994          15-19 years           1647
+ 1994     20 years or more           3267
+ 1994            5-9 years           4535
+ 1995            0-4 years           3347
+ 1995          10-14 years           2695
+ 1995          15-19 years           1689
+ 1995     20 years or more           3236
+ 1995            5-9 years           4736
+ 1996            0-4 years           2990
+ 1996          10-14 years           2814
+ 1996          15-19 years           1827
+ 1996     20 years or more           3416
+ 1996            5-9 years           5125
+ 1997            0-4 years           2943
+ 1997          10-14 years           3006
+ 1997          15-19 years           1995
+ 1997     20 years or more           3588
+ 1997            5-9 years           5541
+ 1998            0-4 years           3079
+ 1998          10-14 years           3184
+ 1998          15-19 years           2077
+ 1998     20 years or more           3676
+ 1998            5-9 years           5852
+ 1999            0-4 years           3273
+ 1999          10-14 years           3826
+ 1999          15-19 years           2494
+ 1999     20 years or more           4435
+ 1999            5-9 years           6781
+ 2000            0-4 years           1645
+ 2000          10-14 years           1972
+ 2000          15-19 years           1258
+ 2000     20 years or more           2258
+ 2000            5-9 years           3378
+ 2001            0-4 years           2137
+ 2001          10-14 years           3334
+ 2001          15-19 years           1965
+ 2001     20 years or more           3459
+ 2001            5-9 years           4883
+ 2002            0-4 years           2152
+ 2002          10-14 years           3455
+ 2002          15-19 years           2225
+ 2002     20 years or more           3543
+ 2002            5-9 years           4988
+ 2003            0-4 years           2124
+ 2003          10-14 years           3418
+ 2003          15-19 years           2345
+ 2003     20 years or more           3795
+ 2003            5-9 years           5117
+ 2004            0-4 years           2157
+ 2004          10-14 years           3764
+ 2004          15-19 years           2606
+ 2004     20 years or more           4173
+ 2004            5-9 years           5249
+ 2005            0-4 years           2174
+ 2005          10-14 years           4302
+ 2005          15-19 years           3322
+ 2005     20 years or more           5363
+ 2005            5-9 years           6171
+ 2006            0-4 years           2124
+ 2006          10-14 years           4066
+ 2006          15-19 years           3484
+ 2006     20 years or more           5531
+ 2006            5-9 years           5776
+ 2007            0-4 years           2160
+ 2007          10-14 years           3701
+ 2007          15-19 years           3158
+ 2007     20 years or more           5380
+ 2007            5-9 years           5483
+ 2008            0-4 years           2037
+ 2008          10-14 years           3552
+ 2008          15-19 years           3171
+ 2008     20 years or more           5351
+ 2008            5-9 years           5502
+ 2009            0-4 years           2026
+ 2009          10-14 years           3598
+ 2009          15-19 years           2953
+ 2009     20 years or more           5282
+ 2009            5-9 years           5462
+ 2010            0-4 years           2454
+ 2010          10-14 years           4087
+ 2010          15-19 years           3216
+ 2010     20 years or more           6207
+ 2010            5-9 years           6117
+ 2011            0-4 years           2073
+ 2011          10-14 years           3162
+ 2011          15-19 years           2543
+ 2011     20 years or more           4993
+ 2011            5-9 years           4795
+ 2012            0-4 years           2138
+ 2012          10-14 years           3218
+ 2012          15-19 years           2435
+ 2012     20 years or more           5049
+ 2012            5-9 years           4710
+ 2013            0-4 years           2079
+ 2013          10-14 years           3199
+ 2013          15-19 years           2277
+ 2013     20 years or more           5001
+ 2013            5-9 years           4563
+ 2014            0-4 years           2062
+ 2014          10-14 years           3044
+ 2014          15-19 years           2320
+ 2014     20 years or more           5055
+ 2014            5-9 years           4256
+ 2015            0-4 years           2077
+ 2015          10-14 years           3192
+ 2015          15-19 years           2379
+ 2015     20 years or more           4988
+ 2015            5-9 years           4324
+ 2016            0-4 years           2020
+ 2016          10-14 years           3356
+ 2016          15-19 years           2439
+ 2016     20 years or more           5030
+ 2016            5-9 years           4183
+ 2017            0-4 years           1900
+ 2017          10-14 years           3039
+ 2017          15-19 years           2300
+ 2017     20 years or more           4750
+ 2017            5-9 years           3917
+ 2018            0-4 years           1973
+ 2018          10-14 years           3154
+ 2018          15-19 years           2387
+ 2018     20 years or more           5025
+ 2018            5-9 years           4003
+ 2019            0-4 years           1973
+ 2019          10-14 years           3291
+ 2019          15-19 years           2508
+ 2019     20 years or more           5189
+ 2019            5-9 years           3924
+ 2020            0-4 years           1823
+ 2020          10-14 years           3171
+ 2020          15-19 years           2431
+ 2020     20 years or more           5140
+ 2020            5-9 years           3645
+ 2021            0-4 years           1701
+ 2021          10-14 years           3552
+ 2021          15-19 years           2687
+ 2021     20 years or more           5431
+ 2021            5-9 years           3788
+
+Query Nr. 16
+-- Which year between 1990 and 2000 had the least divorces in Stadt Basel?
+SELECT S.name, T.year, SUM(T.amount) AS total_divorces FROM spatial_unit AS S INNER JOIN divorces_duration_of_marriage_age_classes AS T ON S.spatialunit_uid = T.spatialunit_uid WHERE T.year >= 1990 AND T.duration_of_marriage='Duration of marriage - total' AND T.age_class_husband='Age class of husband - total' AND T.age_class_wife='Age class of wife - total' AND S.country GROUP BY S.name, T.year ORDER BY T.year;
+        name year total_divorces
+ Switzerland 1990          13184
+ Switzerland 1991          13628
+ Switzerland 1992          14530
+ Switzerland 1993          15054
+ Switzerland 1994          15634
+ Switzerland 1995          15703
+ Switzerland 1996          16172
+ Switzerland 1997          17073
+ Switzerland 1998          17868
+ Switzerland 1999          20809
+ Switzerland 2000          10511
+ Switzerland 2001          15778
+ Switzerland 2002          16363
+ Switzerland 2003          16799
+ Switzerland 2004          17949
+ Switzerland 2005          21332
+ Switzerland 2006          20981
+ Switzerland 2007          19882
+ Switzerland 2008          19613
+ Switzerland 2009          19321
+ Switzerland 2010          22081
+ Switzerland 2011          17566
+ Switzerland 2012          17550
+ Switzerland 2013          17119
+ Switzerland 2014          16737
+ Switzerland 2015          16960
+ Switzerland 2016          17028
+ Switzerland 2017          15906
+ Switzerland 2018          16542
+ Switzerland 2019          16885
+ Switzerland 2020          16210
+ Switzerland 2021          17159
+
+Query Nr. 17
+-- Did any men divorce at an age of 90 or above in Switzerland in 2000?
+SELECT S.name, T.age_class_husband, SUM(T.amount) AS total_divorces FROM spatial_unit AS S INNER JOIN divorces_duration_of_marriage_age_classes AS T ON S.spatialunit_uid = T.spatialunit_uid WHERE T.year = 2000 AND T.duration_of_marriage='Duration of marriage - total' AND T.age_class_husband='90 years or older' AND T.age_class_wife='Age class of wife - total' AND S.country GROUP BY S.name, T.age_class_husband ORDER BY total_divorces ASC LIMIT 1;
+        name age_class_husband total_divorces
+ Switzerland 90 years or older              0
+
+Query Nr. 18
+-- Did any people divorce at an age of 70 or above in Switzerland in 2000?
+SELECT S.name, T.age_class_husband, SUM(T.amount) AS total_divorces FROM spatial_unit AS S INNER JOIN divorces_duration_of_marriage_age_classes AS T ON S.spatialunit_uid = T.spatialunit_uid WHERE T.year = 2000 AND T.duration_of_marriage='Duration of marriage - total' AND (T.age_class_husband='90 years or older' OR T.age_class_husband='70-79 years') AND T.age_class_wife='Age class of wife - total' AND S.country GROUP BY S.name, T.age_class_husband;
+        name age_class_husband total_divorces
+ Switzerland       70-79 years            119
+ Switzerland 90 years or older              0
+
+Query Nr. 19
+-- Did any person divorce at an age of 90 or above in Switzerland since 2000?
+SELECT S.name, T.age_class_husband, T.age_class_wife, SUM(T.amount) AS total_divorces FROM spatial_unit AS S INNER JOIN divorces_duration_of_marriage_age_classes AS T ON S.spatialunit_uid = T.spatialunit_uid WHERE T.year >= 2000 AND T.duration_of_marriage='Duration of marriage - total' AND ((T.age_class_husband='90 years or older'           AND T.age_class_wife='Age class of wife - total')         OR (T.age_class_wife='90 years or older'          AND T.age_class_husband='Age class of husband - total')) AND S.country GROUP BY S.name, T.age_class_husband, T.age_class_wife ORDER BY total_divorces ASC;
+        name            age_class_husband            age_class_wife
+ Switzerland Age class of husband - total         90 years or older
+ Switzerland            90 years or older Age class of wife - total
+ total_divorces
+              9
+             43
+
+Query Nr. 20
+-- In Canton Uri how many marriages where divorced in 2003 after more than 10 years?
+SELECT S.name, T.duration_of_marriage, SUM(T.amount) AS total_divorces FROM spatial_unit AS S INNER JOIN divorces_duration_of_marriage_age_classes AS T ON S.spatialunit_uid = T.spatialunit_uid WHERE T.year = 2003 AND (T.duration_of_marriage='10-14 years'          OR T.duration_of_marriage='15-19 years'          OR T.duration_of_marriage='20 years or more') AND T.age_class_husband='Age class of husband - total' AND T.age_class_wife='Age class of wife - total' AND S.canton AND S.name ilike '% Uri%' GROUP BY S.name, T.duration_of_marriage ORDER BY T.duration_of_marriage DESC;
+          name duration_of_marriage total_divorces
+ Canton of Uri     20 years or more             10
+ Canton of Uri          15-19 years              2
+ Canton of Uri          10-14 years              8

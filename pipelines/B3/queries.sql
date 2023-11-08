@@ -1,4 +1,5 @@
--- How many divorces were there in canton zurich in 2020?	"SELECT S.name, T.year, sum(T.amount) as total_divorces
+-- How many divorces were there in canton zurich in 2020?
+SELECT S.name, T.year, sum(T.amount) as total_divorces
 FROM divorces_duration_of_marriage_age_classes as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.name ilike '%Zurich%'
@@ -9,7 +10,8 @@ AND T.age_class_husband='Age class of husband - total'
 AND T.age_class_wife='Age class of wife - total'
 GROUP BY S.name, T.year;
 
--- How many men divorced at an age between 60 and 69 in canton zurich in 2020?SELECT S.name, T.year, T.age_class_husband, sum(T.amount) AS total_divorces
+-- How many men divorced at an age between 60 and 69 in canton zurich in 2020?
+SELECT S.name, T.year, T.age_class_husband, sum(T.amount) AS total_divorces
 FROM divorces_duration_of_marriage_age_classes as T
 JOIN spatial_unit AS S ON T.spatialunit_uid = S.spatialunit_uid
 WHERE S.name ilike '%Zurich%'
