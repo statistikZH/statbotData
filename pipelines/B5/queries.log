@@ -1,0 +1,448 @@
+[1] "Environment: REMOTE, Time: 2023-11-08 16:54:25"
+
+Query Nr. 1
+-- How many marriages occurred in Reiden in 1999 with a wife who held Swiss citizenship?
+SELECT  T1.citizenship_category_wife, T2.name,T1.year, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.name ilike  '%Reiden%' and T1.year= 1999 and T1.citizenship_category_wife='Switzerland' and T1.citizenship_category_husband = 'Citizenship of husband - total';
+ citizenship_category_wife   name year amount
+               Switzerland Reiden 1999     24
+
+Query Nr. 2
+-- Which canton has the highest number of marriages between Swiss women and Swiss men on 2018?
+SELECT  T2.name,T1.citizenship_category_wife,T1.citizenship_category_husband,T1.year, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.municipal=True and T1.year=2018 and T1.citizenship_category_husband='Switzerland' and T1.citizenship_category_wife='Switzerland' ORDER BY  T1.amount DESC LIMIT 1;
+   name citizenship_category_wife citizenship_category_husband year amount
+ Zürich               Switzerland                  Switzerland 2018    920
+
+Query Nr. 3
+-- In which region are the fewest marriages recorded between Swiss men and foreign women?
+SELECT  T2.name,T1.citizenship_category_wife,T1.citizenship_category_husband,T1.year, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.municipal=True and T1.year=2018 and T1.citizenship_category_husband='Switzerland' and T1.citizenship_category_wife='Foreign country' ORDER BY  T1.amount ASC LIMIT 10;
+                 name citizenship_category_wife citizenship_category_husband
+            Bottenwil           Foreign country                  Switzerland
+                Furna           Foreign country                  Switzerland
+             Schwende           Foreign country                  Switzerland
+         Schlatt (TG)           Foreign country                  Switzerland
+             Provence           Foreign country                  Switzerland
+             Eptingen           Foreign country                  Switzerland
+ Tschiertschen-Praden           Foreign country                  Switzerland
+                Grens           Foreign country                  Switzerland
+          Champtauroz           Foreign country                  Switzerland
+              Le Flon           Foreign country                  Switzerland
+ year amount
+ 2018      0
+ 2018      0
+ 2018      0
+ 2018      0
+ 2018      0
+ 2018      0
+ 2018      0
+ 2018      0
+ 2018      0
+ 2018      0
+
+Query Nr. 4
+-- What is the number of marriages in Reichenbach im Kandertal in 2020 where both the wife and husband are citizens of foreign countries?
+SELECT  T2.name,T1.citizenship_category_wife,T1.citizenship_category_husband,T1.year, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.name ilike '%Reichenbach im Kandertal%' and T1.year=2020 and T1.citizenship_category_husband='Foreign country' and T1.citizenship_category_wife='Foreign country';
+                     name citizenship_category_wife
+ Reichenbach im Kandertal           Foreign country
+ citizenship_category_husband year amount
+              Foreign country 2020      1
+
+Query Nr. 5
+-- How many marriages occurred in Heitenried in the year 2008 for individuals of different nationalities?
+SELECT  T2.name,T1.citizenship_category_wife,T1.citizenship_category_husband,T1.year, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.name ilike '%Heitenried%' and T1.year=2008  and T1.citizenship_category_wife !='Citizenship of wife - total' and T1.citizenship_category_husband !='Citizenship of husband - total';
+       name citizenship_category_wife citizenship_category_husband year amount
+ Heitenried           Foreign country              Foreign country 2008      0
+ Heitenried               Switzerland              Foreign country 2008      0
+ Heitenried               Switzerland                  Switzerland 2008      6
+ Heitenried           Foreign country                  Switzerland 2008      1
+
+Query Nr. 6
+-- How many marriages occurred in switzerland in the year 2010?
+SELECT  T2.name,T1.citizenship_category_wife,T1.citizenship_category_husband,T1.year, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.country=True and T1.year=2010 and T1.citizenship_category_wife ='Citizenship of wife - total' and T1.citizenship_category_husband ='Citizenship of husband - total';
+        name   citizenship_category_wife   citizenship_category_husband year
+ Switzerland Citizenship of wife - total Citizenship of husband - total 2010
+ amount
+  43257
+
+Query Nr. 7
+-- How many marriages occurred in switzerland in the year 2010?
+SELECT  T2.name,T1.citizenship_category_wife,T1.citizenship_category_husband,T1.year, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.country=True and T1.year=2010 and T1.citizenship_category_wife !='Citizenship of wife - total' and T1.citizenship_category_husband !='Citizenship of husband - total';
+        name citizenship_category_wife citizenship_category_husband year amount
+ Switzerland               Switzerland              Foreign country 2010   7000
+ Switzerland               Switzerland                  Switzerland 2010  22058
+ Switzerland           Foreign country              Foreign country 2010   5871
+ Switzerland           Foreign country                  Switzerland 2010   8328
+
+Query Nr. 8
+-- In 2000, among the municipalities, which had the highest and lowest numbers of marriages where the husbands were Swiss citizens?
+(SELECT  T2.name, T2.spatialunit_ontology,T1.year, T1.amount  FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.municipal = True AND T1.year = 2000  AND T1.citizenship_category_husband = 'Switzerland'  AND T1.citizenship_category_wife ='Citizenship of wife - total' AND T1.amount =(SELECT Max(T1.amount) FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.municipal = True AND T1.year = 2000  AND T1.citizenship_category_husband = 'Switzerland'  AND T1.citizenship_category_wife ='Citizenship of wife - total' ) LIMIT 1) UNION ALL ( SELECT  T2.name, T2.spatialunit_ontology,T1.year, T1.amount  FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.municipal = True AND T1.year = 2000  AND T1.citizenship_category_husband = 'Switzerland'  AND T1.citizenship_category_wife ='Citizenship of wife - total' AND T1.amount =(SELECT MIN(T1.amount) FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.municipal = True AND T1.year = 2000  AND T1.citizenship_category_husband = 'Switzerland'  AND T1.citizenship_category_wife ='Citizenship of wife - total' ) LIMIT 1);
+    name spatialunit_ontology year amount
+  Zürich         Municipality 2000   1470
+ La Praz         Municipality 2000      0
+
+Query Nr. 9
+-- What is the highest number of marriages that occurred at the district level in 2012, where both the wife and husband were citizens of foreign countries?
+SELECT  T2.name, T2.spatialunit_ontology,T1.year, T1.amount,T1.citizenship_category_husband,T1.citizenship_category_wife  FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.district = True AND T1.year = 2012  AND T1.citizenship_category_husband = 'Foreign country'  AND T1.citizenship_category_wife ='Foreign country' ORDER BY T1.amount DESC LIMIT 1;
+          name spatialunit_ontology year amount citizenship_category_husband
+ Bezirk Zürich             District 2012    510              Foreign country
+ citizenship_category_wife
+           Foreign country
+
+Query Nr. 10
+-- In the year 1982, what was the average number of marriages at the municipal level, where the husbands were citizens of foreign countries?
+SELECT  AVG(T1.amount)  FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.municipal = True AND T1.year = 2012  AND T1.citizenship_category_husband = 'Foreign country' AND  T1.citizenship_category_wife ='Citizenship of wife - total';
+      avg
+ 5.840499
+
+Query Nr. 11
+-- In 2006, what were the top 10 cantons with the highest number of marriages where the grooms were Swiss nationals?
+SELECT  T2.name, T2.spatialunit_ontology,T1.year, T1.amount   FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.canton = True AND T1.year = 2012  AND T1.citizenship_category_husband = 'Switzerland' AND  T1.citizenship_category_wife ='Citizenship of wife - total' ORDER BY T1.amount DESC LIMIT 10;
+                 name spatialunit_ontology year amount
+     Canton of Zurich               Canton 2012   5906
+       Canton of Bern               Canton 2012   3948
+        Canton Aargau               Canton 2012   2246
+          Canton Vaud               Canton 2012   2232
+ Canton of St. Gallen               Canton 2012   1907
+    Canton of Lucerne               Canton 2012   1571
+        Canton Geneva               Canton 2012   1402
+        Canton Valais               Canton 2012   1189
+   Canton of Fribourg               Canton 2012   1111
+        Canton Ticino               Canton 2012   1096
+
+Query Nr. 12
+-- Show me the top-10 municipalities with the lowest numbers of marriages that the wives were Swiss citizens on 2016?
+SELECT  T2.name, T2.spatialunit_ontology,T1.year, T1.amount   FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.municipal = True AND T1.year = 2012  AND T1.citizenship_category_wife = 'Switzerland' AND  T1.citizenship_category_husband ='Citizenship of husband - total' ORDER BY T1.amount ASC LIMIT 10;
+             name spatialunit_ontology year amount
+          Ergisch         Municipality 2012      0
+          Morcote         Municipality 2012      0
+      Clavaleyres         Municipality 2012      0
+  Cheseaux-Noréaz         Municipality 2012      0
+     Münchenwiler         Municipality 2012      0
+ Villars-le-Comte         Municipality 2012      0
+       Vullierens         Municipality 2012      0
+           Ferden         Municipality 2012      0
+              Lax         Municipality 2012      0
+           Soazza         Municipality 2012      0
+
+Query Nr. 13
+-- Give me the minimum , maximum and average number of marriages at the municipal level in 2011, where both the husband and wife are citizens of foreign countries?
+SELECT  MIN(T1.amount),Max(T1.amount),AVG(T1.amount)  FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.municipal = True AND T1.year = 2011  AND T1.citizenship_category_husband = 'Foreign country' AND  T1.citizenship_category_wife ='Foreign country';
+ min max      avg
+   0 540 2.601479
+
+Query Nr. 14
+-- Give me the average number of marriages at the canton level in 2001, where both the husband and wife are citizens of Swiss?
+SELECT  AVG(T1.amount)  FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.canton = True AND T1.year = 2001  AND T1.citizenship_category_husband = 'Switzerland' AND  T1.citizenship_category_wife ='Switzerland';
+      avg
+ 767.0385
+
+Query Nr. 15
+-- Give me the 5 highest numbers of marriages that occurred at the canton level in 2010, where both the wife and husband were citizens of foreign countries?
+SELECT  T2.name, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.canton = True AND T1.year = 2010  AND T1.citizenship_category_husband = 'Foreign country' AND  T1.citizenship_category_wife ='Foreign country' ORDER BY T1.amount DESC LIMIT 5;
+             name amount
+ Canton of Zurich   1250
+      Canton Vaud    750
+    Canton Geneva    694
+   Canton of Bern    465
+    Canton Aargau    419
+
+Query Nr. 16
+-- Show me the lowet number of marriages that occurred at the canton level in 1990, where both the wife and husband were from different nationalities?
+SELECT A.*  from (SELECT T2.name, T1.citizenship_category_husband, T1.citizenship_category_wife, T1.amount                FROM marriage_citizenship as T1                         JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid                WHERE T2.canton = True                  AND T1.year = 1990                  AND T1.citizenship_category_husband = 'Foreign country'                  and T1.citizenship_category_wife = 'Switzerland'                UNION                SELECT T2.name, T1.citizenship_category_husband, T1.citizenship_category_wife, T1.amount                FROM marriage_citizenship as T1                         JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid                WHERE T2.canton = True                  AND T1.year = 1990                  AND T1.citizenship_category_husband = 'Switzerland'                  and T1.citizenship_category_wife = 'Foreign country') A ORDER BY A.amount ASC LIMIT 1;
+                            name citizenship_category_husband
+ Canton of Appenzell Innerrhoden              Foreign country
+ citizenship_category_wife amount
+               Switzerland      1
+
+Query Nr. 17
+-- In 2012, how many marriages took place in the District of Affoltern, categorized by the citizenships of the wives and husbands involved?
+SELECT T2.name,T1.citizenship_category_husband ,T1.citizenship_category_wife , T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE T2.district = True AND T1.year = 2010  AND T2.name ilike '%Affoltern%' AND T1.citizenship_category_wife !='Citizenship of wife - total' and T1.citizenship_category_husband !='Citizenship of husband - total';
+             name citizenship_category_husband citizenship_category_wife amount
+ Bezirk Affoltern              Foreign country           Foreign country     27
+ Bezirk Affoltern                  Switzerland               Switzerland    160
+ Bezirk Affoltern                  Switzerland           Foreign country     43
+ Bezirk Affoltern              Foreign country               Switzerland     43
+
+Query Nr. 18
+-- How many marriages occurred in Oberdorf (BL) each year?
+SELECT T2.name, T1.year, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE  T2.name ilike '%Oberdorf (BL)%' AND T1.citizenship_category_wife ='Citizenship of wife - total' and T1.citizenship_category_husband ='Citizenship of husband - total' ORDER BY T1.year ASC;
+          name year amount
+ Oberdorf (BL) 1969     11
+ Oberdorf (BL) 1970     21
+ Oberdorf (BL) 1971     18
+ Oberdorf (BL) 1972      8
+ Oberdorf (BL) 1973     13
+ Oberdorf (BL) 1974     13
+ Oberdorf (BL) 1975      7
+ Oberdorf (BL) 1976      5
+ Oberdorf (BL) 1977     11
+ Oberdorf (BL) 1978      8
+ Oberdorf (BL) 1979      7
+ Oberdorf (BL) 1980      7
+ Oberdorf (BL) 1981     10
+ Oberdorf (BL) 1982     10
+ Oberdorf (BL) 1983      7
+ Oberdorf (BL) 1984      6
+ Oberdorf (BL) 1985      9
+ Oberdorf (BL) 1986     15
+ Oberdorf (BL) 1987     16
+ Oberdorf (BL) 1988     14
+ Oberdorf (BL) 1989     16
+ Oberdorf (BL) 1990     12
+ Oberdorf (BL) 1991      8
+ Oberdorf (BL) 1992     13
+ Oberdorf (BL) 1993      7
+ Oberdorf (BL) 1994     11
+ Oberdorf (BL) 1995     16
+ Oberdorf (BL) 1996      8
+ Oberdorf (BL) 1997      7
+ Oberdorf (BL) 1998      9
+ Oberdorf (BL) 1999      9
+ Oberdorf (BL) 2000      3
+ Oberdorf (BL) 2001      8
+ Oberdorf (BL) 2002      7
+ Oberdorf (BL) 2003      8
+ Oberdorf (BL) 2004      6
+ Oberdorf (BL) 2005     12
+ Oberdorf (BL) 2006      4
+ Oberdorf (BL) 2007      5
+ Oberdorf (BL) 2008     10
+ Oberdorf (BL) 2009     17
+ Oberdorf (BL) 2010      8
+ Oberdorf (BL) 2011     10
+ Oberdorf (BL) 2012     13
+ Oberdorf (BL) 2013     19
+ Oberdorf (BL) 2014      7
+ Oberdorf (BL) 2015     11
+ Oberdorf (BL) 2016     11
+ Oberdorf (BL) 2017      7
+ Oberdorf (BL) 2018      8
+ Oberdorf (BL) 2019      9
+ Oberdorf (BL) 2020      8
+ Oberdorf (BL) 2021     11
+
+Query Nr. 19
+-- Please provide a summary of the number of marriages for each combination of male and female citizenships in the canton of Zurich since 2000.
+SELECT T2.name, T1.year, T1.citizenship_category_husband , T1.citizenship_category_wife, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE  T2.name ilike '%z_rich%'  AND T2.canton = True AND T1.year >=2000  AND T1.citizenship_category_wife !='Citizenship of wife - total' and T1.citizenship_category_husband !='Citizenship of husband - total' ORDER BY T1.year ASC, T1.citizenship_category_wife ASC , T1.citizenship_category_husband ASC;
+             name year citizenship_category_husband citizenship_category_wife
+ Canton of Zurich 2000              Foreign country           Foreign country
+ Canton of Zurich 2000                  Switzerland           Foreign country
+ Canton of Zurich 2000              Foreign country               Switzerland
+ Canton of Zurich 2000                  Switzerland               Switzerland
+ Canton of Zurich 2001              Foreign country           Foreign country
+ Canton of Zurich 2001                  Switzerland           Foreign country
+ Canton of Zurich 2001              Foreign country               Switzerland
+ Canton of Zurich 2001                  Switzerland               Switzerland
+ Canton of Zurich 2002              Foreign country           Foreign country
+ Canton of Zurich 2002                  Switzerland           Foreign country
+ Canton of Zurich 2002              Foreign country               Switzerland
+ Canton of Zurich 2002                  Switzerland               Switzerland
+ Canton of Zurich 2003              Foreign country           Foreign country
+ Canton of Zurich 2003                  Switzerland           Foreign country
+ Canton of Zurich 2003              Foreign country               Switzerland
+ Canton of Zurich 2003                  Switzerland               Switzerland
+ Canton of Zurich 2004              Foreign country           Foreign country
+ Canton of Zurich 2004                  Switzerland           Foreign country
+ Canton of Zurich 2004              Foreign country               Switzerland
+ Canton of Zurich 2004                  Switzerland               Switzerland
+ Canton of Zurich 2005              Foreign country           Foreign country
+ Canton of Zurich 2005                  Switzerland           Foreign country
+ Canton of Zurich 2005              Foreign country               Switzerland
+ Canton of Zurich 2005                  Switzerland               Switzerland
+ Canton of Zurich 2006              Foreign country           Foreign country
+ Canton of Zurich 2006                  Switzerland           Foreign country
+ Canton of Zurich 2006              Foreign country               Switzerland
+ Canton of Zurich 2006                  Switzerland               Switzerland
+ Canton of Zurich 2007              Foreign country           Foreign country
+ Canton of Zurich 2007                  Switzerland           Foreign country
+ Canton of Zurich 2007              Foreign country               Switzerland
+ Canton of Zurich 2007                  Switzerland               Switzerland
+ Canton of Zurich 2008              Foreign country           Foreign country
+ Canton of Zurich 2008                  Switzerland           Foreign country
+ Canton of Zurich 2008              Foreign country               Switzerland
+ Canton of Zurich 2008                  Switzerland               Switzerland
+ Canton of Zurich 2009              Foreign country           Foreign country
+ Canton of Zurich 2009                  Switzerland           Foreign country
+ Canton of Zurich 2009              Foreign country               Switzerland
+ Canton of Zurich 2009                  Switzerland               Switzerland
+ Canton of Zurich 2010              Foreign country           Foreign country
+ Canton of Zurich 2010                  Switzerland           Foreign country
+ Canton of Zurich 2010              Foreign country               Switzerland
+ Canton of Zurich 2010                  Switzerland               Switzerland
+ Canton of Zurich 2011              Foreign country           Foreign country
+ Canton of Zurich 2011                  Switzerland           Foreign country
+ Canton of Zurich 2011              Foreign country               Switzerland
+ Canton of Zurich 2011                  Switzerland               Switzerland
+ Canton of Zurich 2012              Foreign country           Foreign country
+ Canton of Zurich 2012                  Switzerland           Foreign country
+ Canton of Zurich 2012              Foreign country               Switzerland
+ Canton of Zurich 2012                  Switzerland               Switzerland
+ Canton of Zurich 2013              Foreign country           Foreign country
+ Canton of Zurich 2013                  Switzerland           Foreign country
+ Canton of Zurich 2013              Foreign country               Switzerland
+ Canton of Zurich 2013                  Switzerland               Switzerland
+ Canton of Zurich 2014              Foreign country           Foreign country
+ Canton of Zurich 2014                  Switzerland           Foreign country
+ Canton of Zurich 2014              Foreign country               Switzerland
+ Canton of Zurich 2014                  Switzerland               Switzerland
+ Canton of Zurich 2015              Foreign country           Foreign country
+ Canton of Zurich 2015                  Switzerland           Foreign country
+ Canton of Zurich 2015              Foreign country               Switzerland
+ Canton of Zurich 2015                  Switzerland               Switzerland
+ Canton of Zurich 2016              Foreign country           Foreign country
+ Canton of Zurich 2016                  Switzerland           Foreign country
+ Canton of Zurich 2016              Foreign country               Switzerland
+ Canton of Zurich 2016                  Switzerland               Switzerland
+ Canton of Zurich 2017              Foreign country           Foreign country
+ Canton of Zurich 2017                  Switzerland           Foreign country
+ Canton of Zurich 2017              Foreign country               Switzerland
+ Canton of Zurich 2017                  Switzerland               Switzerland
+ Canton of Zurich 2018              Foreign country           Foreign country
+ Canton of Zurich 2018                  Switzerland           Foreign country
+ Canton of Zurich 2018              Foreign country               Switzerland
+ Canton of Zurich 2018                  Switzerland               Switzerland
+ Canton of Zurich 2019              Foreign country           Foreign country
+ Canton of Zurich 2019                  Switzerland           Foreign country
+ Canton of Zurich 2019              Foreign country               Switzerland
+ Canton of Zurich 2019                  Switzerland               Switzerland
+ Canton of Zurich 2020              Foreign country           Foreign country
+ Canton of Zurich 2020                  Switzerland           Foreign country
+ Canton of Zurich 2020              Foreign country               Switzerland
+ Canton of Zurich 2020                  Switzerland               Switzerland
+ Canton of Zurich 2021              Foreign country           Foreign country
+ Canton of Zurich 2021                  Switzerland           Foreign country
+ Canton of Zurich 2021              Foreign country               Switzerland
+ Canton of Zurich 2021                  Switzerland               Switzerland
+ amount
+   1243
+   1764
+    887
+   3807
+   1316
+   1862
+   1446
+   3450
+   1373
+   1882
+   1567
+   3632
+   1356
+   1792
+   1560
+   3507
+   1191
+   1776
+   1578
+   3590
+   1172
+   1887
+   1637
+   3655
+   1145
+   1830
+   1591
+   3570
+   1035
+   1881
+   1609
+   3654
+   1127
+   1875
+   1506
+   3844
+   1181
+   1860
+   1523
+   3929
+   1250
+   1921
+   1594
+   4016
+   1370
+   1908
+   1535
+   3895
+   1334
+   1958
+   1494
+   3948
+   1266
+   1787
+   1378
+   3544
+   1407
+   1927
+   1503
+   3633
+   1458
+   1897
+   1535
+   3690
+   1381
+   1918
+   1544
+   3650
+   1340
+   1822
+   1434
+   3638
+   1462
+   1829
+   1444
+   3542
+   1353
+   1837
+   1366
+   3394
+   1211
+   1580
+   1203
+   3218
+   1421
+   1603
+   1253
+   3185
+
+Query Nr. 20
+-- Which five cantons have the highest number of marriages between Swiss men and foreign women on 2011?
+SELECT T2.name, T1.citizenship_category_husband , T1.citizenship_category_wife, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE  T2.canton=True AND T1.year=2011 AND T1.citizenship_category_husband ='Switzerland' and T1.citizenship_category_wife ='Foreign country' ORDER BY T1.amount DESC LIMIT 5;
+             name citizenship_category_husband citizenship_category_wife amount
+ Canton of Zurich                  Switzerland           Foreign country   1908
+   Canton of Bern                  Switzerland           Foreign country    793
+      Canton Vaud                  Switzerland           Foreign country    781
+    Canton Geneva                  Switzerland           Foreign country    558
+    Canton Aargau                  Switzerland           Foreign country    552
+
+Query Nr. 21
+-- What are the top five municipalities with the highest number of marriages between Swiss men and foreign women in the year 2018?
+SELECT T2.name, T1.citizenship_category_husband , T1.citizenship_category_wife, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE  T2.municipal = True AND T1.year=2018 AND T1.citizenship_category_husband ='Foreign country' and T1.citizenship_category_wife ='Switzerland' ORDER BY T1.amount DESC LIMIT 5;
+     name citizenship_category_husband citizenship_category_wife amount
+   Zürich              Foreign country               Switzerland    508
+   Genève              Foreign country               Switzerland    233
+    Basel              Foreign country               Switzerland    200
+     Bern              Foreign country               Switzerland    154
+ Lausanne              Foreign country               Switzerland    145
+
+Query Nr. 22
+-- In terms of the number of marriages between two foreigners on 2012, how does Canton Zurich compare to Canton Neuchâtel?
+SELECT T2.name, T1.citizenship_category_husband , T1.citizenship_category_wife, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE  T1.year=2012 AND T2.canton = True AND (T2.name  ilike '%z_rich%' OR T2.name  ilike '%Neuch_tel%')  AND T1.citizenship_category_wife ='Foreign country' AND T1.citizenship_category_husband ='Foreign country' ORDER BY T1.amount DESC;
+             name citizenship_category_husband citizenship_category_wife amount
+ Canton of Zurich              Foreign country           Foreign country   1334
+ Canton Neuchâtel              Foreign country           Foreign country    119
+
+Query Nr. 23
+-- In which year did the Canton of Bern have the highest number of marriages between Swiss citizens and foreigners?
+SELECT UN.year, UN.citizenship_category_husband, UN.citizenship_category_wife, UN.amount FROM (SELECT T2.name, T1.year, T1.citizenship_category_husband , T1.citizenship_category_wife, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE  T2.canton = True AND T2.name  ilike '%Bern%'  AND T1.citizenship_category_wife ='Switzerland' AND T1.citizenship_category_husband ='Foreign country' UNION ALL SELECT T2.name, T1.year, T1.citizenship_category_husband , T1.citizenship_category_wife, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE  T2.canton = True AND T2.name  ilike '%Bern%'  AND T1.citizenship_category_wife ='Foreign country' AND T1.citizenship_category_husband ='Switzerland') AS UN ORDER BY UN.amount DESC LIMIT 1;
+ year citizenship_category_husband citizenship_category_wife amount
+ 2007                  Switzerland           Foreign country    896
+
+Query Nr. 24
+-- which year has the most number of marriage between swiss man and woman from other nationalty in Switzerlan?
+SELECT T1.year, T1.citizenship_category_husband , T1.citizenship_category_wife, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE  T2.country = True  AND T2.name='Switzerland'  AND T1.citizenship_category_wife ='Foreign country' AND T1.citizenship_category_husband ='Switzerland' ORDER BY T1.amount DESC LIMIT 1;
+ year citizenship_category_husband citizenship_category_wife amount
+ 1991                  Switzerland           Foreign country   9156
+
+Query Nr. 25
+-- which year has the most number of marriage between swiss femal and man from other nationalty in canton Argua?
+SELECT T1.year, T1.citizenship_category_husband , T1.citizenship_category_wife, T1.amount FROM marriage_citizenship as T1 JOIN spatial_unit T2 on T1.spatialunit_uid = T2.spatialunit_uid WHERE  T2.canton=True AND T2.name ilike '%Aargau%'  AND T1.citizenship_category_wife ='Switzerland' AND T1.citizenship_category_husband ='Foreign country' ORDER BY T1.amount DESC LIMIT 1;
+ year citizenship_category_husband citizenship_category_wife amount
+ 2016              Foreign country               Switzerland    554
