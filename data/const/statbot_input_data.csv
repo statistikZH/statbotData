@@ -32,6 +32,6 @@ B1,remote,stock_vehicles,px,,,px-x-1103020100_111,fso,bfs,,,,en,"dataset does no
 B2,remote,baby_names_favorite_firstname,px,,,px-x-0104050000_101,fso,bfs,,,,en,"the mentioned dataset had only male firstnames and was combined with the the dataset for female firstnames of px number px-x-0104050000_102"
 B3,remote,divorces_duration_of_marriage_age_classes,px,,,px-x-0102020203_104,fso,bfs,,,,en,
 B4,remote,divorces_duration_of_marriage_citizenship_categories,px,,,px-x-0102020203_103,fso,bfs,,,,en,
-B5,remote,marriage_citizenship,px,,,px-x-0102020202_102.px,fso,bfs,,,,en,
+B5,remote,marriage_citizenship,px,,,px-x-0102020202_102,fso,bfs,,,,en,
 B6,remote,resident_population_birthplace_citizenship_type,px,,,px-x-0102010000_104,fso,bfs,,,,en,
-B7,remote,resident_population_type_citizenship_category_gender_age,xlsx,,,,fso,bfs,,,https://www.bfs.admin.ch/asset/en/je-e-01.02.03.02,en,
+B7,remote,resident_population_type_citizenship_category_gender_age,px,,,px-x-0102010000_101,fso,bfs,,,,en,
