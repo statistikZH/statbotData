@@ -33,7 +33,7 @@ ds$data
 ds$cleaned_data <- ds$data %>%
   tidyr::pivot_wider(
     names_from = unit_of_measure,
-    values_from = data_person
+    values_from = data
   ) %>%
   janitor::clean_names(
   ) %>%

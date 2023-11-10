@@ -29,7 +29,7 @@ A31,uploaded,basel_stadt_steuerstatistik_kennzahlen_wohnvierteln,csv,,,,basel_st
 A32,uploaded,basel_stadt_kennzahlen_zu_den_basler_wohnvierteln,csv,,,,basel_stadt,"Statistisches Amt",,,https://data.bs.ch/api/explore/v2.1/catalog/datasets/100011/exports/csv?lang=en&timezone=UTC&use_labels=true&delimiter=%3B,de,
 A33,uploaded,schwyz_standige_wohnbevolkerung_geschlecht_nationalitat,csv,,,,schwyz,"Amt für Wirtschaft Kanton Schwyz",,,https://data.sz.ch/api/explore/v2.1/catalog/datasets/staendige-wohnbevoelkerung-nach-geschlecht-und-nationalitaet/exports/csv?lang=de&timezone=Europe%2FBerlin&use_labels=true&delimiter=%2C,de,
 B1,remote,stock_vehicles,px,,,px-x-1103020100_111,fso,bfs,,,,en,"dataset does not exist in english but was translated"
-B2,remote,baby_names_favorite_firstname,px,large,latin1,px-x-0104050000_101,fso,bfs,,,,en,"the mentioned dataset had only male firstnames and was combined with the the dataset for female firstnames of px number px-x-0104050000_102"
+B2,remote,baby_names_favorite_firstname,px,large,UTF-8,px-x-0104050000_101,fso,bfs,,,,en,"the mentioned dataset had only male firstnames and was combined with the the dataset for female firstnames of px number px-x-0104050000_102"
 B3,remote,divorces_duration_of_marriage_age_classes,px,,,px-x-0102020203_104,fso,bfs,,,,en,
 B4,remote,divorces_duration_of_marriage_citizenship_categories,px,,,px-x-0102020203_103,fso,bfs,,,,en,
 B5,remote,marriage_citizenship,px,,,px-x-0102020202_102,fso,bfs,,,,en,
