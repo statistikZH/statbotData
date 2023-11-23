@@ -213,3 +213,39 @@ WHERE su.name = 'Switzerland'
     AND sv.vehicle_type = 'industrial vehicles'
     AND sv.fuel_type = 'Diesel'
     AND sv.year = 2013;
+
+-- How many vehicles do we have in canton zurich in 2020?
+SELECT S.name, sum(T.amount) as amount from stock_vehicles as T
+JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
+WHERE S.name ilike '%Zurich%'  and T.year=2020 and S.canton=True
+GROUP BY S.name;
+
+-- How many vehicles do we have in the city of zurich in 2021?
+SELECT S.name, S.spatialunit_ontology, sum(T.amount) as amount from stock_vehicles as T
+JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
+WHERE S.name ilike '%Z_rich%'  and T.year=2021 and S.municipal=True and T.fuel_type != 'total'
+GROUP BY S.name, S.spatialunit_ontology;
+
+-- How many vehicles do we have in zurich in 2020?
+SELECT S.name, S.spatialunit_ontology, sum(T.amount) as amount from stock_vehicles as T
+JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
+WHERE S.name ilike '%Z_rich%'  and T.year=2020 and (S.canton=True or S.municipal=True or S.district=True)
+GROUP BY S.name, S.spatialunit_ontology;
+
+-- How many electric cars do we have in the city of basel?
+SELECT S.name, S.spatialunit_ontology,T.fuel_type,T.year, sum(T.amount) as amount from stock_vehicles as T
+JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
+WHERE S.name ilike '%basel%'  and S.municipal=True and T.fuel_type ='Electric'
+GROUP BY S.spatialunit_ontology, S.name,T.fuel_type, T.year;
+
+-- How many hybrid cars do we have in the city of basel?
+SELECT S.name, S.spatialunit_ontology,T.fuel_type,T.year, sum(T.amount) as amount from stock_vehicles as T
+JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
+WHERE S.name ilike '%basel%'  and S.municipal=True and T.fuel_type ilike '%hybrid%'
+GROUP BY S.spatialunit_ontology, S.name,T.fuel_type, T.year;
+
+-- give me the total number of passenger cars that are using diesel in each canton?
+SELECT S.name, S.spatialunit_ontology,T.fuel_type, sum(T.amount) as amount from stock_vehicles as T
+JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid
+WHERE  S.canton=True and T.fuel_type ilike '%diesel%' and T.vehicle_type ='passenger_cars'
+GROUP BY S.spatialunit_ontology, S.name,T.fuel_type;

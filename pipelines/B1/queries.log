@@ -1,4 +1,4 @@
-[1] "Environment: REMOTE, Time: 2023-10-27 16:32:11"
+[1] "Environment: REMOTE, Time: 2023-11-23 18:45:23.29397"
 
 Query Nr. 1
 -- What was the proportion of electric vehicles in Geneva in 2010?
@@ -25,8 +25,8 @@ SELECT DISTINCT fuel_type FROM stock_vehicles;
  Benzine-electric: Plug-in-hybrid
          Gas (mono- and bivalent)
                            Diesel
-  Diesel-electric: Plug-in-hybrid
                           Benzine
+  Diesel-electric: Plug-in-hybrid
                          Electric
    Diesel-electric: Normal-hybrid
                          Hydrogen
@@ -1222,492 +1222,7 @@ SELECT su.name AS city FROM spatial_unit su WHERE NOT EXISTS (     SELECT 1     
                                    Stampa
                                  Wil (AG)
                       Reckingen-Gluringen
-                               Eschikofen
-                         Region Unterland
-                                   Dongio
-                                    Luven
-                              Escher Wyss
-                       District de Morges
-                            St. Peterzell
-                           Salen-Reutenen
-                        District de Rolle
-                                  Riedern
-                                  Mitlödi
-                           Bezirk Plessur
-                                    Flond
-                          Bergün/Bravuogn
-                                   Moleno
-                               Roggenburg
-                                 Dotnacht
-                                  Ghirone
-                                  Wahlern
-                           Herznach-Ueken
-                                     Rona
-                           Bezirk Imboden
-                                 Intragna
-                             Uerschhausen
-                             Zihlschlacht
-                               Pregassona
-                       Mannens-Grandsivaz
-                             Marbach (LU)
-                                     Envy
-                                 Boncourt
-                     District d'Echallens
-                                       Lü
-                                  Montana
-                        Bezirk Werdenberg
-                     Schwamendingen-Mitte
-                                 Ecoteaux
-                                 Ettingen
-                               Ligornetto
-                                Courlevon
-                                  Cordast
-                           Kyburg-Buchegg
-                            Biogno-Beride
-                                Gluringen
-                                 Thundorf
-                             Granges (VS)
-                                   Mettau
-                              Grattavache
-                                 Correvon
-                               Aesch (BL)
-                     Distretto di Bernina
-                                     Ftan
-                                   Umiken
-                                 Montenol
-                Saint-Saphorin-sur-Morges
-                            Willisau Land
-                                Soyhières
-                                 Pampigny
-                      Altstadt Kleinbasel
-                          Burg bei Murten
-                                Salvenach
-                           Le Peuchapatte
-                              Montbrelloz
-                            Region Zürich
-                                Mervelier
-                                Thierrens
-                            Büren zum Hof
-                           Mühledorf (SO)
-                Dippishausen-Oftershausen
-                                   Lovens
-                                 Vellerat
-                         Prez-vers-Noréaz
-                   Bezirk Untertoggenburg
-                          Balm bei Messen
-                                Aegerisee
-                                Vorstädte
-                            Montfavergier
-                                   Suraua
-                              Küttigkofen
-                                  Bidogno
-                                Wipkingen
-                                 Gordevio
-                               St. Johann
-                                  Posieux
-                                  Frasses
-                              Bollodingen
-           Bielersee / Lac de Bienne (NE)
-                               Harenwilen
-                        Farvagny-le-Petit
-                                Sarnersee
-                                 Wildhaus
-                              Dettighofen
-                              Courchapoix
-                                 Brügglen
-                                    Malix
-                                 Cugnasco
-                               Oberstrass
-                                Cresciano
-                                  Mosogno
-         Lac de la Gruyère / Greyerzersee
-                        Busswil bei Büren
-                                   Glarus
-                            Grandfontaine
-                                   Sassel
-                           Les Thioleyres
-                                  Kreis 1
-                                Gutenburg
-                                 Bionnens
-                          Amtsbezirk Bern
-                       District d'Aubonne
-                         Chapelle (Broye)
-                                     Pizy
-                              La Neirigue
-                                 Calonico
-                               Macconnens
-                               Herblingen
-                                     Gudo
-                                  Wanzwil
-                              Waltalingen
-                               Schlosswil
-                                   Coeuve
-                               Carabietta
-                              Leuggelbach
-                                 Filzbach
-                                   Apples
-                                   Isorno
-                                     Sarn
-                                    Mosen
-                District de la Neuveville
-                              Fregiécourt
-                              Cournillens
-                              Hautemorges
-                                   Horben
-                                  Morlens
-                          Region Weinland
-                                 Sigirino
-                               Friltschen
-                        Villette (Lavaux)
-                           Peyres-Possens
-                                Giubiasco
-                                   Versam
-                               Hirzenbach
-        Bezirksfreies Gebiet Bern / Berne
-                                Altavilla
-                            Thielle-Wavre
-                              Hugelshofen
-                                 Moghegno
-                               La Rougève
-                                 Le Glèbe
-                           Schinznach-Bad
-                              Estavannens
-                             Les Tavernes
-                                   Mossel
-                          Staatswald Galm
-                                 Vuissens
-                                   Coglio
-                       District de Boudry
-                                 Largario
-                            Walensee (GL)
-                                Campestro
-                                  Bratsch
-                                Pleujouse
-                                  Croglio
-                                Hätzingen
-                                  Preonzo
-                               Grellingen
-            Murtensee / Lac de Morat (FR)
-                               Greifensee
-                               Engishofen
-                              Brienzersee
-                                   Iragna
-                              Gänsbrunnen
-                                  Cheyres
-                                   Clugin
-                              Dünnershaus
-                                   Märwil
-                               Chandossel
-                              Ettenhausen
-                                    Bivio
-                            Wilen bei Wil
-                                     Lüen
-                   Amtsbezirk Fraubrunnen
-                                Le Saulgy
-                                 Courroux
-                                   Delley
-                           Marin-Epagnier
-                                 Anzonico
-                                Fescoggia
-                           Pambio-Noranco
-                                  Pleigne
-                                   Breite
-                                Malapalud
-                                 Kreis 10
-                                 Cimadera
-                                   Riehen
-                                  Parsonz
-                             Reinach (BL)
-                                Courtaman
-                                   Cunter
-                               Amt Sursee
-                            Mézières (VD)
-                                Bütschwil
-                               Nenzlingen
-                            Prato-Sornico
-                             Môtiers (NE)
-                                  Nidfurn
-                                Vauderens
-                     Chézard-Saint-Martin
-                                Cormagens
-                                Montmelon
-                             Bronschhofen
-                              Les Friques
-                      Medels im Rheinwald
-                                     Says
-                                  Goumois
-                             Les Breuleux
-                                   Littau
-                                  Portein
-                  Amtsbezirk Trachselwald
-                                 Oerlikon
-                                    Tobel
-                       Bezirk Hinterrhein
-                              Sternenberg
-                                Müswangen
-                                 Röschenz
-                          Amtsbezirk Biel
-                      Bezirk Oberrheintal
-             Bezirksfreies Gebiet Thurgau
-                                   Tomils
-                                Gentilino
-                                Sulz (AG)
-                               Liebistorf
-                        Amtsbezirk Laupen
-                                 Delémont
-                      Bezirk Bischofszell
-                                 Ulrichen
-                                 Brislach
-                                    Seiry
-                                   Iselin
-                       Les Hauts-Geneveys
-                              Courchapoix
-                               Castagnola
-                             Schwendibach
-                             Münchenstein
-                               Charmoille
-                              Rossemaison
-                                Ritzingen
-                               Haut-Vully
-                                    Crana
-                                  Esmonts
-                         Amtsbezirk Büren
-                                  Damvant
-                    La Chaux-des-Breuleux
-                                 Vollèges
-                                 Mur (VD)
-                              Undervelier
-                                 Eschiens
-                                  Travers
-                                Epiquerez
-                               Tägertschi
-                        Schönenbaumgarten
-                                Chésalles
-                              Niederurnen
-                                 Morissen
-                                Pfeffikon
-                                 Vuippens
-                                  Epesses
-                                Geschinen
-                              Benken (BL)
-                               Stein (SG)
-                                  Tschlin
-                                   Safien
-                                  Schnaus
-                           Kirchenthurnen
-                                 Grimentz
-                         Forel-sur-Lucens
-                               Lipperswil
-                             Rheinklingen
-                      Chapelle-sur-Moudon
-                                   Lugnez
-                                   Soulce
-                                Gossliwil
-                                     Igis
-                              Langstrasse
-                             Unterschlatt
-                                Burgäschi
-                       Bezirk Val Müstair
-                               Courchavon
-                         Nierlet-les-Bois
-                                  Gunzwil
-                              Scherzingen
-                                Glovelier
-                              Kalthäusern
-                   Amtsbezirk Konolfingen
-                                Eclagnens
-                               Sommentier
-                               Niederösch
-                               Villarepos
-                                 Auressio
-                                   Muggio
-                                   Rivera
-                                 Liesberg
-                          Ponto Valentino
-                             Bressaucourt
-                                  Réclère
-                        District de Vevey
-                                La Corbaz
-                                   Tartar
-                         District d'Aigle
-                                 Savognin
-                              Alterswilen
-                            Tumegl/Tomils
-                           Bezirk Glenner
-                                 Albligen
-                             Saignelégier
-                                Monteggio
-                                    Sagno
-                                Sulz (LU)
-                                Savagnier
-                          Oberehrendingen
-                                   Le Bry
-                               Bettwiesen
-                             Gelterfingen
-                                 Pianezzo
-                               Cavigliano
-                                 Val Mara
-                    District de Neuchâtel
-                               Wallenried
-                  Corcelles-sur-Chavornay
-                               Englisberg
-                               Bezirk See
-                                Mühlehorn
-                               Gommiswald
-                                  Zurzach
-                                 Dussnang
-                         St. Gallenkappel
-                                   Bilten
-                                   Gnosca
-                                    Torre
-                                Wittenwil
-                                  Wattwil
-                               Salenstein
-                                   Stilli
-                           Weiningen (TG)
-                                   Salins
-                              Ernetschwil
-                                     Buix
-                                  Sihlsee
-                                St. Alban
-                          Eschenbach (SG)
-                                   Avegno
-                                     Linn
-                               Zimmerwald
-                                 Mairengo
-                           Alt St. Johann
-                                 Donatyre
-                               Altstetten
-                             Montsevelier
-                                 Farvagny
-                             Diessenhofen
-                      Amtsbezirk Seftigen
-                                Gelfingen
-                               Lussy (FR)
-                             Münster (VS)
-                  Vierwaldstättersee (UR)
-                                Hosenruck
-                          Happerswil-Buch
-                                    Höfen
-                      Amtsbezirk Burgdorf
-                           Willisau Stadt
-                                  Dättwil
-                        Amtsbezirk Signau
-                               Montfaucon
-                         Gerra (Verzasca)
-                             Unterbözberg
-                                  Hohtenn
-                                   Maules
-                      Combremont-le-Grand
-                        Amtsbezirk Wangen
-                                 Venthône
-                             Villargiroud
-                           Martigny-Ville
-                                Wettstein
-                               Saint-Jean
-                                  Gorduno
-                                  Brenles
-                      Region Pfannenstiel
-                              Hessenreuti
-                    Lac de Neuchâtel (FR)
-            Murtensee / Lac de Morat (VD)
-                                   Praden
-                                Duggingen
-                               Ichertswil
-                                    Erlen
-                          Staatswald Galm
-                                 Kulmerau
-                            Amt Entlebuch
-                                Fontenais
-                                  Uffikon
-                                 Villiers
-                              Guschelmuth
-                            Oron-la-Ville
-                             Guntmadingen
-                                   Tarasp
-                            Saint-Ursanne
-                                     Steg
-                               Les Glânes
-                   Corcelles-Cormondrèche
-                                 Vuibroye
-                                  Alvaneu
-                                   Sobrio
-                                Hermiswil
-                    Lac de Neuchâtel (BE)
-                                Vallamand
-                               Uesslingen
-                        Rueyres-Treyfayes
-                                  Vicques
-                                   Cornol
-                           Le Peuchapatte
-                               Aetigkofen
-                Les Geneveys-sur-Coffrane
-                       Region Knonaueramt
-                                     Engi
-                              Oberramsern
-                  Schönenberg an der Thur
-                                  Muriaux
-                                     Matt
-                                  Muttenz
-                     Distretto di Bernina
-                                  Vogorno
-                               Willisdorf
-                              Escholzmatt
-                                Steinhaus
-                                 Sihlfeld
-                                 Surcuolm
-                                   Haslen
-                                  Zénauva
-                            Walensee (SG)
-                                   Noflen
-                               Pfeffingen
-                                   Peseux
-                                Montbovon
-                        Oulens-sur-Lucens
-                                   Eyholz
-                                  Rossura
-                              Osterfingen
-                                 Aeschlen
-                Bleiken bei Oberdiessbach
-                                Rohr (SO)
-                               Oberflachs
-                               Alvaschein
-                       Innerer Landesteil
-                               Luchsingen
-                                    Breno
-                         Les Genevez (BE)
-                               Ederswiler
-                             Altdorf (SH)
-                                   Arosio
-                              Constantine
-                         Estavayer-le-Lac
-                                Léchelles
-                                Lohnstorf
-                              Hinterrhein
-                        Hallwilersee (AG)
-                        Amtsbezirk Wangen
-                                Birwinken
-                              San Nazzaro
-                           Villa Luganese
-                                Ittenthal
-                                 Corserey
-                    Mézery-près-Donneloye
-                             Oberbussnang
-                                  Paspels
-                              Münchringen
-                                    Fanas
-                               Bezirk Inn
-                                 Pontenet
-                                   Illens
-                           Torny-le-Grand
-                           Unterstammheim
-                               Estévenens
-                               Herlisberg
-                                  Nesslau
-                        Bussigny-sur-Oron
-                                 Oberwald
-                                  Limpach
-                              Vicosoprano
+ [ reached 'max' / getOption("max.print") -- omitted 486 rows ]
 
 Query Nr. 14
 -- What type of vehicle is the most frequent in the canton of Basel?
@@ -1760,3 +1275,255 @@ Query Nr. 19
 SELECT SUM(amount) AS total_diesel_industrial_vehicles FROM spatial_unit su INNER JOIN stock_vehicles sv ON su.spatialunit_uid = sv.spatialunit_uid WHERE su.name = 'Switzerland'     AND sv.vehicle_type = 'industrial vehicles'     AND sv.fuel_type = 'Diesel'     AND sv.year = 2013;
  total_diesel_industrial_vehicles
                            168254
+
+Query Nr. 20
+-- How many vehicles do we have in canton zurich in 2020?
+SELECT S.name, sum(T.amount) as amount from stock_vehicles as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name ilike '%Zurich%'  and T.year=2020 and S.canton=True GROUP BY S.name;
+             name  amount
+ Canton of Zurich 2038628
+
+Query Nr. 21
+-- How many vehicles do we have in the city of zurich in 2021?
+SELECT S.name, S.spatialunit_ontology, sum(T.amount) as amount from stock_vehicles as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name ilike '%Z_rich%'  and T.year=2021 and S.municipal=True and T.fuel_type != 'total' GROUP BY S.name, S.spatialunit_ontology;
+   name spatialunit_ontology amount
+ Zürich         Municipality 190773
+
+Query Nr. 22
+-- How many vehicles do we have in zurich in 2020?
+SELECT S.name, S.spatialunit_ontology, sum(T.amount) as amount from stock_vehicles as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name ilike '%Z_rich%'  and T.year=2020 and (S.canton=True or S.municipal=True or S.district=True) GROUP BY S.name, S.spatialunit_ontology;
+             name spatialunit_ontology  amount
+    Bezirk Zürich             District  381178
+ Canton of Zurich               Canton 2038628
+           Zürich         Municipality  381178
+
+Query Nr. 23
+-- How many electric cars do we have in the city of basel?
+SELECT S.name, S.spatialunit_ontology,T.fuel_type,T.year, sum(T.amount) as amount from stock_vehicles as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name ilike '%basel%'  and S.municipal=True and T.fuel_type ='Electric' GROUP BY S.spatialunit_ontology, S.name,T.fuel_type, T.year;
+  name spatialunit_ontology fuel_type year amount
+ Basel         Municipality  Electric 2010    100
+ Basel         Municipality  Electric 2011    106
+ Basel         Municipality  Electric 2012    122
+ Basel         Municipality  Electric 2013    138
+ Basel         Municipality  Electric 2014    168
+ Basel         Municipality  Electric 2015    200
+ Basel         Municipality  Electric 2016    245
+ Basel         Municipality  Electric 2017    295
+ Basel         Municipality  Electric 2018    372
+ Basel         Municipality  Electric 2019    538
+ Basel         Municipality  Electric 2020    767
+ Basel         Municipality  Electric 2021   1121
+
+Query Nr. 24
+-- How many hybrid cars do we have in the city of basel?
+SELECT S.name, S.spatialunit_ontology,T.fuel_type,T.year, sum(T.amount) as amount from stock_vehicles as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE S.name ilike '%basel%'  and S.municipal=True and T.fuel_type ilike '%hybrid%' GROUP BY S.spatialunit_ontology, S.name,T.fuel_type, T.year;
+  name spatialunit_ontology                        fuel_type year amount
+ Basel         Municipality  Benzine-electric: Normal-hybrid 2010    279
+ Basel         Municipality  Benzine-electric: Normal-hybrid 2011    333
+ Basel         Municipality  Benzine-electric: Normal-hybrid 2012    393
+ Basel         Municipality  Benzine-electric: Normal-hybrid 2013    504
+ Basel         Municipality  Benzine-electric: Normal-hybrid 2014    567
+ Basel         Municipality  Benzine-electric: Normal-hybrid 2015    604
+ Basel         Municipality  Benzine-electric: Normal-hybrid 2016    716
+ Basel         Municipality  Benzine-electric: Normal-hybrid 2017    791
+ Basel         Municipality  Benzine-electric: Normal-hybrid 2018    864
+ Basel         Municipality  Benzine-electric: Normal-hybrid 2019   1006
+ Basel         Municipality  Benzine-electric: Normal-hybrid 2020   1245
+ Basel         Municipality  Benzine-electric: Normal-hybrid 2021   1755
+ Basel         Municipality Benzine-electric: Plug-in-hybrid 2010      0
+ Basel         Municipality Benzine-electric: Plug-in-hybrid 2011      0
+ Basel         Municipality Benzine-electric: Plug-in-hybrid 2012      1
+ Basel         Municipality Benzine-electric: Plug-in-hybrid 2013      3
+ Basel         Municipality Benzine-electric: Plug-in-hybrid 2014      4
+ Basel         Municipality Benzine-electric: Plug-in-hybrid 2015     18
+ Basel         Municipality Benzine-electric: Plug-in-hybrid 2016     36
+ Basel         Municipality Benzine-electric: Plug-in-hybrid 2017     65
+ Basel         Municipality Benzine-electric: Plug-in-hybrid 2018    103
+ Basel         Municipality Benzine-electric: Plug-in-hybrid 2019    183
+ Basel         Municipality Benzine-electric: Plug-in-hybrid 2020    430
+ Basel         Municipality Benzine-electric: Plug-in-hybrid 2021    518
+ Basel         Municipality   Diesel-electric: Normal-hybrid 2010      1
+ Basel         Municipality   Diesel-electric: Normal-hybrid 2011      3
+ Basel         Municipality   Diesel-electric: Normal-hybrid 2012      7
+ Basel         Municipality   Diesel-electric: Normal-hybrid 2013     15
+ Basel         Municipality   Diesel-electric: Normal-hybrid 2014     20
+ Basel         Municipality   Diesel-electric: Normal-hybrid 2015     27
+ Basel         Municipality   Diesel-electric: Normal-hybrid 2016     28
+ Basel         Municipality   Diesel-electric: Normal-hybrid 2017     33
+ Basel         Municipality   Diesel-electric: Normal-hybrid 2018     44
+ Basel         Municipality   Diesel-electric: Normal-hybrid 2019     95
+ Basel         Municipality   Diesel-electric: Normal-hybrid 2020    193
+ Basel         Municipality   Diesel-electric: Normal-hybrid 2021    437
+ Basel         Municipality  Diesel-electric: Plug-in-hybrid 2010      0
+ Basel         Municipality  Diesel-electric: Plug-in-hybrid 2011      0
+ Basel         Municipality  Diesel-electric: Plug-in-hybrid 2012      0
+ Basel         Municipality  Diesel-electric: Plug-in-hybrid 2013      1
+ Basel         Municipality  Diesel-electric: Plug-in-hybrid 2014      2
+ Basel         Municipality  Diesel-electric: Plug-in-hybrid 2015      3
+ Basel         Municipality  Diesel-electric: Plug-in-hybrid 2016      4
+ Basel         Municipality  Diesel-electric: Plug-in-hybrid 2017      6
+ Basel         Municipality  Diesel-electric: Plug-in-hybrid 2018      3
+ Basel         Municipality  Diesel-electric: Plug-in-hybrid 2019      3
+ Basel         Municipality  Diesel-electric: Plug-in-hybrid 2020      5
+ Basel         Municipality  Diesel-electric: Plug-in-hybrid 2021     11
+
+Query Nr. 25
+-- give me the total number of passenger cars that are using diesel in each canton?
+SELECT S.name, S.spatialunit_ontology,T.fuel_type, sum(T.amount) as amount from stock_vehicles as T JOIN spatial_unit as S on T.spatialunit_uid = S.spatialunit_uid WHERE  S.canton=True and T.fuel_type ilike '%diesel%' and T.vehicle_type ='passenger_cars' GROUP BY S.spatialunit_ontology, S.name,T.fuel_type;
+                             name spatialunit_ontology
+                    Canton Aargau               Canton
+                    Canton Aargau               Canton
+                    Canton Aargau               Canton
+                    Canton Geneva               Canton
+                    Canton Geneva               Canton
+                    Canton Geneva               Canton
+                Canton Graubünden               Canton
+                Canton Graubünden               Canton
+                Canton Graubünden               Canton
+                      Canton Jura               Canton
+                      Canton Jura               Canton
+                      Canton Jura               Canton
+                 Canton Neuchâtel               Canton
+                 Canton Neuchâtel               Canton
+                 Canton Neuchâtel               Canton
+                   Canton Thurgau               Canton
+                   Canton Thurgau               Canton
+                   Canton Thurgau               Canton
+                    Canton Ticino               Canton
+                    Canton Ticino               Canton
+                    Canton Ticino               Canton
+                    Canton Valais               Canton
+                    Canton Valais               Canton
+                    Canton Valais               Canton
+                      Canton Vaud               Canton
+                      Canton Vaud               Canton
+                      Canton Vaud               Canton
+ Canton of Appenzell Ausserrhoden               Canton
+ Canton of Appenzell Ausserrhoden               Canton
+ Canton of Appenzell Ausserrhoden               Canton
+  Canton of Appenzell Innerrhoden               Canton
+  Canton of Appenzell Innerrhoden               Canton
+  Canton of Appenzell Innerrhoden               Canton
+       Canton of Basel-Landschaft               Canton
+       Canton of Basel-Landschaft               Canton
+       Canton of Basel-Landschaft               Canton
+            Canton of Basel-Stadt               Canton
+            Canton of Basel-Stadt               Canton
+            Canton of Basel-Stadt               Canton
+                   Canton of Bern               Canton
+                   Canton of Bern               Canton
+                   Canton of Bern               Canton
+               Canton of Fribourg               Canton
+               Canton of Fribourg               Canton
+               Canton of Fribourg               Canton
+                 Canton of Glarus               Canton
+                 Canton of Glarus               Canton
+                 Canton of Glarus               Canton
+                Canton of Lucerne               Canton
+                Canton of Lucerne               Canton
+                Canton of Lucerne               Canton
+              Canton of Nidwalden               Canton
+              Canton of Nidwalden               Canton
+              Canton of Nidwalden               Canton
+               Canton of Obwalden               Canton
+               Canton of Obwalden               Canton
+               Canton of Obwalden               Canton
+           Canton of Schaffhausen               Canton
+           Canton of Schaffhausen               Canton
+           Canton of Schaffhausen               Canton
+                 Canton of Schwyz               Canton
+                 Canton of Schwyz               Canton
+                 Canton of Schwyz               Canton
+              Canton of Solothurn               Canton
+              Canton of Solothurn               Canton
+              Canton of Solothurn               Canton
+             Canton of St. Gallen               Canton
+             Canton of St. Gallen               Canton
+             Canton of St. Gallen               Canton
+                    Canton of Uri               Canton
+                    Canton of Uri               Canton
+                    Canton of Uri               Canton
+                    Canton of Zug               Canton
+                    Canton of Zug               Canton
+                    Canton of Zug               Canton
+                 Canton of Zurich               Canton
+                 Canton of Zurich               Canton
+                 Canton of Zurich               Canton
+                       fuel_type amount
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
+                          Diesel      0
+  Diesel-electric: Normal-hybrid      0
+ Diesel-electric: Plug-in-hybrid      0
