@@ -17,7 +17,7 @@ flowchart TD
     Scripts -->|Upload| DB(Statbot postgress DB)
     Can[Cantonal Datasets] -->|Preprocess| Scripts
     User -->|Ask Questions| Chatbot(Statbot Swiss)
-    Chatbot -->|query| DB(Statbot postgress DB)
+    Chatbot -->|query| DB(Statbot postgreSQL DB)
 ```
 
 
