@@ -1,7 +1,11 @@
 # statbotData
 
 ## The project
-This repo is part of the [Statbot Swiss Project](https://www.bfs.admin.ch/bfs/de/home/dscc/blog/2023-02-statbot.html). The project has following parts:
+This repo is part of the [Statbot Swiss Project](https://www.bfs.admin.ch/bfs/de/home/dscc/blog/2023-02-statbot.html). 
+
+Have [a look at this repo for the final results of the research project with ZHAW](https://github.com/dscc-admin-ch/statbot.swiss).
+
+The project has following parts:
 - **[Statbot Postgres DB](#statbot-postgres-db)**: A Postgres DB that is filled with open data from Swiss Statistical offices (Federal Office of Statistics and selected Cantonal Statistical Offices)
 - **[Statbot Training Data](#statbot-training-data)**: Training and test data for the [Statbot Chatbot](#statbot-chatbot), see below.
 - **[Statbot Chatbot](#statbot-chatbot)**: An ML Model for a Chatbot that turns questions into sql queries in order to derive answers to these questions by running the sql queries on the [Statbot Postgres DB](#statbot-postgres-db). It uses the [Statbot Training Data](#statbot-training-data) for its model training.
